@@ -112,10 +112,27 @@ public class DialogueNode
     public string nodeId;
     public DialogueNodeType type;
 
-    [TextArea] public string text;
+    [Tooltip("说话者名称（可选，留空则不显示）")]
+    public LocalizedText speakerName;
+
+    [Tooltip("对话内容")]
+    public LocalizedText text;
+
+    [Tooltip("说话者立绘（可选）")]
+    public Sprite speakerPortrait;
 
     public List<string> next = new();
     public List<string> requiredEvidenceIds = new();
+
+    /// <summary>
+    /// 获取当前语言的文本
+    /// </summary>
+    public string GetText() => text?.Get() ?? "";
+
+    /// <summary>
+    /// 获取当前语言的说话者名称
+    /// </summary>
+    public string GetSpeakerName() => speakerName?.Get() ?? "";
 
     /// <summary>
     /// 检查是否满足显示此节点的证据要求
