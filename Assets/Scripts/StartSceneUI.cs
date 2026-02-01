@@ -29,6 +29,12 @@ public class StartSceneUI : MonoBehaviour
         SceneManager.LoadScene(nextSceneName);
     }
 
+    // Public method for button OnClick event
+    public void OnStartButtonClick()
+    {
+        OnStartButtonClicked();
+    }
+
     // 公开方法，可以通过代码更换背景
     public void SetBackgroundSprite(Sprite newSprite)
     {
