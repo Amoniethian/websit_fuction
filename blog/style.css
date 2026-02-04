@@ -1,0 +1,694 @@
+/* 私人博客样式 - 现代简约风格 */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary-color: #2c3e50;
+    --accent-color: #3498db;
+    --bg-color: #f5f6fa;
+    --card-bg: #ffffff;
+    --text-color: #2c3e50;
+    --text-light: #7f8c8d;
+    --border-color: #e1e8ed;
+    --success-color: #27ae60;
+    --danger-color: #e74c3c;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+/* 顶部导航 */
+.navbar {
+    background-color: var(--card-bg);
+    border-bottom: 1px solid var(--border-color);
+    padding: 12px 20px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar .logo {
+    font-size: 20px;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.navbar .nav-actions {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.navbar .nav-actions button {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: var(--text-light);
+    transition: color 0.2s;
+}
+
+.navbar .nav-actions button:hover {
+    color: var(--accent-color);
+}
+
+.navbar .user-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: var(--accent-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+/* 主布局 */
+.main-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 25px;
+}
+
+/* 侧边栏 - 博主资料 */
+.sidebar {
+    position: sticky;
+    top: 80px;
+    height: fit-content;
+}
+
+.profile-card {
+    background-color: var(--card-bg);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.profile-cover {
+    height: 80px;
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+}
+
+.profile-info {
+    padding: 0 20px 20px;
+    text-align: center;
+}
+
+.profile-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 4px solid var(--card-bg);
+    margin-top: -40px;
+    background-color: #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    color: #999;
+    margin-left: auto;
+    margin-right: auto;
+    overflow: hidden;
+}
+
+.profile-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.profile-name {
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.verified-badge {
+    background-color: var(--accent-color);
+    color: white;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.profile-username {
+    color: var(--text-light);
+    font-size: 14px;
+    margin-top: 2px;
+}
+
+.profile-bio {
+    font-size: 14px;
+    color: var(--text-color);
+    margin-top: 12px;
+    line-height: 1.5;
+}
+
+.profile-location {
+    font-size: 13px;
+    color: var(--text-light);
+    margin-top: 8px;
+}
+
+.profile-location::before {
+    content: "📍 ";
+}
+
+.profile-stats {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid var(--border-color);
+}
+
+.stat-item {
+    text-align: center;
+}
+
+.stat-number {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.stat-label {
+    font-size: 12px;
+    color: var(--text-light);
+}
+
+.profile-actions {
+    padding: 15px 20px;
+    border-top: 1px solid var(--border-color);
+}
+
+.btn-message {
+    width: 100%;
+    padding: 10px;
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-message:hover {
+    background-color: #2980b9;
+}
+
+/* 文章列表 */
+.posts-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.post-card {
+    background-color: var(--card-bg);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.post-header {
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.post-header .avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background-color: #ddd;
+    overflow: hidden;
+}
+
+.post-header .avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.post-header .info {
+    flex: 1;
+}
+
+.post-header .name {
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.post-header .meta {
+    font-size: 13px;
+    color: var(--text-light);
+}
+
+.post-content {
+    padding: 20px;
+}
+
+.post-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+.post-text {
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--text-color);
+}
+
+.post-text p {
+    margin-bottom: 12px;
+}
+
+.post-text p:last-child {
+    margin-bottom: 0;
+}
+
+.post-text strong {
+    color: var(--primary-color);
+}
+
+.post-text em {
+    color: var(--text-light);
+    font-style: italic;
+}
+
+.post-images {
+    margin-top: 15px;
+}
+
+.post-images img {
+    width: 100%;
+    border-radius: 8px;
+    max-height: 400px;
+    object-fit: cover;
+}
+
+.post-images .placeholder {
+    width: 100%;
+    height: 200px;
+    background: linear-gradient(135deg, #667 0%, #999 100%);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 14px;
+}
+
+.post-stats {
+    padding: 12px 20px;
+    display: flex;
+    gap: 20px;
+    font-size: 13px;
+    color: var(--text-light);
+    border-top: 1px solid var(--border-color);
+}
+
+.post-actions {
+    padding: 8px 20px;
+    display: flex;
+    border-top: 1px solid var(--border-color);
+}
+
+.post-actions button {
+    flex: 1;
+    padding: 10px;
+    background: none;
+    border: none;
+    font-size: 14px;
+    color: var(--text-light);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    border-radius: 8px;
+    transition: all 0.2s;
+}
+
+.post-actions button:hover {
+    background-color: var(--bg-color);
+}
+
+.post-actions button.liked {
+    color: var(--danger-color);
+}
+
+/* 评论区 */
+.comments-section {
+    padding: 0 20px 20px;
+    border-top: 1px solid var(--border-color);
+}
+
+.comments-header {
+    padding: 15px 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-light);
+}
+
+.comment-item {
+    display: flex;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.comment-item:last-child {
+    border-bottom: none;
+}
+
+.comment-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: #ddd;
+    flex-shrink: 0;
+    overflow: hidden;
+}
+
+.comment-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.comment-body {
+    flex: 1;
+}
+
+.comment-username {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.comment-username.is-visitor {
+    color: var(--accent-color);
+}
+
+.comment-text {
+    font-size: 14px;
+    margin-top: 4px;
+    line-height: 1.5;
+}
+
+.comment-meta {
+    font-size: 12px;
+    color: var(--text-light);
+    margin-top: 6px;
+    display: flex;
+    gap: 15px;
+}
+
+.comment-meta .like-btn {
+    background: none;
+    border: none;
+    color: var(--text-light);
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.comment-meta .like-btn:hover {
+    color: var(--danger-color);
+}
+
+/* 私信窗口 */
+.chat-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.5);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.chat-overlay.active {
+    display: flex;
+}
+
+.chat-window {
+    width: 400px;
+    max-width: 95vw;
+    height: 600px;
+    max-height: 90vh;
+    background-color: var(--card-bg);
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+}
+
+.chat-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.chat-header .avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background-color: #ddd;
+    overflow: hidden;
+}
+
+.chat-header .avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.chat-header .info {
+    flex: 1;
+}
+
+.chat-header .name {
+    font-weight: 600;
+}
+
+.chat-header .status {
+    font-size: 12px;
+    color: var(--text-light);
+}
+
+.chat-header .status.online::before {
+    content: "🟢 ";
+}
+
+.chat-close {
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: var(--text-light);
+    cursor: pointer;
+}
+
+.chat-close:hover {
+    color: var(--text-color);
+}
+
+.chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.message {
+    max-width: 75%;
+    padding: 12px 16px;
+    border-radius: 18px;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.message.sent {
+    align-self: flex-end;
+    background-color: var(--accent-color);
+    color: white;
+    border-bottom-right-radius: 4px;
+}
+
+.message.received {
+    align-self: flex-start;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    border-bottom-left-radius: 4px;
+}
+
+.message .time {
+    font-size: 11px;
+    opacity: 0.7;
+    margin-top: 4px;
+    display: block;
+}
+
+.message.sent .time {
+    text-align: right;
+}
+
+.typing-indicator {
+    align-self: flex-start;
+    background-color: var(--bg-color);
+    padding: 12px 16px;
+    border-radius: 18px;
+    font-size: 14px;
+    color: var(--text-light);
+    display: none;
+}
+
+.typing-indicator.active {
+    display: block;
+}
+
+.typing-indicator span {
+    animation: typing 1.4s infinite;
+}
+
+.typing-indicator span:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.typing-indicator span:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes typing {
+    0%, 60%, 100% { opacity: 0.3; }
+    30% { opacity: 1; }
+}
+
+.no-reply-notice {
+    text-align: center;
+    font-size: 12px;
+    color: var(--text-light);
+    padding: 10px;
+    background-color: var(--bg-color);
+    border-radius: 8px;
+    display: none;
+}
+
+.no-reply-notice.active {
+    display: block;
+}
+
+.chat-input-container {
+    padding: 16px 20px;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    gap: 10px;
+}
+
+.chat-input {
+    flex: 1;
+    padding: 12px 16px;
+    border: 1px solid var(--border-color);
+    border-radius: 24px;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.chat-input:focus {
+    border-color: var(--accent-color);
+}
+
+.chat-send {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background-color 0.2s;
+}
+
+.chat-send:hover {
+    background-color: #2980b9;
+}
+
+.chat-send:disabled {
+    background-color: #bdc3c7;
+    cursor: not-allowed;
+}
+
+/* 响应式 */
+@media (max-width: 768px) {
+    .main-container {
+        grid-template-columns: 1fr;
+    }
+
+    .sidebar {
+        position: relative;
+        top: 0;
+    }
+
+    .chat-window {
+        width: 100%;
+        height: 100%;
+        max-height: 100vh;
+        border-radius: 0;
+    }
+}
+
+/* 占位头像 */
+.avatar-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #667 0%, #999 100%);
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+}

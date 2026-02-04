@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">新闻网站</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- 顶部信息条 -->
+    <div class="top-bar">
+        <div class="date" id="current-date"></div>
+        <div class="links">
+            <a href="#">订阅</a>
+            <a href="#">登录</a>
+            <a href="#">English</a>
+        </div>
+    </div>
+
+    <!-- 网站头部 -->
+    <header>
+        <div class="logo" id="site-name"></div>
+        <div class="slogan" id="site-slogan"></div>
+    </header>
+
+    <!-- 导航菜单 -->
+    <nav>
+        <ul>
+            <li><a href="#">首页</a></li>
+            <li><a href="#">国际</a></li>
+            <li><a href="#">财经</a></li>
+            <li><a href="#">文化</a></li>
+            <li><a href="#">体育</a></li>
+            <li><a href="#">科技</a></li>
+            <li><a href="#">生活</a></li>
+        </ul>
+    </nav>
+
+    <!-- 主要内容区 -->
+    <div class="container">
+        <!-- 文章主体 -->
+        <article class="main-article">
+            <span class="article-category obituary" id="article-category"></span>
+            <h1 class="article-title" id="article-title"></h1>
+            <p class="article-subtitle" id="article-subtitle"></p>
+
+            <div class="article-meta">
+                <span class="author" id="article-author"></span> |
+                <span id="article-date"></span> <span id="article-time"></span>
+            </div>
+
+            <!-- 图片区域 -->
+            <div class="article-image" id="article-image-container">
+                <!-- 图片将由JS动态生成 -->
+            </div>
+
+            <!-- 信息框 -->
+            <div class="info-box" id="info-box">
+                <h4 id="info-box-title"></h4>
+                <table id="info-box-table">
+                    <!-- 由JS动态生成 -->
+                </table>
+            </div>
+
+            <!-- 文章内容 -->
+            <div class="article-content" id="article-content">
+                <!-- 由JS动态生成 -->
+            </div>
+        </article>
+
+        <!-- 侧边栏 -->
+        <aside class="sidebar">
+            <h3>最新新闻</h3>
+            <div id="sidebar-news">
+                <!-- 由JS动态生成 -->
+            </div>
+
+            <div class="ad-placeholder">
+                广告位
+            </div>
+        </aside>
+    </div>
+
+    <!-- 页脚 -->
+    <footer>
+        <p id="footer-copyright"></p>
+        <p id="footer-address"></p>
+        <p class="disclaimer" id="footer-disclaimer"></p>
+    </footer>
+
+    <script src="config.js"></script>
+    <script>
+        // 页面初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            const config = NEWS_CONFIG;
+            const headline = config.headline;
+
+            // 设置页面标题
+            document.getElementById('page-title').textContent = headline.title + ' | ' + config.siteName;
+
+            // 设置网站名称和口号
+            document.getElementById('site-name').textContent = config.siteName;
+            document.getElementById('site-slogan').textContent = config.siteSlogan;
+
+            // 设置当前日期
+            document.getElementById('current-date').textContent = headline.publishDate;
+
+            // 设置文章内容
+            document.getElementById('article-category').textContent = headline.category;
+            document.getElementById('article-title').textContent = headline.title;
+            document.getElementById('article-subtitle').textContent = headline.subtitle;
+            document.getElementById('article-author').textContent = headline.author;
+            document.getElementById('article-date').textContent = headline.publishDate;
+            document.getElementById('article-time').textContent = headline.publishTime;
+
+            // 设置图片
+            const imageContainer = document.getElementById('article-image-container');
+            if (headline.image) {
+                imageContainer.innerHTML = `
+                    <img src="${headline.image}" alt="文章配图" onerror="this.parentElement.innerHTML='<div class=\\'placeholder-image\\'>[ 图片位置 - 请添加图片到 ${headline.image} ]</div><p class=\\'caption\\'>${headline.imageCaption}</p>'">
+                    <p class="caption">${headline.imageCaption}</p>
+                `;
+            } else {
+                imageContainer.innerHTML = `
+                    <div class="placeholder-image">[ 图片位置 ]</div>
+                    <p class="caption">${headline.imageCaption}</p>
+                `;
+            }
+
+            // 设置信息框
+            document.getElementById('info-box-title').textContent = headline.infoBox.title;
+            const infoTable = document.getElementById('info-box-table');
+            headline.infoBox.items.forEach(item => {
+                const row = document.createElement('tr');
+                row.innerHTML = `<td>${item.label}</td><td>${item.value}</td>`;
+                infoTable.appendChild(row);
+            });
+
+            // 设置文章正文
+            document.getElementById('article-content').innerHTML = headline.content;
+
+            // 设置侧边栏新闻
+            const sidebarNews = document.getElementById('sidebar-news');
+            config.sidebarNews.forEach(news => {
+                const item = document.createElement('div');
+                item.className = 'sidebar-item';
+                item.innerHTML = `
+                    <span class="category">${news.category}</span>
+                    <h4><a href="#">${news.title}</a></h4>
+                    <span class="time">${news.time}</span>
+                `;
+                sidebarNews.appendChild(item);
+            });
+
+            // 设置页脚
+            document.getElementById('footer-copyright').textContent = config.footer.copyright;
+            document.getElementById('footer-address').textContent = config.footer.address;
+            document.getElementById('footer-disclaimer').textContent = config.footer.disclaimer;
+        });
+    </script>
+</body>
+</html>
