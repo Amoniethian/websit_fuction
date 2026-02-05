@@ -81,7 +81,7 @@ const NEWS_CONFIG = {
             category: "WORLD"
         },
         {
-            title: "'Consciousness Upload' — Science or Scam? The Digital Afterlife Debate / "意识上传"——科学还是骗局？数字永生之争",
+            title: "'Consciousness Upload' — Science or Scam? The Digital Afterlife Debate / '意识上传'——科学还是骗局？数字永生之争",
             time: "Today 11:45",
             category: "TECH"
         },

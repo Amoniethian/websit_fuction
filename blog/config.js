@@ -75,7 +75,7 @@ const BLOG_CONFIG = {
                     id: 103,
                     username: "RealTalk_Anon",
                     avatar: "../assets/images/user3.jpg",
-                    content: "Not to be rude but... \"don't remember writing\"? That's not how composing works. Are you crediting the right person for these pieces? (无意冒犯，但是……"不记得写过"？作曲不是这样的。你确定这些作品署对人了吗？)",
+                    content: "Not to be rude but... \"don't remember writing\"? That's not how composing works. Are you crediting the right person for these pieces? (无意冒犯，但是……'不记得写过'？作曲不是这样的。你确定这些作品署对人了吗？)",
                     time: "29 Oct 14:20",
                     likes: 7
                 },
@@ -191,7 +191,7 @@ const BLOG_CONFIG = {
         },
         {
             id: 4,
-            title: "On 'Inheritance' / 谈"继承"",
+            title: "On 'Inheritance' / 谈'继承'",
             content: `
                 <p>Many people ask me why I won't take over the family business.</p>
                 <p class="cn">很多人问我为什么不接手家族企业。</p>
@@ -231,7 +231,7 @@ const BLOG_CONFIG = {
                     id: 403,
                     username: "TruthSeeker404",
                     avatar: "../assets/images/user10.jpg",
-                    content: "\"Inheritance\" is an interesting word choice. Your father spent millions on your career. Private venues, hand-picked audiences, suppressed reviews. What exactly did you inherit — talent, or a stage set? ("继承"这个词选得很有意思。你父亲为你的事业花了数百万。私人场地、精挑细选的听众、被压制的评论。你到底继承了什么——才华，还是一个搭好的舞台？)",
+                    content: "\"Inheritance\" is an interesting word choice. Your father spent millions on your career. Private venues, hand-picked audiences, suppressed reviews. What exactly did you inherit — talent, or a stage set? ('继承'这个词选得很有意思。你父亲为你的事业花了数百万。私人场地、精挑细选的听众、被压制的评论。你到底继承了什么——才华，还是一个搭好的舞台？)",
                     time: "6 Aug 01:47",
                     likes: 2
                 }
