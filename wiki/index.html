@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>私人档案库</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- 顶部导航 -->
+    <nav class="navbar">
+        <div class="logo">
+            <span class="logo-icon">📚</span>
+            <div>
+                <div class="logo-text" id="site-name"></div>
+                <div class="logo-subtitle" id="site-subtitle"></div>
+            </div>
+        </div>
+        <div class="nav-actions">
+            <span class="last-updated">最后更新: <span id="last-updated"></span></span>
+            <div class="login-status" id="login-status">
+                <span class="status-indicator" id="status-indicator"></span>
+                <span class="status-text" id="status-text">未登录</span>
+            </div>
+            <button class="btn-login" id="btn-login" onclick="openLogin()">登录</button>
+            <button class="btn-logout" id="btn-logout" onclick="logout()" style="display: none;">登出</button>
+        </div>
+    </nav>
+
+    <!-- 主布局 -->
+    <div class="main-container">
+        <!-- 侧边栏 -->
+        <aside class="sidebar">
+            <div class="sidebar-section">
+                <div class="sidebar-title">公开档案</div>
+                <ul class="sidebar-nav" id="public-nav">
+                    <!-- 由 JS 动态生成 -->
+                </ul>
+            </div>
+            <div class="sidebar-section" id="restricted-section">
+                <div class="sidebar-title">受限档案</div>
+                <ul class="sidebar-nav" id="restricted-nav">
+                    <!-- 由 JS 动态生成 -->
+                </ul>
+            </div>
+        </aside>
+
+        <!-- 内容区 -->
+        <main class="content-area" id="content-area">
+            <!-- 欢迎页面 -->
+            <div class="welcome-page" id="welcome-page">
+                <div class="icon">🔐</div>
+                <h2 id="welcome-title"></h2>
+                <p id="welcome-description"></p>
+            </div>
+
+            <!-- 文章内容（隐藏） -->
+            <div id="article-view" style="display: none;">
+                <div class="content-header">
+                    <div class="breadcrumb">
+                        <a href="#" onclick="showWelcome(); return false;">首页</a> / <span id="breadcrumb-category"></span>
+                    </div>
+                    <h1 id="article-title"></h1>
+                    <div class="meta">
+                        <span class="category-tag" id="article-category"></span>
+                        <span>最后修改: <span id="article-modified"></span></span>
+                    </div>
+                </div>
+                <div class="article-content" id="article-content">
+                    <!-- 文章内容 -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 登录模态框 -->
+    <div class="login-overlay" id="login-overlay">
+        <div class="login-modal">
+            <h2 id="login-title"></h2>
+            <p class="subtitle" id="login-subtitle"></p>
+            <form onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label for="username">用户名</label>
+                    <input type="text" id="username" placeholder="输入用户名" autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label for="password">密码</label>
+                    <input type="password" id="password" placeholder="输入密码">
+                </div>
+                <div class="login-error" id="login-error"></div>
+                <div class="login-actions">
+                    <button type="button" class="btn-cancel" onclick="closeLogin()">取消</button>
+                    <button type="submit" class="btn-submit">验证身份</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="config.js"></script>
+    <script>
+        // ========== 全局状态 ==========
+        let isLoggedIn = false;
+        let currentArticle = null;
+        const config = WIKI_CONFIG;
+
+        // ========== 初始化 ==========
+        function initPage() {
+            // 设置网站信息
+            document.getElementById('site-name').textContent = config.siteName;
+            document.getElementById('site-subtitle').textContent = config.siteSubtitle;
+            document.getElementById('last-updated').textContent = config.lastUpdated;
+
+            // 设置欢迎页
+            document.getElementById('welcome-title').textContent = config.siteName;
+            document.getElementById('welcome-description').textContent = config.siteDescription;
+
+            // 设置登录框
+            document.getElementById('login-title').textContent = config.ui.loginTitle;
+            document.getElementById('login-subtitle').textContent = config.ui.loginSubtitle;
+            document.getElementById('login-error').textContent = config.ui.loginError;
+
+            // 设置页面标题
+            document.title = config.siteName;
+
+            // 渲染导航
+            renderNavigation();
+
+            // 检查是否有保存的登录状态
+            checkSavedLogin();
+        }
+
+        // ========== 渲染导航 ==========
+        function renderNavigation() {
+            const publicNav = document.getElementById('public-nav');
+            const restrictedNav = document.getElementById('restricted-nav');
+
+            // 渲染公开条目
+            config.publicEntries.forEach(entry => {
+                const li = document.createElement('li');
+                const categoryIcon = getCategoryIcon(entry.category);
+                li.innerHTML = `
+                    <a href="#" onclick="loadArticle('${entry.id}', false); return false;">
+                        <span class="icon">${categoryIcon}</span>
+                        ${entry.title}
+                    </a>
+                `;
+                publicNav.appendChild(li);
+            });
+
+            // 渲染受限条目
+            config.restrictedEntries.forEach(entry => {
+                const li = document.createElement('li');
+                li.id = `nav-${entry.id}`;
+                updateRestrictedNavItem(li, entry);
+                restrictedNav.appendChild(li);
+            });
+        }
+
+        function updateRestrictedNavItem(li, entry) {
+            const categoryIcon = getCategoryIcon(entry.category);
+            if (isLoggedIn) {
+                li.innerHTML = `
+                    <a href="#" onclick="loadArticle('${entry.id}', true); return false;">
+                        <span class="icon">${categoryIcon}</span>
+                        ${entry.title}
+                        ${entry.classification === '高度机密' ? '<span class="badge">机密</span>' : ''}
+                    </a>
+                `;
+            } else {
+                li.innerHTML = `
+                    <a href="#" class="locked" onclick="openLogin(); return false;">
+                        <span class="icon">${categoryIcon}</span>
+                        ${entry.title}
+                        <span class="lock-icon">🔒</span>
+                    </a>
+                `;
+            }
+        }
+
+        function getCategoryIcon(category) {
+            const cat = config.categories.find(c => c.name === category);
+            return cat ? cat.icon : '📄';
+        }
+
+        // ========== 文章加载 ==========
+        function loadArticle(id, isRestricted) {
+            if (isRestricted && !isLoggedIn) {
+                openLogin();
+                return;
+            }
+
+            const entries = isRestricted ? config.restrictedEntries : config.publicEntries;
+            const entry = entries.find(e => e.id === id);
+
+            if (!entry) return;
+
+            currentArticle = entry;
+
+            // 更新导航高亮
+            document.querySelectorAll('.sidebar-nav a').forEach(a => a.classList.remove('active'));
+            const navItem = document.querySelector(`#nav-${id} a`) ||
+                           document.querySelector(`.sidebar-nav a[onclick*="${id}"]`);
+            if (navItem) navItem.classList.add('active');
+
+            // 显示文章
+            document.getElementById('welcome-page').style.display = 'none';
+            document.getElementById('article-view').style.display = 'block';
+
+            document.getElementById('breadcrumb-category').textContent = entry.category;
+            document.getElementById('article-title').textContent = entry.title;
+            document.getElementById('article-category').textContent = entry.category;
+            document.getElementById('article-modified').textContent = entry.lastModified;
+            document.getElementById('article-content').innerHTML = entry.content;
+        }
+
+        function showWelcome() {
+            document.getElementById('welcome-page').style.display = 'block';
+            document.getElementById('article-view').style.display = 'none';
+            document.querySelectorAll('.sidebar-nav a').forEach(a => a.classList.remove('active'));
+            currentArticle = null;
+        }
+
+        // ========== 登录功能 ==========
+        function openLogin() {
+            document.getElementById('login-overlay').classList.add('active');
+            document.getElementById('username').focus();
+            document.getElementById('login-error').classList.remove('active');
+        }
+
+        function closeLogin() {
+            document.getElementById('login-overlay').classList.remove('active');
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+        }
+
+        function handleLogin(event) {
+            event.preventDefault();
+
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value;
+
+            if (username === config.credentials.username && password === config.credentials.password) {
+                // 登录成功
+                isLoggedIn = true;
+                sessionStorage.setItem('wiki_logged_in', 'true');
+                closeLogin();
+                updateLoginStatus();
+                updateRestrictedNav();
+
+                // 如果当前正在尝试访问某个受限文章，重新加载它
+                if (currentArticle && config.restrictedEntries.find(e => e.id === currentArticle.id)) {
+                    loadArticle(currentArticle.id, true);
+                }
+            } else {
+                // 登录失败
+                document.getElementById('login-error').classList.add('active');
+                document.getElementById('password').value = '';
+                document.getElementById('password').focus();
+            }
+        }
+
+        function logout() {
+            isLoggedIn = false;
+            sessionStorage.removeItem('wiki_logged_in');
+            updateLoginStatus();
+            updateRestrictedNav();
+            showWelcome();
+        }
+
+        function updateLoginStatus() {
+            const indicator = document.getElementById('status-indicator');
+            const statusText = document.getElementById('status-text');
+            const btnLogin = document.getElementById('btn-login');
+            const btnLogout = document.getElementById('btn-logout');
+
+            if (isLoggedIn) {
+                indicator.classList.add('logged-in');
+                statusText.textContent = config.ui.loggedInMessage;
+                btnLogin.style.display = 'none';
+                btnLogout.style.display = 'block';
+            } else {
+                indicator.classList.remove('logged-in');
+                statusText.textContent = '未登录';
+                btnLogin.style.display = 'block';
+                btnLogout.style.display = 'none';
+            }
+        }
+
+        function updateRestrictedNav() {
+            config.restrictedEntries.forEach(entry => {
+                const li = document.getElementById(`nav-${entry.id}`);
+                if (li) {
+                    updateRestrictedNavItem(li, entry);
+                }
+            });
+        }
+
+        function checkSavedLogin() {
+            if (sessionStorage.getItem('wiki_logged_in') === 'true') {
+                isLoggedIn = true;
+                updateLoginStatus();
+                updateRestrictedNav();
+            }
+        }
+
+        // 点击遮罩层关闭
+        document.getElementById('login-overlay').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeLogin();
+            }
+        });
+
+        // ESC 键关闭
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeLogin();
+            }
+        });
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', initPage);
+    </script>
+</body>
+</html>
