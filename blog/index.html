@@ -1,32 +1,30 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>个人博客</title>
+    <title>Personal Blog</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- 顶部导航 -->
+    <!-- Top Navigation -->
     <nav class="navbar">
         <div class="logo">Blog</div>
         <div class="nav-actions">
-            <button title="通知">🔔</button>
-            <button title="搜索">🔍</button>
+            <button title="Notifications">🔔</button>
+            <button title="Search">🔍</button>
             <div class="user-avatar" id="nav-visitor-avatar"></div>
         </div>
     </nav>
 
-    <!-- 主容器 -->
+    <!-- Main Container -->
     <div class="main-container">
-        <!-- 侧边栏 - 博主资料 -->
+        <!-- Sidebar - Blogger Profile -->
         <aside class="sidebar">
             <div class="profile-card">
                 <div class="profile-cover"></div>
                 <div class="profile-info">
-                    <div class="profile-avatar" id="blogger-avatar">
-                        <!-- 头像 -->
-                    </div>
+                    <div class="profile-avatar" id="blogger-avatar"></div>
                     <div class="profile-name">
                         <span id="blogger-display-name"></span>
                         <span class="verified-badge" id="verified-badge" style="display: none;">✓</span>
@@ -37,29 +35,27 @@
                     <div class="profile-stats">
                         <div class="stat-item">
                             <div class="stat-number" id="stat-followers"></div>
-                            <div class="stat-label">粉丝</div>
+                            <div class="stat-label">Followers</div>
                         </div>
                         <div class="stat-item">
                             <div class="stat-number" id="stat-following"></div>
-                            <div class="stat-label">关注</div>
+                            <div class="stat-label">Following</div>
                         </div>
                     </div>
                 </div>
                 <div class="profile-actions">
                     <button class="btn-message" onclick="openChat()">
-                        💬 发私信
+                        💬 Message
                     </button>
                 </div>
             </div>
         </aside>
 
-        <!-- 文章列表 -->
-        <main class="posts-container" id="posts-container">
-            <!-- 文章由 JS 动态生成 -->
-        </main>
+        <!-- Posts -->
+        <main class="posts-container" id="posts-container"></main>
     </div>
 
-    <!-- 私信窗口 -->
+    <!-- Chat / DM Window -->
     <div class="chat-overlay" id="chat-overlay">
         <div class="chat-window">
             <div class="chat-header">
@@ -71,14 +67,13 @@
                 <button class="chat-close" onclick="closeChat()">×</button>
             </div>
             <div class="chat-messages" id="chat-messages">
-                <!-- 消息由 JS 动态生成 -->
                 <div class="typing-indicator" id="typing-indicator">
-                    <span>.</span><span>.</span><span>.</span> 正在输入
+                    <span>.</span><span>.</span><span>.</span> typing
                 </div>
                 <div class="no-reply-notice" id="no-reply-notice"></div>
             </div>
             <div class="chat-input-container">
-                <input type="text" class="chat-input" id="chat-input" placeholder="输入消息..." onkeypress="handleChatKeypress(event)">
+                <input type="text" class="chat-input" id="chat-input" placeholder="Type a message..." onkeypress="handleChatKeypress(event)">
                 <button class="chat-send" id="chat-send" onclick="sendMessage()">➤</button>
             </div>
         </div>
@@ -86,15 +81,14 @@
 
     <script src="config.js"></script>
     <script>
-        // ========== 全局状态 ==========
+        // ========== Global State ==========
         let replyCount = 0;
         const config = BLOG_CONFIG;
 
-        // ========== 工具函数 ==========
+        // ========== Utility Functions ==========
         function formatNumber(num) {
-            if (num >= 10000) {
-                return (num / 10000).toFixed(1) + '万';
-            }
+            if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+            if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
             return num.toLocaleString();
         }
 
@@ -118,18 +112,14 @@
             return container.innerHTML;
         }
 
-        // ========== 初始化页面 ==========
+        // ========== Init Page ==========
         function initPage() {
             const blogger = config.blogger;
             const visitor = config.visitor;
 
-            // 设置页面标题
-            document.title = `${blogger.displayName} 的个人博客`;
-
-            // 设置导航栏访客头像
+            document.title = `${blogger.displayName}'s Blog`;
             document.getElementById('nav-visitor-avatar').textContent = getInitial(visitor.displayName);
 
-            // 设置博主资料
             const bloggerAvatarEl = document.getElementById('blogger-avatar');
             bloggerAvatarEl.innerHTML = createAvatarElement(blogger.avatar, blogger.displayName, 80);
 
@@ -145,7 +135,6 @@
             document.getElementById('stat-followers').textContent = formatNumber(blogger.followers);
             document.getElementById('stat-following').textContent = formatNumber(blogger.following);
 
-            // 设置私信窗口头部
             document.getElementById('chat-blogger-avatar').innerHTML = createAvatarElement(blogger.avatar, blogger.displayName);
             document.getElementById('chat-blogger-name').textContent = blogger.displayName;
             document.getElementById('chat-status').textContent = config.chat.bloggerStatus;
@@ -153,14 +142,11 @@
                 document.getElementById('chat-status').classList.add('online');
             }
 
-            // 渲染文章
             renderPosts();
-
-            // 初始化私信历史
             initChatHistory();
         }
 
-        // ========== 渲染文章 ==========
+        // ========== Render Posts ==========
         function renderPosts() {
             const container = document.getElementById('posts-container');
             const blogger = config.blogger;
@@ -171,7 +157,6 @@
                 postEl.className = 'post-card';
                 postEl.id = `post-${post.id}`;
 
-                // 生成评论 HTML
                 let commentsHtml = '';
                 post.comments.forEach(comment => {
                     const isVisitor = comment.username === visitor.name;
@@ -190,12 +175,11 @@
                     `;
                 });
 
-                // 生成图片 HTML
                 let imagesHtml = '';
                 if (post.images && post.images.length > 0) {
                     imagesHtml = `
                         <div class="post-images">
-                            <img src="${post.images[0]}" alt="文章图片" onerror="this.outerHTML='<div class=\\'placeholder\\'>[ 图片位置 ]</div>'">
+                            <img src="${post.images[0]}" alt="Post image" onerror="this.outerHTML='<div class=\\'placeholder\\'>[ Image placeholder ]</div>'">
                         </div>
                     `;
                 }
@@ -217,23 +201,23 @@
                         ${imagesHtml}
                     </div>
                     <div class="post-stats">
-                        <span>👁 ${formatNumber(post.views)} 浏览</span>
-                        <span>❤ ${formatNumber(post.likes)} 喜欢</span>
-                        <span>💬 ${post.comments.length} 评论</span>
+                        <span>👁 ${formatNumber(post.views)} views</span>
+                        <span>❤ ${formatNumber(post.likes)} likes</span>
+                        <span>💬 ${post.comments.length} comments</span>
                     </div>
                     <div class="post-actions">
                         <button class="${post.liked ? 'liked' : ''}" onclick="toggleLike(${post.id}, this)">
-                            ${post.liked ? '❤' : '🤍'} 喜欢
+                            ${post.liked ? '❤' : '🤍'} Like
                         </button>
                         <button onclick="toggleComments(${post.id})">
-                            💬 评论
+                            💬 Comments
                         </button>
                         <button>
-                            🔗 分享
+                            🔗 Share
                         </button>
                     </div>
                     <div class="comments-section" id="comments-${post.id}" style="display: none;">
-                        <div class="comments-header">评论 (${post.comments.length})</div>
+                        <div class="comments-header">Comments (${post.comments.length})</div>
                         ${commentsHtml}
                     </div>
                 `;
@@ -242,7 +226,7 @@
             });
         }
 
-        // ========== 交互功能 ==========
+        // ========== Interactions ==========
         function toggleLike(postId, btn) {
             const post = config.posts.find(p => p.id === postId);
             if (post) {
@@ -250,15 +234,14 @@
                 if (post.liked) {
                     post.likes++;
                     btn.classList.add('liked');
-                    btn.innerHTML = '❤ 喜欢';
+                    btn.innerHTML = '❤ Like';
                 } else {
                     post.likes--;
                     btn.classList.remove('liked');
-                    btn.innerHTML = '🤍 喜欢';
+                    btn.innerHTML = '🤍 Like';
                 }
-                // 更新统计
                 const statsEl = btn.closest('.post-card').querySelector('.post-stats span:nth-child(2)');
-                statsEl.textContent = '❤ ' + formatNumber(post.likes) + ' 喜欢';
+                statsEl.textContent = '❤ ' + formatNumber(post.likes) + ' likes';
             }
         }
 
@@ -267,7 +250,7 @@
             commentsEl.style.display = commentsEl.style.display === 'none' ? 'block' : 'none';
         }
 
-        // ========== 私信功能 ==========
+        // ========== Chat / DM ==========
         function openChat() {
             document.getElementById('chat-overlay').classList.add('active');
             scrollChatToBottom();
@@ -279,10 +262,6 @@
         }
 
         function initChatHistory() {
-            const messagesContainer = document.getElementById('chat-messages');
-            const visitor = config.visitor;
-            const blogger = config.blogger;
-
             config.chat.history.forEach(msg => {
                 addMessageToChat(msg.content, msg.sender === 'visitor', msg.time);
             });
@@ -291,7 +270,6 @@
         function addMessageToChat(content, isSent, time = null) {
             const messagesContainer = document.getElementById('chat-messages');
             const typingIndicator = document.getElementById('typing-indicator');
-            const noReplyNotice = document.getElementById('no-reply-notice');
 
             const msgEl = document.createElement('div');
             msgEl.className = `message ${isSent ? 'sent' : 'received'}`;
@@ -300,7 +278,6 @@
                 ${time ? `<span class="time">${time}</span>` : ''}
             `;
 
-            // 插入到 typing indicator 之前
             messagesContainer.insertBefore(msgEl, typingIndicator);
             scrollChatToBottom();
         }
@@ -312,11 +289,10 @@
 
         function getCurrentTime() {
             const now = new Date();
-            const month = now.getMonth() + 1;
-            const day = now.getDate();
+            const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
             const hours = now.getHours().toString().padStart(2, '0');
             const minutes = now.getMinutes().toString().padStart(2, '0');
-            return `${month}月${day}日 ${hours}:${minutes}`;
+            return `${now.getDate()} ${months[now.getMonth()]} ${hours}:${minutes}`;
         }
 
         function sendMessage() {
@@ -325,25 +301,20 @@
 
             if (!content) return;
 
-            // 添加发送的消息
             addMessageToChat(content, true, getCurrentTime());
             input.value = '';
 
-            // 检查是否还能自动回复
             if (replyCount < config.chat.maxReplies) {
-                // 显示正在输入
                 const typingIndicator = document.getElementById('typing-indicator');
                 typingIndicator.classList.add('active');
                 scrollChatToBottom();
 
-                // 延迟后发送自动回复
                 const autoReply = config.chat.autoReplies[replyCount];
                 setTimeout(() => {
                     typingIndicator.classList.remove('active');
                     addMessageToChat(autoReply.reply, false, getCurrentTime());
                     replyCount++;
 
-                    // 如果达到最大回复次数，显示提示
                     if (replyCount >= config.chat.maxReplies) {
                         setTimeout(() => {
                             const noReplyNotice = document.getElementById('no-reply-notice');
@@ -353,9 +324,6 @@
                         }, 2000);
                     }
                 }, autoReply.delay);
-            } else {
-                // 已经没有更多回复了，但可以继续发消息
-                // 不做任何自动回复
             }
         }
 
@@ -365,14 +333,14 @@
             }
         }
 
-        // 点击遮罩层关闭
+        // Close on overlay click
         document.getElementById('chat-overlay').addEventListener('click', function(e) {
             if (e.target === this) {
                 closeChat();
             }
         });
 
-        // 初始化
+        // Init
         document.addEventListener('DOMContentLoaded', initPage);
     </script>
 </body>

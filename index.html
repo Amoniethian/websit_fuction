@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>密室逃脱网站框架 - 开发入口</title>
+    <title>Escape Room Web Props — Dev Portal</title>
     <style>
         * {
             margin: 0;
@@ -88,11 +88,6 @@
             font-size: 13px;
         }
 
-        .footer a {
-            color: #4a90a4;
-            text-decoration: none;
-        }
-
         .note {
             background: rgba(74, 144, 164, 0.1);
             border: 1px solid rgba(74, 144, 164, 0.3);
@@ -112,37 +107,37 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>密室逃脱网站框架</h1>
-            <p>开发入口 - 选择要预览的网站</p>
+            <h1>Escape Room — Web Props</h1>
+            <p>Dev portal — select a site to preview</p>
         </div>
 
         <div class="sites-grid">
             <a href="news/index.html" class="site-card">
                 <span class="icon">📰</span>
-                <h2>新闻网站</h2>
-                <p>仿真欧洲新闻网站，包含讣告文章。玩家需要通过精确网址访问。</p>
+                <h2>News Site</h2>
+                <p>European Daily News — obituary article with embedded clues about Lucio's death.</p>
             </a>
 
             <a href="blog/index.html" class="site-card">
                 <span class="icon">📝</span>
-                <h2>私人博客</h2>
-                <p>钢琴家的个人博客，包含文章、评论、点赞和私信功能。</p>
+                <h2>Personal Blog</h2>
+                <p>Lucio's blog with posts, comments, and DM system (digital life dialogue).</p>
             </a>
 
             <a href="wiki/index.html" class="site-card">
                 <span class="icon">📚</span>
-                <h2>私人 Wiki</h2>
-                <p>家族档案库，包含公开和加密内容。<br>登录凭据: tester / test1234</p>
+                <h2>Private Archives</h2>
+                <p>Hoffmann Family Archives. 4-tier password system.<br>Passwords: test1 → test2 → test3 → test4</p>
             </a>
         </div>
 
         <div class="note">
-            <strong>📌 开发说明</strong>
-            此页面仅用于开发测试。正式部署时，玩家应该通过独立的网址分别访问各个网站，而不是通过此入口页面。
+            <strong>Dev Note</strong>
+            This page is for development only. In production, players access each site via separate URLs. They will NOT see this portal.
         </div>
 
         <div class="footer">
-            <p>配置文件位于各网站目录下的 <code>config.js</code></p>
+            <p>Config files are in each site's <code>config.js</code></p>
         </div>
     </div>
 </body>

@@ -472,6 +472,17 @@ body {
     display: block;
 }
 
+.login-success {
+    color: #4caf50;
+    font-size: 13px;
+    margin-bottom: 15px;
+    display: none;
+}
+
+.login-success.active {
+    display: block;
+}
+
 .login-actions {
     display: flex;
     gap: 10px;
@@ -550,7 +561,7 @@ body {
 }
 
 .locked-content::after {
-    content: "🔒 需要授权访问";
+    content: "🔒 Authorised access required";
     position: absolute;
     bottom: 50%;
     left: 50%;
@@ -587,4 +598,143 @@ body {
 
 .article-content {
     animation: fadeIn 0.3s ease;
+}
+
+/* Classified content styles */
+.classified-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    background: rgba(74, 144, 164, 0.1);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    margin-bottom: 20px;
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+.classification-badge {
+    background: var(--accent-color);
+    color: white;
+    padding: 3px 10px;
+    border-radius: 3px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+.classification-badge.warning {
+    background: #e67e22;
+}
+
+.classification-badge.danger {
+    background: #c0392b;
+}
+
+.info-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 15px 20px;
+    margin-bottom: 20px;
+}
+
+.info-card p {
+    margin: 5px 0;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0;
+}
+
+.data-table th, .data-table td {
+    padding: 8px 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+    font-size: 13px;
+}
+
+.data-table th {
+    color: var(--accent-color);
+    font-weight: 600;
+}
+
+.document-box {
+    background: rgba(0, 0, 0, 0.3);
+    border-left: 3px solid var(--accent-color);
+    padding: 20px 25px;
+    margin: 15px 0;
+    font-style: italic;
+    line-height: 1.8;
+}
+
+.warning-box {
+    background: rgba(192, 57, 43, 0.1);
+    border: 1px solid rgba(192, 57, 43, 0.3);
+    border-radius: 4px;
+    padding: 15px 20px;
+    margin: 15px 0;
+}
+
+.restricted-notice {
+    background: rgba(74, 144, 164, 0.1);
+    border: 1px dashed var(--accent-color);
+    border-radius: 4px;
+    padding: 12px 20px;
+    margin-top: 20px;
+    text-align: center;
+    font-size: 13px;
+}
+
+/* Sidebar badges */
+.sidebar-nav .badge {
+    font-size: 9px;
+    background: #c0392b;
+    color: white;
+    padding: 2px 5px;
+    border-radius: 2px;
+    margin-left: 5px;
+    vertical-align: middle;
+}
+
+.sidebar-nav .lock-icon {
+    float: right;
+    opacity: 0.5;
+}
+
+.sidebar-nav a.locked {
+    opacity: 0.6;
+    cursor: pointer;
+}
+
+.sidebar-nav a.locked:hover {
+    opacity: 0.8;
+}
+
+/* Status indicator */
+.login-status {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+.status-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #666;
+}
+
+.status-indicator.logged-in {
+    background: #4caf50;
+}
+
+.last-updated {
+    font-size: 11px;
+    color: var(--text-muted);
 }

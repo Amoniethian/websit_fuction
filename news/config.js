@@ -1,84 +1,99 @@
 /**
- * 新闻网站配置文件
- * ==================
- * 修改此文件来自定义新闻内容
+ * News Website Configuration
+ * ===========================
+ * Edit this file to customize all news content
  */
 
 const NEWS_CONFIG = {
-    // 网站基本信息
-    siteName: "欧洲每日新闻",
-    siteSlogan: "真实、客观、及时",
+    // Site info
+    siteName: "European Daily News",
+    siteSlogan: "Truth, Objectivity, Timeliness",
 
-    // 头条新闻（讣告）
+    // Headline (Obituary)
     headline: {
-        title: "著名青年钢琴家艾德里安·冯·霍夫曼不幸离世，享年28岁",
-        subtitle: "音乐界痛失天才，欧洲巡演永成绝响",
-        author: "玛丽亚·施密特",
-        publishDate: "2024年11月15日",
-        publishTime: "09:32",
-        category: "讣告",
-        image: "../assets/images/pianist.jpg", // 可替换为实际图片
-        imageCaption: "艾德里安·冯·霍夫曼在维也纳金色大厅的最后一场演出",
+        title: "Young Pianist Lucio Found Dead in Vienna Residence, Aged 28",
+        subtitle: "Rising star's sudden death raises questions as autopsy reveals unexplained surgical scars",
+        author: "Anna Weber",
+        publishDate: "15 November 2024",
+        publishTime: "09:32 CET",
+        category: "OBITUARY",
+        image: "../assets/images/pianist.jpg",
+        imageCaption: "Lucio performing at a private recital in Prague, October 2024 (file photo)",
 
-        // 讣告正文内容（支持HTML）
         content: `
-            <p class="lead">【维也纳讯】著名青年钢琴家艾德里安·冯·霍夫曼（Adrian von Hoffmann）于当地时间11月14日晚在其位于维也纳的私人寓所中被发现身亡，年仅28岁。警方初步判断为意外死亡，具体死因仍在调查中。</p>
+            <p class="lead"><strong>VIENNA</strong> — Young pianist Lucio was found dead in his private residence in Vienna's 1st District on the evening of November 14th. He was 28 years old. Vienna police have stated that the cause of death remains under investigation and no possibilities have been ruled out.</p>
 
-            <p>艾德里安出生于德国慕尼黑一个显赫的工业世家，父亲海因里希·冯·霍夫曼是欧洲知名的钢铁业巨头。尽管家族事业庞大，艾德里安自幼便展现出非凡的音乐天赋，5岁开始学习钢琴，12岁便在柏林爱乐大厅举办首场个人演奏会。</p>
+            <p>Lucio was born into one of China's most prominent industrial families. His father, Lu Heming, is the founder and chairman of Heming Industrial Group, a steel conglomerate with estimated assets exceeding €1.2 billion. Despite the family's business empire, Lucio showed a passionate devotion to the piano from the age of five, moving to Europe at 18 to pursue his musical studies in Vienna. He had since become a permanent resident of the Austrian capital, building a modest following through intimate, salon-style private recitals.</p>
 
-            <p>"他的演奏有一种罕见的灵魂深度，"维也纳音乐学院教授汉斯·韦伯回忆道，"每一个音符都仿佛在诉说着什么。"</p>
+            <p>"His playing had a certain emotional intensity," said an anonymous attendee of one of his private performances. "Though his technique was sometimes questioned by professionals, his compositions always carried something hard to define — as if the voice in the music wasn't entirely his own."</p>
 
-            <p>近年来，艾德里安选择远离大型商业演出，转而在欧洲各国举办私人沙龙式音乐会，吸引了一批忠实的追随者。他的最后一场演出于上月在布拉格举行，据在场观众描述，那晚的演奏"美得令人心碎"。</p>
+            <p>Notably, Lucio had in recent years avoided large public performances and professional adjudication panels. His management team attributed this to his "artistic philosophy." However, industry insiders have revealed that several music critics had previously raised questions about the originality of his compositions, though such discussions were swiftly suppressed.</p>
 
-            <h3>家族声明</h3>
-            <p>冯·霍夫曼家族通过律师发表声明，对艾德里安的突然离世表示极度悲痛，并请求媒体尊重家族隐私。声明中提到，私人葬礼将于本周末举行，仅限家族成员及至亲好友参加。</p>
+            <h3>Questions and Investigation</h3>
+            <p>In their official statement, Vienna police disclosed that the preliminary autopsy revealed <strong>extensive old surgical scarring across the deceased's thoracic cavity</strong>, inconsistent with his known medical history. Police have reached out to Lucio's private physician in Vienna as well as his family, but as of press time, the family has not responded to inquiries regarding the scars.</p>
 
-            <p>艾德里安生前热心公益，曾多次为欧洲儿童音乐教育基金会捐款。家族表示，将以他的名义设立音乐奖学金，以延续他对音乐教育的热忱。</p>
+            <p>Additionally, this newspaper has learned that <strong>a large number of handwritten musical score drafts</strong> were found in Lucio's residence, some of which bear handwriting that differs significantly from Lucio's known manuscripts. These items have been seized as evidence by police.</p>
 
-            <p class="editor-note"><em>相关报道见A3版</em></p>
+            <h3>Family Statement</h3>
+            <p>Lu Heming, through the family's legal counsel, issued a brief statement expressing that he is "devastated beyond words" by the loss of his only son, and implored the media to respect the family's privacy. The statement emphasized that the funeral would be held "in the most private manner possible" and that no outside condolences would be accepted.</p>
+
+            <p>The statement also mentioned that the family intends to establish a music scholarship in Lucio's name, but <strong>did not specify the beneficiary institution</strong>. Sources familiar with the matter noted that Lucio had made multiple donations during his lifetime to an organization called the "<strong>New Melody Children's Music Education Foundation</strong>," though the foundation's operational background remains opaque.</p>
+
+            <h3>Online Reaction</h3>
+            <p>Lucio maintained a dedicated following on his personal blog, which saw a dramatic spike in traffic following the news. Many fans left messages of mourning, though some commenters pointed out that "very few of his followers actually understand classical music — most were drawn to his lifestyle and apparent wealth."</p>
+
+            <p>As of press time, Lucio's personal blog and social media accounts remain active. His last blog post was published on October 28th.</p>
+
+            <p class="editor-note"><em>Editor's note: Follow-up reporting on the "old surgical scars" and handwriting analysis will appear in Section A3. This newspaper will continue to monitor developments in this case.</em></p>
         `,
 
-        // 相关信息框
+        // Info box
         infoBox: {
-            title: "艾德里安·冯·霍夫曼",
+            title: "Lucio",
             items: [
-                { label: "出生", value: "1996年3月12日，德国慕尼黑" },
-                { label: "逝世", value: "2024年11月14日，奥地利维也纳" },
-                { label: "职业", value: "钢琴演奏家" },
-                { label: "代表作", value: "《夜之絮语》《遗忘的华尔兹》" },
-                { label: "家庭", value: "父：海因里希·冯·霍夫曼" }
+                { label: "Born", value: "12 March 1996" },
+                { label: "Died", value: "14 November 2024, Vienna, Austria" },
+                { label: "Occupation", value: "Pianist (freelance)" },
+                { label: "Known for", value: "Whispers of the Night, The Forgotten Waltz, Moonlit Monologue" },
+                { label: "Family", value: "Father: Lu Heming (Chairman, Heming Industrial Group)" },
+                { label: "Education", value: "Vienna Conservatory (degree unfinished)" }
             ]
         }
     },
 
-    // 侧边栏新闻（可选填充）
+    // Sidebar news (with embedded clues)
     sidebarNews: [
         {
-            title: "欧洲央行宣布维持利率不变",
-            time: "今日 14:20",
-            category: "财经"
+            title: "Transnational Illegal Organ Trafficking Ring Dismantled in Joint Operation",
+            time: "Today 14:20",
+            category: "WORLD"
         },
         {
-            title: "法国农民抗议活动持续第三周",
-            time: "今日 11:45",
-            category: "国际"
+            title: "'Consciousness Upload' — Science or Scam? The Digital Afterlife Debate",
+            time: "Today 11:45",
+            category: "TECH"
         },
         {
-            title: "德甲联赛：拜仁慕尼黑客场大胜",
-            time: "昨日 22:30",
-            category: "体育"
+            title: "ECB Holds Interest Rates as Economic Downturn Persists",
+            time: "Yesterday 22:30",
+            category: "FINANCE"
         },
         {
-            title: "柏林电影节公布入围名单",
-            time: "昨日 18:00",
-            category: "文化"
+            title: "Abandoned Commercial Building in Vienna to Be Converted into Art University",
+            time: "Yesterday 18:00",
+            category: "CULTURE"
+        },
+        {
+            title: "Children's Music Foundation Under Scrutiny Over Opaque Fund Allocation",
+            time: "Yesterday 09:15",
+            category: "SOCIETY"
         }
     ],
 
-    // 页脚信息
+    // Footer
     footer: {
-        copyright: "© 2024 欧洲每日新闻 European Daily News",
-        address: "总部：德国柏林 | 分社：伦敦、巴黎、维也纳、罗马",
-        disclaimer: "本网站内容仅供娱乐目的，系密室逃脱游戏道具"
+        copyright: "© 2024 European Daily News",
+        address: "Headquarters: Berlin, Germany | Bureaus: London, Paris, Vienna, Rome",
+        disclaimer: "This website is a fictional prop created for an escape room experience"
     }
 };
