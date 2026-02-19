@@ -5,6 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Code</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        @keyframes badgePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
+    </style>
 </head>
 <body>
     <!-- Top Navigation -->
@@ -44,8 +50,9 @@
                     </div>
                 </div>
                 <div class="profile-actions">
-                    <button class="btn-message" onclick="openChat()">
+                    <button class="btn-message" onclick="openChat()" style="position:relative;">
                         💬 Message
+                        <span class="new-msg-badge" id="new-msg-badge" style="display:none;position:absolute;top:-8px;right:-8px;background:#ff3b30;color:#fff;font-size:11px;font-weight:700;width:20px;height:20px;border-radius:50%;align-items:center;justify-content:center;font-family:'Inter',sans-serif;box-shadow:0 2px 6px rgba(255,59,48,0.4);animation:badgePulse 1.5s infinite;">1</span>
                     </button>
                 </div>
             </div>
@@ -152,6 +159,14 @@
 
             renderPosts();
             initChatHistory();
+
+            // Check if player unlocked the memorial secret
+            if (localStorage.getItem('memorial_secret_unlocked') === 'true') {
+                const badge = document.getElementById('new-msg-badge');
+                if (badge) {
+                    badge.style.display = 'flex';
+                }
+            }
         }
 
         // ========== Render Posts ==========
@@ -269,6 +284,13 @@
             document.getElementById('chat-overlay').classList.add('active');
             scrollChatToBottom();
             document.getElementById('chat-input').focus();
+
+            // Clear new message badge when opening chat
+            const badge = document.getElementById('new-msg-badge');
+            if (badge) {
+                badge.style.display = 'none';
+            }
+            localStorage.removeItem('memorial_secret_unlocked');
         }
 
         function closeChat() {
