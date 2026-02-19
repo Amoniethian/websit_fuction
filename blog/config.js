@@ -802,7 +802,7 @@ const BLOG_CONFIG = {
             },
             {
                 sender: "blogger",
-                content: "completely. come to Vienna. I'll show you the Steinway \u2014 1920s Model D, took two years to find her. Domgasse 5, ring the top bell. let me know when.",
+                content: "completely. come to Vienna. I'll show you the Steinway \u2014 1920s Model D, took two years to find her. the apartment is under renovation so I've moved the piano to my studio \u2014 LCC tower block, room T1004. just tell the front desk you're here for Code. let me know when.",
                 time: "10 Oct 2024 21:40"
             }
         ],
