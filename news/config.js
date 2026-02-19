@@ -12,7 +12,7 @@ const NEWS_CONFIG = {
     // Headline (Obituary)
     headline: {
         title: "Young Pianist Lucio Found Dead in Vienna Residence, Aged 28 / 青年钢琴家Lucio被发现死于维也纳寓所，年仅28岁",
-        subtitle: "Rising star's sudden death raises questions as autopsy reveals unexplained surgical scars / 新星突然离世引发质疑，尸检发现不明手术疤痕",
+        subtitle: "Acclaimed pianist's sudden death raises questions as autopsy reveals unexplained surgical scars / 知名钢琴家突然离世引发质疑，尸检发现不明手术疤痕",
         author: "Anna Weber",
         publishDate: "15 November 2024",
         publishTime: "09:32 CET",
@@ -24,14 +24,14 @@ const NEWS_CONFIG = {
             <p class="lead"><strong>VIENNA</strong> — Young pianist Lucio was found dead in his private residence in Vienna's 1st District on the evening of November 14th. He was 28 years old. Vienna police have stated that the cause of death remains under investigation and no possibilities have been ruled out.</p>
             <p class="cn"><strong>维也纳</strong>——青年钢琴家Lucio于11月14日晚间被发现死于其位于维也纳第一区的私人寓所，年仅28岁。维也纳警方表示，死因仍在调查中，尚未排除任何可能性。</p>
 
-            <p>Lucio was born into one of Europe's most prominent industrial dynasties. His father, Heinrich Hoffmann, is the chairman of Hoffmann Industrial Group, a Bavarian steel conglomerate with estimated assets exceeding €1.2 billion. Despite the family's vast business empire, Lucio showed a passionate devotion to the piano from the age of five. He studied at the Vienna Conservatory from age 18 and had since become a permanent resident of the Austrian capital, building a modest following through intimate, salon-style private recitals.</p>
-            <p class="cn">Lucio出身于欧洲最显赫的工业家族之一。其父Heinrich Hoffmann是霍夫曼工业集团的董事长，该集团是一家总部位于巴伐利亚的钢铁企业，估计资产超过12亿欧元。尽管家族拥有庞大的商业帝国，Lucio自五岁起便对钢琴展现出热忱。他18岁进入维也纳音乐学院学习，此后定居奥地利首都，通过私密的沙龙式演奏会积累了一批忠实听众。</p>
+            <p>Lucio was born into one of Europe's most prominent industrial dynasties. His father, Heinrich Hoffmann, is the chairman of Hoffmann Industrial Group, a Bavarian steel conglomerate with estimated assets exceeding €1.2 billion. Despite the family's vast business empire, Lucio showed a passionate devotion to the piano from the age of five. A diligent and gifted student, he studied under the renowned Professor Hans Weber at the Vienna Conservatory, held his first solo recital at 16, and went on to perform at prestigious venues including the Vienna Musikverein and the Salzburg Festival. He was named in Forbes Europe's "30 Under 30" in the arts category and had been publicly praised by cultural ministers across multiple countries.</p>
+            <p class="cn">Lucio出身于欧洲最显赫的工业家族之一。其父Heinrich Hoffmann是霍夫曼工业集团的董事长，该集团是一家总部位于巴伐利亚的钢铁企业，估计资产超过12亿欧元。尽管家族拥有庞大的商业帝国，Lucio自五岁起便对钢琴展现出热忱。他天资聪颖又勤奋刻苦，师从著名的Hans Weber教授在维也纳音乐学院学习，16岁举办首场独奏会，此后在维也纳金色大厅和萨尔茨堡音乐节等知名场馆演出。他曾入选《福布斯》欧洲"30位30岁以下精英"艺术类榜单，并受到多国文化部长的公开赞誉。</p>
 
-            <p>"His playing had a certain emotional intensity," said an anonymous attendee of one of his private performances. "Though his technique was sometimes questioned by professionals, his compositions always carried something hard to define — as if the voice in the music wasn't entirely his own."</p>
-            <p class="cn">"他的演奏有一种特殊的情感力量，"一位匿名的私人演奏会听众说道。"虽然他的技巧有时会受到专业人士的质疑，但他的作品总带着一种难以言说的东西——仿佛音乐中的声音并非完全属于他自己。"</p>
+            <p>"He was a genuinely gifted player — disciplined, emotional, technically strong," said Professor Hans Weber, his long-time mentor at the Vienna Conservatory. "But his published compositions... they existed on a different plane entirely from his playing. There was always a gap between the Lucio I taught and the Lucio on the page. I could never explain it."</p>
+            <p class="cn">"他确实是一位有天赋的演奏者——自律、富有情感、技术扎实，"他在维也纳音乐学院的长期导师Hans Weber教授说。"但他发表的作品……与他的演奏完全不在一个层面上。我教的那个Lucio和乐谱上的Lucio之间总有一道鸿沟。我始终无法解释。"</p>
 
-            <p>Notably, Lucio had in recent years avoided large public performances and professional adjudication panels. His management team attributed this to his "artistic philosophy." However, industry insiders have revealed that several music critics had previously raised questions about the originality of his compositions, though such discussions were swiftly suppressed.</p>
-            <p class="cn">值得注意的是，Lucio近年来一直回避大型公开演出和专业评审。其经纪团队将此归因于他的"艺术理念"。然而，业内人士透露，此前已有多位乐评人对其作品的原创性提出质疑，但相关讨论均被迅速压制。</p>
+            <p>Despite his public success and industry recognition, some music critics had quietly raised questions about the gap between Lucio's live performance level and the extraordinary complexity of his published compositions. Such discussions were swiftly suppressed, reportedly through the influence of the Hoffmann family's legal and media apparatus.</p>
+            <p class="cn">尽管Lucio在公众和业界都获得了认可，一些乐评人私下对他现场演奏水平与其发表作品的非凡复杂度之间的差距提出了质疑。相关讨论据报道在霍夫曼家族法律和媒体力量的干预下被迅速压制。</p>
 
             <h3>Questions and Investigation</h3>
             <p>In their official statement, Vienna police disclosed that the preliminary autopsy revealed <strong>extensive old surgical scarring across the deceased's thoracic cavity</strong>, inconsistent with his known medical history. Police have reached out to Lucio's private physician in Vienna as well as his family, but as of press time, the family has not responded to inquiries regarding the scars.</p>
@@ -64,11 +64,11 @@ const NEWS_CONFIG = {
             items: [
                 { label: "Born", value: "12 March 1996" },
                 { label: "Died", value: "14 November 2024, Vienna, Austria" },
-                { label: "Occupation", value: "Pianist (freelance)" },
+                { label: "Occupation", value: "Pianist, Composer" },
                 { label: "Known for", value: "Whispers of the Night, The Forgotten Waltz, Moonlit Monologue" },
                 { label: "Family", value: "Father: Heinrich Hoffmann (Chairman, Hoffmann Industrial Group)" },
                 { label: "Nationality", value: "German" },
-                { label: "Education", value: "Vienna Conservatory (degree unfinished)" }
+                { label: "Education", value: "Vienna Conservatory (student of Prof. Hans Weber)" }
             ]
         }
     },
