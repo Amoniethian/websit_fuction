@@ -162,6 +162,14 @@ const BLOG_CONFIG = {
                     content: "@RealTalk_Anon not everything needs to be remembered to be real.",
                     time: "29 Oct 15:03",
                     likes: 44
+                },
+                {
+                    id: 115,
+                    username: "ghostkeys_",
+                    avatar: "../assets/images/user24.jpg",
+                    content: "\"The melodies are better than anything I write awake.\" Yeah. Because they're not yours. There's a blind street pianist at Stephansplatz who improvises the EXACT same harmonic language you publish under your name. I've done a full style palette — same voicing, same ornamental figures, same everything. <a href='../palette/index.html'>here's the breakdown</a>. But sure, keep pretending it's \"genius working in the dark.\" We both know whose hands actually wrote those melodies.",
+                    time: "29 Oct 22:18",
+                    likes: 2
                 }
             ]
         },
@@ -266,6 +274,14 @@ const BLOG_CONFIG = {
                     content: "\"Hands feel like they belong to someone else.\" Lucius, I've been analysing your published scores. The voicing in your night compositions uses advanced contrapuntal techniques \u2014 voice-leading patterns you've never once discussed in interviews. Your daytime playing and your night compositions read like two completely different skill levels. Has anyone pointed that out to you?",
                     time: "16 Oct 14:55",
                     likes: 4
+                },
+                {
+                    id: 211,
+                    username: "ghostkeys_",
+                    avatar: "../assets/images/user24.jpg",
+                    content: "\"my hands feel like they belong to someone else\" — because the music DOES belong to someone else. I've documented the entire thing. There's a blind pianist at Stephansplatz whose improvisations match your published scores note for note. <a href='../palette/index.html'>full comparison here</a>. @MusicTheory_Nerd you're onto something. it's not two skill levels. it's two people.",
+                    time: "17 Oct 03:44",
+                    likes: 1
                 }
             ]
         },
@@ -426,6 +442,14 @@ const BLOG_CONFIG = {
                     content: "Three pieces in one sitting, fully orchestrated. I've analysed your published scores, Lucius. The harmonic language in your night works is radically different from the theory you discuss in livestreams. The third movement uses invertible counterpoint at the octave and twelfth \u2014 conservatory-level technique you've never once referenced. Almost like two different composers. I mean that literally.",
                     time: "21 Sep 02:14",
                     likes: 3
+                },
+                {
+                    id: 318,
+                    username: "ghostkeys_",
+                    avatar: "../assets/images/user24.jpg",
+                    content: "Three pieces in one night but you can't improvise a single phrase in public? I was at Munich. Someone asked you to improvise on a theme. You laughed it off and played something prepared. Meanwhile the anonymous blind pianist at Stephansplatz does THIS LEVEL of music as pure improv every single night. I've put together a full style palette. <a href='../palette/index.html'>look at it</a>. The melodic fingerprint is identical. @MusicTheory_Nerd \"two different composers\" — you're closer to the truth than you think.",
+                    time: "21 Sep 04:30",
+                    likes: 1
                 }
             ]
         },
@@ -602,6 +626,14 @@ const BLOG_CONFIG = {
                     content: "@TruthSeeker404 I don't know what you're referring to. The Hamburg concert was well received.",
                     time: "6 Aug 09:15",
                     likes: 156
+                },
+                {
+                    id: 420,
+                    username: "ghostkeys_",
+                    avatar: "../assets/images/user24.jpg",
+                    content: "\"I wonder if I'd still play if I had to.\" You wouldn't. Because you CAN'T. Not at the level people think you can. There's a man with no name, no home, no eyes who sits at Stephansplatz every night and plays music that sounds EXACTLY like your published compositions — except he does it as improvisation. You can't even improvise a four-bar phrase. I've documented everything. <a href='../palette/index.html'>the full style palette is here</a>. What did you inherit, Lucius? not talent.",
+                    time: "7 Aug 02:55",
+                    likes: 3
                 }
             ]
         },
@@ -746,6 +778,14 @@ const BLOG_CONFIG = {
                     content: "Five posts now. Stunning locations, beautiful instruments, famous caf\u00e9s. And in every single post \u2014 one line about actually playing. Everyone here is discussing the apartment, the car, the restaurants. No one is discussing the music. Has anyone noticed that?",
                     time: "12 Jul 22:30",
                     likes: 9
+                },
+                {
+                    id: 516,
+                    username: "ghostkeys_",
+                    avatar: "../assets/images/user24.jpg",
+                    content: "first post. might as well start here. @song/// there's a blind street pianist at Stephansplatz who plays every night. no name, no audience, no Steinway, no Domgasse apartment. just a public piano and his hands. and his improvisations sound EXACTLY like your published scores. I don't know how you sleep at night but I'm guessing the answer is: you don't actually compose when you do. I'm putting together a full comparison. <a href='../palette/index.html'>it's already live</a>. everyone in this comment section worshipping the lifestyle — try listening to the music. then listen to his. then tell me it's a coincidence.",
+                    time: "13 Jul 01:12",
+                    likes: 0
                 }
             ]
         }
