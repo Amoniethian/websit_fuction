@@ -34,9 +34,11 @@ const BLOG_CONFIG = {
             title: "first meet.",
             content: `
                 <p>I found this. I don't know when it was recorded. I don't remember being there.</p>
-                <p class="cn">我找到了这个。不知道什么时候录的。我不记得自己在场。</p>
+                <p class="cn">我找到了这个。不知道什么时候录的。我不记得我曾到过那里。</p>
                 <p>Something about it won't let me go.</p>
-                <p class="cn">它有什么东西让我放不下。</p>
+                <p class="cn">有关它的某事我无法放下。</p>
+                <p>I have to keep it secret.</p>
+                <p class="cn">我必须保密。</p>
                 <div class="encrypted-video" id="encrypted-video-0">
                     <div class="video-lock">
                         <div class="lock-icon">🔒</div>
