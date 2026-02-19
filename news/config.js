@@ -11,8 +11,10 @@ const NEWS_CONFIG = {
 
     // Headline (Obituary)
     headline: {
-        title: "Young Pianist Lucio Found Dead in Vienna Residence, Aged 28 / 青年钢琴家Lucio被发现死于维也纳寓所，年仅28岁",
-        subtitle: "Rising star's sudden death raises questions as autopsy reveals unexplained surgical scars / 新星突然离世引发质疑，尸检发现不明手术疤痕",
+        title: "Young Pianist Lucio Found Dead in Vienna Residence, Aged 28",
+        titleCn: "青年钢琴家Lucio被发现死于维也纳寓所，年仅28岁",
+        subtitle: "Rising star's sudden death raises questions as autopsy reveals unexplained surgical scars",
+        subtitleCn: "新星突然离世引发质疑，尸检发现不明手术疤痕",
         author: "Anna Weber",
         publishDate: "15 November 2024",
         publishTime: "09:32 CET",
@@ -34,6 +36,7 @@ const NEWS_CONFIG = {
             <p class="cn">值得注意的是，Lucio近年来一直回避大型公开演出和专业评审。其经纪团队将此归因于他的"艺术理念"。然而，业内人士透露，此前已有多位乐评人对其作品的原创性提出质疑，但相关讨论均被迅速压制。</p>
 
             <h3>Questions and Investigation</h3>
+            <h3 class="cn">质疑与调查</h3>
             <p>In their official statement, Vienna police disclosed that the preliminary autopsy revealed <strong>extensive old surgical scarring across the deceased's thoracic cavity</strong>, inconsistent with his known medical history. Police have reached out to Lucio's private physician in Vienna as well as his family, but as of press time, the family has not responded to inquiries regarding the scars.</p>
             <p class="cn">维也纳警方在官方声明中透露，初步尸检发现<strong>死者胸腔有大面积陈旧手术疤痕</strong>，与其已知病史不符。警方已联系Lucio在维也纳的私人医生及其家属，但截至发稿时，家属尚未就疤痕一事作出回应。</p>
 
@@ -41,6 +44,7 @@ const NEWS_CONFIG = {
             <p class="cn">此外，本报获悉，在Lucio的寓所内发现了<strong>大量手写乐谱草稿</strong>，其中部分笔迹与Lucio已知的手稿有显著差异。这些物品已被警方作为证据扣押。</p>
 
             <h3>Family Statement</h3>
+            <h3 class="cn">家属声明</h3>
             <p>Heinrich Hoffmann, through the family's legal counsel, issued a brief statement expressing that he is "devastated beyond words" by the loss of his only son, and implored the media to respect the family's privacy. The statement emphasized that the funeral would be held "in the most private manner possible" and that no outside condolences would be accepted.</p>
             <p class="cn">Heinrich Hoffmann通过家族法律顾问发表了简短声明，表示对独子的离世"悲痛万分，无以言表"，并恳请媒体尊重家属的隐私。声明强调葬礼将"以最私密的方式"举行，不接受外界吊唁。</p>
 
@@ -48,6 +52,7 @@ const NEWS_CONFIG = {
             <p class="cn">声明还提到，家族拟以Lucio之名设立音乐奖学金，但<strong>未指明受益机构</strong>。知情人士指出，Lucio生前曾多次向一家名为"<strong>新旋律儿童音乐教育基金会</strong>"的组织捐款，但该基金会的运营背景不甚透明。</p>
 
             <h3>Online Reaction</h3>
+            <h3 class="cn">网络反应</h3>
             <p>Lucio maintained a dedicated following on his personal blog, which saw a dramatic spike in traffic following the news. Many fans left messages of mourning, though some commenters pointed out that "very few of his followers actually understand classical music — most were drawn to his lifestyle and apparent wealth."</p>
             <p class="cn">Lucio在个人博客上拥有一批忠实粉丝，消息传出后博客访问量激增。许多粉丝留言悼念，但也有评论者指出，"他的关注者中真正懂古典音乐的寥寥无几——大多数人是被他的生活方式和显赫家世所吸引。"</p>
 
@@ -83,27 +88,32 @@ const NEWS_CONFIG = {
     // Sidebar news (with embedded clues)
     sidebarNews: [
         {
-            title: "Transnational Illegal Organ Trafficking Ring Dismantled in Joint Operation / 跨国非法器官贩卖网络在联合行动中被捣毁",
+            title: "Transnational Illegal Organ Trafficking Ring Dismantled in Joint Operation",
+            titleCn: "跨国非法器官贩卖网络在联合行动中被捣毁",
             time: "Today 14:20",
             category: "WORLD"
         },
         {
-            title: "'Consciousness Upload' — Science or Scam? The Digital Afterlife Debate / '意识上传'——科学还是骗局？数字永生之争",
+            title: "'Consciousness Upload' — Science or Scam? The Digital Afterlife Debate",
+            titleCn: "'意识上传'——科学还是骗局？数字永生之争",
             time: "Today 11:45",
             category: "TECH"
         },
         {
-            title: "ECB Holds Interest Rates as Economic Downturn Persists / 欧洲央行维持利率不变，经济低迷持续",
+            title: "ECB Holds Interest Rates as Economic Downturn Persists",
+            titleCn: "欧洲央行维持利率不变，经济低迷持续",
             time: "Yesterday 22:30",
             category: "FINANCE"
         },
         {
-            title: "Abandoned Commercial Building in Vienna to Be Converted into Art University / 维也纳废弃商业建筑将被改建为艺术大学",
+            title: "Abandoned Commercial Building in Vienna to Be Converted into Art University",
+            titleCn: "维也纳废弃商业建筑将被改建为艺术大学",
             time: "Yesterday 18:00",
             category: "CULTURE"
         },
         {
-            title: "Children's Music Foundation Under Scrutiny Over Opaque Fund Allocation / 儿童音乐基金会因资金流向不透明遭审查",
+            title: "Children's Music Foundation Under Scrutiny Over Opaque Fund Allocation",
+            titleCn: "儿童音乐基金会因资金流向不透明遭审查",
             time: "Yesterday 09:15",
             category: "SOCIETY"
         }

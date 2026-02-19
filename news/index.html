@@ -99,7 +99,7 @@
             const headline = config.headline;
 
             // 设置页面标题
-            document.getElementById('page-title').textContent = headline.title + ' | ' + config.siteName;
+            document.title = headline.title + ' | ' + config.siteName;
 
             // 设置网站名称和口号
             document.getElementById('site-name').textContent = config.siteName;
@@ -110,8 +110,8 @@
 
             // 设置文章内容
             document.getElementById('article-category').textContent = headline.category;
-            document.getElementById('article-title').textContent = headline.title;
-            document.getElementById('article-subtitle').textContent = headline.subtitle;
+            document.getElementById('article-title').innerHTML = headline.title + (headline.titleCn ? '<span class="cn">' + headline.titleCn + '</span>' : '');
+            document.getElementById('article-subtitle').innerHTML = headline.subtitle + (headline.subtitleCn ? '<span class="cn">' + headline.subtitleCn + '</span>' : '');
             document.getElementById('article-author').textContent = headline.author;
             document.getElementById('article-date').textContent = headline.publishDate;
             document.getElementById('article-time').textContent = headline.publishTime;
@@ -150,6 +150,7 @@
                 item.innerHTML = `
                     <span class="category">${news.category}</span>
                     <h4><a href="#">${news.title}</a></h4>
+                    ${news.titleCn ? '<h4 class="cn"><a href="#">' + news.titleCn + '</a></h4>' : ''}
                     <span class="time">${news.time}</span>
                 `;
                 sidebarNews.appendChild(item);
