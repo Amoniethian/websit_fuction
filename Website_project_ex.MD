@@ -11,7 +11,7 @@ Escape room web component — four fake websites (News, Blog, Wiki, Memorial) se
 - **Lesson**: Use `replace_all` for the name itself, then targeted grep for abbreviations and pronouns.
 
 ### 2. Characterization Must Be Consistent Across All Four Sites
-- **Issue**: When Lucio's characterization changed from "mediocre rich kid" to "hardworking Mozart-type," the news article still said "avoided large public performances" and wiki still called his work "advanced amateur."
+- **Issue**: When Lucius's characterization changed from "mediocre rich kid" to "hardworking Mozart-type," the news article still said "avoided large public performances" and wiki still called his work "advanced amateur."
 - **Fix**: After any character personality change, grep ALL config files for contradicting descriptions.
 - **Checklist**:
   - `news/config.js` — obituary + sidebar + memorial link
@@ -23,7 +23,7 @@ Escape room web component — four fake websites (News, Blog, Wiki, Memorial) se
 - **Issue**: The will used "E" (for Emil). When renamed to Chode, "E" → "C" was easy to miss in:
   - The actual will text
   - The analysis paragraph referencing the letter
-  - The section title ("The 'E' in Lucio's Will")
+  - The section title ("The 'E' in Lucius's Will")
   - Chinese translation
 - **Lesson**: Single-letter references are the easiest to miss in renames.
 
@@ -41,7 +41,7 @@ Escape room web component — four fake websites (News, Blog, Wiki, Memorial) se
 - **V1**: Explicit rich kid flexing (too vulgar/on-the-nose)
 - **V2**: Old money quiet luxury (better — wealth is "just normal" to him)
 - **V3**: Mozart-type hardworking prodigy who happens to be wealthy
-- **Lesson**: Character tone should match the narrative role. Lucio isn't just "rich kid" — he's genuinely talented but overshadowed by Chode's transcendent genius.
+- **Lesson**: Character tone should match the narrative role. Lucius isn't just "rich kid" — he's genuinely talented but overshadowed by Chode's transcendent genius.
 
 ### 7. Bilingual System Architecture
 - `.cn` class hidden by default (`display: none`)
@@ -116,7 +116,7 @@ websit_fuction/
 ## Character Quick Reference
 | Character | Role | Personality | Blog Handle |
 |-----------|------|-------------|-------------|
-| **Lucio** | Rich pianist (fake genius) | Mozart-like: hardworking, diligent, famous, praised by VIPs. Can't match "dream" compositions. | `song///` |
+| **Lucius** | Rich pianist (fake genius) | Mozart-like: hardworking, diligent, famous, praised by VIPs. Can't match "dream" compositions. | `song///` |
 | **Chode** | Blind ghostwriter (true genius) | Gentle, mild, poor, no family. Captive for ~20 years. | N/A (hidden) |
 | **Heinrich Hoffmann** | Father / antagonist | Obsessive, controlling, projects own failed ambitions onto son. | N/A |
 

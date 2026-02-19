@@ -9,7 +9,7 @@ const BLOG_CONFIG = {
     blogger: {
         name: "song///",
         displayName: "Song///",
-        avatar: "../assets/images/lucio-avatar.jpg",
+        avatar: "../assets/images/lucius-avatar.jpg",
         bio: "sound. silence. somewhere in between.",
         location: "Vienna",
         verified: true,
@@ -55,7 +55,7 @@ const BLOG_CONFIG = {
                     id: 101,
                     username: "fiorella.mp3",
                     avatar: "../assets/images/user1.jpg",
-                    content: "Lucio not you casually renting a baroque palace for 30 people and calling it a Tuesday",
+                    content: "Lucius not you casually renting a baroque palace for 30 people and calling it a Tuesday",
                     time: "29 Oct 08:12",
                     likes: 187
                 },
@@ -70,7 +70,7 @@ const BLOG_CONFIG = {
                 {
                     id: 103,
                     username: "song///",
-                    avatar: "../assets/images/lucio-avatar.jpg",
+                    avatar: "../assets/images/lucius-avatar.jpg",
                     content: "@vnn_golden yes.",
                     time: "29 Oct 09:20",
                     likes: 201
@@ -126,7 +126,7 @@ const BLOG_CONFIG = {
                 {
                     id: 110,
                     username: "song///",
-                    avatar: "../assets/images/lucio-avatar.jpg",
+                    avatar: "../assets/images/lucius-avatar.jpg",
                     content: "@pianofraud_ funny how you know the exact price of everything and the value of nothing. tell me about your last performance — oh wait.",
                     time: "29 Oct 14:02",
                     likes: 487
@@ -158,7 +158,7 @@ const BLOG_CONFIG = {
                 {
                     id: 114,
                     username: "song///",
-                    avatar: "../assets/images/lucio-avatar.jpg",
+                    avatar: "../assets/images/lucius-avatar.jpg",
                     content: "@RealTalk_Anon not everything needs to be remembered to be real.",
                     time: "29 Oct 15:03",
                     likes: 44
@@ -191,7 +191,7 @@ const BLOG_CONFIG = {
                     id: 201,
                     username: "hannah.berg",
                     avatar: "../assets/images/user4.jpg",
-                    content: "wait is that the Adlon in the background?? Lucio you can't just casually post the presidential suite and not acknowledge it \ud83d\ude2d",
+                    content: "wait is that the Adlon in the background?? Lucius you can't just casually post the presidential suite and not acknowledge it \ud83d\ude2d",
                     time: "15 Oct 20:05",
                     likes: 145
                 },
@@ -206,7 +206,7 @@ const BLOG_CONFIG = {
                 {
                     id: 203,
                     username: "song///",
-                    avatar: "../assets/images/lucio-avatar.jpg",
+                    avatar: "../assets/images/lucius-avatar.jpg",
                     content: "@autohaus.91 the chalk one.",
                     time: "15 Oct 21:45",
                     likes: 112
@@ -231,7 +231,7 @@ const BLOG_CONFIG = {
                     id: 206,
                     username: "ellaxrose",
                     avatar: "../assets/images/user18.jpg",
-                    content: "the moody rain photo + the brooding writing. Lucio you're not a pianist you're a literary character. please ruin my life",
+                    content: "the moody rain photo + the brooding writing. Lucius you're not a pianist you're a literary character. please ruin my life",
                     time: "16 Oct 07:50",
                     likes: 134
                 },
@@ -263,7 +263,7 @@ const BLOG_CONFIG = {
                     id: 210,
                     username: "MusicTheory_Nerd",
                     avatar: "../assets/images/user8.jpg",
-                    content: "\"Hands feel like they belong to someone else.\" Lucio, I've been analysing your published scores. The voicing in your night compositions uses advanced contrapuntal techniques \u2014 voice-leading patterns you've never once discussed in interviews. Your daytime playing and your night compositions read like two completely different skill levels. Has anyone pointed that out to you?",
+                    content: "\"Hands feel like they belong to someone else.\" Lucius, I've been analysing your published scores. The voicing in your night compositions uses advanced contrapuntal techniques \u2014 voice-leading patterns you've never once discussed in interviews. Your daytime playing and your night compositions read like two completely different skill levels. Has anyone pointed that out to you?",
                     time: "16 Oct 14:55",
                     likes: 4
                 }
@@ -295,7 +295,7 @@ const BLOG_CONFIG = {
                     id: 301,
                     username: "fiorella.mp3",
                     avatar: "../assets/images/user5.jpg",
-                    content: "posted at 5am. Lucio please sleep. also is that the Steinway in the photo?? she's beautiful",
+                    content: "posted at 5am. Lucius please sleep. also is that the Steinway in the photo?? she's beautiful",
                     time: "20 Sep 07:45",
                     likes: 234
                 },
@@ -303,7 +303,7 @@ const BLOG_CONFIG = {
                     id: 302,
                     username: "vnn_golden",
                     avatar: "../assets/images/user15.jpg",
-                    content: "not the \"small venue\" being that gorgeous place from your stories... Lucio your version of small is not normal \ud83d\ude05",
+                    content: "not the \"small venue\" being that gorgeous place from your stories... Lucius your version of small is not normal \ud83d\ude05",
                     time: "20 Sep 08:30",
                     likes: 178
                 },
@@ -343,14 +343,14 @@ const BLOG_CONFIG = {
                     id: 307,
                     username: "sofie.kl",
                     avatar: "../assets/images/user11.jpg",
-                    content: "\"for someone who may never hear it\" okay who is she Lucio. drop the details \ud83d\udda4",
+                    content: "\"for someone who may never hear it\" okay who is she Lucius. drop the details \ud83d\udda4",
                     time: "20 Sep 13:10",
                     likes: 156
                 },
                 {
                     id: 308,
                     username: "song///",
-                    avatar: "../assets/images/lucio-avatar.jpg",
+                    avatar: "../assets/images/lucius-avatar.jpg",
                     content: "@sofie.kl no.",
                     time: "20 Sep 13:42",
                     likes: 289
@@ -366,7 +366,7 @@ const BLOG_CONFIG = {
                 {
                     id: 310,
                     username: "song///",
-                    avatar: "../assets/images/lucio-avatar.jpg",
+                    avatar: "../assets/images/lucius-avatar.jpg",
                     content: "@pianofraud_ the reason is that I don't need a concert hall full of strangers to validate what I already know. you seem to spend a lot of time thinking about me for someone who thinks I'm talentless. maybe use that energy on something productive? just a thought.",
                     time: "20 Sep 14:55",
                     likes: 534
@@ -375,14 +375,14 @@ const BLOG_CONFIG = {
                     id: 311,
                     username: "pianofraud_",
                     avatar: "../assets/images/user20.jpg",
-                    content: "@code \"what I already know\" you KNOW you're good? based on what? private recitals funded by daddy where hand-picked audiences clap on cue? one open audition, Lucio. just one. let's see what happens without the Hoffmann name on the door.",
+                    content: "@song/// \"what I already know\" you KNOW you're good? based on what? private recitals funded by daddy where hand-picked audiences clap on cue? one open audition, Lucius. just one. let's see what happens without the Hoffmann name on the door.",
                     time: "20 Sep 15:12",
                     likes: 47
                 },
                 {
                     id: 312,
                     username: "song///",
-                    avatar: "../assets/images/lucio-avatar.jpg",
+                    avatar: "../assets/images/lucius-avatar.jpg",
                     content: "@pianofraud_ based on the music. which you've never heard live because you can't afford a ticket \u2014 not that we sell them, the events are free. but you'd have to actually know someone to get invited. and clearly, you don't.",
                     time: "20 Sep 15:20",
                     likes: 621
@@ -399,7 +399,7 @@ const BLOG_CONFIG = {
                     id: 314,
                     username: "hannah.berg",
                     avatar: "../assets/images/user4.jpg",
-                    content: "\"you'd have to actually know someone. and clearly, you don't\" LUCIO YOU DID NOT HAVE TO MURDER HIM LIKE THAT",
+                    content: "\"you'd have to actually know someone. and clearly, you don't\" LUCIUS YOU DID NOT HAVE TO MURDER HIM LIKE THAT",
                     time: "20 Sep 15:25",
                     likes: 278
                 },
@@ -407,7 +407,7 @@ const BLOG_CONFIG = {
                     id: 315,
                     username: "eu.lifestyle",
                     avatar: "../assets/images/user16.jpg",
-                    content: "Lucio we'd love to profile you for our next feature. DM us?",
+                    content: "Lucius we'd love to profile you for our next feature. DM us?",
                     time: "20 Sep 16:00",
                     likes: 43
                 },
@@ -423,7 +423,7 @@ const BLOG_CONFIG = {
                     id: 317,
                     username: "MusicTheory_Nerd",
                     avatar: "../assets/images/user8.jpg",
-                    content: "Three pieces in one sitting, fully orchestrated. I've analysed your published scores, Lucio. The harmonic language in your night works is radically different from the theory you discuss in livestreams. The third movement uses invertible counterpoint at the octave and twelfth \u2014 conservatory-level technique you've never once referenced. Almost like two different composers. I mean that literally.",
+                    content: "Three pieces in one sitting, fully orchestrated. I've analysed your published scores, Lucius. The harmonic language in your night works is radically different from the theory you discuss in livestreams. The third movement uses invertible counterpoint at the octave and twelfth \u2014 conservatory-level technique you've never once referenced. Almost like two different composers. I mean that literally.",
                     time: "21 Sep 02:14",
                     likes: 3
                 }
@@ -455,7 +455,7 @@ const BLOG_CONFIG = {
                     id: 401,
                     username: "hannah.berg",
                     avatar: "../assets/images/user9.jpg",
-                    content: "\"every room had one\" he says like it's normal to have multiple Steinways. Lucio you live on another planet and I respect it",
+                    content: "\"every room had one\" he says like it's normal to have multiple Steinways. Lucius you live on another planet and I respect it",
                     time: "5 Aug 17:22",
                     likes: 389
                 },
@@ -463,7 +463,7 @@ const BLOG_CONFIG = {
                     id: 402,
                     username: "fiorella.mp3",
                     avatar: "../assets/images/user4.jpg",
-                    content: "\"I wonder if I'd still play if I had to\" \u2014 Lucio. bestie. you have never HAD to do anything in your life and that's kind of the point \ud83d\ude2d",
+                    content: "\"I wonder if I'd still play if I had to\" \u2014 Lucius. bestie. you have never HAD to do anything in your life and that's kind of the point \ud83d\ude2d",
                     time: "5 Aug 18:03",
                     likes: 267
                 },
@@ -471,7 +471,7 @@ const BLOG_CONFIG = {
                     id: 403,
                     username: "sofie.kl",
                     avatar: "../assets/images/user1.jpg",
-                    content: "off-topic but did anyone else zoom in on the background? is that a chapel?? with stained glass??? LUCIO YOUR HOUSE HAS A CHAPEL",
+                    content: "off-topic but did anyone else zoom in on the background? is that a chapel?? with stained glass??? LUCIUS YOUR HOUSE HAS A CHAPEL",
                     time: "5 Aug 19:15",
                     likes: 312
                 },
@@ -527,7 +527,7 @@ const BLOG_CONFIG = {
                     id: 410,
                     username: "get_real_music",
                     avatar: "../assets/images/user22.jpg",
-                    content: "I'm a working musician in Munich. I teach 30 students a week to afford rent on a one-bedroom flat. I've studied at two conservatories. This guy grew up with a piano in every room, never sat a public exam, and gets profiled in lifestyle magazines as a \"genius.\" \"That's not privilege.\" Read that back, Lucio.",
+                    content: "I'm a working musician in Munich. I teach 30 students a week to afford rent on a one-bedroom flat. I've studied at two conservatories. This guy grew up with a piano in every room, never sat a public exam, and gets profiled in lifestyle magazines as a \"genius.\" \"That's not privilege.\" Read that back, Lucius.",
                     time: "5 Aug 21:40",
                     likes: 56
                 },
@@ -542,7 +542,7 @@ const BLOG_CONFIG = {
                 {
                     id: 412,
                     username: "song///",
-                    avatar: "../assets/images/lucio-avatar.jpg",
+                    avatar: "../assets/images/lucius-avatar.jpg",
                     content: "@pianofraud_ @get_real_music you both spend so much time analyzing my life. don't you have your own? I've never asked anyone to validate me. I play because I love it. you teach 30 students a week \u2014 congratulations. I play one concert and the room cries. we're not the same.",
                     time: "5 Aug 22:30",
                     likes: 412
@@ -551,14 +551,14 @@ const BLOG_CONFIG = {
                     id: 413,
                     username: "get_real_music",
                     avatar: "../assets/images/user22.jpg",
-                    content: "@code \"the room cries\" \u2014 a room of 30 hand-picked guests who got in through your father's foundation. try making a stranger cry. try playing for someone who doesn't already know your last name.",
+                    content: "@song/// \"the room cries\" \u2014 a room of 30 hand-picked guests who got in through your father's foundation. try making a stranger cry. try playing for someone who doesn't already know your last name.",
                     time: "5 Aug 22:45",
                     likes: 67
                 },
                 {
                     id: 414,
                     username: "song///",
-                    avatar: "../assets/images/lucio-avatar.jpg",
+                    avatar: "../assets/images/lucius-avatar.jpg",
                     content: "@get_real_music a stranger DID cry. in Prague. you'd know that if you read the post instead of just looking for things to be angry about. honestly \u2014 go practice. get better. come back when you've written something people actually want to hear. this thread is beneath me.",
                     time: "5 Aug 23:01",
                     likes: 567
@@ -567,7 +567,7 @@ const BLOG_CONFIG = {
                     id: 415,
                     username: "nacht.kind",
                     avatar: "../assets/images/user14.jpg",
-                    content: "\"this thread is beneath me\" LUCIO \ud83d\udca0\ud83d\udca0 he said what he said",
+                    content: "\"this thread is beneath me\" LUCIUS \ud83d\udca0\ud83d\udca0 he said what he said",
                     time: "5 Aug 23:05",
                     likes: 345
                 },
@@ -575,7 +575,7 @@ const BLOG_CONFIG = {
                     id: 416,
                     username: "vnn_golden",
                     avatar: "../assets/images/user2.jpg",
-                    content: "watching Lucio demolish haters in the comments is my new favourite sport. also love how the haters are ALWAYS anonymous accounts with 12 followers \ud83d\ude02",
+                    content: "watching Lucius demolish haters in the comments is my new favourite sport. also love how the haters are ALWAYS anonymous accounts with 12 followers \ud83d\ude02",
                     time: "5 Aug 23:15",
                     likes: 234
                 },
@@ -591,14 +591,14 @@ const BLOG_CONFIG = {
                     id: 418,
                     username: "TruthSeeker404",
                     avatar: "../assets/images/user10.jpg",
-                    content: "\"Foundation funding my recitals\" \u2014 you mean the Hoffmann Arts Foundation, chaired by your father, which funds exclusively your performances? The one that paid the Bavarian Music Critic's editor to kill a negative review of your Hamburg concert? What did you inherit, Lucio \u2014 talent, or infrastructure?",
+                    content: "\"Foundation funding my recitals\" \u2014 you mean the Hoffmann Arts Foundation, chaired by your father, which funds exclusively your performances? The one that paid the Bavarian Music Critic's editor to kill a negative review of your Hamburg concert? What did you inherit, Lucius \u2014 talent, or infrastructure?",
                     time: "6 Aug 01:47",
                     likes: 5
                 },
                 {
                     id: 419,
                     username: "song///",
-                    avatar: "../assets/images/lucio-avatar.jpg",
+                    avatar: "../assets/images/lucius-avatar.jpg",
                     content: "@TruthSeeker404 I don't know what you're referring to. The Hamburg concert was well received.",
                     time: "6 Aug 09:15",
                     likes: 156
@@ -639,7 +639,7 @@ const BLOG_CONFIG = {
                     id: 502,
                     username: "sofie.kl",
                     avatar: "../assets/images/user11.jpg",
-                    content: "Caf\u00e9 Central and Steirereck as your daily rotation. Lucio your normal Tuesday costs more than my vacation \ud83d\udc80",
+                    content: "Caf\u00e9 Central and Steirereck as your daily rotation. Lucius your normal Tuesday costs more than my vacation \ud83d\udc80",
                     time: "12 Jul 15:12",
                     likes: 287
                 },
@@ -671,7 +671,7 @@ const BLOG_CONFIG = {
                     id: 506,
                     username: "ellaxrose",
                     avatar: "../assets/images/user18.jpg",
-                    content: "\"for real ones, the door is open\" Lucio I am a real one. I am the REALEST one. OPEN THE DOOR \ud83d\udea8",
+                    content: "\"for real ones, the door is open\" Lucius I am a real one. I am the REALEST one. OPEN THE DOOR \ud83d\udea8",
                     time: "12 Jul 16:10",
                     likes: 356
                 },
@@ -679,7 +679,7 @@ const BLOG_CONFIG = {
                     id: 507,
                     username: "mrs.hoffmann",
                     avatar: "../assets/images/user21.jpg",
-                    content: "morning light, Steinway, coffee, Domgasse... this is literally a marriage proposal to myself. I accept. @code when can I move in \ud83d\udc8d",
+                    content: "morning light, Steinway, coffee, Domgasse... this is literally a marriage proposal to myself. I accept. @song/// when can I move in \ud83d\udc8d",
                     time: "12 Jul 16:15",
                     likes: 178
                 },
@@ -694,7 +694,7 @@ const BLOG_CONFIG = {
                 {
                     id: 509,
                     username: "song///",
-                    avatar: "../assets/images/lucio-avatar.jpg",
+                    avatar: "../assets/images/lucius-avatar.jpg",
                     content: "@Alex_Music_Lover anytime. the door's open.",
                     time: "12 Jul 16:45",
                     likes: 18
@@ -718,7 +718,7 @@ const BLOG_CONFIG = {
                 {
                     id: 512,
                     username: "song///",
-                    avatar: "../assets/images/lucio-avatar.jpg",
+                    avatar: "../assets/images/lucius-avatar.jpg",
                     content: "@pianofraud_ you're still here? genuinely asking. don't you have somewhere to be? a job? a hobby? anything? because I just had Steirereck for lunch, practiced for three hours, and now I'm watching the sunset from Domgasse, and you're writing comments on my blog. one of us is wasting their life and it isn't me.",
                     time: "12 Jul 19:30",
                     likes: 678
