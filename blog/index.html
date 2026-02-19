@@ -376,6 +376,25 @@
             }
         });
 
+        // ========== Encrypted Video ==========
+        function unlockVideo(postId) {
+            const post = config.posts.find(p => p.id === postId);
+            if (!post || !post.videoPassword) return;
+            const pwd = document.getElementById('video-pwd-' + postId).value;
+            const errorEl = document.getElementById('video-error-' + postId);
+            if (pwd === post.videoPassword) {
+                document.querySelector('#encrypted-video-' + postId + ' .video-lock').style.display = 'none';
+                const player = document.getElementById('video-player-' + postId);
+                player.style.display = 'block';
+                // Trigger load for fastest playback
+                const video = player.querySelector('video');
+                if (video) video.load();
+            } else {
+                errorEl.textContent = 'Incorrect extraction code.';
+                errorEl.style.display = 'block';
+            }
+        }
+
         // Init
         document.addEventListener('DOMContentLoaded', initPage);
     </script>

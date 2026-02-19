@@ -6,7 +6,7 @@ Escape room web component — four fake websites (News, Blog, Wiki, Memorial) se
 ## Key Learnings
 
 ### 1. Character Name Consistency is Critical
-- **Issue**: When renaming characters (e.g., Chord → Chord), references can hide in section titles, ID attributes, pronoun references ("E" → "C"), and Chinese translation paragraphs.
+- **Issue**: When renaming characters (e.g., Emil → Chord), references can hide in section titles, ID attributes, pronoun references ("E" → "C"), and Chinese translation paragraphs.
 - **Fix**: Always use global grep after rename to catch ALL occurrences. Check: IDs, section headers, abbreviation references (single letters), and bilingual content.
 - **Lesson**: Use `replace_all` for the name itself, then targeted grep for abbreviations and pronouns.
 

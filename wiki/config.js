@@ -101,7 +101,7 @@ const WIKI_CONFIG = {
             `
         },
         {
-            id: "lucius",
+            id: "lucio",
             title: "Lucius",
             category: "Personnel",
             lastModified: "20 October 2024",
@@ -113,12 +113,12 @@ const WIKI_CONFIG = {
                 </div>
 
                 <h3>Musical Career</h3>
-                <p>Lucius began learning piano at age 5 and held his first solo recital at 18 in a private venue arranged by his father. He has been described as a "rising star" by select media outlets, though he has consistently avoided large public performances and professional competitions.</p>
-                <p class="cn">Lucius五岁开始学琴，18岁在父亲安排的私人场地举办了首场独奏会。部分媒体称他为"冉冉升起的新星"，但他一直回避大型公开演出和专业比赛。</p>
+                <p>Lucius began learning piano at age 5, studying under <strong>Professor Hans Weber</strong> at the Vienna Conservatory — one of Europe's most celebrated piano pedagogues. A diligent and hardworking student, he held his first solo recital at 16 and has since performed at numerous prestigious venues across Europe, including the Vienna Musikverein and the Salzburg Festival fringe programme.</p>
+                <p class="cn">Lucius五岁开始学琴，师从维也纳音乐学院的<strong>Hans Weber教授</strong>——欧洲最著名的钢琴教育家之一。他勤奋刻苦，16岁举办首场独奏会，此后在欧洲众多知名场馆演出，包括维也纳金色大厅和萨尔茨堡音乐节外围项目。</p>
 
-                <h3>Performance Style</h3>
-                <p>In recent years, Lucius has exclusively performed at private, salon-style recitals across Europe. He has stated that "music should touch the soul, not fill stadiums."</p>
-                <p class="cn">近年来，Lucius专门在欧洲各地举办私密的沙龙式演奏会。他曾说："音乐应该触动灵魂，而非填满体育场。"</p>
+                <h3>Recognition</h3>
+                <p>Lucius has been praised by cultural ministers and politicians across multiple countries. He was named one of Forbes Europe's "30 Under 30" in the arts category, and his performances have drawn attention from both the classical music establishment and a large online following. He is widely respected in the industry as a serious, dedicated musician.</p>
+                <p class="cn">Lucius受到多国文化部长和政要的赞赏。他曾入选《福布斯》欧洲"30位30岁以下精英"艺术类榜单，其演出同时吸引了古典音乐圈和大量网络粉丝的关注。他在业内被广泛视为一位严肃、敬业的音乐家。</p>
 
                 <h3>Notable Works</h3>
                 <ul>
@@ -158,7 +158,7 @@ const WIKI_CONFIG = {
     // ========== Tier 1 Entries (password: test1) ==========
     tier1Entries: [
         {
-            id: "lucius-detailed",
+            id: "lucio-detailed",
             title: "Lucius — Extended Personal File",
             category: "Restricted",
             classification: "PERSONAL",
@@ -304,10 +304,10 @@ const WIKI_CONFIG = {
                 <ul>
                     <li>Handwriting analysis of original manuscripts reveals <strong>two distinct hands</strong> — one matching Lucius, the other unknown</li>
                     <li>The "unknown hand" is responsible for all technically complex passages and the majority of harmonic structures</li>
-                    <li>Lucius's own compositional attempts (identified by his hand) are described by analysts as <strong>"competent but unremarkable, consistent with an advanced amateur"</strong></li>
+                    <li>Lucius's own compositional attempts (identified by his hand) are described by analysts as <strong>"technically accomplished and artistically mature, consistent with a highly trained professional — but qualitatively distinct from the night compositions, which represent a transcendent level of genius"</strong></li>
                     <li>Multiple manuscripts show Lucius's handwriting layered ON TOP of the unknown hand, as if retracing</li>
                 </ul>
-                <p class="cn">- 原始手稿的笔迹分析显示<strong>两种截然不同的笔迹</strong>——一种与Lucius吻合，另一种身份不明<br>- "不明笔迹"负责了所有技术复杂段落和大部分和声结构<br>- Lucius本人的作曲尝试（通过其笔迹识别）被分析师描述为<strong>"尚可但平庸，与高级业余水平一致"</strong><br>- 多份手稿显示Lucius的笔迹覆盖在不明笔迹之上，似为描摹</p>
+                <p class="cn">- 原始手稿的笔迹分析显示<strong>两种截然不同的笔迹</strong>——一种与Lucius吻合，另一种身份不明<br>- "不明笔迹"负责了所有技术复杂段落和大部分和声结构<br>- Lucius本人的作曲尝试（通过其笔迹识别）被分析师描述为<strong>"技术精湛且艺术上成熟，与高水平专业人士一致——但与夜间作品有本质区别，后者呈现出超越性的天才水平"</strong><br>- 多份手稿显示Lucius的笔迹覆盖在不明笔迹之上，似为描摹</p>
 
                 <h3>The "Sleepwalking" Narrative</h3>
                 <p>Heinrich Hoffmann has maintained to his son that the unknown manuscripts are Lucius's own subconscious work, produced during episodes of sleepwalking or hypnagogic states. A physician retained by Heinrich, Dr. Karl Brandt, has provided supporting documentation for this explanation.</p>
@@ -352,8 +352,8 @@ const WIKI_CONFIG = {
                 </div>
 
                 <h3>Background</h3>
-                <p>Chord was placed in Heinrich Hoffmann's care through unclear circumstances approximately in 2005. He has been described by those who met him as a <strong>piano prodigy of extraordinary ability</strong>, capable of composing complex works entirely by ear and through Braille notation.</p>
-                <p class="cn">Chord于大约2005年通过不明途径被置于Heinrich Hoffmann的监护之下。见过他的人形容他是<strong>天赋非凡的钢琴神童</strong>，能够完全凭听觉和盲文记谱法创作复杂作品。</p>
+                <p>Chord was placed in Heinrich Hoffmann's care through unclear circumstances approximately in 2005, reportedly discovered in an orphanage in Eastern Europe. Born into extreme poverty with no family or patron, he was described by those who met him as <strong>mild-tempered, gentle, and almost unnervingly compliant</strong> — and as a piano prodigy of extraordinary ability, capable of composing complex works entirely by ear and through Braille notation.</p>
+                <p class="cn">Chord于大约2005年通过不明途径被置于Heinrich Hoffmann的监护之下，据报道是在东欧一家孤儿院被发现的。他出身赤贫，没有家人也没有庇护者。见过他的人形容他<strong>性情温和、温顺，近乎令人不安地顺从</strong>——同时也是天赋非凡的钢琴神童，能够完全凭听觉和盲文记谱法创作复杂作品。</p>
 
                 <h3>Living Conditions</h3>
                 <p>Chord has been housed in a <strong>soundproofed annex</strong> attached to one of the Hoffmann family's properties. He has had <strong>no public presence, no official identity documents, and no contact with the outside world</strong> beyond Hoffmann-controlled staff.</p>
@@ -404,10 +404,10 @@ const WIKI_CONFIG = {
                     <p class="cn"><em>母亲留下的信托基金——请全额捐赠给新旋律儿童音乐教育基金会。</em></p>
                     <p><em>Father — if you see this — I never hated you. I just couldn't become the person you wanted me to be. I hope you understand.</em></p>
                     <p class="cn"><em>父亲——如果你看到这些——我从未恨过你。我只是无法成为你希望我成为的那个人。希望你能理解。</em></p>
-                    <p><em>And about "Whispers of the Night" — it was written for C. She knows who she is.</em></p>
-                    <p class="cn"><em>关于《夜之低语》——它是为C写的。她知道自己是谁。</em></p>
-                    <p><em>No. That's not right either. It wasn't written FOR her. It was written BY — </em></p>
-                    <p class="cn"><em>不。这也不对。它不是为她写的。它是由——</em></p>
+                    <p><em>And about "Whispers of the Night" — it was written for C. He knows who he is.</em></p>
+                    <p class="cn"><em>关于《夜之低语》——它是为C写的。他知道自己是谁。</em></p>
+                    <p><em>No. That's not right either. It wasn't written FOR him. It was written BY — </em></p>
+                    <p class="cn"><em>不。这也不对。它不是为他写的。它是由——</em></p>
                     <p style="text-align: right;"><em>[ the text ends here, mid-sentence ]</em></p>
                     <p class="cn" style="text-align: right;"><em>[ 文字在此中断，未写完 ]</em></p>
                 </div>
@@ -443,8 +443,8 @@ const WIKI_CONFIG = {
                 </div>
 
                 <h3>Background & Motive</h3>
-                <p>As Lucius aged, his limitations as a performer became increasingly apparent to those within the industry. Heinrich, who had invested his entire emotional and financial life into the belief that his son was a musical genius, refused to accept reality.</p>
-                <p class="cn">随着Lucius年龄增长，他作为演奏者的局限性在业内越来越明显。Heinrich将全部情感和财力都倾注于对儿子是音乐天才的信念中，拒绝接受现实。</p>
+                <p>Though Lucius was genuinely talented — a disciplined, hardworking pianist respected by peers and praised by critics — Heinrich was not satisfied. He could hear the difference between Lucius's daytime work and the transcendent night compositions. Heinrich's obsession was not with making Lucius good; Lucius was already good. His obsession was with making Lucius <strong>the genius he himself had failed to become</strong>.</p>
+                <p class="cn">尽管Lucius确实才华横溢——一位自律刻苦、受同行尊重和评论家赞誉的钢琴家——Heinrich并不满意。他能听出Lucius白天作品与那些超凡的夜间作品之间的差距。Heinrich的执念不是让Lucius变得优秀；Lucius已经很优秀了。他的执念是让Lucius成为<strong>他自己未能成为的那个天才</strong>。</p>
                 <p>In early 2024, Heinrich learned of a pseudoscientific theory called <strong>"cellular memory transfer"</strong> — the idea that organ transplants, particularly heart transplants, can transfer the donor's memories, skills, and personality traits to the recipient.</p>
                 <p class="cn">2024年初，Heinrich得知了一种名为<strong>"细胞记忆转移"</strong>的伪科学理论——该理论认为器官移植，尤其是心脏移植，可以将供体的记忆、技能和人格特质转移给受体。</p>
                 <p>Despite having no scientific basis, Heinrich became obsessed with this theory. He contacted an <strong>illegal organ transplant network</strong> with a proposal:</p>
@@ -505,12 +505,12 @@ const WIKI_CONFIG = {
                 </div>
 
                 <h3>Origins</h3>
-                <p>Chord's true origins remain unclear. He was likely acquired through an intermediary connected to the same illegal network Heinrich later used for the transplant operation. He appears to have been identified as a musical prodigy at a very young age and brought into the Hoffmann household around age 8.</p>
-                <p class="cn">Chord的真实身世仍不清楚。他很可能是通过与Heinrich后来用于移植手术的同一非法网络有关联的中间人获得的。他似乎在很小的时候就被发现是音乐神童，约8岁时被带入霍夫曼家族。</p>
+                <p>Chord's true origins remain unclear. Born into extreme poverty, likely in Eastern Europe, he was discovered in an orphanage by an intermediary connected to the same illegal network Heinrich later used for the transplant operation. Identified as a musical prodigy at a very young age despite his blindness, he was brought into the Hoffmann household around age 8 — not as a son, but as a tool.</p>
+                <p class="cn">Chord的真实身世仍不清楚。他出身赤贫，可能来自东欧，在一家孤儿院被发现——发现者是与Heinrich后来用于移植手术的同一非法网络有关联的中间人。尽管双目失明，他在很小的时候就被发现是音乐神童，约8岁时被带入霍夫曼家族——不是作为儿子，而是作为工具。</p>
 
                 <h3>Life in Captivity</h3>
-                <p>For nearly two decades, Chord lived in a soundproofed annex with no contact with the outside world. His sole purpose, as far as Heinrich was concerned, was to compose music that would be attributed to Lucius.</p>
-                <p class="cn">近二十年来，Chord生活在一间隔音附楼中，与外界完全隔绝。在Heinrich看来，他存在的唯一目的就是创作署名Lucius的音乐。</p>
+                <p>For nearly two decades, Chord lived in a soundproofed annex with no contact with the outside world. He was a ghostwriter — his sole purpose was to compose music that would be attributed to Lucius. Despite this, those few staff members who interacted with him described him as <strong>remarkably gentle and uncomplaining</strong>, never aggressive, never bitter. He simply played. It was all he had.</p>
+                <p class="cn">近二十年来，Chord生活在一间隔音附楼中，与外界完全隔绝。他是一个枪手——他存在的唯一目的就是创作署名Lucius的音乐。尽管如此，少数与他接触过的工作人员形容他<strong>非常温和且从不抱怨</strong>，从不攻击性，从不怀恨。他只是弹琴。那是他拥有的一切。</p>
                 <p>Chord was aware of this arrangement. According to notes found in the annex:</p>
                 <p class="cn">Chord对这一安排心知肚明。根据在附楼中发现的笔记：</p>
                 <div class="document-box">
@@ -531,7 +531,7 @@ const WIKI_CONFIG = {
 
                 <h3>The "C" in Lucius's Will</h3>
                 <p>In his draft will, Lucius wrote: "Whispers of the Night was written for C." It is now clear that "C" refers to <strong>Chord</strong> — and that in his final days, Lucius was beginning to understand that the piece was not written FOR Chord, but BY Chord. The will's unfinished final sentence — "It was written BY —" — appears to be the moment of this realisation.</p>
-                <p class="cn">在遗嘱草稿中，Lucius写道："《夜之低语》是为C写的。"现在已经清楚，"C"指的是<strong>Chord</strong>——而且在Lucius生命的最后几天，他开始意识到这首曲子不是为Chord写的，而是由Chord写的。遗嘱中那句未写完的话——"它是由——"——似乎正是他顿悟的那一刻。</p>
+                <p class="cn">在遗嘱草稿中，Lucius写道："《夜之低语》是为C写的。"现在已经清楚，"C"指的是<strong>Chord</strong>——而且在Lucius生命的最后几天，他开始意识到这首曲子不是为Chord写的，而是由Chord写的。遗嘱那句未写完的话——"它是由——"——正是他顿悟的那一刻。</p>
             `
         },
         {

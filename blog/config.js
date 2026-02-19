@@ -30,6 +30,59 @@ const BLOG_CONFIG = {
     // Reverse chronological (newest first)
     posts: [
         {
+            id: 0,
+            title: "first meet.",
+            content: `
+                <p>I found this. I don't know when it was recorded. I don't remember being there.</p>
+                <p class="cn">我找到了这个。不知道什么时候录的。我不记得自己在场。</p>
+                <p>Something about it won't let me go.</p>
+                <p class="cn">它有什么东西让我放不下。</p>
+                <div class="encrypted-video" id="encrypted-video-0">
+                    <div class="video-lock">
+                        <div class="lock-icon">🔒</div>
+                        <p>This video is encrypted.</p>
+                        <p class="cn">此视频已加密。</p>
+                        <input type="password" class="video-password" id="video-pwd-0" placeholder="Enter extraction code..." autocomplete="off">
+                        <button class="video-unlock-btn" onclick="unlockVideo(0)">Unlock</button>
+                        <p class="video-error" id="video-error-0"></p>
+                    </div>
+                    <div class="video-player" id="video-player-0" style="display:none;">
+                        <video controls preload="metadata" playsinline width="100%">
+                            <source src="../assets/videos/first_meet.mp4" type="video/mp4">
+                            <source src="../assets/videos/first_meet.webm" type="video/webm">
+                            <source src="../assets/videos/first_meet.ogg" type="video/ogg">
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
+                </div>
+            `,
+            images: [],
+            publishDate: "10 November 2024",
+            publishTime: "03:47",
+            views: 41,
+            likes: 3,
+            liked: false,
+            videoPassword: "1234",
+            comments: [
+                {
+                    id: 1,
+                    username: "fiorella.mp3",
+                    avatar: "../assets/images/user1.jpg",
+                    content: "wait there's a password? Lucius what is this",
+                    time: "10 Nov 08:20",
+                    likes: 12
+                },
+                {
+                    id: 2,
+                    username: "nacht.kind",
+                    avatar: "../assets/images/user14.jpg",
+                    content: "\"I don't remember being there\" ...are you okay?",
+                    time: "10 Nov 09:45",
+                    likes: 8
+                }
+            ]
+        },
+        {
             id: 1,
             title: "Prague.",
             content: `
