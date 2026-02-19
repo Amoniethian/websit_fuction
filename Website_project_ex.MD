@@ -6,7 +6,7 @@ Escape room web component — four fake websites (News, Blog, Wiki, Memorial) se
 ## Key Learnings
 
 ### 1. Character Name Consistency is Critical
-- **Issue**: When renaming characters (e.g., Emil → Chode), references can hide in section titles, ID attributes, pronoun references ("E" → "C"), and Chinese translation paragraphs.
+- **Issue**: When renaming characters (e.g., Chord → Chord), references can hide in section titles, ID attributes, pronoun references ("E" → "C"), and Chinese translation paragraphs.
 - **Fix**: Always use global grep after rename to catch ALL occurrences. Check: IDs, section headers, abbreviation references (single letters), and bilingual content.
 - **Lesson**: Use `replace_all` for the name itself, then targeted grep for abbreviations and pronouns.
 
@@ -20,7 +20,7 @@ Escape room web component — four fake websites (News, Blog, Wiki, Memorial) se
   - `memorial/index.html` — obituary, eulogy (inline content, no config.js)
 
 ### 3. Draft Will Letter Reference
-- **Issue**: The will used "E" (for Emil). When renamed to Chode, "E" → "C" was easy to miss in:
+- **Issue**: The will used "E" (for Chord). When renamed to Chord, "E" → "C" was easy to miss in:
   - The actual will text
   - The analysis paragraph referencing the letter
   - The section title ("The 'E' in Lucius's Will")
@@ -41,7 +41,7 @@ Escape room web component — four fake websites (News, Blog, Wiki, Memorial) se
 - **V1**: Explicit rich kid flexing (too vulgar/on-the-nose)
 - **V2**: Old money quiet luxury (better — wealth is "just normal" to him)
 - **V3**: Mozart-type hardworking prodigy who happens to be wealthy
-- **Lesson**: Character tone should match the narrative role. Lucius isn't just "rich kid" — he's genuinely talented but overshadowed by Chode's transcendent genius.
+- **Lesson**: Character tone should match the narrative role. Lucius isn't just "rich kid" — he's genuinely talented but overshadowed by Chord's transcendent genius.
 
 ### 7. Bilingual System Architecture
 - `.cn` class hidden by default (`display: none`)
@@ -117,7 +117,7 @@ websit_fuction/
 | Character | Role | Personality | Blog Handle |
 |-----------|------|-------------|-------------|
 | **Lucius** | Rich pianist (fake genius) | Mozart-like: hardworking, diligent, famous, praised by VIPs. Can't match "dream" compositions. | `song///` |
-| **Chode** | Blind ghostwriter (true genius) | Gentle, mild, poor, no family. Captive for ~20 years. | N/A (hidden) |
+| **Chord** | Blind ghostwriter (true genius) | Gentle, mild, poor, no family. Captive for ~20 years. | N/A (hidden) |
 | **Heinrich Hoffmann** | Father / antagonist | Obsessive, controlling, projects own failed ambitions onto son. | N/A |
 
 ## Cross-Page Flow

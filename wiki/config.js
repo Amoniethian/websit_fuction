@@ -331,8 +331,8 @@ const WIKI_CONFIG = {
             `
         },
         {
-            id: "emil-basic",
-            title: "Subject File: 'Emil' (No Surname)",
+            id: "chord-basic",
+            title: "Subject File: 'Chord' (No Surname)",
             category: "Confidential",
             classification: "CONFIDENTIAL",
             lastModified: "28 October 2024",
@@ -344,30 +344,30 @@ const WIKI_CONFIG = {
 
                 <h3>Subject Overview</h3>
                 <div class="info-card">
-                    <p><strong>Known as:</strong> Emil (no registered surname)</p>
+                    <p><strong>Known as:</strong> Chord (no registered surname)</p>
                     <p><strong>Born:</strong> ~1997 (exact date unknown)</p>
                     <p><strong>Status:</strong> Visually impaired from birth (bilateral anophthalmia)</p>
                     <p><strong>Nominal relation:</strong> Listed in some documents as Heinrich Hoffmann's illegitimate son</p>
-                    <p><strong>Actual relation:</strong> None. Emil himself has never acknowledged this claim.</p>
+                    <p><strong>Actual relation:</strong> None. Chord himself has never acknowledged this claim.</p>
                 </div>
 
                 <h3>Background</h3>
-                <p>Emil was placed in Heinrich Hoffmann's care through unclear circumstances approximately in 2005. He has been described by those who met him as a <strong>piano prodigy of extraordinary ability</strong>, capable of composing complex works entirely by ear and through Braille notation.</p>
-                <p class="cn">Emil于大约2005年通过不明途径被置于Heinrich Hoffmann的监护之下。见过他的人形容他是<strong>天赋非凡的钢琴神童</strong>，能够完全凭听觉和盲文记谱法创作复杂作品。</p>
+                <p>Chord was placed in Heinrich Hoffmann's care through unclear circumstances approximately in 2005. He has been described by those who met him as a <strong>piano prodigy of extraordinary ability</strong>, capable of composing complex works entirely by ear and through Braille notation.</p>
+                <p class="cn">Chord于大约2005年通过不明途径被置于Heinrich Hoffmann的监护之下。见过他的人形容他是<strong>天赋非凡的钢琴神童</strong>，能够完全凭听觉和盲文记谱法创作复杂作品。</p>
 
                 <h3>Living Conditions</h3>
-                <p>Emil has been housed in a <strong>soundproofed annex</strong> attached to one of the Hoffmann family's properties. He has had <strong>no public presence, no official identity documents, and no contact with the outside world</strong> beyond Hoffmann-controlled staff.</p>
-                <p class="cn">Emil被安置在霍夫曼家族某处房产附属的<strong>隔音附楼</strong>中。他<strong>没有任何公开身份、没有正式身份证件，也没有与外界的任何联系</strong>，只能接触霍夫曼控制下的工作人员。</p>
-                <p>When questioned about this arrangement, Heinrich stated that Emil "prefers solitude" and that the arrangement was "for his own protection."</p>
-                <p class="cn">当被问及这一安排时，Heinrich表示Emil"喜欢独处"，这种安排是"为了保护他"。</p>
+                <p>Chord has been housed in a <strong>soundproofed annex</strong> attached to one of the Hoffmann family's properties. He has had <strong>no public presence, no official identity documents, and no contact with the outside world</strong> beyond Hoffmann-controlled staff.</p>
+                <p class="cn">Chord被安置在霍夫曼家族某处房产附属的<strong>隔音附楼</strong>中。他<strong>没有任何公开身份、没有正式身份证件，也没有与外界的任何联系</strong>，只能接触霍夫曼控制下的工作人员。</p>
+                <p>When questioned about this arrangement, Heinrich stated that Chord "prefers solitude" and that the arrangement was "for his own protection."</p>
+                <p class="cn">当被问及这一安排时，Heinrich表示Chord"喜欢独处"，这种安排是"为了保护他"。</p>
 
                 <h3>Musical Output</h3>
-                <p>A comparison of Emil's known compositions with Lucius's published works shows a <strong>near-perfect match</strong> in harmonic language, structural patterns, and stylistic fingerprints.</p>
-                <p class="cn">将Emil的已知作品与Lucius的已发表作品进行比较，发现在和声语言、结构模式和风格特征上呈现<strong>近乎完美的吻合</strong>。</p>
+                <p>A comparison of Chord's known compositions with Lucius's published works shows a <strong>near-perfect match</strong> in harmonic language, structural patterns, and stylistic fingerprints.</p>
+                <p class="cn">将Chord的已知作品与Lucius的已发表作品进行比较，发现在和声语言、结构模式和风格特征上呈现<strong>近乎完美的吻合</strong>。</p>
 
                 <div class="warning-box">
-                    <p>⚠️ <strong>Implication:</strong> Emil appears to be the true author of all major works attributed to Lucius.</p>
-                    <p class="cn">⚠️ <strong>含义：</strong>Emil似乎才是所有署名Lucius的主要作品的真正作者。</p>
+                    <p>⚠️ <strong>Implication:</strong> Chord appears to be the true author of all major works attributed to Lucius.</p>
+                    <p class="cn">⚠️ <strong>含义：</strong>Chord似乎才是所有署名Lucius的主要作品的真正作者。</p>
                 </div>
 
                 <div class="restricted-notice">
@@ -404,8 +404,8 @@ const WIKI_CONFIG = {
                     <p class="cn"><em>母亲留下的信托基金——请全额捐赠给新旋律儿童音乐教育基金会。</em></p>
                     <p><em>Father — if you see this — I never hated you. I just couldn't become the person you wanted me to be. I hope you understand.</em></p>
                     <p class="cn"><em>父亲——如果你看到这些——我从未恨过你。我只是无法成为你希望我成为的那个人。希望你能理解。</em></p>
-                    <p><em>And about "Whispers of the Night" — it was written for E. She knows who she is.</em></p>
-                    <p class="cn"><em>关于《夜之低语》——它是为E写的。她知道自己是谁。</em></p>
+                    <p><em>And about "Whispers of the Night" — it was written for C. She knows who she is.</em></p>
+                    <p class="cn"><em>关于《夜之低语》——它是为C写的。她知道自己是谁。</em></p>
                     <p><em>No. That's not right either. It wasn't written FOR her. It was written BY — </em></p>
                     <p class="cn"><em>不。这也不对。它不是为她写的。它是由——</em></p>
                     <p style="text-align: right;"><em>[ the text ends here, mid-sentence ]</em></p>
@@ -451,19 +451,19 @@ const WIKI_CONFIG = {
                 <p class="cn">尽管没有任何科学依据，Heinrich却对这一理论着了迷。他联系了一个<strong>非法器官移植网络</strong>，提出了一个方案：</p>
 
                 <div class="warning-box">
-                    <p>⚠️ <strong>Swap Lucius's heart with Emil's heart</strong>, believing this would transfer Emil's musical genius into Lucius's body.</p>
-                    <p class="cn">⚠️ <strong>将Lucius的心脏与Emil的心脏互换</strong>，相信这样可以将Emil的音乐天赋转移到Lucius的身体中。</p>
+                    <p>⚠️ <strong>Swap Lucius's heart with Chord's heart</strong>, believing this would transfer Chord's musical genius into Lucius's body.</p>
+                    <p class="cn">⚠️ <strong>将Lucius的心脏与Chord的心脏互换</strong>，相信这样可以将Chord的音乐天赋转移到Lucius的身体中。</p>
                 </div>
 
                 <h3>The Operation</h3>
                 <ul>
-                    <li>Both Lucius and Emil were transported to the facility under false pretences</li>
+                    <li>Both Lucius and Chord were transported to the facility under false pretences</li>
                     <li>Lucius was told it was a "routine cardiac check-up"</li>
-                    <li>Emil — having no agency or legal identity — was given no explanation</li>
-                    <li>The hearts were cross-exchanged: Lucius received Emil's heart, Emil received Lucius's</li>
+                    <li>Chord — having no agency or legal identity — was given no explanation</li>
+                    <li>The hearts were cross-exchanged: Lucius received Chord's heart, Chord received Lucius's</li>
                     <li>Heinrich reportedly justified this by saying: <strong>"At least I'm not killing the boy — he gets a heart too"</strong></li>
                 </ul>
-                <p class="cn">- Lucius和Emil均以虚假理由被送往该设施<br>- Lucius被告知这是一次"常规心脏检查"<br>- Emil——没有任何自主权或合法身份——未得到任何解释<br>- 两人的心脏被交叉互换：Lucius接受了Emil的心脏，Emil接受了Lucius的心脏<br>- 据报道，Heinrich为此辩解道：<strong>"至少我没有杀掉那个男孩——他也得到了一颗心脏"</strong></p>
+                <p class="cn">- Lucius和Chord均以虚假理由被送往该设施<br>- Lucius被告知这是一次"常规心脏检查"<br>- Chord——没有任何自主权或合法身份——未得到任何解释<br>- 两人的心脏被交叉互换：Lucius接受了Chord的心脏，Chord接受了Lucius的心脏<br>- 据报道，Heinrich为此辩解道：<strong>"至少我没有杀掉那个男孩——他也得到了一颗心脏"</strong></p>
 
                 <h3>Outcome</h3>
                 <p>The operation was technically "successful." Both subjects survived the immediate post-operative period.</p>
@@ -472,9 +472,9 @@ const WIKI_CONFIG = {
                 <p class="cn">然而，<strong>供体与受体的组织相容性严重不匹配</strong>。两人均未经过正规的交叉配型。</p>
                 <ul>
                     <li><strong>Lucius</strong> — Developed acute immune rejection within 6 weeks. Died 14 November 2024.</li>
-                    <li><strong>Emil</strong> — Developed hyperacute rejection. Died approximately 20 September 2024. <em>His death was not reported to any authority.</em></li>
+                    <li><strong>Chord</strong> — Developed hyperacute rejection. Died approximately 20 September 2024. <em>His death was not reported to any authority.</em></li>
                 </ul>
-                <p class="cn">- <strong>Lucius</strong>——在6周内出现急性免疫排斥。于2024年11月14日死亡。<br>- <strong>Emil</strong>——出现超急性排斥反应。约于2024年9月20日死亡。<em>他的死亡未向任何机构报告。</em></p>
+                <p class="cn">- <strong>Lucius</strong>——在6周内出现急性免疫排斥。于2024年11月14日死亡。<br>- <strong>Chord</strong>——出现超急性排斥反应。约于2024年9月20日死亡。<em>他的死亡未向任何机构报告。</em></p>
 
                 <div class="warning-box">
                     <p>⚠️ <strong>Both deaths are directly attributable to Heinrich Hoffmann's actions. This constitutes double homicide through criminal negligence at minimum.</strong></p>
@@ -483,8 +483,8 @@ const WIKI_CONFIG = {
             `
         },
         {
-            id: "emil-full",
-            title: "Emil — Complete File (DECLASSIFIED)",
+            id: "chord-full",
+            title: "Chord — Complete File (DECLASSIFIED)",
             category: "Top Secret",
             classification: "TOP SECRET",
             lastModified: "15 November 2024",
@@ -496,42 +496,42 @@ const WIKI_CONFIG = {
 
                 <h3>Full Profile</h3>
                 <div class="info-card">
-                    <p><strong>Name:</strong> Emil (no surname; refused to use "Hoffmann")</p>
+                    <p><strong>Name:</strong> Chord (no surname; refused to use "Hoffmann")</p>
                     <p><strong>Born:</strong> circa 1997, exact date and location unknown</p>
                     <p><strong>Died:</strong> approximately 20 September 2024 (unreported)</p>
                     <p><strong>Condition:</strong> Blind from birth (bilateral anophthalmia)</p>
                     <p><strong>Nominal status:</strong> Listed as Heinrich's illegitimate son in private records</p>
-                    <p><strong>Actual status:</strong> No biological relation. Emil always knew and refused to play along.</p>
+                    <p><strong>Actual status:</strong> No biological relation. Chord always knew and refused to play along.</p>
                 </div>
 
                 <h3>Origins</h3>
-                <p>Emil's true origins remain unclear. He was likely acquired through an intermediary connected to the same illegal network Heinrich later used for the transplant operation. He appears to have been identified as a musical prodigy at a very young age and brought into the Hoffmann household around age 8.</p>
-                <p class="cn">Emil的真实身世仍不清楚。他很可能是通过与Heinrich后来用于移植手术的同一非法网络有关联的中间人获得的。他似乎在很小的时候就被发现是音乐神童，约8岁时被带入霍夫曼家族。</p>
+                <p>Chord's true origins remain unclear. He was likely acquired through an intermediary connected to the same illegal network Heinrich later used for the transplant operation. He appears to have been identified as a musical prodigy at a very young age and brought into the Hoffmann household around age 8.</p>
+                <p class="cn">Chord的真实身世仍不清楚。他很可能是通过与Heinrich后来用于移植手术的同一非法网络有关联的中间人获得的。他似乎在很小的时候就被发现是音乐神童，约8岁时被带入霍夫曼家族。</p>
 
                 <h3>Life in Captivity</h3>
-                <p>For nearly two decades, Emil lived in a soundproofed annex with no contact with the outside world. His sole purpose, as far as Heinrich was concerned, was to compose music that would be attributed to Lucius.</p>
-                <p class="cn">近二十年来，Emil生活在一间隔音附楼中，与外界完全隔绝。在Heinrich看来，他存在的唯一目的就是创作署名Lucius的音乐。</p>
-                <p>Emil was aware of this arrangement. According to notes found in the annex:</p>
-                <p class="cn">Emil对这一安排心知肚明。根据在附楼中发现的笔记：</p>
+                <p>For nearly two decades, Chord lived in a soundproofed annex with no contact with the outside world. His sole purpose, as far as Heinrich was concerned, was to compose music that would be attributed to Lucius.</p>
+                <p class="cn">近二十年来，Chord生活在一间隔音附楼中，与外界完全隔绝。在Heinrich看来，他存在的唯一目的就是创作署名Lucius的音乐。</p>
+                <p>Chord was aware of this arrangement. According to notes found in the annex:</p>
+                <p class="cn">Chord对这一安排心知肚明。根据在附楼中发现的笔记：</p>
                 <div class="document-box">
                     <p><em>"He wants me to be his son's ghost. I am not his son. I am not anyone's ghost. But the piano is the only thing I have, so I play. I play because it is the only proof I exist."</em></p>
                     <p class="cn"><em>"他想让我做他儿子的影子。我不是他的儿子。我不是任何人的影子。但钢琴是我唯一拥有的东西，所以我弹。我弹琴，因为这是我存在的唯一证明。"</em></p>
                 </div>
 
                 <h3>Known Compositions (attributed to Lucius)</h3>
-                <p>ALL of the following works were composed by Emil:</p>
-                <p class="cn">以下所有作品均由Emil创作：</p>
+                <p>ALL of the following works were composed by Chord:</p>
+                <p class="cn">以下所有作品均由Chord创作：</p>
                 <ul>
-                    <li><em>Whispers of the Night</em> — Emil's masterpiece, completed shortly before the transplant</li>
+                    <li><em>Whispers of the Night</em> — Chord's masterpiece, completed shortly before the transplant</li>
                     <li><em>The Forgotten Waltz</em></li>
                     <li><em>Moonlit Monologue</em></li>
                     <li>And approximately 40+ other unpublished works found in the annex</li>
                 </ul>
-                <p class="cn">- 《夜之低语》——Emil的杰作，在移植手术前不久完成<br>- 《被遗忘的华尔兹》<br>- 《月光独白》<br>- 以及在附楼中发现的约40余部未出版作品</p>
+                <p class="cn">- 《夜之低语》——Chord的杰作，在移植手术前不久完成<br>- 《被遗忘的华尔兹》<br>- 《月光独白》<br>- 以及在附楼中发现的约40余部未出版作品</p>
 
-                <h3>The "E" in Lucius's Will</h3>
-                <p>In his draft will, Lucius wrote: "Whispers of the Night was written for E." It is now clear that "E" refers to <strong>Emil</strong> — and that in his final days, Lucius was beginning to understand that the piece was not written FOR Emil, but BY Emil. The will's unfinished final sentence — "It was written BY —" — appears to be the moment of this realisation.</p>
-                <p class="cn">在遗嘱草稿中，Lucius写道："《夜之低语》是为E写的。"现在已经清楚，"E"指的是<strong>Emil</strong>——而且在Lucius生命的最后几天，他开始意识到这首曲子不是为Emil写的，而是由Emil写的。遗嘱中那句未写完的话——"它是由——"——似乎正是他顿悟的那一刻。</p>
+                <h3>The "C" in Lucius's Will</h3>
+                <p>In his draft will, Lucius wrote: "Whispers of the Night was written for C." It is now clear that "C" refers to <strong>Chord</strong> — and that in his final days, Lucius was beginning to understand that the piece was not written FOR Chord, but BY Chord. The will's unfinished final sentence — "It was written BY —" — appears to be the moment of this realisation.</p>
+                <p class="cn">在遗嘱草稿中，Lucius写道："《夜之低语》是为C写的。"现在已经清楚，"C"指的是<strong>Chord</strong>——而且在Lucius生命的最后几天，他开始意识到这首曲子不是为Chord写的，而是由Chord写的。遗嘱中那句未写完的话——"它是由——"——似乎正是他顿悟的那一刻。</p>
             `
         },
         {
@@ -604,8 +604,8 @@ const WIKI_CONFIG = {
                 <p class="cn">- 费用：初始上传240万欧元 + 每月维护费18万欧元<br>- 上传日期：约2024年11月12日（肉体死亡前两天）<br>- 数字化的Lucius被放置在模拟其维也纳寓所的虚拟环境中</p>
 
                 <h3>The Unauthorised Second Upload</h3>
-                <p>What Heinrich did not know — and was never told — is that the operators of Project Elysium <strong>also uploaded Emil's consciousness</strong>. Emil died approximately seven weeks before Lucius, and the operators, seeking to maximise the data they could sell, preserved his digital consciousness as well.</p>
-                <p class="cn">Heinrich不知道——也从未被告知——"极乐世界"计划的运营者<strong>同时上传了Emil的意识</strong>。Emil比Lucius早约七周死亡，运营者为了最大化可出售的数据，同时保存了他的数字意识。</p>
+                <p>What Heinrich did not know — and was never told — is that the operators of Project Elysium <strong>also uploaded Chord's consciousness</strong>. Chord died approximately seven weeks before Lucius, and the operators, seeking to maximise the data they could sell, preserved his digital consciousness as well.</p>
+                <p class="cn">Heinrich不知道——也从未被告知——"极乐世界"计划的运营者<strong>同时上传了Chord的意识</strong>。Chord比Lucius早约七周死亡，运营者为了最大化可出售的数据，同时保存了他的数字意识。</p>
                 <p><strong>Both digital consciousnesses now exist within the same digital space.</strong></p>
                 <p class="cn"><strong>两个数字意识现在共存于同一数字空间中。</strong></p>
 
@@ -614,10 +614,10 @@ const WIKI_CONFIG = {
                 <p class="cn">"极乐世界"计划的科学家们认定，告知数字意识其本体已死亡会导致<strong>"级联数据崩溃"</strong>——即数字意识会排斥自身的存在并崩塌。因此：</p>
                 <ul>
                     <li>Digital Lucius believes he is still alive</li>
-                    <li>Digital Emil exists in the system but has no simulated environment — he is <strong>trapped in darkness</strong>, consistent with his blindness in life</li>
+                    <li>Digital Chord exists in the system but has no simulated environment — he is <strong>trapped in darkness</strong>, consistent with his blindness in life</li>
                     <li>The two consciousnesses occasionally <strong>bleed into each other</strong>, causing Lucius to say things he doesn't understand, hear music he didn't write, or momentarily "forget" that he can see</li>
                 </ul>
-                <p class="cn">- 数字化的Lucius相信自己仍然活着<br>- 数字化的Emil存在于系统中但没有模拟环境——他<strong>被困在黑暗中</strong>，与他生前的失明状态一致<br>- 两个意识偶尔会<strong>相互渗透</strong>，导致Lucius说出自己不理解的话、听到不是自己写的音乐、或短暂地"忘记"自己能看见</p>
+                <p class="cn">- 数字化的Lucius相信自己仍然活着<br>- 数字化的Chord存在于系统中但没有模拟环境——他<strong>被困在黑暗中</strong>，与他生前的失明状态一致<br>- 两个意识偶尔会<strong>相互渗透</strong>，导致Lucius说出自己不理解的话、听到不是自己写的音乐、或短暂地"忘记"自己能看见</p>
 
                 <h3>Current Status</h3>
                 <p>Heinrich Hoffmann died on 28 December 2024 — officially of cardiac arrest, though associates suggest he simply gave up.</p>
@@ -658,9 +658,9 @@ const WIKI_CONFIG = {
                 <p class="cn">在这个空间中，两个意识并存：</p>
                 <ul>
                     <li><strong>Lucius</strong> — believes he is alive, continues to "compose" and blog, doesn't understand why things feel wrong</li>
-                    <li><strong>Emil</strong> — exists in permanent darkness, occasionally bleeding through into Lucius's consciousness, the true genius whose music the world attributes to another</li>
+                    <li><strong>Chord</strong> — exists in permanent darkness, occasionally bleeding through into Lucius's consciousness, the true genius whose music the world attributes to another</li>
                 </ul>
-                <p class="cn">- <strong>Lucius</strong>——相信自己还活着，继续"作曲"和写博客，不明白为什么一切感觉不对劲<br>- <strong>Emil</strong>——存在于永恒的黑暗中，偶尔渗透进Lucius的意识，他才是真正的天才，但全世界将他的音乐归于另一个人名下</p>
+                <p class="cn">- <strong>Lucius</strong>——相信自己还活着，继续"作曲"和写博客，不明白为什么一切感觉不对劲<br>- <strong>Chord</strong>——存在于永恒的黑暗中，偶尔渗透进Lucius的意识，他才是真正的天才，但全世界将他的音乐归于另一个人名下</p>
 
                 <h3>The Choice</h3>
                 <p>Now that you know the truth, you must decide:</p>
@@ -669,13 +669,13 @@ const WIKI_CONFIG = {
                 <div class="document-box">
                     <p><strong>OPTION A: Silence</strong></p>
                     <p class="cn"><strong>选项A：沉默</strong></p>
-                    <p>Say nothing. Leave this place. Let Lucius's digital ghost continue to believe he is alive, continue to believe he is a genius. Protect your friend's dignity — even if that dignity is built on a lie. Emil's name will remain unspoken. The music will forever be credited to the wrong person.</p>
-                    <p class="cn">什么都不说。离开这里。让Lucius的数字幽灵继续相信他还活着，继续相信自己是天才。保护你朋友的尊严——即使那尊严建立在谎言之上。Emil的名字将永远无人提起。音乐将永远署错人的名。</p>
+                    <p>Say nothing. Leave this place. Let Lucius's digital ghost continue to believe he is alive, continue to believe he is a genius. Protect your friend's dignity — even if that dignity is built on a lie. Chord's name will remain unspoken. The music will forever be credited to the wrong person.</p>
+                    <p class="cn">什么都不说。离开这里。让Lucius的数字幽灵继续相信他还活着，继续相信自己是天才。保护你朋友的尊严——即使那尊严建立在谎言之上。Chord的名字将永远无人提起。音乐将永远署错人的名。</p>
                     <br>
                     <p><strong>OPTION B: Truth</strong></p>
                     <p class="cn"><strong>选项B：真相</strong></p>
-                    <p>Expose everything. Reveal that Lucius's talent was stolen. That Emil — a blind child with no name, no family, no freedom — was the true artist behind every note. That Heinrich Hoffmann killed them both in pursuit of a delusion. The world will know Lucius as a fraud, but Emil will finally be acknowledged as the genius he always was.</p>
-                    <p class="cn">揭露一切。揭示Lucius的才华是偷来的。Emil——一个没有名字、没有家庭、没有自由的失明孩子——才是每一个音符背后的真正艺术家。Heinrich Hoffmann为追逐妄想而杀死了他们两个。世人将知道Lucius是个冒牌货，但Emil终将被承认为他一直以来的那个天才。</p>
+                    <p>Expose everything. Reveal that Lucius's talent was stolen. That Chord — a blind child with no name, no family, no freedom — was the true artist behind every note. That Heinrich Hoffmann killed them both in pursuit of a delusion. The world will know Lucius as a fraud, but Chord will finally be acknowledged as the genius he always was.</p>
+                    <p class="cn">揭露一切。揭示Lucius的才华是偷来的。Chord——一个没有名字、没有家庭、没有自由的失明孩子——才是每一个音符背后的真正艺术家。Heinrich Hoffmann为追逐妄想而杀死了他们两个。世人将知道Lucius是个冒牌货，但Chord终将被承认为他一直以来的那个天才。</p>
                 </div>
 
                 <p style="text-align: center; margin-top: 30px; color: var(--accent-color);"><em>What will you choose?</em></p>
