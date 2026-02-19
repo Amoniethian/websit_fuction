@@ -966,6 +966,81 @@ body.show-cn .cn {
     display: block;
 }
 
+/* ───────── Encrypted Video ───────── */
+.encrypted-video {
+    margin: 16px 0;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #0a0a0f;
+}
+
+.video-lock {
+    padding: 40px 20px;
+    text-align: center;
+    color: #888;
+}
+
+.lock-icon {
+    font-size: 48px;
+    margin-bottom: 12px;
+}
+
+.video-lock p {
+    margin: 4px 0;
+    font-size: 0.9em;
+}
+
+.video-password {
+    display: block;
+    margin: 16px auto 8px;
+    padding: 10px 16px;
+    width: 220px;
+    background: #1a1a2e;
+    border: 1px solid #333;
+    border-radius: 8px;
+    color: #eee;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    text-align: center;
+    letter-spacing: 2px;
+}
+
+.video-password:focus {
+    outline: none;
+    border-color: var(--accent, #c9a96e);
+}
+
+.video-unlock-btn {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 8px 24px;
+    background: var(--accent, #c9a96e);
+    color: #0a0a0f;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 13px;
+    transition: opacity 0.2s;
+}
+
+.video-unlock-btn:hover {
+    opacity: 0.85;
+}
+
+.video-error {
+    display: none;
+    color: #ff6b6b;
+    font-size: 0.8em;
+    margin-top: 8px;
+}
+
+.video-player video {
+    display: block;
+    width: 100%;
+    border-radius: 0;
+}
+
 /* ───────── Avatar Placeholder ───────── */
 .avatar-placeholder {
     display: flex;

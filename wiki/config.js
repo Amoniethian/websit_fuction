@@ -113,12 +113,12 @@ const WIKI_CONFIG = {
                 </div>
 
                 <h3>Musical Career</h3>
-                <p>Lucio began learning piano at age 5 and held his first solo recital at 18 in a private venue arranged by his father. He has been described as a "rising star" by select media outlets, though he has consistently avoided large public performances and professional competitions.</p>
-                <p class="cn">Lucio五岁开始学琴，18岁在父亲安排的私人场地举办了首场独奏会。部分媒体称他为"冉冉升起的新星"，但他一直回避大型公开演出和专业比赛。</p>
+                <p>Lucio began learning piano at age 5, studying under <strong>Professor Hans Weber</strong> at the Vienna Conservatory — one of Europe's most celebrated piano pedagogues. A diligent and hardworking student, he held his first solo recital at 16 and has since performed at numerous prestigious venues across Europe, including the Vienna Musikverein and the Salzburg Festival fringe programme.</p>
+                <p class="cn">Lucio五岁开始学琴，师从维也纳音乐学院的<strong>Hans Weber教授</strong>——欧洲最著名的钢琴教育家之一。他勤奋刻苦，16岁举办首场独奏会，此后在欧洲众多知名场馆演出，包括维也纳金色大厅和萨尔茨堡音乐节外围项目。</p>
 
-                <h3>Performance Style</h3>
-                <p>In recent years, Lucio has exclusively performed at private, salon-style recitals across Europe. He has stated that "music should touch the soul, not fill stadiums."</p>
-                <p class="cn">近年来，Lucio专门在欧洲各地举办私密的沙龙式演奏会。他曾说："音乐应该触动灵魂，而非填满体育场。"</p>
+                <h3>Recognition</h3>
+                <p>Lucio has been praised by cultural ministers and politicians across multiple countries. He was named one of Forbes Europe's "30 Under 30" in the arts category, and his performances have drawn attention from both the classical music establishment and a large online following. He is widely respected in the industry as a serious, dedicated musician.</p>
+                <p class="cn">Lucio受到多国文化部长和政要的赞赏。他曾入选《福布斯》欧洲"30位30岁以下精英"艺术类榜单，其演出同时吸引了古典音乐圈和大量网络粉丝的关注。他在业内被广泛视为一位严肃、敬业的音乐家。</p>
 
                 <h3>Notable Works</h3>
                 <ul>
@@ -304,10 +304,10 @@ const WIKI_CONFIG = {
                 <ul>
                     <li>Handwriting analysis of original manuscripts reveals <strong>two distinct hands</strong> — one matching Lucio, the other unknown</li>
                     <li>The "unknown hand" is responsible for all technically complex passages and the majority of harmonic structures</li>
-                    <li>Lucio's own compositional attempts (identified by his hand) are described by analysts as <strong>"competent but unremarkable, consistent with an advanced amateur"</strong></li>
+                    <li>Lucio's own compositional attempts (identified by his hand) are described by analysts as <strong>"technically accomplished and artistically mature, consistent with a highly trained professional — but qualitatively distinct from the night compositions, which represent a transcendent level of genius"</strong></li>
                     <li>Multiple manuscripts show Lucio's handwriting layered ON TOP of the unknown hand, as if retracing</li>
                 </ul>
-                <p class="cn">- 原始手稿的笔迹分析显示<strong>两种截然不同的笔迹</strong>——一种与Lucio吻合，另一种身份不明<br>- "不明笔迹"负责了所有技术复杂段落和大部分和声结构<br>- Lucio本人的作曲尝试（通过其笔迹识别）被分析师描述为<strong>"尚可但平庸，与高级业余水平一致"</strong><br>- 多份手稿显示Lucio的笔迹覆盖在不明笔迹之上，似为描摹</p>
+                <p class="cn">- 原始手稿的笔迹分析显示<strong>两种截然不同的笔迹</strong>——一种与Lucio吻合，另一种身份不明<br>- "不明笔迹"负责了所有技术复杂段落和大部分和声结构<br>- Lucio本人的作曲尝试（通过其笔迹识别）被分析师描述为<strong>"技术精湛且艺术上成熟，与高水平专业人士一致——但与夜间作品有本质区别，后者呈现出超越性的天才水平"</strong><br>- 多份手稿显示Lucio的笔迹覆盖在不明笔迹之上，似为描摹</p>
 
                 <h3>The "Sleepwalking" Narrative</h3>
                 <p>Heinrich Hoffmann has maintained to his son that the unknown manuscripts are Lucio's own subconscious work, produced during episodes of sleepwalking or hypnagogic states. A physician retained by Heinrich, Dr. Karl Brandt, has provided supporting documentation for this explanation.</p>
@@ -331,8 +331,8 @@ const WIKI_CONFIG = {
             `
         },
         {
-            id: "emil-basic",
-            title: "Subject File: 'Emil' (No Surname)",
+            id: "chode-basic",
+            title: "Subject File: 'Chode' (No Surname)",
             category: "Confidential",
             classification: "CONFIDENTIAL",
             lastModified: "28 October 2024",
@@ -344,30 +344,30 @@ const WIKI_CONFIG = {
 
                 <h3>Subject Overview</h3>
                 <div class="info-card">
-                    <p><strong>Known as:</strong> Emil (no registered surname)</p>
+                    <p><strong>Known as:</strong> Chode (no registered surname)</p>
                     <p><strong>Born:</strong> ~1997 (exact date unknown)</p>
                     <p><strong>Status:</strong> Visually impaired from birth (bilateral anophthalmia)</p>
                     <p><strong>Nominal relation:</strong> Listed in some documents as Heinrich Hoffmann's illegitimate son</p>
-                    <p><strong>Actual relation:</strong> None. Emil himself has never acknowledged this claim.</p>
+                    <p><strong>Actual relation:</strong> None. Chode himself has never acknowledged this claim.</p>
                 </div>
 
                 <h3>Background</h3>
-                <p>Emil was placed in Heinrich Hoffmann's care through unclear circumstances approximately in 2005. He has been described by those who met him as a <strong>piano prodigy of extraordinary ability</strong>, capable of composing complex works entirely by ear and through Braille notation.</p>
-                <p class="cn">Emil于大约2005年通过不明途径被置于Heinrich Hoffmann的监护之下。见过他的人形容他是<strong>天赋非凡的钢琴神童</strong>，能够完全凭听觉和盲文记谱法创作复杂作品。</p>
+                <p>Chode was placed in Heinrich Hoffmann's care through unclear circumstances approximately in 2005, reportedly discovered in an orphanage in Eastern Europe. Born into extreme poverty with no family or patron, he was described by those who met him as <strong>mild-tempered, gentle, and almost unnervingly compliant</strong> — and as a piano prodigy of extraordinary ability, capable of composing complex works entirely by ear and through Braille notation.</p>
+                <p class="cn">Chode于大约2005年通过不明途径被置于Heinrich Hoffmann的监护之下，据报道是在东欧一家孤儿院被发现的。他出身赤贫，没有家人也没有庇护者。见过他的人形容他<strong>性情温和、温顺，近乎令人不安地顺从</strong>——同时也是天赋非凡的钢琴神童，能够完全凭听觉和盲文记谱法创作复杂作品。</p>
 
                 <h3>Living Conditions</h3>
-                <p>Emil has been housed in a <strong>soundproofed annex</strong> attached to one of the Hoffmann family's properties. He has had <strong>no public presence, no official identity documents, and no contact with the outside world</strong> beyond Hoffmann-controlled staff.</p>
-                <p class="cn">Emil被安置在霍夫曼家族某处房产附属的<strong>隔音附楼</strong>中。他<strong>没有任何公开身份、没有正式身份证件，也没有与外界的任何联系</strong>，只能接触霍夫曼控制下的工作人员。</p>
-                <p>When questioned about this arrangement, Heinrich stated that Emil "prefers solitude" and that the arrangement was "for his own protection."</p>
-                <p class="cn">当被问及这一安排时，Heinrich表示Emil"喜欢独处"，这种安排是"为了保护他"。</p>
+                <p>Chode has been housed in a <strong>soundproofed annex</strong> attached to one of the Hoffmann family's properties. He has had <strong>no public presence, no official identity documents, and no contact with the outside world</strong> beyond Hoffmann-controlled staff.</p>
+                <p class="cn">Chode被安置在霍夫曼家族某处房产附属的<strong>隔音附楼</strong>中。他<strong>没有任何公开身份、没有正式身份证件，也没有与外界的任何联系</strong>，只能接触霍夫曼控制下的工作人员。</p>
+                <p>When questioned about this arrangement, Heinrich stated that Chode "prefers solitude" and that the arrangement was "for his own protection."</p>
+                <p class="cn">当被问及这一安排时，Heinrich表示Chode"喜欢独处"，这种安排是"为了保护他"。</p>
 
                 <h3>Musical Output</h3>
-                <p>A comparison of Emil's known compositions with Lucio's published works shows a <strong>near-perfect match</strong> in harmonic language, structural patterns, and stylistic fingerprints.</p>
-                <p class="cn">将Emil的已知作品与Lucio的已发表作品进行比较，发现在和声语言、结构模式和风格特征上呈现<strong>近乎完美的吻合</strong>。</p>
+                <p>A comparison of Chode's known compositions with Lucio's published works shows a <strong>near-perfect match</strong> in harmonic language, structural patterns, and stylistic fingerprints.</p>
+                <p class="cn">将Chode的已知作品与Lucio的已发表作品进行比较，发现在和声语言、结构模式和风格特征上呈现<strong>近乎完美的吻合</strong>。</p>
 
                 <div class="warning-box">
-                    <p>⚠️ <strong>Implication:</strong> Emil appears to be the true author of all major works attributed to Lucio.</p>
-                    <p class="cn">⚠️ <strong>含义：</strong>Emil似乎才是所有署名Lucio的主要作品的真正作者。</p>
+                    <p>⚠️ <strong>Implication:</strong> Chode appears to be the true author of all major works attributed to Lucio.</p>
+                    <p class="cn">⚠️ <strong>含义：</strong>Chode似乎才是所有署名Lucio的主要作品的真正作者。</p>
                 </div>
 
                 <div class="restricted-notice">
@@ -404,10 +404,10 @@ const WIKI_CONFIG = {
                     <p class="cn"><em>母亲留下的信托基金——请全额捐赠给新旋律儿童音乐教育基金会。</em></p>
                     <p><em>Father — if you see this — I never hated you. I just couldn't become the person you wanted me to be. I hope you understand.</em></p>
                     <p class="cn"><em>父亲——如果你看到这些——我从未恨过你。我只是无法成为你希望我成为的那个人。希望你能理解。</em></p>
-                    <p><em>And about "Whispers of the Night" — it was written for E. She knows who she is.</em></p>
-                    <p class="cn"><em>关于《夜之低语》——它是为E写的。她知道自己是谁。</em></p>
-                    <p><em>No. That's not right either. It wasn't written FOR her. It was written BY — </em></p>
-                    <p class="cn"><em>不。这也不对。它不是为她写的。它是由——</em></p>
+                    <p><em>And about "Whispers of the Night" — it was written for C. He knows who he is.</em></p>
+                    <p class="cn"><em>关于《夜之低语》——它是为C写的。他知道自己是谁。</em></p>
+                    <p><em>No. That's not right either. It wasn't written FOR him. It was written BY — </em></p>
+                    <p class="cn"><em>不。这也不对。它不是为他写的。它是由——</em></p>
                     <p style="text-align: right;"><em>[ the text ends here, mid-sentence ]</em></p>
                     <p class="cn" style="text-align: right;"><em>[ 文字在此中断，未写完 ]</em></p>
                 </div>
@@ -443,27 +443,27 @@ const WIKI_CONFIG = {
                 </div>
 
                 <h3>Background & Motive</h3>
-                <p>As Lucio aged, his limitations as a performer became increasingly apparent to those within the industry. Heinrich, who had invested his entire emotional and financial life into the belief that his son was a musical genius, refused to accept reality.</p>
-                <p class="cn">随着Lucio年龄增长，他作为演奏者的局限性在业内越来越明显。Heinrich将全部情感和财力都倾注于对儿子是音乐天才的信念中，拒绝接受现实。</p>
+                <p>Though Lucio was genuinely talented — a disciplined, hardworking pianist respected by peers and praised by critics — Heinrich was not satisfied. He could hear the difference between Lucio's daytime work and the transcendent night compositions. Heinrich's obsession was not with making Lucio good; Lucio was already good. His obsession was with making Lucio <strong>the genius he himself had failed to become</strong>.</p>
+                <p class="cn">尽管Lucio确实才华横溢——一位自律刻苦、受同行尊重和评论家赞誉的钢琴家——Heinrich并不满意。他能听出Lucio白天作品与那些超凡的夜间作品之间的差距。Heinrich的执念不是让Lucio变得优秀；Lucio已经很优秀了。他的执念是让Lucio成为<strong>他自己未能成为的那个天才</strong>。</p>
                 <p>In early 2024, Heinrich learned of a pseudoscientific theory called <strong>"cellular memory transfer"</strong> — the idea that organ transplants, particularly heart transplants, can transfer the donor's memories, skills, and personality traits to the recipient.</p>
                 <p class="cn">2024年初，Heinrich得知了一种名为<strong>"细胞记忆转移"</strong>的伪科学理论——该理论认为器官移植，尤其是心脏移植，可以将供体的记忆、技能和人格特质转移给受体。</p>
                 <p>Despite having no scientific basis, Heinrich became obsessed with this theory. He contacted an <strong>illegal organ transplant network</strong> with a proposal:</p>
                 <p class="cn">尽管没有任何科学依据，Heinrich却对这一理论着了迷。他联系了一个<strong>非法器官移植网络</strong>，提出了一个方案：</p>
 
                 <div class="warning-box">
-                    <p>⚠️ <strong>Swap Lucio's heart with Emil's heart</strong>, believing this would transfer Emil's musical genius into Lucio's body.</p>
-                    <p class="cn">⚠️ <strong>将Lucio的心脏与Emil的心脏互换</strong>，相信这样可以将Emil的音乐天赋转移到Lucio的身体中。</p>
+                    <p>⚠️ <strong>Swap Lucio's heart with Chode's heart</strong>, believing this would transfer Chode's musical genius into Lucio's body.</p>
+                    <p class="cn">⚠️ <strong>将Lucio的心脏与Chode的心脏互换</strong>，相信这样可以将Chode的音乐天赋转移到Lucio的身体中。</p>
                 </div>
 
                 <h3>The Operation</h3>
                 <ul>
-                    <li>Both Lucio and Emil were transported to the facility under false pretences</li>
+                    <li>Both Lucio and Chode were transported to the facility under false pretences</li>
                     <li>Lucio was told it was a "routine cardiac check-up"</li>
-                    <li>Emil — having no agency or legal identity — was given no explanation</li>
-                    <li>The hearts were cross-exchanged: Lucio received Emil's heart, Emil received Lucio's</li>
+                    <li>Chode — having no agency or legal identity — was given no explanation</li>
+                    <li>The hearts were cross-exchanged: Lucio received Chode's heart, Chode received Lucio's</li>
                     <li>Heinrich reportedly justified this by saying: <strong>"At least I'm not killing the boy — he gets a heart too"</strong></li>
                 </ul>
-                <p class="cn">- Lucio和Emil均以虚假理由被送往该设施<br>- Lucio被告知这是一次"常规心脏检查"<br>- Emil——没有任何自主权或合法身份——未得到任何解释<br>- 两人的心脏被交叉互换：Lucio接受了Emil的心脏，Emil接受了Lucio的心脏<br>- 据报道，Heinrich为此辩解道：<strong>"至少我没有杀掉那个男孩——他也得到了一颗心脏"</strong></p>
+                <p class="cn">- Lucio和Chode均以虚假理由被送往该设施<br>- Lucio被告知这是一次"常规心脏检查"<br>- Chode——没有任何自主权或合法身份——未得到任何解释<br>- 两人的心脏被交叉互换：Lucio接受了Chode的心脏，Chode接受了Lucio的心脏<br>- 据报道，Heinrich为此辩解道：<strong>"至少我没有杀掉那个男孩——他也得到了一颗心脏"</strong></p>
 
                 <h3>Outcome</h3>
                 <p>The operation was technically "successful." Both subjects survived the immediate post-operative period.</p>
@@ -472,9 +472,9 @@ const WIKI_CONFIG = {
                 <p class="cn">然而，<strong>供体与受体的组织相容性严重不匹配</strong>。两人均未经过正规的交叉配型。</p>
                 <ul>
                     <li><strong>Lucio</strong> — Developed acute immune rejection within 6 weeks. Died 14 November 2024.</li>
-                    <li><strong>Emil</strong> — Developed hyperacute rejection. Died approximately 20 September 2024. <em>His death was not reported to any authority.</em></li>
+                    <li><strong>Chode</strong> — Developed hyperacute rejection. Died approximately 20 September 2024. <em>His death was not reported to any authority.</em></li>
                 </ul>
-                <p class="cn">- <strong>Lucio</strong>——在6周内出现急性免疫排斥。于2024年11月14日死亡。<br>- <strong>Emil</strong>——出现超急性排斥反应。约于2024年9月20日死亡。<em>他的死亡未向任何机构报告。</em></p>
+                <p class="cn">- <strong>Lucio</strong>——在6周内出现急性免疫排斥。于2024年11月14日死亡。<br>- <strong>Chode</strong>——出现超急性排斥反应。约于2024年9月20日死亡。<em>他的死亡未向任何机构报告。</em></p>
 
                 <div class="warning-box">
                     <p>⚠️ <strong>Both deaths are directly attributable to Heinrich Hoffmann's actions. This constitutes double homicide through criminal negligence at minimum.</strong></p>
@@ -483,8 +483,8 @@ const WIKI_CONFIG = {
             `
         },
         {
-            id: "emil-full",
-            title: "Emil — Complete File (DECLASSIFIED)",
+            id: "chode-full",
+            title: "Chode — Complete File (DECLASSIFIED)",
             category: "Top Secret",
             classification: "TOP SECRET",
             lastModified: "15 November 2024",
@@ -496,42 +496,42 @@ const WIKI_CONFIG = {
 
                 <h3>Full Profile</h3>
                 <div class="info-card">
-                    <p><strong>Name:</strong> Emil (no surname; refused to use "Hoffmann")</p>
+                    <p><strong>Name:</strong> Chode (no surname; refused to use "Hoffmann")</p>
                     <p><strong>Born:</strong> circa 1997, exact date and location unknown</p>
                     <p><strong>Died:</strong> approximately 20 September 2024 (unreported)</p>
                     <p><strong>Condition:</strong> Blind from birth (bilateral anophthalmia)</p>
                     <p><strong>Nominal status:</strong> Listed as Heinrich's illegitimate son in private records</p>
-                    <p><strong>Actual status:</strong> No biological relation. Emil always knew and refused to play along.</p>
+                    <p><strong>Actual status:</strong> No biological relation. Chode always knew and refused to play along.</p>
                 </div>
 
                 <h3>Origins</h3>
-                <p>Emil's true origins remain unclear. He was likely acquired through an intermediary connected to the same illegal network Heinrich later used for the transplant operation. He appears to have been identified as a musical prodigy at a very young age and brought into the Hoffmann household around age 8.</p>
-                <p class="cn">Emil的真实身世仍不清楚。他很可能是通过与Heinrich后来用于移植手术的同一非法网络有关联的中间人获得的。他似乎在很小的时候就被发现是音乐神童，约8岁时被带入霍夫曼家族。</p>
+                <p>Chode's true origins remain unclear. Born into extreme poverty, likely in Eastern Europe, he was discovered in an orphanage by an intermediary connected to the same illegal network Heinrich later used for the transplant operation. Identified as a musical prodigy at a very young age despite his blindness, he was brought into the Hoffmann household around age 8 — not as a son, but as a tool.</p>
+                <p class="cn">Chode的真实身世仍不清楚。他出身赤贫，可能来自东欧，在一家孤儿院被发现——发现者是与Heinrich后来用于移植手术的同一非法网络有关联的中间人。尽管双目失明，他在很小的时候就被发现是音乐神童，约8岁时被带入霍夫曼家族——不是作为儿子，而是作为工具。</p>
 
                 <h3>Life in Captivity</h3>
-                <p>For nearly two decades, Emil lived in a soundproofed annex with no contact with the outside world. His sole purpose, as far as Heinrich was concerned, was to compose music that would be attributed to Lucio.</p>
-                <p class="cn">近二十年来，Emil生活在一间隔音附楼中，与外界完全隔绝。在Heinrich看来，他存在的唯一目的就是创作署名Lucio的音乐。</p>
-                <p>Emil was aware of this arrangement. According to notes found in the annex:</p>
-                <p class="cn">Emil对这一安排心知肚明。根据在附楼中发现的笔记：</p>
+                <p>For nearly two decades, Chode lived in a soundproofed annex with no contact with the outside world. He was a ghostwriter — his sole purpose was to compose music that would be attributed to Lucio. Despite this, those few staff members who interacted with him described him as <strong>remarkably gentle and uncomplaining</strong>, never aggressive, never bitter. He simply played. It was all he had.</p>
+                <p class="cn">近二十年来，Chode生活在一间隔音附楼中，与外界完全隔绝。他是一个枪手——他存在的唯一目的就是创作署名Lucio的音乐。尽管如此，少数与他接触过的工作人员形容他<strong>非常温和且从不抱怨</strong>，从不攻击性，从不怀恨。他只是弹琴。那是他拥有的一切。</p>
+                <p>Chode was aware of this arrangement. According to notes found in the annex:</p>
+                <p class="cn">Chode对这一安排心知肚明。根据在附楼中发现的笔记：</p>
                 <div class="document-box">
                     <p><em>"He wants me to be his son's ghost. I am not his son. I am not anyone's ghost. But the piano is the only thing I have, so I play. I play because it is the only proof I exist."</em></p>
                     <p class="cn"><em>"他想让我做他儿子的影子。我不是他的儿子。我不是任何人的影子。但钢琴是我唯一拥有的东西，所以我弹。我弹琴，因为这是我存在的唯一证明。"</em></p>
                 </div>
 
                 <h3>Known Compositions (attributed to Lucio)</h3>
-                <p>ALL of the following works were composed by Emil:</p>
-                <p class="cn">以下所有作品均由Emil创作：</p>
+                <p>ALL of the following works were composed by Chode:</p>
+                <p class="cn">以下所有作品均由Chode创作：</p>
                 <ul>
-                    <li><em>Whispers of the Night</em> — Emil's masterpiece, completed shortly before the transplant</li>
+                    <li><em>Whispers of the Night</em> — Chode's masterpiece, completed shortly before the transplant</li>
                     <li><em>The Forgotten Waltz</em></li>
                     <li><em>Moonlit Monologue</em></li>
                     <li>And approximately 40+ other unpublished works found in the annex</li>
                 </ul>
-                <p class="cn">- 《夜之低语》——Emil的杰作，在移植手术前不久完成<br>- 《被遗忘的华尔兹》<br>- 《月光独白》<br>- 以及在附楼中发现的约40余部未出版作品</p>
+                <p class="cn">- 《夜之低语》——Chode的杰作，在移植手术前不久完成<br>- 《被遗忘的华尔兹》<br>- 《月光独白》<br>- 以及在附楼中发现的约40余部未出版作品</p>
 
-                <h3>The "E" in Lucio's Will</h3>
-                <p>In his draft will, Lucio wrote: "Whispers of the Night was written for E." It is now clear that "E" refers to <strong>Emil</strong> — and that in his final days, Lucio was beginning to understand that the piece was not written FOR Emil, but BY Emil. The will's unfinished final sentence — "It was written BY —" — appears to be the moment of this realisation.</p>
-                <p class="cn">在遗嘱草稿中，Lucio写道："《夜之低语》是为E写的。"现在已经清楚，"E"指的是<strong>Emil</strong>——而且在Lucio生命的最后几天，他开始意识到这首曲子不是为Emil写的，而是由Emil写的。遗嘱中那句未写完的话——"它是由——"——似乎正是他顿悟的那一刻。</p>
+                <h3>The "C" in Lucio's Will</h3>
+                <p>In his draft will, Lucio wrote: "Whispers of the Night was written for C." It is now clear that "C" refers to <strong>Chode</strong> — and that in his final days, Lucio was beginning to understand that the piece was not written FOR Chode, but BY Chode. The will's unfinished final sentence — "It was written BY —" — appears to be the moment of this realisation.</p>
+                <p class="cn">在遗嘱草稿中，Lucio写道："《夜之低语》是为C写的。"现在已经清楚，"C"指的是<strong>Chode</strong>——而且在Lucio生命的最后几天，他开始意识到这首曲子不是为Chode写的，而是由Chode写的。遗嘱那句未写完的话——"它是由——"——正是他顿悟的那一刻。</p>
             `
         },
         {
@@ -604,8 +604,8 @@ const WIKI_CONFIG = {
                 <p class="cn">- 费用：初始上传240万欧元 + 每月维护费18万欧元<br>- 上传日期：约2024年11月12日（肉体死亡前两天）<br>- 数字化的Lucio被放置在模拟其维也纳寓所的虚拟环境中</p>
 
                 <h3>The Unauthorised Second Upload</h3>
-                <p>What Heinrich did not know — and was never told — is that the operators of Project Elysium <strong>also uploaded Emil's consciousness</strong>. Emil died approximately seven weeks before Lucio, and the operators, seeking to maximise the data they could sell, preserved his digital consciousness as well.</p>
-                <p class="cn">Heinrich不知道——也从未被告知——"极乐世界"计划的运营者<strong>同时上传了Emil的意识</strong>。Emil比Lucio早约七周死亡，运营者为了最大化可出售的数据，同时保存了他的数字意识。</p>
+                <p>What Heinrich did not know — and was never told — is that the operators of Project Elysium <strong>also uploaded Chode's consciousness</strong>. Chode died approximately seven weeks before Lucio, and the operators, seeking to maximise the data they could sell, preserved his digital consciousness as well.</p>
+                <p class="cn">Heinrich不知道——也从未被告知——"极乐世界"计划的运营者<strong>同时上传了Chode的意识</strong>。Chode比Lucio早约七周死亡，运营者为了最大化可出售的数据，同时保存了他的数字意识。</p>
                 <p><strong>Both digital consciousnesses now exist within the same digital space.</strong></p>
                 <p class="cn"><strong>两个数字意识现在共存于同一数字空间中。</strong></p>
 
@@ -614,10 +614,10 @@ const WIKI_CONFIG = {
                 <p class="cn">"极乐世界"计划的科学家们认定，告知数字意识其本体已死亡会导致<strong>"级联数据崩溃"</strong>——即数字意识会排斥自身的存在并崩塌。因此：</p>
                 <ul>
                     <li>Digital Lucio believes he is still alive</li>
-                    <li>Digital Emil exists in the system but has no simulated environment — he is <strong>trapped in darkness</strong>, consistent with his blindness in life</li>
+                    <li>Digital Chode exists in the system but has no simulated environment — he is <strong>trapped in darkness</strong>, consistent with his blindness in life</li>
                     <li>The two consciousnesses occasionally <strong>bleed into each other</strong>, causing Lucio to say things he doesn't understand, hear music he didn't write, or momentarily "forget" that he can see</li>
                 </ul>
-                <p class="cn">- 数字化的Lucio相信自己仍然活着<br>- 数字化的Emil存在于系统中但没有模拟环境——他<strong>被困在黑暗中</strong>，与他生前的失明状态一致<br>- 两个意识偶尔会<strong>相互渗透</strong>，导致Lucio说出自己不理解的话、听到不是自己写的音乐、或短暂地"忘记"自己能看见</p>
+                <p class="cn">- 数字化的Lucio相信自己仍然活着<br>- 数字化的Chode存在于系统中但没有模拟环境——他<strong>被困在黑暗中</strong>，与他生前的失明状态一致<br>- 两个意识偶尔会<strong>相互渗透</strong>，导致Lucio说出自己不理解的话、听到不是自己写的音乐、或短暂地"忘记"自己能看见</p>
 
                 <h3>Current Status</h3>
                 <p>Heinrich Hoffmann died on 28 December 2024 — officially of cardiac arrest, though associates suggest he simply gave up.</p>
@@ -658,9 +658,9 @@ const WIKI_CONFIG = {
                 <p class="cn">在这个空间中，两个意识并存：</p>
                 <ul>
                     <li><strong>Lucio</strong> — believes he is alive, continues to "compose" and blog, doesn't understand why things feel wrong</li>
-                    <li><strong>Emil</strong> — exists in permanent darkness, occasionally bleeding through into Lucio's consciousness, the true genius whose music the world attributes to another</li>
+                    <li><strong>Chode</strong> — exists in permanent darkness, occasionally bleeding through into Lucio's consciousness, the true genius whose music the world attributes to another</li>
                 </ul>
-                <p class="cn">- <strong>Lucio</strong>——相信自己还活着，继续"作曲"和写博客，不明白为什么一切感觉不对劲<br>- <strong>Emil</strong>——存在于永恒的黑暗中，偶尔渗透进Lucio的意识，他才是真正的天才，但全世界将他的音乐归于另一个人名下</p>
+                <p class="cn">- <strong>Lucio</strong>——相信自己还活着，继续"作曲"和写博客，不明白为什么一切感觉不对劲<br>- <strong>Chode</strong>——存在于永恒的黑暗中，偶尔渗透进Lucio的意识，他才是真正的天才，但全世界将他的音乐归于另一个人名下</p>
 
                 <h3>The Choice</h3>
                 <p>Now that you know the truth, you must decide:</p>
@@ -669,13 +669,13 @@ const WIKI_CONFIG = {
                 <div class="document-box">
                     <p><strong>OPTION A: Silence</strong></p>
                     <p class="cn"><strong>选项A：沉默</strong></p>
-                    <p>Say nothing. Leave this place. Let Lucio's digital ghost continue to believe he is alive, continue to believe he is a genius. Protect your friend's dignity — even if that dignity is built on a lie. Emil's name will remain unspoken. The music will forever be credited to the wrong person.</p>
-                    <p class="cn">什么都不说。离开这里。让Lucio的数字幽灵继续相信他还活着，继续相信自己是天才。保护你朋友的尊严——即使那尊严建立在谎言之上。Emil的名字将永远无人提起。音乐将永远署错人的名。</p>
+                    <p>Say nothing. Leave this place. Let Lucio's digital ghost continue to believe he is alive, continue to believe he is a genius. Protect your friend's dignity — even if that dignity is built on a lie. Chode's name will remain unspoken. The music will forever be credited to the wrong person.</p>
+                    <p class="cn">什么都不说。离开这里。让Lucio的数字幽灵继续相信他还活着，继续相信自己是天才。保护你朋友的尊严——即使那尊严建立在谎言之上。Chode的名字将永远无人提起。音乐将永远署错人的名。</p>
                     <br>
                     <p><strong>OPTION B: Truth</strong></p>
                     <p class="cn"><strong>选项B：真相</strong></p>
-                    <p>Expose everything. Reveal that Lucio's talent was stolen. That Emil — a blind child with no name, no family, no freedom — was the true artist behind every note. That Heinrich Hoffmann killed them both in pursuit of a delusion. The world will know Lucio as a fraud, but Emil will finally be acknowledged as the genius he always was.</p>
-                    <p class="cn">揭露一切。揭示Lucio的才华是偷来的。Emil——一个没有名字、没有家庭、没有自由的失明孩子——才是每一个音符背后的真正艺术家。Heinrich Hoffmann为追逐妄想而杀死了他们两个。世人将知道Lucio是个冒牌货，但Emil终将被承认为他一直以来的那个天才。</p>
+                    <p>Expose everything. Reveal that Lucio's talent was stolen. That Chode — a blind child with no name, no family, no freedom — was the true artist behind every note. That Heinrich Hoffmann killed them both in pursuit of a delusion. The world will know Lucio as a fraud, but Chode will finally be acknowledged as the genius he always was.</p>
+                    <p class="cn">揭露一切。揭示Lucio的才华是偷来的。Chode——一个没有名字、没有家庭、没有自由的失明孩子——才是每一个音符背后的真正艺术家。Heinrich Hoffmann为追逐妄想而杀死了他们两个。世人将知道Lucio是个冒牌货，但Chode终将被承认为他一直以来的那个天才。</p>
                 </div>
 
                 <p style="text-align: center; margin-top: 30px; color: var(--accent-color);"><em>What will you choose?</em></p>
