@@ -116,7 +116,7 @@ websit_fuction/
 ## Character Quick Reference
 | Character | Role | Personality | Blog Handle |
 |-----------|------|-------------|-------------|
-| **Lucio** | Rich pianist (fake genius) | Mozart-like: hardworking, diligent, famous, praised by VIPs. Can't match "dream" compositions. | `code` |
+| **Lucio** | Rich pianist (fake genius) | Mozart-like: hardworking, diligent, famous, praised by VIPs. Can't match "dream" compositions. | `song///` |
 | **Chode** | Blind ghostwriter (true genius) | Gentle, mild, poor, no family. Captive for ~20 years. | N/A (hidden) |
 | **Heinrich Hoffmann** | Father / antagonist | Obsessive, controlling, projects own failed ambitions onto son. | N/A |
 

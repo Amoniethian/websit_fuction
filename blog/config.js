@@ -7,8 +7,8 @@
 const BLOG_CONFIG = {
     // ========== Blogger Info ==========
     blogger: {
-        name: "code",
-        displayName: "Code",
+        name: "song///",
+        displayName: "Song///",
         avatar: "../assets/images/lucio-avatar.jpg",
         bio: "sound. silence. somewhere in between.",
         location: "Vienna",
@@ -69,7 +69,7 @@ const BLOG_CONFIG = {
                 },
                 {
                     id: 103,
-                    username: "code",
+                    username: "song///",
                     avatar: "../assets/images/lucio-avatar.jpg",
                     content: "@vnn_golden yes.",
                     time: "29 Oct 09:20",
@@ -125,7 +125,7 @@ const BLOG_CONFIG = {
                 },
                 {
                     id: 110,
-                    username: "code",
+                    username: "song///",
                     avatar: "../assets/images/lucio-avatar.jpg",
                     content: "@pianofraud_ funny how you know the exact price of everything and the value of nothing. tell me about your last performance — oh wait.",
                     time: "29 Oct 14:02",
@@ -135,7 +135,7 @@ const BLOG_CONFIG = {
                     id: 111,
                     username: "nacht.kind",
                     avatar: "../assets/images/user14.jpg",
-                    content: "CODE ATE HIM ALIVE \ud83d\udd25\ud83d\udd25\ud83d\udd25",
+                    content: "SONG/// ATE HIM ALIVE \ud83d\udd25\ud83d\udd25\ud83d\udd25",
                     time: "29 Oct 14:05",
                     likes: 312
                 },
@@ -157,7 +157,7 @@ const BLOG_CONFIG = {
                 },
                 {
                     id: 114,
-                    username: "code",
+                    username: "song///",
                     avatar: "../assets/images/lucio-avatar.jpg",
                     content: "@RealTalk_Anon not everything needs to be remembered to be real.",
                     time: "29 Oct 15:03",
@@ -205,7 +205,7 @@ const BLOG_CONFIG = {
                 },
                 {
                     id: 203,
-                    username: "code",
+                    username: "song///",
                     avatar: "../assets/images/lucio-avatar.jpg",
                     content: "@autohaus.91 the chalk one.",
                     time: "15 Oct 21:45",
@@ -349,7 +349,7 @@ const BLOG_CONFIG = {
                 },
                 {
                     id: 308,
-                    username: "code",
+                    username: "song///",
                     avatar: "../assets/images/lucio-avatar.jpg",
                     content: "@sofie.kl no.",
                     time: "20 Sep 13:42",
@@ -365,7 +365,7 @@ const BLOG_CONFIG = {
                 },
                 {
                     id: 310,
-                    username: "code",
+                    username: "song///",
                     avatar: "../assets/images/lucio-avatar.jpg",
                     content: "@pianofraud_ the reason is that I don't need a concert hall full of strangers to validate what I already know. you seem to spend a lot of time thinking about me for someone who thinks I'm talentless. maybe use that energy on something productive? just a thought.",
                     time: "20 Sep 14:55",
@@ -381,7 +381,7 @@ const BLOG_CONFIG = {
                 },
                 {
                     id: 312,
-                    username: "code",
+                    username: "song///",
                     avatar: "../assets/images/lucio-avatar.jpg",
                     content: "@pianofraud_ based on the music. which you've never heard live because you can't afford a ticket \u2014 not that we sell them, the events are free. but you'd have to actually know someone to get invited. and clearly, you don't.",
                     time: "20 Sep 15:20",
@@ -391,7 +391,7 @@ const BLOG_CONFIG = {
                     id: 313,
                     username: "nacht.kind",
                     avatar: "../assets/images/user14.jpg",
-                    content: "CODE JUST ENDED THAT MAN'S WHOLE EXISTENCE \ud83d\udca0\ud83d\udca0\ud83d\udca0",
+                    content: "SONG/// JUST ENDED THAT MAN'S WHOLE EXISTENCE \ud83d\udca0\ud83d\udca0\ud83d\udca0",
                     time: "20 Sep 15:22",
                     likes: 389
                 },
@@ -541,7 +541,7 @@ const BLOG_CONFIG = {
                 },
                 {
                     id: 412,
-                    username: "code",
+                    username: "song///",
                     avatar: "../assets/images/lucio-avatar.jpg",
                     content: "@pianofraud_ @get_real_music you both spend so much time analyzing my life. don't you have your own? I've never asked anyone to validate me. I play because I love it. you teach 30 students a week \u2014 congratulations. I play one concert and the room cries. we're not the same.",
                     time: "5 Aug 22:30",
@@ -557,7 +557,7 @@ const BLOG_CONFIG = {
                 },
                 {
                     id: 414,
-                    username: "code",
+                    username: "song///",
                     avatar: "../assets/images/lucio-avatar.jpg",
                     content: "@get_real_music a stranger DID cry. in Prague. you'd know that if you read the post instead of just looking for things to be angry about. honestly \u2014 go practice. get better. come back when you've written something people actually want to hear. this thread is beneath me.",
                     time: "5 Aug 23:01",
@@ -597,7 +597,7 @@ const BLOG_CONFIG = {
                 },
                 {
                     id: 419,
-                    username: "code",
+                    username: "song///",
                     avatar: "../assets/images/lucio-avatar.jpg",
                     content: "@TruthSeeker404 I don't know what you're referring to. The Hamburg concert was well received.",
                     time: "6 Aug 09:15",
@@ -693,7 +693,7 @@ const BLOG_CONFIG = {
                 },
                 {
                     id: 509,
-                    username: "code",
+                    username: "song///",
                     avatar: "../assets/images/lucio-avatar.jpg",
                     content: "@Alex_Music_Lover anytime. the door's open.",
                     time: "12 Jul 16:45",
@@ -717,7 +717,7 @@ const BLOG_CONFIG = {
                 },
                 {
                     id: 512,
-                    username: "code",
+                    username: "song///",
                     avatar: "../assets/images/lucio-avatar.jpg",
                     content: "@pianofraud_ you're still here? genuinely asking. don't you have somewhere to be? a job? a hobby? anything? because I just had Steirereck for lunch, practiced for three hours, and now I'm watching the sunset from Domgasse, and you're writing comments on my blog. one of us is wasting their life and it isn't me.",
                     time: "12 Jul 19:30",
@@ -735,7 +735,7 @@ const BLOG_CONFIG = {
                     id: 514,
                     username: "tia.mp4",
                     avatar: "../assets/images/user23.jpg",
-                    content: "@fiorella.mp3 @hannah.berg should I be worried that Code being mean to people is making him MORE attractive? like the condescension is doing something for me. I need therapy",
+                    content: "@fiorella.mp3 @hannah.berg should I be worried that Song/// being mean to people is making him MORE attractive? like the condescension is doing something for me. I need therapy",
                     time: "12 Jul 20:00",
                     likes: 267
                 },
@@ -802,7 +802,7 @@ const BLOG_CONFIG = {
             },
             {
                 sender: "blogger",
-                content: "completely. come to Vienna. I'll show you the Steinway \u2014 1920s Model D, took two years to find her. the apartment is under renovation so I've moved the piano to my studio \u2014 LCC tower block, room T1004. just tell the front desk you're here for Code. let me know when.",
+                content: "completely. come to Vienna. I'll show you the Steinway \u2014 1920s Model D, took two years to find her. the apartment is under renovation so I've moved the piano to my studio \u2014 LCC tower block, room T1004. just tell the front desk you're here for Song///. let me know when.",
                 time: "10 Oct 2024 21:40"
             }
         ],
@@ -853,7 +853,7 @@ const BLOG_CONFIG = {
 
     // ========== UI Config ==========
     ui: {
-        siteName: "Code",
+        siteName: "Song///",
         themeColor: "#1a1a1a",
         accentColor: "#c9a96e"
     }
