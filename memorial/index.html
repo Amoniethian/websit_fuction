@@ -271,9 +271,15 @@
             if (isPlaying) {
                 isPlaying = false;
                 if (currentTimeout) clearTimeout(currentTimeout);
+                // Disconnect old gainNode to immediately silence all scheduled oscillators
+                if (gainNode) gainNode.disconnect();
                 document.getElementById('audio-icon').textContent = '🔇';
                 document.getElementById('audio-text').textContent = 'Play Music';
             } else {
+                // Create fresh gainNode so old (disconnected) oscillators don't bleed through
+                gainNode = audioCtx.createGain();
+                gainNode.gain.value = 0.15;
+                gainNode.connect(audioCtx.destination);
                 isPlaying = true;
                 document.getElementById('audio-icon').textContent = '🔊';
                 document.getElementById('audio-text').textContent = 'Amazing Grace';

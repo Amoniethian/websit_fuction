@@ -86,6 +86,9 @@
         </div>
     </div>
 
+    <!-- Transition-in overlay (prevents flash when arriving from memorial page) -->
+    <div id="transition-overlay" style="position:fixed;top:0;left:0;width:100%;height:100%;background:#000;z-index:99999;transition:opacity 0.8s ease;pointer-events:none;"></div>
+
     <!-- Bilingual toggle button (dev tool) -->
     <button id="cn-toggle" onclick="document.body.classList.toggle('show-cn'); this.textContent = document.body.classList.contains('show-cn') ? '中/EN ✓' : '中/EN'" style="position:fixed;bottom:20px;right:20px;z-index:9999;background:#333;color:#fff;border:none;padding:8px 14px;border-radius:20px;font-size:12px;cursor:pointer;opacity:0.7;transition:opacity 0.2s;font-family:sans-serif;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'">中/EN</button>
 
@@ -160,12 +163,21 @@
             renderPosts();
             initChatHistory();
 
-            // Check if player unlocked the memorial secret
+            // Handle transition-in overlay
+            const overlay = document.getElementById('transition-overlay');
             if (localStorage.getItem('memorial_secret_unlocked') === 'true') {
+                // Coming from memorial — fade out the black overlay smoothly
                 const badge = document.getElementById('new-msg-badge');
                 if (badge) {
                     badge.style.display = 'flex';
                 }
+                requestAnimationFrame(() => {
+                    overlay.style.opacity = '0';
+                    overlay.addEventListener('transitionend', () => overlay.remove(), { once: true });
+                });
+            } else {
+                // Normal visit — remove overlay immediately
+                overlay.remove();
             }
         }
 
@@ -181,7 +193,15 @@
                 postEl.id = `post-${post.id}`;
 
                 let commentsHtml = '';
-                post.comments.forEach(comment => {
+                // Move palette link comment to a random position in the first 3
+                let comments = [...post.comments];
+                const paletteIdx = comments.findIndex(c => c.content && c.content.includes('palette/index.html'));
+                if (paletteIdx > 2) {
+                    const [paletteComment] = comments.splice(paletteIdx, 1);
+                    const randomPos = Math.floor(Math.random() * Math.min(3, comments.length));
+                    comments.splice(randomPos, 0, paletteComment);
+                }
+                comments.forEach(comment => {
                     const isVisitor = comment.username === visitor.name;
                     commentsHtml += `
                         <div class="comment-item">
