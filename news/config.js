@@ -56,6 +56,13 @@ const NEWS_CONFIG = {
 
             <p class="editor-note"><em>Editor's note: Follow-up reporting on the "old surgical scars" and handwriting analysis will appear in Section A3. This newspaper will continue to monitor developments in this case.</em></p>
             <p class="cn"><em>编者注：关于"陈旧手术疤痕"及笔迹分析的后续报道将刊载于A3版。本报将持续关注案件进展。</em></p>
+
+            <div class="memorial-notice" style="margin-top: 35px; padding: 25px; background: #f9f5f0; border-left: 4px solid #555; border-radius: 2px;">
+                <p style="font-size: 16px; line-height: 1.8; color: #444;">We understand the profound sense of loss felt by Lucio's fans, friends, and loved ones. His music touched countless lives, and the grief of his sudden departure is shared by many across the world. While the Hoffmann family has chosen a private funeral, we believe everyone who cared for Lucio deserves a space to honour his memory.</p>
+                <p class="cn" style="font-size: 15px; line-height: 1.8; color: #888;">我们理解Lucio的粉丝、朋友和亲人们心中深切的惋惜与哀痛。他的音乐曾触动无数人的心灵，他突然离去的悲伤被世界各地的人们共同承担。尽管霍夫曼家族选择了私人葬礼，但我们相信每一个在乎Lucio的人都应该拥有一个缅怀他的空间。</p>
+                <p style="margin-top: 15px; font-size: 16px;"><a href="../memorial/index.html" style="color: #bb1919; text-decoration: underline; font-weight: bold;">Click here to attend the online memorial service →</a></p>
+                <p class="cn" style="margin-top: 5px; font-size: 15px;"><a href="../memorial/index.html" style="color: #bb1919; text-decoration: underline; font-weight: bold;">点击此处参加线上哀悼 →</a></p>
+            </div>
         `,
 
         // Info box
