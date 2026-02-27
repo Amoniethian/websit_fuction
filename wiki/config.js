@@ -185,6 +185,24 @@ const WIKI_CONFIG = {
                 <p><em>Note: Lucius voluntarily relinquished inheritance rights to the family business but retains full rights to his mother's estate.</em></p>
                 <p class="cn"><em>注：Lucius自愿放弃了家族企业的继承权，但保留了对母亲遗产的全部权利。</em></p>
 
+                <h3>Family Photos</h3>
+                <div style="display:flex; gap:16px; flex-wrap:wrap; margin:15px 0;">
+                    <div style="flex:1; min-width:200px;">
+                        <div style="border:1px solid var(--border-color); border-radius:4px; overflow:hidden;">
+                            <img src="../assets/images/wiki/heinrich-portrait.jpg" alt="Heinrich Hoffmann — Portrait" style="width:100%; display:block;">
+                        </div>
+                        <p style="font-size:12px; color:var(--text-muted); margin-top:6px; text-align:center;">Heinrich Hoffmann, 2022</p>
+                        <p class="cn" style="font-size:12px; color:var(--text-muted); margin-top:2px; text-align:center;">Heinrich Hoffmann，2022年</p>
+                    </div>
+                    <div style="flex:1; min-width:200px;">
+                        <div style="border:1px solid var(--border-color); border-radius:4px; overflow:hidden;">
+                            <img src="../assets/images/wiki/heinrich-lucius-together.jpg" alt="Heinrich and Lucius Hoffmann" style="width:100%; display:block;">
+                        </div>
+                        <p style="font-size:12px; color:var(--text-muted); margin-top:6px; text-align:center;">Heinrich & Lucius, Vienna, 2023</p>
+                        <p class="cn" style="font-size:12px; color:var(--text-muted); margin-top:2px; text-align:center;">Heinrich与Lucius，维也纳，2023年</p>
+                    </div>
+                </div>
+
                 <h3>Key Relationships</h3>
                 <table class="data-table">
                     <tr><th>Name</th><th>Relation</th><th>Notes</th></tr>
