@@ -19,7 +19,7 @@ const NEWS_CONFIG = {
         publishDate: "15 November 2024",
         publishTime: "09:32 CET",
         category: "OBITUARY",
-        image: "../assets/images/pianist.jpg",
+        image: "/assets/images/pianist.jpg",
         imageCaption: "Lucius performing at a private recital in Prague, October 2024 (file photo)",
 
         content: `
