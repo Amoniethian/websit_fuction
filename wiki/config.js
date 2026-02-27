@@ -598,7 +598,7 @@ const WIKI_CONFIG = {
                 <p>The following video was recovered from a seized Aurora server. It shows a fragment of a pre-operation briefing attended by "Dr. Voss" and an unidentified associate. The recording quality is poor — believed to have been captured covertly by a staff member.</p>
                 <p class="cn">以下视频从被查封的曙光计划服务器中找到。内容是一段术前简报的片段，出席者为"Voss博士"及一名身份不明的同伙。录像质量较差——据信是一名工作人员秘密拍摄的。</p>
                 <div style="margin:20px 0; background:#000; border-radius:8px; overflow:hidden;">
-                    <video controls style="width:100%; display:block;" poster="../assets/images/wiki-scans/scan-08.svg">
+                    <video controls style="width:100%; display:block;" poster="../assets/images/wiki-scans/scan-08.jpg">
                         <source src="../assets/videos/aurora-briefing.mp4" type="video/mp4">
                         <p style="color:#999; padding:20px; text-align:center;">⚠ Video file not available — file may have been corrupted during server seizure</p>
                     </video>
@@ -637,28 +637,28 @@ const WIKI_CONFIG = {
                 <p>This form bears Lucius Hoffmann's signature, but handwriting analysis confirms it was <strong>forged by Heinrich Hoffmann</strong>. Lucius never consented to a cardiac transplant.</p>
                 <p class="cn">此表格上有Lucius Hoffmann的签名，但笔迹分析确认签名由<strong>Heinrich Hoffmann伪造</strong>。Lucius从未同意进行心脏移植。</p>
                 <div style="margin:15px 0; border:1px solid var(--border-color); border-radius:4px; overflow:hidden;">
-                    <img src="../assets/images/wiki-scans/scan-01.svg" alt="Scan 01 — Forged consent form" style="width:100%; display:block;">
+                    <img src="../assets/images/wiki-scans/scan-01.jpg" alt="Scan 01 — Forged consent form" style="width:100%; display:block;">
                 </div>
 
                 <h3>Document 2 — Organ Compatibility Report (Falsified)</h3>
                 <p>The cross-match report was deliberately falsified to show compatibility. In reality, neither subject had been properly typed. The report was signed by "Dr. Voss" — a known alias.</p>
                 <p class="cn">交叉配型报告被故意伪造为显示相容。实际上两名受试者均未进行正规配型。报告由"Voss博士"签署——已知为化名。</p>
                 <div style="margin:15px 0; border:1px solid var(--border-color); border-radius:4px; overflow:hidden;">
-                    <img src="../assets/images/wiki-scans/scan-02.svg" alt="Scan 02 — Falsified compatibility report" style="width:100%; display:block;">
+                    <img src="../assets/images/wiki-scans/scan-02.jpg" alt="Scan 02 — Falsified compatibility report" style="width:100%; display:block;">
                 </div>
 
                 <h3>Document 3 — Internal Memo from Heinrich Hoffmann</h3>
                 <p>Handwritten memo from Heinrich to the Aurora team, authorising "Phase III" of the operation. The memo explicitly references "the blind boy's heart" and states: <em>"proceed regardless of compatibility concerns — I accept full responsibility."</em></p>
                 <p class="cn">Heinrich写给曙光计划团队的手写备忘录，授权手术"第三阶段"。备忘录明确提及"那个盲童的心脏"，并声明：<em>"无论相容性问题如何，继续进行——我承担全部责任。"</em></p>
                 <div style="margin:15px 0; border:1px solid var(--border-color); border-radius:4px; overflow:hidden;">
-                    <img src="../assets/images/wiki-scans/scan-03.svg" alt="Scan 03 — Heinrich's internal memo" style="width:100%; display:block;">
+                    <img src="../assets/images/wiki-scans/scan-03.jpg" alt="Scan 03 — Heinrich's internal memo" style="width:100%; display:block;">
                 </div>
 
                 <h3>Document 4 — Financial Transfer Records (GCF → Dr. Voss)</h3>
                 <p>Bank transfer records showing €1.85 million moved from the Gifted Children Foundation to Aurora Medical Services Ltd, disguised as "emergency cardiac intervention — Scholar #12." A second transfer of €400,000 was labelled "post-operative care."</p>
                 <p class="cn">银行转账记录显示185万欧元从天才儿童基金会转至曙光医疗服务有限公司，伪装为"紧急心脏干预——学者#12"。第二笔40万欧元的转账标注为"术后护理"。</p>
                 <div style="margin:15px 0; border:1px solid var(--border-color); border-radius:4px; overflow:hidden;">
-                    <img src="../assets/images/wiki-scans/scan-04.svg" alt="Scan 04 — Financial transfer records" style="width:100%; display:block;">
+                    <img src="../assets/images/wiki-scans/scan-04.jpg" alt="Scan 04 — Financial transfer records" style="width:100%; display:block;">
                 </div>
 
                 <div class="warning-box">
@@ -687,14 +687,14 @@ const WIKI_CONFIG = {
                 <p>Chord's complete medical and psychological profile, compiled without his knowledge. Notes describe him as "an ideal donor — no legal identity, no family, no one to report him missing. Musical ability: extraordinary. Psychological state: docile, compliant."</p>
                 <p class="cn">在Chord不知情的情况下编制的完整医学和心理档案。笔记将他描述为"理想供体——无合法身份、无家人、无人会报告其失踪。音乐能力：非凡。心理状态：温顺、服从。"</p>
                 <div style="margin:15px 0; border:1px solid var(--border-color); border-radius:4px; overflow:hidden;">
-                    <img src="../assets/images/wiki-scans/scan-05.svg" alt="Scan 05 — Chord's subject profile" style="width:100%; display:block;">
+                    <img src="../assets/images/wiki-scans/scan-05.jpg" alt="Scan 05 — Chord's subject profile" style="width:100%; display:block;">
                 </div>
 
                 <h3>Document 6 — Post-Operative Report: Dual Transplant</h3>
                 <p>The surgical team's post-operative report. Notes that both subjects survived the procedure but flags "significant immunological concerns." The report was never forwarded to any legitimate medical authority. A handwritten annotation in the margin reads: <em>"Compatibility issues — not our problem. Client was warned."</em></p>
                 <p class="cn">手术团队的术后报告。记录两名受试者均在手术中存活，但标注"重大免疫学隐患"。该报告从未提交给任何合法医疗机构。页边有手写批注：<em>"相容性问题——不是我们的问题。客户已被警告。"</em></p>
                 <div style="margin:15px 0; border:1px solid var(--border-color); border-radius:4px; overflow:hidden;">
-                    <img src="../assets/images/wiki-scans/scan-06.svg" alt="Scan 06 — Post-operative report" style="width:100%; display:block;">
+                    <img src="../assets/images/wiki-scans/scan-06.jpg" alt="Scan 06 — Post-operative report" style="width:100%; display:block;">
                 </div>
 
                 <h3>Document 7 — Communication Log: Heinrich ↔ Network</h3>
@@ -711,7 +711,7 @@ const WIKI_CONFIG = {
                     <p class="cn"><strong>[2024年8月28日]</strong> H：<em>"去做吧。通过基金会转账。标签随你怎么写。学者#12。"</em></p>
                 </div>
                 <div style="margin:15px 0; border:1px solid var(--border-color); border-radius:4px; overflow:hidden;">
-                    <img src="../assets/images/wiki-scans/scan-07.svg" alt="Scan 07 — Communication log" style="width:100%; display:block;">
+                    <img src="../assets/images/wiki-scans/scan-07.jpg" alt="Scan 07 — Communication log" style="width:100%; display:block;">
                 </div>
 
                 <h3>Document 8 — Experiment Protocol: Cellular Memory Transfer Trial #1</h3>
@@ -728,7 +728,7 @@ const WIKI_CONFIG = {
                     <p class="cn"><strong>实际结果：</strong><span style="color:#c0392b;">两名受试者均已死亡。实验终止。</span></p>
                 </div>
                 <div style="margin:15px 0; border:1px solid var(--border-color); border-radius:4px; overflow:hidden;">
-                    <img src="../assets/images/wiki-scans/scan-08.svg" alt="Scan 08 — Experiment protocol" style="width:100%; display:block;">
+                    <img src="../assets/images/wiki-scans/scan-08.jpg" alt="Scan 08 — Experiment protocol" style="width:100%; display:block;">
                 </div>
 
                 <div class="warning-box">
