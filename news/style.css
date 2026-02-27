@@ -379,6 +379,19 @@ body.show-cn .cn {
     display: block;
 }
 
+/* CN inside headings — slightly smaller, muted */
+h1 .cn, h2 .cn {
+    font-size: 0.75em;
+    font-weight: 400;
+    margin-top: 6px;
+}
+
+h4.cn {
+    font-weight: 400;
+    margin-top: 2px;
+    margin-bottom: 6px;
+}
+
 /* Placeholder image */
 .placeholder-image {
     background: linear-gradient(135deg, #667 0%, #999 100%);

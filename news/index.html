@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title id="page-title">European Daily News</title>
     <link rel="stylesheet" href="style.css">
+    <script src="../email-gate.js"></script>
 </head>
 <body>
     <!-- 顶部信息条 -->
@@ -99,7 +100,7 @@
             const headline = config.headline;
 
             // 设置页面标题
-            document.getElementById('page-title').textContent = headline.title + ' | ' + config.siteName;
+            document.title = headline.title + ' | ' + config.siteName;
 
             // 设置网站名称和口号
             document.getElementById('site-name').textContent = config.siteName;
@@ -110,17 +111,27 @@
 
             // 设置文章内容
             document.getElementById('article-category').textContent = headline.category;
-            document.getElementById('article-title').textContent = headline.title;
-            document.getElementById('article-subtitle').textContent = headline.subtitle;
+            document.getElementById('article-title').innerHTML = headline.title + (headline.titleCn ? '<span class="cn">' + headline.titleCn + '</span>' : '');
+            document.getElementById('article-subtitle').innerHTML = headline.subtitle + (headline.subtitleCn ? '<span class="cn">' + headline.subtitleCn + '</span>' : '');
             document.getElementById('article-author').textContent = headline.author;
             document.getElementById('article-date').textContent = headline.publishDate;
             document.getElementById('article-time').textContent = headline.publishTime;
+
+            // 图片格式自动回退（jpg⇄png）
+            function tryAlternateImageFormat(img, fallbackFn) {
+                const src = img.src;
+                if (img.dataset.triedAlt) { fallbackFn(); return; }
+                img.dataset.triedAlt = '1';
+                if (/\.jpe?g$/i.test(src)) { img.src = src.replace(/\.jpe?g$/i, '.png'); }
+                else if (/\.png$/i.test(src)) { img.src = src.replace(/\.png$/i, '.jpg'); }
+                else { fallbackFn(); }
+            }
 
             // 设置图片
             const imageContainer = document.getElementById('article-image-container');
             if (headline.image) {
                 imageContainer.innerHTML = `
-                    <img src="${headline.image}" alt="Article image" onerror="this.parentElement.innerHTML='<div class=\\'placeholder-image\\'>[ Image placeholder ]</div><p class=\\'caption\\'>${headline.imageCaption}</p>'">
+                    <img src="${headline.image}" alt="Article image" onerror="tryAlternateImageFormat(this, () => { this.parentElement.innerHTML='<div class=\\'placeholder-image\\'>[ Image placeholder ]</div><p class=\\'caption\\'>${headline.imageCaption}</p>'; })">
                     <p class="caption">${headline.imageCaption}</p>
                 `;
             } else {
@@ -150,6 +161,7 @@
                 item.innerHTML = `
                     <span class="category">${news.category}</span>
                     <h4><a href="#">${news.title}</a></h4>
+                    ${news.titleCn ? '<h4 class="cn"><a href="#">' + news.titleCn + '</a></h4>' : ''}
                     <span class="time">${news.time}</span>
                 `;
                 sidebarNews.appendChild(item);
