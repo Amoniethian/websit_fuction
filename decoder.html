@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Local Decoder</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #0a0a0a;
+            color: #ccc;
+            font-family: "Courier New", Consolas, monospace;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            width: 100%;
+        }
+        h1 {
+            font-size: 14px;
+            color: #666;
+            letter-spacing: 2px;
+            text-align: center;
+            margin-bottom: 24px;
+        }
+        textarea {
+            width: 100%;
+            height: 220px;
+            background: #111;
+            border: 1px solid #2a2a2a;
+            color: #aaa;
+            font-family: inherit;
+            font-size: 12px;
+            padding: 12px;
+            resize: vertical;
+            outline: none;
+            border-radius: 3px;
+        }
+        textarea:focus { border-color: #444; }
+        textarea::placeholder { color: #444; }
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 12px;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            color: #999;
+            font-family: inherit;
+            font-size: 13px;
+            cursor: pointer;
+            border-radius: 3px;
+            letter-spacing: 0.5px;
+            transition: all 0.2s;
+        }
+        button:hover { background: #252525; color: #ccc; }
+        .result {
+            margin-top: 16px;
+            padding: 14px;
+            background: #111;
+            border: 1px solid #2a2a2a;
+            border-radius: 3px;
+            min-height: 44px;
+            font-size: 13px;
+            word-break: break-all;
+            display: none;
+        }
+        .result.show { display: block; }
+        .result .label { color: #555; font-size: 11px; margin-bottom: 6px; }
+        .result .value { color: #7bed9f; }
+        .result .error { color: #c0392b; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>LOCAL DECODER</h1>
+        <textarea id="input" placeholder="Paste .exe text content here / 在此粘贴 .exe 文本内容"></textarea>
+        <button onclick="decode()">Decode / 解码</button>
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        function decode() {
+            var text = document.getElementById('input').value.trim();
+            var result = document.getElementById('result');
+            result.classList.add('show');
+
+            if (!text) {
+                result.innerHTML = '<span class="error">No content. / 无内容。</span>';
+                return;
+            }
+
+            var lines = text.split('\n');
+            var email = null;
+
+            // Method 1: Find DEADC0DE marker, next line is Base64 email
+            for (var i = 0; i < lines.length - 1; i++) {
+                if (lines[i].trim().indexOf('DEADC0DE') === 0) {
+                    var candidate = lines[i + 1].trim();
+                    try {
+                        email = atob(candidate);
+                    } catch (e) {
+                        // not valid base64, skip
+                    }
+                    break;
+                }
+            }
+
+            if (email) {
+                result.innerHTML =
+                    '<div class="label">DECODED EMAIL:</div>' +
+                    '<div class="value">' + escapeHtml(email) + '</div>';
+            } else {
+                result.innerHTML = '<span class="error">DEADC0DE marker not found or Base64 decode failed.<br>未找到 DEADC0DE 标记或 Base64 解码失败。</span>';
+            }
+        }
+
+        function escapeHtml(s) {
+            var d = document.createElement('div');
+            d.textContent = s;
+            return d.innerHTML;
+        }
+    </script>
+</body>
+</html>
