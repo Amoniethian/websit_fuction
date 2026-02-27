@@ -422,155 +422,303 @@ const WIKI_CONFIG = {
     // ========== Tier 3 Entries (password: test3) ==========
     tier3Entries: [
         {
-            id: "surgery-records",
-            title: "TOP SECRET: Cardiac Transplant Operation Records",
+            id: "project-aurora",
+            title: "TOP SECRET: Project Aurora (曙光计划)",
             category: "Top Secret",
             classification: "TOP SECRET",
             lastModified: "15 November 2024",
             content: `
                 <div class="classified-header">
                     <span class="classification-badge danger">TOP SECRET</span>
-                    <span>Criminal evidence — handle with extreme caution</span>
+                    <span>Organisation profile — criminal investigation pending</span>
                 </div>
 
-                <h3>Operation Summary</h3>
+                <h3>Project Overview</h3>
                 <div class="info-card">
-                    <p><strong>Date:</strong> 3 September 2024</p>
-                    <p><strong>Facility:</strong> Undisclosed private clinic, believed to be in Eastern Europe</p>
-                    <p><strong>Surgeon:</strong> Unknown (operating under alias "Dr. Voss")</p>
-                    <p><strong>Commissioned by:</strong> Heinrich Hoffmann</p>
-                    <p><strong>Procedure:</strong> Bilateral cardiac transplant — cross-exchange between two subjects</p>
+                    <p><strong>Project codename:</strong> Aurora (曙光计划)</p>
+                    <p><strong>Public name:</strong> Aurora International Organ Donation Initiative</p>
+                    <p><strong>Founded:</strong> 2017, registered in Zurich, Switzerland</p>
+                    <p><strong>Stated mission:</strong> Provide life-saving organ transplants to underprivileged children worldwide</p>
+                    <p><strong>Actual function:</strong> Front for an illegal organ procurement and transplant network</p>
+                    <p><strong>Status:</strong> Under investigation by Europol since January 2025</p>
                 </div>
 
-                <h3>Background & Motive</h3>
-                <p>Though Lucius was genuinely talented — a disciplined, hardworking pianist respected by peers and praised by critics — Heinrich was not satisfied. He could hear the difference between Lucius's daytime work and the transcendent night compositions. Heinrich's obsession was not with making Lucius good; Lucius was already good. His obsession was with making Lucius <strong>the genius he himself had failed to become</strong>.</p>
-                <p class="cn">尽管Lucius确实才华横溢——一位自律刻苦、受同行尊重和评论家赞誉的钢琴家——Heinrich并不满意。他能听出Lucius白天作品与那些超凡的夜间作品之间的差距。Heinrich的执念不是让Lucius变得优秀；Lucius已经很优秀了。他的执念是让Lucius成为<strong>他自己未能成为的那个天才</strong>。</p>
-                <p>In early 2024, Heinrich learned of a pseudoscientific theory called <strong>"cellular memory transfer"</strong> — the idea that organ transplants, particularly heart transplants, can transfer the donor's memories, skills, and personality traits to the recipient.</p>
-                <p class="cn">2024年初，Heinrich得知了一种名为<strong>"细胞记忆转移"</strong>的伪科学理论——该理论认为器官移植，尤其是心脏移植，可以将供体的记忆、技能和人格特质转移给受体。</p>
-                <p>Despite having no scientific basis, Heinrich became obsessed with this theory. He contacted an <strong>illegal organ transplant network</strong> with a proposal:</p>
-                <p class="cn">尽管没有任何科学依据，Heinrich却对这一理论着了迷。他联系了一个<strong>非法器官移植网络</strong>，提出了一个方案：</p>
+                <h3>Public Face</h3>
+                <p>On the surface, Project Aurora appeared to be a legitimate humanitarian initiative. It published annual reports, held charity galas in Vienna and Munich, and maintained partnerships with several Eastern European hospitals. Its website showcased dozens of "success stories" — children who had received life-saving transplants through the programme.</p>
+                <p class="cn">表面上，曙光计划看起来是一个合法的人道主义项目。它发布年度报告，在维也纳和慕尼黑举办慈善晚宴，并与多家东欧医院保持合作关系。其网站展示了数十个"成功案例"——通过该项目接受了救命移植手术的儿童。</p>
+
+                <h3>The Reality</h3>
+                <p>In reality, Project Aurora operated a <strong>dual-track system</strong>:</p>
+                <p class="cn">实际上，曙光计划运行着一个<strong>双轨体系</strong>：</p>
+                <ul>
+                    <li><strong>Track A (public):</strong> Genuine organ donation facilitation — approximately 30% of operations were legitimate, providing cover</li>
+                    <li><strong>Track B (covert):</strong> Illegal organ procurement, black-market transplants, and experimental surgical procedures for wealthy clients willing to pay</li>
+                </ul>
+                <p class="cn">- <strong>A轨（公开）：</strong>真正的器官捐赠协调——约30%的手术是合法的，用以提供掩护<br>- <strong>B轨（隐蔽）：</strong>非法器官采购、黑市移植手术，以及为愿意付费的富裕客户进行实验性外科手术</p>
+                <p>Heinrich Hoffmann was one of Track B's most significant clients. His transplant order — a bilateral cardiac cross-exchange between two living subjects — was reportedly the most extreme procedure ever commissioned through the network.</p>
+                <p class="cn">Heinrich Hoffmann是B轨最重要的客户之一。他下达的移植订单——两个活体受试者之间的双向心脏交叉互换——据报道是该网络有史以来接受委托的最极端手术。</p>
 
                 <div class="warning-box">
-                    <p>⚠️ <strong>Swap Lucius's heart with Chord's heart</strong>, believing this would transfer Chord's musical genius into Lucius's body.</p>
-                    <p class="cn">⚠️ <strong>将Lucius的心脏与Chord的心脏互换</strong>，相信这样可以将Chord的音乐天赋转移到Lucius的身体中。</p>
+                    <p>⚠️ Project Aurora's charitable activities were a <strong>calculated smokescreen</strong>. Every legitimate transplant it facilitated served to mask dozens of illegal ones.</p>
+                    <p class="cn">⚠️ 曙光计划的慈善活动是一层<strong>精心设计的烟幕</strong>。它促成的每一台合法移植手术，都在掩盖数十台非法手术。</p>
                 </div>
 
-                <h3>The Operation</h3>
-                <ul>
-                    <li>Both Lucius and Chord were transported to the facility under false pretences</li>
-                    <li>Lucius was told it was a "routine cardiac check-up"</li>
-                    <li>Chord — having no agency or legal identity — was given no explanation</li>
-                    <li>The hearts were cross-exchanged: Lucius received Chord's heart, Chord received Lucius's</li>
-                    <li>Heinrich reportedly justified this by saying: <strong>"At least I'm not killing the boy — he gets a heart too"</strong></li>
-                </ul>
-                <p class="cn">- Lucius和Chord均以虚假理由被送往该设施<br>- Lucius被告知这是一次"常规心脏检查"<br>- Chord——没有任何自主权或合法身份——未得到任何解释<br>- 两人的心脏被交叉互换：Lucius接受了Chord的心脏，Chord接受了Lucius的心脏<br>- 据报道，Heinrich为此辩解道：<strong>"至少我没有杀掉那个男孩——他也得到了一颗心脏"</strong></p>
-
-                <h3>Outcome</h3>
-                <p>The operation was technically "successful." Both subjects survived the immediate post-operative period.</p>
-                <p class="cn">手术在技术层面上"成功"了。两名受试者均在术后即刻存活。</p>
-                <p>However, <strong>donor-recipient tissue compatibility was catastrophically inadequate</strong>. Neither subject had been properly cross-matched.</p>
-                <p class="cn">然而，<strong>供体与受体的组织相容性严重不匹配</strong>。两人均未经过正规的交叉配型。</p>
-                <ul>
-                    <li><strong>Lucius</strong> — Developed acute immune rejection within 6 weeks. Died 14 November 2024.</li>
-                    <li><strong>Chord</strong> — Developed hyperacute rejection. Died approximately 20 September 2024. <em>His death was not reported to any authority.</em></li>
-                </ul>
-                <p class="cn">- <strong>Lucius</strong>——在6周内出现急性免疫排斥。于2024年11月14日死亡。<br>- <strong>Chord</strong>——出现超急性排斥反应。约于2024年9月20日死亡。<em>他的死亡未向任何机构报告。</em></p>
-
-                <div class="warning-box">
-                    <p>⚠️ <strong>Both deaths are directly attributable to Heinrich Hoffmann's actions. This constitutes double homicide through criminal negligence at minimum.</strong></p>
-                    <p class="cn">⚠️ <strong>两人的死亡均可直接归因于Heinrich Hoffmann的行为。这至少构成因刑事疏忽导致的双重杀人罪。</strong></p>
-                </div>
+                <p style="margin-top:20px; color: var(--accent-color);"><em>→ See BLACK ARCHIVE (Level 4) for full operational documents and scanned evidence.</em></p>
+                <p class="cn" style="color: var(--accent-color);"><em>→ 完整行动文件及扫描证据见黑色档案（第4层）。</em></p>
             `
         },
         {
-            id: "chord-full",
-            title: "Chord — Complete File (DECLASSIFIED)",
+            id: "gifted-children-foundation",
+            title: "TOP SECRET: Gifted Children Foundation (天才儿童基金会)",
             category: "Top Secret",
             classification: "TOP SECRET",
             lastModified: "15 November 2024",
             content: `
                 <div class="classified-header">
                     <span class="classification-badge danger">TOP SECRET</span>
-                    <span>Subject deceased — file partially declassified</span>
+                    <span>Shell organisation — linked to Project Aurora</span>
                 </div>
 
-                <h3>Full Profile</h3>
+                <h3>Organisation Profile</h3>
                 <div class="info-card">
-                    <p><strong>Name:</strong> Chord (no surname; refused to use "Hoffmann")</p>
-                    <p><strong>Born:</strong> circa 1997, exact date and location unknown</p>
-                    <p><strong>Died:</strong> approximately 20 September 2024 (unreported)</p>
-                    <p><strong>Condition:</strong> Blind from birth (bilateral anophthalmia)</p>
-                    <p><strong>Nominal status:</strong> Listed as Heinrich's illegitimate son in private records</p>
-                    <p><strong>Actual status:</strong> No biological relation. Chord always knew and refused to play along.</p>
+                    <p><strong>Full name:</strong> The Hoffmann Foundation for Gifted Children (天才儿童基金会)</p>
+                    <p><strong>Founded:</strong> 2019, Vienna, Austria</p>
+                    <p><strong>Founder:</strong> Heinrich Hoffmann</p>
+                    <p><strong>Board members:</strong> Heinrich Hoffmann (chair), two unnamed associates, one legal proxy</p>
+                    <p><strong>Stated mission:</strong> Support exceptionally talented young musicians through scholarships and mentorship</p>
+                    <p><strong>Actual function:</strong> Financial conduit and administrative shell for Project Aurora's Track B operations</p>
                 </div>
 
-                <h3>Origins</h3>
-                <p>Chord's true origins remain unclear. Born into extreme poverty, likely in Eastern Europe, he was discovered in an orphanage by an intermediary connected to the same illegal network Heinrich later used for the transplant operation. Identified as a musical prodigy at a very young age despite his blindness, he was brought into the Hoffmann household around age 8 — not as a son, but as a tool.</p>
-                <p class="cn">Chord的真实身世仍不清楚。他出身赤贫，可能来自东欧，在一家孤儿院被发现——发现者是与Heinrich后来用于移植手术的同一非法网络有关联的中间人。尽管双目失明，他在很小的时候就被发现是音乐神童，约8岁时被带入霍夫曼家族——不是作为儿子，而是作为工具。</p>
+                <h3>The Cover</h3>
+                <p>The Gifted Children Foundation (GCF) presented itself as a philanthropic initiative dedicated to nurturing musical prodigies. It awarded scholarships, hosted masterclasses, and funded concert tours for young pianists. Heinrich frequently cited the foundation in interviews as proof of his commitment to "the next generation of talent."</p>
+                <p class="cn">天才儿童基金会（GCF）对外宣称是一个致力于培养音乐神童的慈善机构。它颁发奖学金、举办大师班、并资助年轻钢琴家的音乐会巡演。Heinrich在采访中频繁提及该基金会，作为他"致力于下一代人才"的证明。</p>
 
-                <h3>Life in Captivity</h3>
-                <p>For nearly two decades, Chord lived in a soundproofed annex with no contact with the outside world. He was a ghostwriter — his sole purpose was to compose music that would be attributed to Lucius. Despite this, those few staff members who interacted with him described him as <strong>remarkably gentle and uncomplaining</strong>, never aggressive, never bitter. He simply played. It was all he had.</p>
-                <p class="cn">近二十年来，Chord生活在一间隔音附楼中，与外界完全隔绝。他是一个枪手——他存在的唯一目的就是创作署名Lucius的音乐。尽管如此，少数与他接触过的工作人员形容他<strong>非常温和且从不抱怨</strong>，从不攻击性，从不怀恨。他只是弹琴。那是他拥有的一切。</p>
-                <p>Chord was aware of this arrangement. According to notes found in the annex:</p>
-                <p class="cn">Chord对这一安排心知肚明。根据在附楼中发现的笔记：</p>
-                <div class="document-box">
-                    <p><em>"He wants me to be his son's ghost. I am not his son. I am not anyone's ghost. But the piano is the only thing I have, so I play. I play because it is the only proof I exist."</em></p>
-                    <p class="cn"><em>"他想让我做他儿子的影子。我不是他的儿子。我不是任何人的影子。但钢琴是我唯一拥有的东西，所以我弹。我弹琴，因为这是我存在的唯一证明。"</em></p>
-                </div>
-
-                <h3>Known Compositions (attributed to Lucius)</h3>
-                <p>ALL of the following works were composed by Chord:</p>
-                <p class="cn">以下所有作品均由Chord创作：</p>
+                <h3>The Truth</h3>
+                <p>Financial records recovered from Heinrich's Munich study reveal that <strong>over 70% of the foundation's funds were funnelled directly to Project Aurora</strong>. The GCF served three critical functions:</p>
+                <p class="cn">从Heinrich慕尼黑书房中找到的财务记录显示，<strong>基金会超过70%的资金被直接输送到了曙光计划</strong>。天才儿童基金会承担了三个关键功能：</p>
                 <ul>
-                    <li><em>Whispers of the Night</em> — Chord's masterpiece, completed shortly before the transplant</li>
-                    <li><em>The Forgotten Waltz</em></li>
-                    <li><em>Moonlit Monologue</em></li>
-                    <li>And approximately 40+ other unpublished works found in the annex</li>
+                    <li><strong>Money laundering:</strong> Charitable donations were reclassified as "medical grants" and wired to Aurora's offshore accounts</li>
+                    <li><strong>Talent scouting:</strong> The foundation's "scholarship programme" was used to identify musically gifted children — some of whom were flagged for Aurora's experimental programme</li>
+                    <li><strong>Surgical logistics:</strong> The GCF paid for the cardiac transplant operation directly, disguised as "emergency medical aid for a scholarship recipient"</li>
                 </ul>
-                <p class="cn">- 《夜之低语》——Chord的杰作，在移植手术前不久完成<br>- 《被遗忘的华尔兹》<br>- 《月光独白》<br>- 以及在附楼中发现的约40余部未出版作品</p>
+                <p class="cn">- <strong>洗钱：</strong>慈善捐款被重新归类为"医疗拨款"，汇入曙光计划的离岸账户<br>- <strong>人才搜寻：</strong>基金会的"奖学金项目"被用于筛选有音乐天赋的儿童——其中一些被标记为曙光计划实验项目的目标<br>- <strong>手术后勤：</strong>天才儿童基金会直接支付了心脏移植手术的费用，伪装成"对奖学金获得者的紧急医疗援助"</p>
 
-                <h3>The "C" in Lucius's Will</h3>
-                <p>In his draft will, Lucius wrote: "Whispers of the Night was written for C." It is now clear that "C" refers to <strong>Chord</strong> — and that in his final days, Lucius was beginning to understand that the piece was not written FOR Chord, but BY Chord. The will's unfinished final sentence — "It was written BY —" — appears to be the moment of this realisation.</p>
-                <p class="cn">在遗嘱草稿中，Lucius写道："《夜之低语》是为C写的。"现在已经清楚，"C"指的是<strong>Chord</strong>——而且在Lucius生命的最后几天，他开始意识到这首曲子不是为Chord写的，而是由Chord写的。遗嘱那句未写完的话——"它是由——"——正是他顿悟的那一刻。</p>
+                <h3>Key Financial Transfer</h3>
+                <div class="document-box">
+                    <p><strong>Date:</strong> 18 August 2024</p>
+                    <p><strong>From:</strong> GCF Account (Erste Bank, Vienna) — IBAN ending ...4471</p>
+                    <p><strong>To:</strong> Aurora Medical Services Ltd (Raiffeisen, Bratislava) — IBAN ending ...8903</p>
+                    <p><strong>Amount:</strong> €1,850,000</p>
+                    <p><strong>Reference:</strong> "Emergency cardiac intervention — Scholar #12"</p>
+                    <p><em>Note: "Scholar #12" does not correspond to any real scholarship recipient in GCF records.</em></p>
+                </div>
+                <p class="cn"><strong>日期：</strong>2024年8月18日 | <strong>来自：</strong>GCF账户（维也纳Erste银行）| <strong>至：</strong>曙光医疗服务有限公司（布拉迪斯拉发Raiffeisen银行）| <strong>金额：</strong>€1,850,000 | <strong>备注：</strong>"紧急心脏干预——学者#12"<br><em>注："学者#12"与GCF记录中任何真实奖学金获得者均不对应。</em></p>
+
+                <div class="warning-box">
+                    <p>⚠️ The Gifted Children Foundation was <strong>not a charity</strong>. It was a purpose-built instrument to fund the heart transplant that killed Lucius and Chord.</p>
+                    <p class="cn">⚠️ 天才儿童基金会<strong>不是慈善机构</strong>。它是一个专门用来资助那场杀死Lucius和Chord的换心手术的工具。</p>
+                </div>
+
+                <p style="margin-top:20px; color: var(--accent-color);"><em>→ See BLACK ARCHIVE (Level 4) for scanned financial documents and internal communications.</em></p>
+                <p class="cn" style="color: var(--accent-color);"><em>→ 扫描财务文件及内部通信见黑色档案（第4层）。</em></p>
             `
         },
         {
-            id: "cellular-memory",
-            title: "Reference: Cellular Memory Theory",
+            id: "personality-simulation",
+            title: "TOP SECRET: Genius Personality Simulation Project (天才人格模拟计划)",
             category: "Top Secret",
             classification: "TOP SECRET",
-            lastModified: "8 November 2024",
+            lastModified: "15 November 2024",
             content: `
                 <div class="classified-header">
                     <span class="classification-badge danger">TOP SECRET</span>
-                    <span>Context document</span>
+                    <span>Experimental programme — subjects deceased</span>
                 </div>
 
-                <h3>Overview</h3>
-                <p>"Cellular memory" is a <strong>pseudoscientific hypothesis</strong> suggesting that memories, personality traits, and even skills can be stored in cells outside the brain — particularly in the heart — and transferred through organ transplantation.</p>
-                <p class="cn">"细胞记忆"是一种<strong>伪科学假说</strong>，认为记忆、人格特质甚至技能可以储存在大脑以外的细胞中——尤其是心脏——并通过器官移植进行转移。</p>
-
-                <h3>Scientific Consensus</h3>
-                <p>The theory has been <strong>thoroughly debunked</strong> by mainstream science. There is no credible evidence that organ transplants transfer memories or abilities. Anecdotal reports of personality changes in transplant recipients are attributed to psychological factors, immunosuppressant medications, and confirmation bias.</p>
-                <p class="cn">该理论已被主流科学<strong>彻底否定</strong>。没有可信证据表明器官移植能转移记忆或能力。关于移植受者性格改变的轶事报告被归因于心理因素、免疫抑制药物和确认偏差。</p>
-
-                <h3>Heinrich's Belief</h3>
-                <p>Despite the lack of scientific backing, Heinrich became convinced of this theory after encountering it through online forums and a self-published book titled <em>"The Heart Remembers: Cellular Memory and the Transfer of Soul"</em> by a discredited former researcher.</p>
-                <p class="cn">尽管缺乏科学支持，Heinrich在通过网络论坛和一位已名誉扫地的前研究员自费出版的书籍《心脏的记忆：细胞记忆与灵魂转移》接触到该理论后，变得深信不疑。</p>
-                <p>Heinrich's notes (found in his Munich study) include passages such as:</p>
-                <p class="cn">Heinrich的笔记（在其慕尼黑书房中发现）包括如下段落：</p>
-                <div class="document-box">
-                    <p><em>"If the heart carries memory, then talent must live in the cells. Give my son the right heart, and he will finally become what he was always meant to be. What I was always meant to be."</em></p>
-                    <p class="cn"><em>"如果心脏承载记忆，那么天赋就一定存在于细胞之中。给我的儿子一颗对的心脏，他就能终于成为他命中注定要成为的人。成为我命中注定要成为的人。"</em></p>
+                <h3>Project Summary</h3>
+                <div class="info-card">
+                    <p><strong>Project codename:</strong> Genius Personality Simulation (天才人格模拟计划)</p>
+                    <p><strong>Parent programme:</strong> Project Aurora — Track B, Experimental Division</p>
+                    <p><strong>Principal investigator:</strong> Unknown (alias "Dr. Voss")</p>
+                    <p><strong>Sponsor:</strong> Heinrich Hoffmann, via Gifted Children Foundation</p>
+                    <p><strong>Subjects:</strong> Lucius Hoffmann (Subject L) and Chord (Subject C)</p>
+                    <p><strong>Theoretical basis:</strong> Cellular memory transfer — <em>pseudoscience</em></p>
+                    <p><strong>Outcome:</strong> Both subjects deceased</p>
                 </div>
-                <p>The final sentence is particularly revealing — it suggests Heinrich saw Lucius's "genius" as a proxy for his own unfulfilled musical ambitions.</p>
-                <p class="cn">最后一句话尤其发人深省——它暗示Heinrich将Lucius的"天才"视为自己未竟音乐抱负的替身。</p>
+
+                <h3>Premise</h3>
+                <p>The Genius Personality Simulation Project was built on the <strong>pseudoscientific hypothesis of "cellular memory transfer"</strong> — the belief that memories, personality traits, and creative abilities are stored in organ cells (particularly the heart) and can be transferred through transplantation.</p>
+                <p class="cn">天才人格模拟计划建立在<strong>"细胞记忆转移"这一伪科学假说</strong>之上——认为记忆、人格特质和创造力储存在器官细胞（尤其是心脏）中，可以通过移植进行转移。</p>
+                <p>Heinrich Hoffmann, obsessed with this theory, commissioned Aurora's experimental division to attempt a <strong>bilateral cardiac cross-exchange</strong> between his son Lucius and a captive musical prodigy known only as Chord — believing this would transfer Chord's genius into Lucius.</p>
+                <p class="cn">Heinrich Hoffmann痴迷于这一理论，委托曙光计划的实验部门尝试在其子Lucius和一位被囚禁的音乐天才Chord之间进行<strong>双向心脏交叉互换</strong>——相信这样做能将Chord的天赋转移到Lucius身上。</p>
+
+                <h3>The Subjects</h3>
+                <table style="width:100%; border-collapse:collapse; margin:15px 0;">
+                    <tr style="border-bottom:1px solid var(--border-color);">
+                        <th style="text-align:left; padding:8px; color:var(--text-muted);">—</th>
+                        <th style="text-align:left; padding:8px;">Subject L (Lucius)</th>
+                        <th style="text-align:left; padding:8px;">Subject C (Chord)</th>
+                    </tr>
+                    <tr style="border-bottom:1px solid var(--border-color);">
+                        <td style="padding:8px; color:var(--text-muted);">Role</td>
+                        <td style="padding:8px;">Recipient (intended beneficiary)</td>
+                        <td style="padding:8px;">Donor (unwilling; no consent)</td>
+                    </tr>
+                    <tr style="border-bottom:1px solid var(--border-color);">
+                        <td style="padding:8px; color:var(--text-muted);">Awareness</td>
+                        <td style="padding:8px;">Told it was a "routine cardiac check-up"</td>
+                        <td style="padding:8px;">Given no explanation</td>
+                    </tr>
+                    <tr style="border-bottom:1px solid var(--border-color);">
+                        <td style="padding:8px; color:var(--text-muted);">Post-op</td>
+                        <td style="padding:8px;">Acute immune rejection — died 14 Nov 2024</td>
+                        <td style="padding:8px;">Hyperacute rejection — died ~20 Sep 2024</td>
+                    </tr>
+                </table>
+
+                <h3>Leaked Internal Recording</h3>
+                <p>The following video was recovered from a seized Aurora server. It shows a fragment of a pre-operation briefing attended by "Dr. Voss" and an unidentified associate. The recording quality is poor — believed to have been captured covertly by a staff member.</p>
+                <p class="cn">以下视频从被查封的曙光计划服务器中找到。内容是一段术前简报的片段，出席者为"Voss博士"及一名身份不明的同伙。录像质量较差——据信是一名工作人员秘密拍摄的。</p>
+                <div style="margin:20px 0; background:#000; border-radius:8px; overflow:hidden;">
+                    <video controls style="width:100%; display:block;" poster="../assets/images/wiki-scans/scan-08.svg">
+                        <source src="../assets/videos/aurora-briefing.mp4" type="video/mp4">
+                        <p style="color:#999; padding:20px; text-align:center;">⚠ Video file not available — file may have been corrupted during server seizure</p>
+                    </video>
+                </div>
+
+                <div class="warning-box">
+                    <p>⚠️ <strong>Both Lucius and Chord were used as experimental subjects without informed consent.</strong> Neither survived. This programme constitutes criminal human experimentation.</p>
+                    <p class="cn">⚠️ <strong>Lucius和Chord均在未获得知情同意的情况下被用作实验对象。</strong>两人均未存活。此项目构成犯罪性人体实验。</p>
+                </div>
+
+                <p style="margin-top:20px; color: var(--accent-color);"><em>→ Full experiment protocol, surgical records, and scanned evidence available in BLACK ARCHIVE (Level 4).</em></p>
+                <p class="cn" style="color: var(--accent-color);"><em>→ 完整实验方案、手术记录及扫描证据见黑色档案（第4层）。</em></p>
             `
         }
     ],
 
     // ========== Tier 4 Entries (password: test4) ==========
     tier4Entries: [
+        {
+            id: "aurora-full-docs",
+            title: "BLACK ARCHIVE: Project Aurora — Full Operational Documents",
+            category: "Black Archive",
+            classification: "BLACK",
+            lastModified: "15 November 2024",
+            content: `
+                <div class="classified-header">
+                    <span class="classification-badge danger">BLACK ARCHIVE</span>
+                    <span>⚠ SCANNED EVIDENCE — LAW ENFORCEMENT COPY</span>
+                </div>
+
+                <h3>Recovered Documents</h3>
+                <p>The following documents were recovered during the Europol raid on Aurora's Eastern European facility in January 2025. Originals are held as evidence; these are authorised digital scans.</p>
+                <p class="cn">以下文件于2025年1月欧洲刑警组织突袭曙光计划东欧设施时被找到。原件作为证据保存；以下为授权数字扫描件。</p>
+
+                <h3>Document 1 — Surgical Consent Form (Forged)</h3>
+                <p>This form bears Lucius Hoffmann's signature, but handwriting analysis confirms it was <strong>forged by Heinrich Hoffmann</strong>. Lucius never consented to a cardiac transplant.</p>
+                <p class="cn">此表格上有Lucius Hoffmann的签名，但笔迹分析确认签名由<strong>Heinrich Hoffmann伪造</strong>。Lucius从未同意进行心脏移植。</p>
+                <div style="margin:15px 0; border:1px solid var(--border-color); border-radius:4px; overflow:hidden;">
+                    <img src="../assets/images/wiki-scans/scan-01.svg" alt="Scan 01 — Forged consent form" style="width:100%; display:block;">
+                </div>
+
+                <h3>Document 2 — Organ Compatibility Report (Falsified)</h3>
+                <p>The cross-match report was deliberately falsified to show compatibility. In reality, neither subject had been properly typed. The report was signed by "Dr. Voss" — a known alias.</p>
+                <p class="cn">交叉配型报告被故意伪造为显示相容。实际上两名受试者均未进行正规配型。报告由"Voss博士"签署——已知为化名。</p>
+                <div style="margin:15px 0; border:1px solid var(--border-color); border-radius:4px; overflow:hidden;">
+                    <img src="../assets/images/wiki-scans/scan-02.svg" alt="Scan 02 — Falsified compatibility report" style="width:100%; display:block;">
+                </div>
+
+                <h3>Document 3 — Internal Memo from Heinrich Hoffmann</h3>
+                <p>Handwritten memo from Heinrich to the Aurora team, authorising "Phase III" of the operation. The memo explicitly references "the blind boy's heart" and states: <em>"proceed regardless of compatibility concerns — I accept full responsibility."</em></p>
+                <p class="cn">Heinrich写给曙光计划团队的手写备忘录，授权手术"第三阶段"。备忘录明确提及"那个盲童的心脏"，并声明：<em>"无论相容性问题如何，继续进行——我承担全部责任。"</em></p>
+                <div style="margin:15px 0; border:1px solid var(--border-color); border-radius:4px; overflow:hidden;">
+                    <img src="../assets/images/wiki-scans/scan-03.svg" alt="Scan 03 — Heinrich's internal memo" style="width:100%; display:block;">
+                </div>
+
+                <h3>Document 4 — Financial Transfer Records (GCF → Dr. Voss)</h3>
+                <p>Bank transfer records showing €1.85 million moved from the Gifted Children Foundation to Aurora Medical Services Ltd, disguised as "emergency cardiac intervention — Scholar #12." A second transfer of €400,000 was labelled "post-operative care."</p>
+                <p class="cn">银行转账记录显示185万欧元从天才儿童基金会转至曙光医疗服务有限公司，伪装为"紧急心脏干预——学者#12"。第二笔40万欧元的转账标注为"术后护理"。</p>
+                <div style="margin:15px 0; border:1px solid var(--border-color); border-radius:4px; overflow:hidden;">
+                    <img src="../assets/images/wiki-scans/scan-04.svg" alt="Scan 04 — Financial transfer records" style="width:100%; display:block;">
+                </div>
+
+                <div class="warning-box">
+                    <p>⚠️ These documents constitute primary evidence in an ongoing criminal investigation. Unauthorised distribution is a criminal offence.</p>
+                    <p class="cn">⚠️ 这些文件构成正在进行的刑事调查的主要证据。未经授权的传播属刑事犯罪。</p>
+                </div>
+            `
+        },
+        {
+            id: "simulation-full-protocol",
+            title: "BLACK ARCHIVE: Genius Personality Simulation — Full Protocol",
+            category: "Black Archive",
+            classification: "BLACK",
+            lastModified: "15 November 2024",
+            content: `
+                <div class="classified-header">
+                    <span class="classification-badge danger">BLACK ARCHIVE</span>
+                    <span>⚠ CRIMINAL HUMAN EXPERIMENTATION — FULL RECORDS</span>
+                </div>
+
+                <h3>Experiment Protocol</h3>
+                <p>The complete protocol for the Genius Personality Simulation Project, recovered from Dr. Voss's encrypted workstation. The document reveals the full scope of the experiment — far more extensive than a simple organ swap.</p>
+                <p class="cn">天才人格模拟计划的完整方案，从Voss博士的加密工作站中恢复。该文件揭示了实验的全部范围——远比简单的器官互换更为广泛。</p>
+
+                <h3>Document 5 — Subject Profile: Chord (Pre-Operation)</h3>
+                <p>Chord's complete medical and psychological profile, compiled without his knowledge. Notes describe him as "an ideal donor — no legal identity, no family, no one to report him missing. Musical ability: extraordinary. Psychological state: docile, compliant."</p>
+                <p class="cn">在Chord不知情的情况下编制的完整医学和心理档案。笔记将他描述为"理想供体——无合法身份、无家人、无人会报告其失踪。音乐能力：非凡。心理状态：温顺、服从。"</p>
+                <div style="margin:15px 0; border:1px solid var(--border-color); border-radius:4px; overflow:hidden;">
+                    <img src="../assets/images/wiki-scans/scan-05.svg" alt="Scan 05 — Chord's subject profile" style="width:100%; display:block;">
+                </div>
+
+                <h3>Document 6 — Post-Operative Report: Dual Transplant</h3>
+                <p>The surgical team's post-operative report. Notes that both subjects survived the procedure but flags "significant immunological concerns." The report was never forwarded to any legitimate medical authority. A handwritten annotation in the margin reads: <em>"Compatibility issues — not our problem. Client was warned."</em></p>
+                <p class="cn">手术团队的术后报告。记录两名受试者均在手术中存活，但标注"重大免疫学隐患"。该报告从未提交给任何合法医疗机构。页边有手写批注：<em>"相容性问题——不是我们的问题。客户已被警告。"</em></p>
+                <div style="margin:15px 0; border:1px solid var(--border-color); border-radius:4px; overflow:hidden;">
+                    <img src="../assets/images/wiki-scans/scan-06.svg" alt="Scan 06 — Post-operative report" style="width:100%; display:block;">
+                </div>
+
+                <h3>Document 7 — Communication Log: Heinrich ↔ Network</h3>
+                <p>Encrypted messages recovered from Heinrich's Munich study, documenting months of communication between Heinrich and the Aurora network. Key excerpts:</p>
+                <p class="cn">从Heinrich慕尼黑书房中恢复的加密消息，记录了Heinrich与曙光网络数月的通信。关键摘录：</p>
+                <div class="document-box">
+                    <p><strong>[12 March 2024]</strong> H: <em>"I need you to understand — this is not about saving a life. This is about transferring genius. The boy in the annex has what my son lacks. I want it moved."</em></p>
+                    <p class="cn"><strong>[2024年3月12日]</strong> H：<em>"我需要你们理解——这不是为了救命。这是为了转移天赋。附楼里那个男孩拥有我儿子所缺少的东西。我要把它转移过去。"</em></p>
+                    <br>
+                    <p><strong>[5 July 2024]</strong> V: <em>"We can perform the exchange. Both subjects will receive a heart. Survival is probable but not guaranteed. You understand the risks."</em></p>
+                    <p class="cn"><strong>[2024年7月5日]</strong> V：<em>"我们可以进行互换。两名受试者都会获得一颗心脏。存活有可能但不保证。你了解风险。"</em></p>
+                    <br>
+                    <p><strong>[28 August 2024]</strong> H: <em>"Do it. Transfer the funds through the foundation. Label it whatever you need to. Scholar #12."</em></p>
+                    <p class="cn"><strong>[2024年8月28日]</strong> H：<em>"去做吧。通过基金会转账。标签随你怎么写。学者#12。"</em></p>
+                </div>
+                <div style="margin:15px 0; border:1px solid var(--border-color); border-radius:4px; overflow:hidden;">
+                    <img src="../assets/images/wiki-scans/scan-07.svg" alt="Scan 07 — Communication log" style="width:100%; display:block;">
+                </div>
+
+                <h3>Document 8 — Experiment Protocol: Cellular Memory Transfer Trial #1</h3>
+                <p>The formal experiment protocol document, titled <em>"Genius Personality Simulation via Cardiac Cellular Memory Transfer — Trial #1."</em> It outlines the theoretical framework, surgical procedure, and expected outcomes. The document is chilling in its clinical detachment — two human beings reduced to "Subject L" and "Subject C."</p>
+                <p class="cn">正式实验方案文件，标题为<em>《通过心脏细胞记忆转移的天才人格模拟——试验#1》</em>。文件概述了理论框架、手术流程和预期结果。该文件以其冷酷的临床客观性令人毛骨悚然——两个活生生的人被简化为"受试者L"和"受试者C"。</p>
+                <div class="document-box">
+                    <p><strong>Hypothesis:</strong> Bilateral cardiac exchange between a musically gifted donor (Subject C) and a musically competent but non-prodigious recipient (Subject L) will result in measurable transfer of creative aptitude to the recipient.</p>
+                    <p class="cn"><strong>假设：</strong>在音乐天赋极高的供体（受试者C）和音乐能力合格但非天才级别的受体（受试者L）之间进行双向心脏互换，将导致创造力向受体的可测量转移。</p>
+                    <br>
+                    <p><strong>Expected outcome:</strong> Subject L will demonstrate enhanced musical creativity within 4-8 weeks post-transplant, consistent with cellular memory integration.</p>
+                    <p class="cn"><strong>预期结果：</strong>受试者L将在术后4-8周内表现出增强的音乐创造力，与细胞记忆整合一致。</p>
+                    <br>
+                    <p><strong>Actual outcome:</strong> <span style="color:#c0392b;">Both subjects deceased. Experiment terminated.</span></p>
+                    <p class="cn"><strong>实际结果：</strong><span style="color:#c0392b;">两名受试者均已死亡。实验终止。</span></p>
+                </div>
+                <div style="margin:15px 0; border:1px solid var(--border-color); border-radius:4px; overflow:hidden;">
+                    <img src="../assets/images/wiki-scans/scan-08.svg" alt="Scan 08 — Experiment protocol" style="width:100%; display:block;">
+                </div>
+
+                <div class="warning-box">
+                    <p>⚠️ <strong>The Genius Personality Simulation Project was criminal human experimentation based on pseudoscience. Both Lucius Hoffmann and Chord died as direct results of this programme. Heinrich Hoffmann bears full criminal responsibility.</strong></p>
+                    <p class="cn">⚠️ <strong>天才人格模拟计划是基于伪科学的犯罪性人体实验。Lucius Hoffmann和Chord均作为该计划的直接后果死亡。Heinrich Hoffmann承担全部刑事责任。</strong></p>
+                </div>
+            `
+        },
         {
             id: "digital-life",
             title: "BLACK ARCHIVE: Project Elysium — Digital Life Preservation",
