@@ -212,6 +212,24 @@
         updateCountdown();
         setInterval(updateCountdown, 1000);
 
+        // 图片格式自动回退（png⇄jpg/jpeg）
+        function tryAlternateImageFormat(img) {
+            const src = img.src;
+            if (img.dataset.triedAlt) {
+                img.style.display = 'none';
+                return;
+            }
+            img.dataset.triedAlt = '1';
+            if (/\.jpe?g$/i.test(src)) { img.src = src.replace(/\.jpe?g$/i, '.png'); }
+            else if (/\.png$/i.test(src)) { img.src = src.replace(/\.png$/i, '.jpg'); }
+            else { img.style.display = 'none'; }
+        }
+
+        // 为所有对比图片添加格式回退
+        document.querySelectorAll('.comparison-item img').forEach(img => {
+            img.onerror = function() { tryAlternateImageFormat(this); };
+        });
+
         // Dev mode: show Chinese with ?cn=1
         if (new URLSearchParams(window.location.search).has('cn')) {
             document.body.classList.add('show-cn');

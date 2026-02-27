@@ -110,6 +110,22 @@
             return name.charAt(0).toUpperCase();
         }
 
+        function tryAlternateImageFormat(img, fallbackFn) {
+            const src = img.src;
+            if (img.dataset.triedAlt) {
+                fallbackFn();
+                return;
+            }
+            img.dataset.triedAlt = '1';
+            if (/\.jpe?g$/i.test(src)) {
+                img.src = src.replace(/\.jpe?g$/i, '.png');
+            } else if (/\.png$/i.test(src)) {
+                img.src = src.replace(/\.png$/i, '.jpg');
+            } else {
+                fallbackFn();
+            }
+        }
+
         function createAvatarElement(src, name, size = 44) {
             const container = document.createElement('div');
             if (src) {
@@ -117,7 +133,9 @@
                 img.src = src;
                 img.alt = name;
                 img.onerror = function() {
-                    this.parentElement.innerHTML = `<div class="avatar-placeholder" style="width:${size}px;height:${size}px;">${getInitial(name)}</div>`;
+                    tryAlternateImageFormat(this, () => {
+                        this.parentElement.innerHTML = `<div class="avatar-placeholder" style="width:${size}px;height:${size}px;">${getInitial(name)}</div>`;
+                    });
                 };
                 container.appendChild(img);
             } else {
@@ -223,7 +241,7 @@
                 if (post.images && post.images.length > 0) {
                     imagesHtml = `
                         <div class="post-images">
-                            <img src="${post.images[0]}" alt="Post image" onerror="this.outerHTML='<div class=\\'placeholder\\'>[ Image placeholder ]</div>'">
+                            <img src="${post.images[0]}" alt="Post image" onerror="tryAlternateImageFormat(this, () => { this.outerHTML='<div class=\\'placeholder\\'>[ Image placeholder ]</div>'; })">
                         </div>
                     `;
                 }
