@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Escape Room Web Props — Dev Portal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            color: #fff;
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #888;
+            font-size: 16px;
+        }
+
+        .sites-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+        }
+
+        .site-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 30px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .site-card:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-5px);
+        }
+
+        .site-card .icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .site-card h2 {
+            color: #fff;
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        .site-card p {
+            color: #888;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #555;
+            font-size: 13px;
+        }
+
+        .note {
+            background: rgba(74, 144, 164, 0.1);
+            border: 1px solid rgba(74, 144, 164, 0.3);
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin-top: 30px;
+            color: #4a90a4;
+            font-size: 13px;
+        }
+
+        .note strong {
+            display: block;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Escape Room — Web Props</h1>
+            <p>Dev portal — select a site to preview</p>
+        </div>
+
+        <div class="sites-grid">
+            <a href="news/index.html" class="site-card">
+                <span class="icon">📰</span>
+                <h2>News Site</h2>
+                <p>European Daily News — obituary article with embedded clues about Lucius's death.</p>
+            </a>
+
+            <a href="blog/index.html" class="site-card">
+                <span class="icon">📝</span>
+                <h2>Personal Blog</h2>
+                <p>Lucius's blog with posts, comments, and DM system (digital life dialogue).</p>
+            </a>
+
+            <a href="wiki/index.html" class="site-card">
+                <span class="icon">📚</span>
+                <h2>Private Archives</h2>
+                <p>Hoffmann Family Archives. 4-tier password system.<br>Passwords: test1 → test2 → test3 → test4</p>
+            </a>
+            <a href="memorial/index.html" class="site-card">
+                <span class="icon">🕯</span>
+                <h2>Memorial</h2>
+                <p>Online memorial page. Flower offering + music notes puzzle → BSOD → redirect to blog.</p>
+            </a>
+
+            <a href="palette/index.html" class="site-card">
+                <span class="icon">🎹</span>
+                <h2>Style Palette</h2>
+                <p>ghostkeys_'s tumblr-style plagiarism accusation page. Linked from blog comments. Broken comparison images.</p>
+            </a>
+        </div>
+
+        <div class="note">
+            <strong>Dev Note</strong>
+            This page is for development only. In production, players access each site via separate URLs. They will NOT see this portal.
+        </div>
+
+        <div class="footer">
+            <p>Config files are in each site's <code>config.js</code></p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Private Archives</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="../email-gate.js"></script>
+</head>
+<body>
+    <!-- Top Navigation -->
+    <nav class="navbar">
+        <div class="logo">
+            <span class="logo-icon">📚</span>
+            <div>
+                <div class="logo-text" id="site-name"></div>
+                <div class="logo-subtitle" id="site-subtitle"></div>
+            </div>
+        </div>
+        <div class="nav-actions">
+            <span class="last-updated">Last updated: <span id="last-updated"></span></span>
+            <div class="login-status" id="login-status">
+                <span class="status-indicator" id="status-indicator"></span>
+                <span class="status-text" id="status-text">No access</span>
+            </div>
+            <button class="btn-login" id="btn-login" onclick="openLogin()">Unlock</button>
+        </div>
+    </nav>
+
+    <!-- Main Layout -->
+    <div class="main-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-section">
+                <div class="sidebar-title">PUBLIC RECORDS</div>
+                <ul class="sidebar-nav" id="public-nav"></ul>
+            </div>
+            <div class="sidebar-section" id="tier1-section" style="display:none;">
+                <div class="sidebar-title">LEVEL 1 — PERSONAL</div>
+                <ul class="sidebar-nav" id="tier1-nav"></ul>
+            </div>
+            <div class="sidebar-section" id="tier2-section" style="display:none;">
+                <div class="sidebar-title">LEVEL 2 — CONFIDENTIAL</div>
+                <ul class="sidebar-nav" id="tier2-nav"></ul>
+            </div>
+            <div class="sidebar-section" id="tier3-section" style="display:none;">
+                <div class="sidebar-title">LEVEL 3 — TOP SECRET</div>
+                <ul class="sidebar-nav" id="tier3-nav"></ul>
+            </div>
+            <div class="sidebar-section" id="tier4-section" style="display:none;">
+                <div class="sidebar-title">LEVEL 4 — BLACK ARCHIVE</div>
+                <ul class="sidebar-nav" id="tier4-nav"></ul>
+            </div>
+            <!-- Locked tiers placeholder -->
+            <div class="sidebar-section" id="locked-tiers">
+                <div class="sidebar-title">RESTRICTED</div>
+                <ul class="sidebar-nav">
+                    <li><a href="#" class="locked" onclick="openLogin(); return false;">
+                        <span class="icon">🔒</span> Classified files <span class="lock-icon">🔒</span>
+                    </a></li>
+                </ul>
+            </div>
+        </aside>
+
+        <!-- Content Area -->
+        <main class="content-area" id="content-area">
+            <!-- Welcome Page -->
+            <div class="welcome-page" id="welcome-page">
+                <div class="icon">🔐</div>
+                <h2 id="welcome-title"></h2>
+                <p id="welcome-description"></p>
+                <div id="access-level-display" style="margin-top: 20px; font-size: 13px; color: var(--text-muted);"></div>
+            </div>
+
+            <!-- Article View -->
+            <div id="article-view" style="display: none;">
+                <div class="content-header">
+                    <div class="breadcrumb">
+                        <a href="#" onclick="showWelcome(); return false;">Home</a> / <span id="breadcrumb-category"></span>
+                    </div>
+                    <h1 id="article-title"></h1>
+                    <div class="meta">
+                        <span class="category-tag" id="article-category"></span>
+                        <span>Last modified: <span id="article-modified"></span></span>
+                    </div>
+                </div>
+                <div class="article-content" id="article-content"></div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Login Modal -->
+    <div class="login-overlay" id="login-overlay">
+        <div class="login-modal">
+            <h2 id="login-title"></h2>
+            <p class="subtitle" id="login-subtitle"></p>
+            <form onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label for="password">PASSPHRASE</label>
+                    <input type="password" id="password" placeholder="Enter passphrase" autocomplete="off">
+                </div>
+                <div class="login-error" id="login-error"></div>
+                <div class="login-success" id="login-success"></div>
+                <div class="login-actions">
+                    <button type="button" class="btn-cancel" onclick="closeLogin()">Cancel</button>
+                    <button type="submit" class="btn-submit">Verify</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Bilingual toggle button (dev tool) -->
+    <button id="cn-toggle" onclick="document.body.classList.toggle('show-cn'); this.textContent = document.body.classList.contains('show-cn') ? '中/EN ✓' : '中/EN'" style="position:fixed;bottom:20px;right:20px;z-index:9999;background:#333;color:#fff;border:none;padding:8px 14px;border-radius:20px;font-size:12px;cursor:pointer;opacity:0.7;transition:opacity 0.2s;font-family:sans-serif;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'">中/EN</button>
+
+    <script src="config.js"></script>
+    <script>
+        // ========== Global State ==========
+        let unlockedTier = 0; // 0 = public only, 1-4 = tier unlocked
+        let currentArticle = null;
+        const config = WIKI_CONFIG;
+
+        // ========== Init ==========
+        function initPage() {
+            document.getElementById('site-name').textContent = config.siteName;
+            document.getElementById('site-subtitle').textContent = config.siteSubtitle;
+            document.getElementById('last-updated').textContent = config.lastUpdated;
+            document.getElementById('welcome-title').textContent = config.siteName;
+            document.getElementById('welcome-description').textContent = config.siteDescription;
+            document.getElementById('login-title').textContent = config.ui.loginTitle;
+            document.getElementById('login-subtitle').textContent = config.ui.loginSubtitle;
+            document.title = config.siteName;
+
+            // Dev mode: show Chinese with ?cn=1
+            if (new URLSearchParams(window.location.search).has('cn')) {
+                document.body.classList.add('show-cn');
+            }
+
+            renderPublicNav();
+            checkSavedState();
+            updateAccessDisplay();
+        }
+
+        // ========== Navigation Rendering ==========
+        function renderPublicNav() {
+            const nav = document.getElementById('public-nav');
+            config.publicEntries.forEach(entry => {
+                const li = document.createElement('li');
+                const icon = getCategoryIcon(entry.category);
+                li.innerHTML = `<a href="#" onclick="loadArticle('${entry.id}', 'public'); return false;">
+                    <span class="icon">${icon}</span> ${entry.title}
+                </a>`;
+                nav.appendChild(li);
+            });
+        }
+
+        function renderTierNav(tier) {
+            const tierKey = `tier${tier}Entries`;
+            const entries = config[tierKey];
+            if (!entries) return;
+
+            const nav = document.getElementById(`tier${tier}-nav`);
+            const section = document.getElementById(`tier${tier}-section`);
+
+            nav.innerHTML = '';
+            entries.forEach(entry => {
+                const li = document.createElement('li');
+                li.id = `nav-${entry.id}`;
+                const icon = getCategoryIcon(entry.category);
+                const badge = entry.classification === 'TOP SECRET' || entry.classification === 'BLACK'
+                    ? `<span class="badge">${entry.classification}</span>` : '';
+                li.innerHTML = `<a href="#" onclick="loadArticle('${entry.id}', 'tier${tier}'); return false;">
+                    <span class="icon">${icon}</span> ${entry.title} ${badge}
+                </a>`;
+                nav.appendChild(li);
+            });
+
+            section.style.display = 'block';
+        }
+
+        function getCategoryIcon(category) {
+            const cat = config.categories.find(c => c.name === category);
+            return cat ? cat.icon : '📄';
+        }
+
+        function updateSidebarForTier() {
+            // Show all unlocked tier navs
+            for (let t = 1; t <= 4; t++) {
+                if (t <= unlockedTier) {
+                    renderTierNav(t);
+                } else {
+                    document.getElementById(`tier${t}-section`).style.display = 'none';
+                }
+            }
+
+            // Hide "locked" placeholder if all tiers unlocked
+            document.getElementById('locked-tiers').style.display = unlockedTier >= 4 ? 'none' : 'block';
+        }
+
+        // ========== Article Loading ==========
+        function loadArticle(id, source) {
+            let entry = null;
+
+            if (source === 'public') {
+                entry = config.publicEntries.find(e => e.id === id);
+            } else {
+                const tierNum = parseInt(source.replace('tier', ''));
+                if (tierNum > unlockedTier) {
+                    openLogin();
+                    return;
+                }
+                const tierKey = `tier${tierNum}Entries`;
+                entry = config[tierKey] ? config[tierKey].find(e => e.id === id) : null;
+            }
+
+            if (!entry) return;
+            currentArticle = entry;
+
+            // Update nav highlight
+            document.querySelectorAll('.sidebar-nav a').forEach(a => a.classList.remove('active'));
+            const navItem = document.querySelector(`#nav-${id} a`) ||
+                           document.querySelector(`.sidebar-nav a[onclick*="${id}"]`);
+            if (navItem) navItem.classList.add('active');
+
+            // Show article
+            document.getElementById('welcome-page').style.display = 'none';
+            document.getElementById('article-view').style.display = 'block';
+            document.getElementById('breadcrumb-category').textContent = entry.category;
+            document.getElementById('article-title').textContent = entry.title;
+            document.getElementById('article-category').textContent = entry.category;
+            document.getElementById('article-modified').textContent = entry.lastModified;
+            document.getElementById('article-content').innerHTML = entry.content;
+        }
+
+        function showWelcome() {
+            document.getElementById('welcome-page').style.display = 'block';
+            document.getElementById('article-view').style.display = 'none';
+            document.querySelectorAll('.sidebar-nav a').forEach(a => a.classList.remove('active'));
+            currentArticle = null;
+        }
+
+        // ========== Login / Password System ==========
+        function openLogin() {
+            document.getElementById('login-overlay').classList.add('active');
+            document.getElementById('password').value = '';
+            document.getElementById('password').focus();
+            document.getElementById('login-error').classList.remove('active');
+            document.getElementById('login-success').classList.remove('active');
+        }
+
+        function closeLogin() {
+            document.getElementById('login-overlay').classList.remove('active');
+        }
+
+        function handleLogin(event) {
+            event.preventDefault();
+            const input = document.getElementById('password').value.trim();
+
+            // Check against all tier passwords
+            let matched = false;
+            for (const tier of config.tiers) {
+                if (input === tier.password && tier.id > unlockedTier) {
+                    // Only unlock the NEXT tier in sequence
+                    if (tier.id === unlockedTier + 1) {
+                        unlockedTier = tier.id;
+                        sessionStorage.setItem('wiki_tier', unlockedTier);
+
+                        // Show success message
+                        const successEl = document.getElementById('login-success');
+                        successEl.textContent = tier.unlockMessage;
+                        successEl.classList.add('active');
+                        document.getElementById('login-error').classList.remove('active');
+
+                        updateSidebarForTier();
+                        updateAccessDisplay();
+                        updateStatusBar();
+
+                        setTimeout(() => closeLogin(), 1500);
+                        matched = true;
+                        break;
+                    } else if (tier.id > unlockedTier + 1) {
+                        // Trying to skip a level
+                        const errorEl = document.getElementById('login-error');
+                        errorEl.textContent = `This passphrase requires Level ${tier.id - 1} access first.`;
+                        errorEl.classList.add('active');
+                        document.getElementById('login-success').classList.remove('active');
+                        matched = true;
+                        break;
+                    }
+                }
+            }
+
+            if (!matched) {
+                document.getElementById('login-error').textContent = config.ui.loginError;
+                document.getElementById('login-error').classList.add('active');
+                document.getElementById('login-success').classList.remove('active');
+                document.getElementById('password').value = '';
+                document.getElementById('password').focus();
+            }
+        }
+
+        function updateStatusBar() {
+            const indicator = document.getElementById('status-indicator');
+            const statusText = document.getElementById('status-text');
+
+            if (unlockedTier > 0) {
+                indicator.classList.add('logged-in');
+                const tier = config.tiers[unlockedTier - 1];
+                statusText.textContent = tier.label;
+            } else {
+                indicator.classList.remove('logged-in');
+                statusText.textContent = 'No access';
+            }
+        }
+
+        function updateAccessDisplay() {
+            const display = document.getElementById('access-level-display');
+            if (unlockedTier === 0) {
+                display.textContent = 'Current access: Public records only. Enter a passphrase to unlock restricted files.';
+            } else if (unlockedTier < 4) {
+                display.textContent = `Current access: ${config.tiers[unlockedTier - 1].label}. Higher clearance levels exist.`;
+            } else {
+                display.textContent = 'Maximum clearance. All archives accessible.';
+            }
+        }
+
+        function checkSavedState() {
+            const saved = sessionStorage.getItem('wiki_tier');
+            if (saved) {
+                unlockedTier = parseInt(saved);
+                updateSidebarForTier();
+                updateStatusBar();
+            }
+        }
+
+        // Close on overlay click
+        document.getElementById('login-overlay').addEventListener('click', function(e) {
+            if (e.target === this) closeLogin();
+        });
+
+        // ESC to close
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeLogin();
+        });
+
+        // Init
+        document.addEventListener('DOMContentLoaded', initPage);
+    </script>
+</body>
+</html>
