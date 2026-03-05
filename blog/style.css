@@ -966,6 +966,14 @@ body.show-cn .cn {
     display: block;
 }
 
+.cn-inline {
+    display: none;
+}
+
+body.show-cn .cn-inline {
+    display: block;
+}
+
 /* ───────── Encrypted Video ───────── */
 .encrypted-video {
     margin: 16px 0;

@@ -134,59 +134,61 @@
 
     <!-- Transition overlays -->
     <div class="transition-overlay black-screen" id="black-screen"></div>
-    <div class="transition-overlay horror-screen" id="horror-screen">
-        <div class="horror-text" id="horror-text">Talk to Me</div>
-    </div>
+    <div class="transition-overlay horror-screen" id="horror-screen"></div>
     <style>
         .horror-screen {
             background: #000 !important;
-            align-items: center;
-            justify-content: center;
             overflow: hidden;
         }
-        .horror-text {
+        .horror-single {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             font-family: 'Times New Roman', serif;
             font-size: 5vw;
-            color: #fff;
+            color: #cc0000;
             text-transform: uppercase;
             letter-spacing: 0.3em;
-            opacity: 0;
-            transform: scale(1);
-            transition: none;
-            text-shadow: 0 0 10px rgba(255,0,0,0.3);
-            position: relative;
+            text-shadow: 0 0 20px rgba(255,0,0,0.6);
+            white-space: nowrap;
+            animation: horrorShake 0.12s infinite;
         }
-        .horror-text.shake {
-            opacity: 1;
-            animation: horrorShake 0.15s infinite, horrorGlitch 0.3s infinite alternate;
+        .horror-clone {
+            position: absolute;
+            font-family: 'Times New Roman', serif;
+            color: #cc0000;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            white-space: nowrap;
+            animation: horrorShake 0.08s infinite;
+            text-shadow: 0 0 15px rgba(255,0,0,0.5);
         }
-        .horror-text.zoom {
-            animation: horrorZoom 0.6s ease-in forwards, horrorFlicker 0.1s infinite;
+        .horror-jumpscare {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(1);
+            font-family: 'Times New Roman', serif;
+            font-size: 18vw;
+            color: #ff0000;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            white-space: nowrap;
+            text-shadow: 0 0 80px rgba(255,0,0,1), 0 0 120px rgba(255,0,0,0.8);
+            animation: jumpscareZoom 0.5s ease-in forwards;
         }
         @keyframes horrorShake {
-            0% { transform: translate(0, 0) skewX(0deg); }
-            25% { transform: translate(-4px, 2px) skewX(-1deg); }
-            50% { transform: translate(3px, -3px) skewX(1deg); }
-            75% { transform: translate(-2px, 1px) skewX(-0.5deg); }
-            100% { transform: translate(4px, -1px) skewX(0.5deg); }
+            0% { transform: translate(var(--tx, -50%), var(--ty, -50%)) skewX(0deg); }
+            25% { transform: translate(calc(var(--tx, -50%) + 3px), calc(var(--ty, -50%) - 2px)) skewX(-2deg); }
+            50% { transform: translate(calc(var(--tx, -50%) - 4px), calc(var(--ty, -50%) + 3px)) skewX(2deg); }
+            75% { transform: translate(calc(var(--tx, -50%) + 2px), calc(var(--ty, -50%) - 1px)) skewX(-1deg); }
+            100% { transform: translate(calc(var(--tx, -50%) - 3px), calc(var(--ty, -50%) + 2px)) skewX(1deg); }
         }
-        @keyframes horrorGlitch {
-            0% { text-shadow: 0 0 10px rgba(255,0,0,0.5), -2px 0 #ff0000, 2px 0 #00ffff; clip-path: inset(0 0 0 0); }
-            20% { text-shadow: 0 0 20px rgba(255,0,0,0.8), -3px 0 #ff0000, 3px 0 #00ffff; clip-path: inset(10% 0 80% 0); }
-            40% { text-shadow: 0 0 5px rgba(255,255,255,0.5); clip-path: inset(40% 0 30% 0); }
-            60% { text-shadow: 0 0 15px rgba(255,0,0,0.6), 2px 0 #ff0000, -2px 0 #00ffff; clip-path: inset(0 0 0 0); }
-            80% { text-shadow: 0 0 25px rgba(255,0,0,1), -4px 0 #ff0000, 4px 0 #00ffff; clip-path: inset(60% 0 10% 0); }
-            100% { text-shadow: 0 0 10px rgba(255,0,0,0.5); clip-path: inset(0 0 0 0); }
-        }
-        @keyframes horrorZoom {
-            0% { transform: scale(1); opacity: 1; }
-            60% { transform: scale(8); opacity: 1; color: #ff0000; text-shadow: 0 0 60px rgba(255,0,0,1); }
-            100% { transform: scale(15); opacity: 0; }
-        }
-        @keyframes horrorFlicker {
-            0% { opacity: 1; }
-            50% { opacity: 0.3; }
-            100% { opacity: 1; }
+        @keyframes jumpscareZoom {
+            0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+            70% { transform: translate(-50%, -50%) scale(6); opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(12); opacity: 0; }
         }
     </style>
 
@@ -452,9 +454,13 @@
 
         // ========== Transition: Black → Horror "Talk to Me" → Redirect ==========
         function triggerTransition() {
-            // Stop music
+            // Mute all memorial audio immediately
             isPlaying = false;
             if (currentTimeout) clearTimeout(currentTimeout);
+            if (gainNode) gainNode.disconnect();
+            if (audioCtx) {
+                audioCtx.suspend();
+            }
 
             // Set flag for blog page
             localStorage.setItem('memorial_secret_unlocked', 'true');
@@ -463,28 +469,49 @@
             const blackScreen = document.getElementById('black-screen');
             blackScreen.classList.add('active');
 
-            // Phase 2: Horror "Talk to Me" after 1.5s
+            // Phase 2: Single "Talk to Me" after 1.5s
             setTimeout(() => {
                 blackScreen.classList.remove('active');
                 const horrorScreen = document.getElementById('horror-screen');
+                horrorScreen.innerHTML = '';
                 horrorScreen.classList.add('active');
 
-                // Start shaking text
-                const horrorText = document.getElementById('horror-text');
-                setTimeout(() => {
-                    horrorText.classList.add('shake');
-                }, 100);
+                // One centered shaking text
+                const single = document.createElement('div');
+                single.className = 'horror-single';
+                single.textContent = 'Talk to Me';
+                horrorScreen.appendChild(single);
 
-                // Phase 3: Zoom toward player after 2.5s of shaking
+                // Phase 3: After 2s, explode into many copies
                 setTimeout(() => {
-                    horrorText.classList.remove('shake');
-                    horrorText.classList.add('zoom');
+                    single.remove();
+                    const count = 35 + Math.floor(Math.random() * 15);
+                    for (let i = 0; i < count; i++) {
+                        const clone = document.createElement('div');
+                        clone.className = 'horror-clone';
+                        clone.textContent = 'Talk to Me';
+                        const x = Math.random() * 90 + 5;
+                        const y = Math.random() * 90 + 5;
+                        const size = 1.2 + Math.random() * 4;
+                        const delay = Math.random() * 0.1;
+                        clone.style.cssText = `left:${x}%;top:${y}%;font-size:${size}vw;animation-delay:${delay}s;--tx:0px;--ty:0px;`;
+                        horrorScreen.appendChild(clone);
+                    }
 
-                    // Phase 4: Redirect after zoom completes
+                    // Phase 4: After 1.8s of chaos, jumpscare
                     setTimeout(() => {
-                        window.location.href = '../blog/index.html';
-                    }, 700);
-                }, 2500);
+                        horrorScreen.innerHTML = '';
+                        const scare = document.createElement('div');
+                        scare.className = 'horror-jumpscare';
+                        scare.textContent = 'TALK TO ME';
+                        horrorScreen.appendChild(scare);
+
+                        // Phase 5: Redirect after jumpscare
+                        setTimeout(() => {
+                            window.location.href = '../blog/index.html';
+                        }, 550);
+                    }, 1800);
+                }, 2000);
             }, 1500);
         }
 

@@ -2,7 +2,8 @@
  * Genius Persona Simulator — Archive Configuration
  * ==================================================
  * 3-tier password system
- * Passwords: 2002, 2018, 2021
+ * Passwords: test1, test2, test3
+ * Watermarks on each tier page: 2002, 2018, 2021
  */
 
 const WIKI_CONFIG = {
@@ -16,19 +17,19 @@ const WIKI_CONFIG = {
     tiers: [
         {
             id: 1,
-            password: "2002",
+            password: "test1",
             label: "Level 1 \u2014 Project Origins",
             unlockMessage: "Level 1 access granted \u2014 Project Origins unlocked"
         },
         {
             id: 2,
-            password: "2018",
+            password: "test2",
             label: "Level 2 \u2014 Recipient Files",
             unlockMessage: "Level 2 access granted \u2014 Recipient archives unlocked"
         },
         {
             id: 3,
-            password: "2021",
+            password: "test3",
             label: "Level 3 \u2014 Donor Files",
             unlockMessage: "Level 3 access granted \u2014 Donor archives unlocked"
         }
@@ -52,7 +53,7 @@ const WIKI_CONFIG = {
     // ========== Public Entries (none \u2014 archive requires password) ==========
     publicEntries: [],
 
-    // ========== Tier 1: Project Origins (password: 2002) ==========
+    // ========== Tier 1: Project Origins (password: test1) ==========
     tier1Entries: [
         {
             id: "project-origins",
@@ -104,14 +105,14 @@ const WIKI_CONFIG = {
                 <p>This project therefore infers: <em>if memory can transfer with the heart, perhaps talent can too.</em></p>
                 <p class="cn">本项目由此推断：<em>如果记忆可以随心脏转移，天赋或许也可以。</em></p>
 
-                <div style="margin-top:30px;padding:15px;background:#333;color:#c9a96e;border-radius:4px;text-align:center;font-size:13px;">
-                    \ud83d\udd12 Watermark is password | Next level: <strong>2002</strong>
+                <div style="position:relative;margin-top:40px;height:80px;overflow:hidden;display:flex;align-items:center;justify-content:center;">
+                    <span style="font-family:'Times New Roman',serif;font-size:72px;font-weight:bold;color:rgba(201,169,110,0.08);letter-spacing:0.15em;user-select:none;pointer-events:none;">2002</span>
                 </div>
             `
         }
     ],
 
-    // ========== Tier 2: Recipient Files (password: 2018) ==========
+    // ========== Tier 2: Recipient Files (password: test2) ==========
     tier2Entries: [
         {
             id: "surgery-report",
@@ -199,14 +200,14 @@ const WIKI_CONFIG = {
                     <tr style="border-bottom:1px solid #eee;"><td style="padding:10px;font-weight:bold;">第19年</td><td style="padding:10px;color:#cc0000;">委托方病重，资金大幅削减。系统进入节能模式，数据持续丢失。</td></tr>
                 </table>
 
-                <div style="margin-top:30px;padding:15px;background:#333;color:#c9a96e;border-radius:4px;text-align:center;font-size:13px;">
-                    \ud83d\udd12 Watermark is password | Next level: <strong>2018</strong>
+                <div style="position:relative;margin-top:40px;height:80px;overflow:hidden;display:flex;align-items:center;justify-content:center;">
+                    <span style="font-family:'Times New Roman',serif;font-size:72px;font-weight:bold;color:rgba(201,169,110,0.08);letter-spacing:0.15em;user-select:none;pointer-events:none;">2018</span>
                 </div>
             `
         }
     ],
 
-    // ========== Tier 3: Donor Files (password: 2021) ==========
+    // ========== Tier 3: Donor Files (password: test3) ==========
     tier3Entries: [
         {
             id: "donor-adoption",
@@ -291,6 +292,10 @@ const WIKI_CONFIG = {
                     <p class="cn">服务器欠费，当前系统储存空间严重不足。</p>
                     <p style="font-size:16px;font-weight:bold;margin-top:10px;color:#fff;">After system assessment: remaining computing power can only sustain ONE consciousness.</p>
                     <p style="font-size:16px;font-weight:bold;margin-top:10px;color:#fff;" class="cn">经系统评估，剩余算力仅可维持<strong>一个</strong>意识体运行。</p>
+                </div>
+
+                <div style="position:relative;margin-top:40px;height:80px;overflow:hidden;display:flex;align-items:center;justify-content:center;">
+                    <span style="font-family:'Times New Roman',serif;font-size:72px;font-weight:bold;color:rgba(201,169,110,0.08);letter-spacing:0.15em;user-select:none;pointer-events:none;">2021</span>
                 </div>
             `
         }
