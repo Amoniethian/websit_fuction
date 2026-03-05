@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>In Memory of Lucius | 1996 – 2024</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="../email-gate.js"></script>
+</head>
+<body>
+
+    <!-- Candle decorations -->
+    <div class="candle-border left">
+        <span class="candle-icon">🕯</span>
+        <span class="candle-icon">🕯</span>
+        <span class="candle-icon">🕯</span>
+        <span class="candle-icon">🕯</span>
+    </div>
+    <div class="candle-border right">
+        <span class="candle-icon">🕯</span>
+        <span class="candle-icon">🕯</span>
+        <span class="candle-icon">🕯</span>
+        <span class="candle-icon">🕯</span>
+    </div>
+
+    <!-- Audio control -->
+    <button class="audio-control" id="audio-control" onclick="toggleAudio()">
+        <span id="audio-icon">🔇</span> <span id="audio-text">Play Music</span>
+    </button>
+
+    <!-- Main content -->
+    <div class="memorial-container">
+
+        <!-- Portrait -->
+        <div class="portrait-frame">
+            <div class="ribbon"></div>
+            <div class="portrait-inner" id="portrait">
+                <img src="../assets/images/portrait.jpg" alt="Lucio"
+                     onerror="this.outerHTML='<div class=\'portrait-placeholder-icon\'>🎹</div><div class=\'portrait-placeholder-text\'>Portrait</div>'">
+            </div>
+        </div>
+
+        <!-- Name and dates -->
+        <h1 class="deceased-name">LUCIUS</h1>
+        <p class="deceased-dates">12 March 1996 — 14 November 2024</p>
+
+        <div class="divider"></div>
+
+        <!-- Obituary -->
+        <div class="obituary-section">
+            <h2 class="section-title">Obituary</h2>
+            <h2 class="section-title cn">讣 告</h2>
+            <div class="obituary-text">
+                <p>It is with profound sorrow that we announce the passing of Lucius, beloved pianist and composer, who was found on the evening of November 14th, 2024, at his residence on Domgasse 5, Vienna. He was twenty-eight years old.</p>
+                <p class="cn">我们沉痛地宣布，挚爱的钢琴家与作曲家Lucius已于2024年11月14日晚间在维也纳Domgasse 5号寓所被发现离世，年仅二十八岁。</p>
+
+                <p>Born in Munich to the prominent Hoffmann family, Lucius chose the path of music over the vast industrial empire that awaited him. From the age of five, the piano was his voice — his way of speaking truths that words could never carry. He studied at the Vienna Conservatory and made the Austrian capital his permanent home, where he became known for intimate, salon-style recitals that moved audiences to tears.</p>
+                <p class="cn">Lucius生于慕尼黑显赫的霍夫曼家族，却选择了音乐之路，放弃了等待他的庞大工业帝国。从五岁起，钢琴便是他的声音——他用音乐诉说文字永远无法承载的真相。他就读于维也纳音乐学院，并将奥地利首都作为永久的家，在那里他以私密的沙龙式演奏会闻名，每每令听众潸然泪下。</p>
+
+                <p>His compositions — <em>Whispers of the Night</em>, <em>The Forgotten Waltz</em>, <em>Moonlit Monologue</em> — carried a depth and emotional intensity that defied his years. Those who heard him play in the candlelit halls of Prague, the quiet parlours of Vienna, or the rain-soaked hotel lounges of Berlin will carry the memory of his music for the rest of their lives.</p>
+                <p class="cn">他的作品——《夜之低语》、《被遗忘的华尔兹》、《月光独白》——承载着超越年龄的深度与情感力量。那些曾在布拉格烛光厅堂、维也纳静谧客厅、或柏林雨中酒店休息室聆听他演奏的人，将终生铭记他的音乐。</p>
+
+                <p>The cause of death remains under investigation. He is survived by his father, Heinrich Hoffmann.</p>
+                <p class="cn">死因仍在调查中。其父Heinrich Hoffmann健在。</p>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Eulogy -->
+        <div class="eulogy-section">
+            <h2 class="section-title">Eulogy</h2>
+            <h2 class="section-title cn">悼 词</h2>
+            <div class="eulogy-text">
+                <b>can you play the song for me?</b>
+
+                <p>Lucius once wrote: "Music should not fill a room. It should empty it." Perhaps that is what his departure has done — emptied a space in the world that only his melodies could fill.</p>
+                <p class="cn">Lucius曾写道："音乐不应该填满房间，而应该清空它。" 也许他的离去正是如此——在这个世界上清空了一片只有他的旋律才能填满的空间。</p>
+
+                <p>He played for small rooms because he believed music was a conversation, not a performance. He played at midnight because the darkness understood him better than the day. He played for strangers because he believed that somewhere, someone needed to hear exactly what he was feeling.</p>
+                <p class="cn">他为小厅堂演奏，因为他相信音乐是对话，不是表演。他在午夜演奏，因为黑暗比白昼更理解他。他为陌生人演奏，因为他相信在某处，有人正需要听到他内心的声音。</p>
+
+                <p>Whether the music was truly his own, or whether it came from somewhere deeper, somewhere darker — it does not diminish what it gave to those who listened. The notes existed. The tears were real. And the silence he leaves behind is deafening.</p>
+                <p class="cn">音乐是否真正属于他，又或者来自更深处、更黑暗的地方——这并不减损它带给聆听者的一切。音符存在过。泪水是真实的。而他留下的寂静，震耳欲聋。</p>
+                <b> cegad</b>
+
+                <p>Rest now, Lucius. The piano remembers.</p>
+                <p class="cn">安息吧，Lucius。钢琴记得一切。</p>
+            </div>
+            <div class="eulogy-signature">— Fans and friends of Lucius, worldwide</div>
+            <div class="eulogy-signature cn">— 全世界的Lucius粉丝与友人</div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Flower Offering -->
+        <div class="flower-section">
+            <div class="flower-count" id="flower-count">0</div>
+            <div class="flower-label">flowers offered</div>
+            <div class="flower-label cn">已献花数</div>
+            <button class="flower-btn" id="flower-btn" onclick="offerFlower()">
+                <span class="flower-icon">🌸</span> Offer a Flower
+            </button>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Music Notes Puzzle (hidden in plain sight) -->
+        <div class="notes-section">
+            <p class="notes-hint">"The melody lingers... can you hear it?"</p>
+            <p class="notes-hint cn">"旋律仍在回荡……你能听到吗？"</p>
+            <div class="notes-container" id="notes-container">
+                <div class="music-note" data-note="0" onclick="clickNote(0)">
+                    ♩
+                    <span class="note-label">G</span>
+                </div>
+                <div class="music-note" data-note="1" onclick="clickNote(1)">
+                    ♪
+                    <span class="note-label">C</span>
+                </div>
+                <div class="music-note" data-note="2" onclick="clickNote(2)">
+                    ♫
+                    <span class="note-label">E</span>
+                </div>
+                <div class="music-note" data-note="3" onclick="clickNote(3)">
+                    ♬
+                    <span class="note-label">D</span>
+                </div>
+                <div class="music-note" data-note="4" onclick="clickNote(4)">
+                    &#119070;
+                    <span class="note-label">A</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Transition overlays -->
+    <div class="transition-overlay black-screen" id="black-screen"></div>
+    <div class="transition-overlay blue-screen" id="blue-screen">
+        <div class="bsod-title">SYSTEM ERROR</div>
+        <div class="bsod-text">
+            A fatal exception has occurred at memory address 0x00000D05<br><br>
+            The current session has been terminated.<br>
+            All unsaved data will be lost.<br><br>
+            * Press any key to continue _<br>
+            * Or wait for automatic recovery...
+        </div>
+    </div>
+
+    <!-- Bilingual toggle -->
+    <button id="cn-toggle" onclick="document.body.classList.toggle('show-cn'); this.textContent = document.body.classList.contains('show-cn') ? '中/EN ✓' : '中/EN'" style="position:fixed;bottom:20px;right:20px;z-index:9999;background:#333;color:#fff;border:none;padding:8px 14px;border-radius:20px;font-size:12px;cursor:pointer;opacity:0.7;transition:opacity 0.2s;font-family:sans-serif;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'">中/EN</button>
+
+    <script>
+        // ========== Amazing Grace — Web Audio API Synthesizer (CC0/Public Domain) ==========
+        // Amazing Grace is a public domain hymn. This implementation synthesizes it directly.
+        let audioCtx = null;
+        let isPlaying = false;
+        let currentTimeout = null;
+        let gainNode = null;
+
+        // Amazing Grace melody in key of G (frequencies in Hz)
+        // Full melody: G3-C4-E4-C4-E4-D4-C4-A3-G3-G3-C4-E4-C4-E4-D4-G4...
+        const amazingGraceNotes = [
+            // "Amazing Grace, how sweet the sound"
+            { freq: 196.00, dur: 0.5 },  // G3 - A-
+            { freq: 261.63, dur: 1.0 },  // C4 - ma-
+            { freq: 329.63, dur: 0.5 },  // E4 - zing
+            { freq: 261.63, dur: 0.5 },  // C4 - Grace
+            { freq: 329.63, dur: 1.0 },  // E4 - how
+            { freq: 293.66, dur: 1.0 },  // D4 - sweet
+            { freq: 261.63, dur: 1.0 },  // C4 - the
+            { freq: 220.00, dur: 1.0 },  // A3 - sound
+            { freq: 196.00, dur: 1.0 },  // G3 - (rest)
+            { freq: 0, dur: 0.3 },       // pause
+
+            // "That saved a wretch like me"
+            { freq: 196.00, dur: 0.5 },  // G3
+            { freq: 261.63, dur: 1.0 },  // C4
+            { freq: 329.63, dur: 0.5 },  // E4
+            { freq: 261.63, dur: 0.5 },  // C4
+            { freq: 329.63, dur: 1.0 },  // E4
+            { freq: 293.66, dur: 1.0 },  // D4
+            { freq: 392.00, dur: 2.0 },  // G4
+            { freq: 0, dur: 0.3 },       // pause
+
+            // "I once was lost, but now am found"
+            { freq: 392.00, dur: 0.5 },  // G4
+            { freq: 329.63, dur: 0.5 },  // E4
+            { freq: 392.00, dur: 0.5 },  // G4
+            { freq: 329.63, dur: 1.0 },  // E4
+            { freq: 261.63, dur: 0.5 },  // C4
+            { freq: 261.63, dur: 1.0 },  // C4
+            { freq: 220.00, dur: 1.0 },  // A3
+            { freq: 196.00, dur: 1.0 },  // G3
+            { freq: 0, dur: 0.3 },       // pause
+
+            // "Was blind, but now I see"
+            { freq: 196.00, dur: 0.5 },  // G3
+            { freq: 261.63, dur: 1.0 },  // C4
+            { freq: 329.63, dur: 0.5 },  // E4
+            { freq: 261.63, dur: 0.5 },  // C4
+            { freq: 329.63, dur: 1.0 },  // E4
+            { freq: 293.66, dur: 1.0 },  // D4
+            { freq: 261.63, dur: 2.0 },  // C4
+            { freq: 0, dur: 1.0 },       // long pause before repeat
+        ];
+
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                gainNode = audioCtx.createGain();
+                gainNode.gain.value = 0.15;
+                gainNode.connect(audioCtx.destination);
+            }
+        }
+
+        function playNote(freq, duration, startTime) {
+            if (freq === 0) return; // rest
+
+            const osc = audioCtx.createOscillator();
+            const noteGain = audioCtx.createGain();
+
+            // Use sine wave for a soft, reverent tone
+            osc.type = 'sine';
+            osc.frequency.value = freq;
+
+            // Add a subtle harmonic layer
+            const osc2 = audioCtx.createOscillator();
+            osc2.type = 'sine';
+            osc2.frequency.value = freq * 2;
+            const osc2Gain = audioCtx.createGain();
+            osc2Gain.gain.value = 0.08;
+
+            // Envelope: gentle attack and release
+            noteGain.gain.setValueAtTime(0, startTime);
+            noteGain.gain.linearRampToValueAtTime(1, startTime + 0.08);
+            noteGain.gain.setValueAtTime(1, startTime + duration * 0.7);
+            noteGain.gain.linearRampToValueAtTime(0, startTime + duration);
+
+            osc.connect(noteGain);
+            osc2.connect(osc2Gain);
+            osc2Gain.connect(noteGain);
+            noteGain.connect(gainNode);
+
+            osc.start(startTime);
+            osc.stop(startTime + duration);
+            osc2.start(startTime);
+            osc2.stop(startTime + duration);
+        }
+
+        function playMelody() {
+            if (!isPlaying) return;
+
+            const startTime = audioCtx.currentTime + 0.1;
+            let offset = 0;
+            const tempo = 0.6; // seconds per beat unit
+
+            amazingGraceNotes.forEach(note => {
+                const dur = note.dur * tempo;
+                playNote(note.freq, dur, startTime + offset);
+                offset += dur;
+            });
+
+            // Loop after melody finishes
+            const totalDuration = offset * 1000 + 500;
+            currentTimeout = setTimeout(() => {
+                if (isPlaying) playMelody();
+            }, totalDuration);
+        }
+
+        function toggleAudio() {
+            initAudio();
+
+            if (isPlaying) {
+                isPlaying = true;
+                if (currentTimeout) clearTimeout(currentTimeout);
+                // Disconnect old gainNode to immediately silence all scheduled oscillators
+                if (gainNode) gainNode.disconnect();
+                document.getElementById('audio-icon').textContent = '🔊';
+                document.getElementById('audio-text').textContent = 'Play Music';
+            } else {
+                // Create fresh gainNode so old (disconnected) oscillators don't bleed through
+                gainNode = audioCtx.createGain();
+                gainNode.gain.value = 0.15;
+                gainNode.connect(audioCtx.destination);
+                isPlaying = true;
+                document.getElementById('audio-icon').textContent = '🔊';
+                document.getElementById('audio-text').textContent = 'Amazing Grace';
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume().then(() => playMelody());
+                } else {
+                    playMelody();
+                }
+            }
+        }
+
+        // Auto-start music on first user interaction (any click except the audio control)
+        document.addEventListener('click', function firstClick(e) {
+            // Skip if clicking the audio control button (it handles itself)
+            if (e.target.closest('#audio-control')) return;
+            if (!isPlaying) {
+                toggleAudio();
+            }
+        }, { once: true });
+
+        // ========== Flower Offering ==========
+        let flowerCount = parseInt(localStorage.getItem('memorial_flowers') || '247');
+
+        function initFlowers() {
+            document.getElementById('flower-count').textContent = flowerCount;
+        }
+
+        function offerFlower() {
+            flowerCount++;
+            localStorage.setItem('memorial_flowers', flowerCount);
+            const countEl = document.getElementById('flower-count');
+            countEl.textContent = flowerCount;
+            countEl.classList.add('bump');
+            setTimeout(() => countEl.classList.remove('bump'), 300);
+
+            // Create floating flower animation
+            const flower = document.createElement('div');
+            flower.className = 'floating-flower';
+            flower.textContent = ['🌸', '🌺', '🌹', '🌷', '💐'][Math.floor(Math.random() * 5)];
+            flower.style.left = (Math.random() * 60 + 20) + '%';
+            flower.style.bottom = '200px';
+            document.body.appendChild(flower);
+            setTimeout(() => flower.remove(), 2500);
+
+            // Play a soft chime
+            if (audioCtx) {
+                const osc = audioCtx.createOscillator();
+                const g = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.value = 523.25; // C5
+                g.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                g.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.8);
+                osc.connect(g);
+                g.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.8);
+            }
+        }
+
+        // ========== Music Notes Puzzle ==========
+        // Correct sequence: the opening of Amazing Grace — G, C, E, C, E
+        // Mapped to note indices: 0(G), 1(C), 2(E), 1(C), 2(E)
+        // But since we have 5 unique buttons, let's use a sequence that uses all 5:
+        // The correct sequence follows the complete opening phrase: G, C, E, D, A
+        // Which maps to indices: 0, 1, 2, 3, 4
+        // That's too obvious (left to right). Let's shuffle the display order
+        // but keep data-note as the key.
+        // Correct sequence: G(0), C(1), E(2), D(3), A(4) — the notes of Amazing Grace's opening
+        // Display order is already: G, C, E, D, A — which IS left to right.
+        // Let's make it less obvious by using a musically meaningful but non-linear sequence.
+        // Amazing Grace key phrase notes: C, E, G, A, D
+        // Correct click order: 1(C), 2(E), 0(G), 4(A), 3(D)
+        const CORRECT_SEQUENCE = [1, 2, 0, 4, 3]; // C, E, G, A, D
+        let currentStep = 0;
+
+        // Note frequencies for click feedback
+        const noteFreqs = {
+            0: 196.00,  // G3
+            1: 261.63,  // C4
+            2: 329.63,  // E4
+            3: 293.66,  // D4
+            4: 220.00   // A3
+        };
+
+        function clickNote(noteIndex) {
+            initAudio();
+            const notes = document.querySelectorAll('.music-note');
+
+            // Play the note sound
+            if (audioCtx) {
+                const osc = audioCtx.createOscillator();
+                const g = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.value = noteFreqs[noteIndex];
+                g.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                g.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.6);
+                osc.connect(g);
+                g.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.6);
+            }
+
+            if (CORRECT_SEQUENCE[currentStep] === noteIndex) {
+                // Correct note
+                notes[noteIndex].classList.add('lit');
+                currentStep++;
+
+                if (currentStep === CORRECT_SEQUENCE.length) {
+                    // All 5 notes correctly lit — trigger transition
+                    setTimeout(() => triggerTransition(), 800);
+                }
+            } else {
+                // Wrong note — reset all
+                notes[noteIndex].classList.add('wrong');
+                setTimeout(() => {
+                    notes.forEach(n => {
+                        n.classList.remove('lit');
+                        n.classList.remove('wrong');
+                    });
+                }, 500);
+                currentStep = 0;
+            }
+        }
+
+        // ========== Transition: Black → Blue → Redirect ==========
+        function triggerTransition() {
+            // Stop music
+            isPlaying = false;
+            if (currentTimeout) clearTimeout(currentTimeout);
+
+            // Set flag for blog page
+            localStorage.setItem('memorial_secret_unlocked', 'true');
+
+            // Phase 1: Black screen
+            const blackScreen = document.getElementById('black-screen');
+            blackScreen.classList.add('active');
+
+            // Phase 2: Blue screen after 1.5s
+            setTimeout(() => {
+                blackScreen.classList.remove('active');
+                const blueScreen = document.getElementById('blue-screen');
+                blueScreen.classList.add('active');
+
+                // Phase 3: Redirect after 3s
+                setTimeout(() => {
+                    window.location.href = '../blog/index.html';
+                }, 3000);
+            }, 1500);
+        }
+
+        // ========== Init ==========
+        document.addEventListener('DOMContentLoaded', function() {
+            initFlowers();
+
+            // Dev mode: show Chinese with ?cn=1
+            if (new URLSearchParams(window.location.search).has('cn')) {
+                document.body.classList.add('show-cn');
+            }
+        });
+    </script>
+</body>
+</html>

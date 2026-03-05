@@ -3,8 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Code</title>
+    <title>Lucius</title>
     <link rel="stylesheet" href="style.css">
+    <script src="../email-gate.js"></script>
+    <style>
+        @keyframes badgePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
+    </style>
 </head>
 <body>
     <!-- Top Navigation -->
@@ -44,8 +51,9 @@
                     </div>
                 </div>
                 <div class="profile-actions">
-                    <button class="btn-message" onclick="openChat()">
+                    <button class="btn-message" onclick="openChat()" style="position:relative;">
                         💬 Message
+                        <span class="new-msg-badge" id="new-msg-badge" style="display:none;position:absolute;top:-8px;right:-8px;background:#ff3b30;color:#fff;font-size:11px;font-weight:700;width:20px;height:20px;border-radius:50%;align-items:center;justify-content:center;font-family:'Inter',sans-serif;box-shadow:0 2px 6px rgba(255,59,48,0.4);animation:badgePulse 1.5s infinite;">1</span>
                     </button>
                 </div>
             </div>
@@ -79,6 +87,9 @@
         </div>
     </div>
 
+    <!-- Transition-in overlay (prevents flash when arriving from memorial page) -->
+    <div id="transition-overlay" style="position:fixed;top:0;left:0;width:100%;height:100%;background:#000;z-index:99999;transition:opacity 0.8s ease;pointer-events:none;"></div>
+
     <!-- Bilingual toggle button (dev tool) -->
     <button id="cn-toggle" onclick="document.body.classList.toggle('show-cn'); this.textContent = document.body.classList.contains('show-cn') ? '中/EN ✓' : '中/EN'" style="position:fixed;bottom:20px;right:20px;z-index:9999;background:#333;color:#fff;border:none;padding:8px 14px;border-radius:20px;font-size:12px;cursor:pointer;opacity:0.7;transition:opacity 0.2s;font-family:sans-serif;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'">中/EN</button>
 
@@ -99,6 +110,22 @@
             return name.charAt(0).toUpperCase();
         }
 
+        function tryAlternateImageFormat(img, fallbackFn) {
+            const src = img.src;
+            if (img.dataset.triedAlt) {
+                fallbackFn();
+                return;
+            }
+            img.dataset.triedAlt = '1';
+            if (/\.jpe?g$/i.test(src)) {
+                img.src = src.replace(/\.jpe?g$/i, '.png');
+            } else if (/\.png$/i.test(src)) {
+                img.src = src.replace(/\.png$/i, '.jpg');
+            } else {
+                fallbackFn();
+            }
+        }
+
         function createAvatarElement(src, name, size = 44) {
             const container = document.createElement('div');
             if (src) {
@@ -106,7 +133,9 @@
                 img.src = src;
                 img.alt = name;
                 img.onerror = function() {
-                    this.parentElement.innerHTML = `<div class="avatar-placeholder" style="width:${size}px;height:${size}px;">${getInitial(name)}</div>`;
+                    tryAlternateImageFormat(this, () => {
+                        this.parentElement.innerHTML = `<div class="avatar-placeholder" style="width:${size}px;height:${size}px;">${getInitial(name)}</div>`;
+                    });
                 };
                 container.appendChild(img);
             } else {
@@ -152,6 +181,23 @@
 
             renderPosts();
             initChatHistory();
+
+            // Handle transition-in overlay
+            const overlay = document.getElementById('transition-overlay');
+            if (localStorage.getItem('memorial_secret_unlocked') === 'true') {
+                // Coming from memorial — fade out the black overlay smoothly
+                const badge = document.getElementById('new-msg-badge');
+                if (badge) {
+                    badge.style.display = 'flex';
+                }
+                requestAnimationFrame(() => {
+                    overlay.style.opacity = '0';
+                    overlay.addEventListener('transitionend', () => overlay.remove(), { once: true });
+                });
+            } else {
+                // Normal visit — remove overlay immediately
+                overlay.remove();
+            }
         }
 
         // ========== Render Posts ==========
@@ -166,11 +212,19 @@
                 postEl.id = `post-${post.id}`;
 
                 let commentsHtml = '';
-                post.comments.forEach(comment => {
+                // Move palette link comment to a random position in the first 3
+                let comments = [...post.comments];
+                const paletteIdx = comments.findIndex(c => c.content && c.content.includes('palette/index.html'));
+                if (paletteIdx > 2) {
+                    const [paletteComment] = comments.splice(paletteIdx, 1);
+                    const randomPos = Math.floor(Math.random() * Math.min(3, comments.length));
+                    comments.splice(randomPos, 0, paletteComment);
+                }
+                comments.forEach(comment => {
                     const isVisitor = comment.username === visitor.name;
                     commentsHtml += `
                         <div class="comment-item">
-                            <div class="comment-avatar">${createAvatarElement(comment.avatar, comment.username, 36)}</div>
+                            <div class="comment-avatar">${createAvatarElement(null, comment.username, 36)}</div>
                             <div class="comment-body">
                                 <div class="comment-username ${isVisitor ? 'is-visitor' : ''}">${comment.username}</div>
                                 <div class="comment-text">${comment.content}</div>
@@ -187,7 +241,7 @@
                 if (post.images && post.images.length > 0) {
                     imagesHtml = `
                         <div class="post-images">
-                            <img src="${post.images[0]}" alt="Post image" onerror="this.outerHTML='<div class=\\'placeholder\\'>[ Image placeholder ]</div>'">
+                            <img src="${post.images[0]}" alt="Post image" onerror="tryAlternateImageFormat(this, () => { this.outerHTML='<div class=\\'placeholder\\'>[ Image placeholder ]</div>'; })">
                         </div>
                     `;
                 }
@@ -269,6 +323,13 @@
             document.getElementById('chat-overlay').classList.add('active');
             scrollChatToBottom();
             document.getElementById('chat-input').focus();
+
+            // Clear new message badge when opening chat
+            const badge = document.getElementById('new-msg-badge');
+            if (badge) {
+                badge.style.display = 'none';
+            }
+            localStorage.removeItem('memorial_secret_unlocked');
         }
 
         function closeChat() {
