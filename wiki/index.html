@@ -193,7 +193,7 @@
             }
 
             // Hide "locked" placeholder if all tiers unlocked
-            document.getElementById('locked-tiers').style.display = unlockedTier >= 4 ? 'none' : 'block';
+            document.getElementById('locked-tiers').style.display = unlockedTier >= 3 ? 'none' : 'block';
         }
 
         // ========== Article Loading ==========
@@ -315,8 +315,8 @@
         function updateAccessDisplay() {
             const display = document.getElementById('access-level-display');
             if (unlockedTier === 0) {
-                display.textContent = 'Current access: Public records only. Enter a passphrase to unlock restricted files.';
-            } else if (unlockedTier < 4) {
+                display.textContent = 'Access denied. Enter a passphrase to unlock archive files.';
+            } else if (unlockedTier < 3) {
                 display.textContent = `Current access: ${config.tiers[unlockedTier - 1].label}. Higher clearance levels exist.`;
             } else {
                 display.textContent = 'Maximum clearance. All archives accessible.';

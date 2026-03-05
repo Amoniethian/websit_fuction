@@ -51,17 +51,17 @@
             <h2 class="section-title">Obituary</h2>
             <h2 class="section-title cn">讣 告</h2>
             <div class="obituary-text">
-                <p>It is with profound sorrow that we announce the passing of Lucius, beloved pianist and composer, who was found on the evening of November 14th, 2024, at his residence on Domgasse 5, Vienna. He was twenty-eight years old.</p>
-                <p class="cn">我们沉痛地宣布，挚爱的钢琴家与作曲家Lucius已于2024年11月14日晚间在维也纳Domgasse 5号寓所被发现离世，年仅二十八岁。</p>
+                <p>It is with profound sorrow that we announce the passing of Lucius, beloved pianist and composer, who was found on the evening of November 14th, 2024, at his residence on Wimpole Street, London. He was twenty-eight years old.</p>
+                <p class="cn">我们沉痛地宣布，挚爱的钢琴家与作曲家Lucius已于2024年11月14日晚间在伦敦温波尔街寓所被发现离世，年仅二十八岁。</p>
 
-                <p>Born in Munich to the prominent Hoffmann family, Lucius chose the path of music over the vast industrial empire that awaited him. From the age of five, the piano was his voice — his way of speaking truths that words could never carry. He studied at the Vienna Conservatory and made the Austrian capital his permanent home, where he became known for intimate, salon-style recitals that moved audiences to tears.</p>
-                <p class="cn">Lucius生于慕尼黑显赫的霍夫曼家族，却选择了音乐之路，放弃了等待他的庞大工业帝国。从五岁起，钢琴便是他的声音——他用音乐诉说文字永远无法承载的真相。他就读于维也纳音乐学院，并将奥地利首都作为永久的家，在那里他以私密的沙龙式演奏会闻名，每每令听众潸然泪下。</p>
+                <p>Born in Munich to the prominent Hoffmann family, Lucius chose the path of music over the vast industrial empire that awaited him. From the age of five, the piano was his voice — his way of speaking truths that words could never carry. He studied at the Royal Academy of Music and made London his permanent home, where he became known for intimate, salon-style recitals that moved audiences to tears.</p>
+                <p class="cn">Lucius生于慕尼黑显赫的霍夫曼家族，却选择了音乐之路，放弃了等待他的庞大工业帝国。从五岁起，钢琴便是他的声音——他用音乐诉说文字永远无法承载的真相。他就读于皇家音乐学院，并将伦敦作为永久的家，在那里他以私密的沙龙式演奏会闻名，每每令听众潸然泪下。</p>
 
-                <p>His compositions — <em>Whispers of the Night</em>, <em>The Forgotten Waltz</em>, <em>Moonlit Monologue</em> — carried a depth and emotional intensity that defied his years. Those who heard him play in the candlelit halls of Prague, the quiet parlours of Vienna, or the rain-soaked hotel lounges of Berlin will carry the memory of his music for the rest of their lives.</p>
-                <p class="cn">他的作品——《夜之低语》、《被遗忘的华尔兹》、《月光独白》——承载着超越年龄的深度与情感力量。那些曾在布拉格烛光厅堂、维也纳静谧客厅、或柏林雨中酒店休息室聆听他演奏的人，将终生铭记他的音乐。</p>
+                <p>His compositions — <em>Whispers of the Night</em>, <em>The Forgotten Waltz</em>, <em>Moonlit Monologue</em> — carried a depth and emotional intensity that defied his years. Those who heard him play in the candlelit halls of Prague, the quiet parlours of London, or the rain-soaked hotel lounges of Berlin will carry the memory of his music for the rest of their lives.</p>
+                <p class="cn">他的作品——《夜之低语》、《被遗忘的华尔兹》、《月光独白》——承载着超越年龄的深度与情感力量。那些曾在布拉格烛光厅堂、伦敦静谧客厅、或柏林雨中酒店休息室聆听他演奏的人，将终生铭记他的音乐。</p>
 
-                <p>The cause of death remains under investigation. He is survived by his father, Heinrich Hoffmann.</p>
-                <p class="cn">死因仍在调查中。其父Heinrich Hoffmann健在。</p>
+                <p>The cause of death remains under investigation. His father, Heinrich Hoffmann, predeceased him in 2022.</p>
+                <p class="cn">死因仍在调查中。其父Heinrich Hoffmann已于2022年先他而去。</p>
             </div>
         </div>
 
@@ -134,16 +134,62 @@
 
     <!-- Transition overlays -->
     <div class="transition-overlay black-screen" id="black-screen"></div>
-    <div class="transition-overlay blue-screen" id="blue-screen">
-        <div class="bsod-title">SYSTEM ERROR</div>
-        <div class="bsod-text">
-            A fatal exception has occurred at memory address 0x00000D05<br><br>
-            The current session has been terminated.<br>
-            All unsaved data will be lost.<br><br>
-            * Press any key to continue _<br>
-            * Or wait for automatic recovery...
-        </div>
+    <div class="transition-overlay horror-screen" id="horror-screen">
+        <div class="horror-text" id="horror-text">Talk to Me</div>
     </div>
+    <style>
+        .horror-screen {
+            background: #000 !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        .horror-text {
+            font-family: 'Times New Roman', serif;
+            font-size: 5vw;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 0.3em;
+            opacity: 0;
+            transform: scale(1);
+            transition: none;
+            text-shadow: 0 0 10px rgba(255,0,0,0.3);
+            position: relative;
+        }
+        .horror-text.shake {
+            opacity: 1;
+            animation: horrorShake 0.15s infinite, horrorGlitch 0.3s infinite alternate;
+        }
+        .horror-text.zoom {
+            animation: horrorZoom 0.6s ease-in forwards, horrorFlicker 0.1s infinite;
+        }
+        @keyframes horrorShake {
+            0% { transform: translate(0, 0) skewX(0deg); }
+            25% { transform: translate(-4px, 2px) skewX(-1deg); }
+            50% { transform: translate(3px, -3px) skewX(1deg); }
+            75% { transform: translate(-2px, 1px) skewX(-0.5deg); }
+            100% { transform: translate(4px, -1px) skewX(0.5deg); }
+        }
+        @keyframes horrorGlitch {
+            0% { text-shadow: 0 0 10px rgba(255,0,0,0.5), -2px 0 #ff0000, 2px 0 #00ffff; clip-path: inset(0 0 0 0); }
+            20% { text-shadow: 0 0 20px rgba(255,0,0,0.8), -3px 0 #ff0000, 3px 0 #00ffff; clip-path: inset(10% 0 80% 0); }
+            40% { text-shadow: 0 0 5px rgba(255,255,255,0.5); clip-path: inset(40% 0 30% 0); }
+            60% { text-shadow: 0 0 15px rgba(255,0,0,0.6), 2px 0 #ff0000, -2px 0 #00ffff; clip-path: inset(0 0 0 0); }
+            80% { text-shadow: 0 0 25px rgba(255,0,0,1), -4px 0 #ff0000, 4px 0 #00ffff; clip-path: inset(60% 0 10% 0); }
+            100% { text-shadow: 0 0 10px rgba(255,0,0,0.5); clip-path: inset(0 0 0 0); }
+        }
+        @keyframes horrorZoom {
+            0% { transform: scale(1); opacity: 1; }
+            60% { transform: scale(8); opacity: 1; color: #ff0000; text-shadow: 0 0 60px rgba(255,0,0,1); }
+            100% { transform: scale(15); opacity: 0; }
+        }
+        @keyframes horrorFlicker {
+            0% { opacity: 1; }
+            50% { opacity: 0.3; }
+            100% { opacity: 1; }
+        }
+    </style>
 
     <!-- Bilingual toggle -->
     <button id="cn-toggle" onclick="document.body.classList.toggle('show-cn'); this.textContent = document.body.classList.contains('show-cn') ? '中/EN ✓' : '中/EN'" style="position:fixed;bottom:20px;right:20px;z-index:9999;background:#333;color:#fff;border:none;padding:8px 14px;border-radius:20px;font-size:12px;cursor:pointer;opacity:0.7;transition:opacity 0.2s;font-family:sans-serif;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'">中/EN</button>
@@ -405,7 +451,7 @@
             }
         }
 
-        // ========== Transition: Black → Blue → Redirect ==========
+        // ========== Transition: Black → Horror "Talk to Me" → Redirect ==========
         function triggerTransition() {
             // Stop music
             isPlaying = false;
@@ -418,16 +464,28 @@
             const blackScreen = document.getElementById('black-screen');
             blackScreen.classList.add('active');
 
-            // Phase 2: Blue screen after 1.5s
+            // Phase 2: Horror "Talk to Me" after 1.5s
             setTimeout(() => {
                 blackScreen.classList.remove('active');
-                const blueScreen = document.getElementById('blue-screen');
-                blueScreen.classList.add('active');
+                const horrorScreen = document.getElementById('horror-screen');
+                horrorScreen.classList.add('active');
 
-                // Phase 3: Redirect after 3s
+                // Start shaking text
+                const horrorText = document.getElementById('horror-text');
                 setTimeout(() => {
-                    window.location.href = '../blog/index.html';
-                }, 3000);
+                    horrorText.classList.add('shake');
+                }, 100);
+
+                // Phase 3: Zoom toward player after 2.5s of shaking
+                setTimeout(() => {
+                    horrorText.classList.remove('shake');
+                    horrorText.classList.add('zoom');
+
+                    // Phase 4: Redirect after zoom completes
+                    setTimeout(() => {
+                        window.location.href = '../blog/index.html';
+                    }, 700);
+                }, 2500);
             }, 1500);
         }
 

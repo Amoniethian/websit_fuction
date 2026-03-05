@@ -1,708 +1,301 @@
 /**
- * Private Wiki Configuration
- * ===========================
- * 4-tier password system with layered content
- * Passwords: test1, test2, test3, test4
+ * Genius Persona Simulator — Archive Configuration
+ * ==================================================
+ * 3-tier password system
+ * Passwords: 2002, 2018, 2021
  */
 
 const WIKI_CONFIG = {
     // ========== Site Info ==========
-    siteName: "Hoffmann Family Archives",
-    siteSubtitle: "Private Document Repository",
-    siteDescription: "Internal archive of the Hoffmann family. Some content requires authorised access.",
-    lastUpdated: "10 November 2024",
+    siteName: "Genius Persona Simulator",
+    siteSubtitle: "Classified Archive",
+    siteDescription: "Unauthorised access prohibited. Enter passphrase to proceed.",
+    lastUpdated: "14 November 2024",
 
     // ========== Password Tiers ==========
-    // Each tier unlocks progressively deeper content
     tiers: [
         {
             id: 1,
-            password: "test1",
-            label: "Level 1 — Personal",
-            unlockMessage: "Level 1 access granted — Personal files unlocked"
+            password: "2002",
+            label: "Level 1 \u2014 Project Origins",
+            unlockMessage: "Level 1 access granted \u2014 Project Origins unlocked"
         },
         {
             id: 2,
-            password: "test2",
-            label: "Level 2 — Confidential",
-            unlockMessage: "Level 2 access granted — Confidential files unlocked"
+            password: "2018",
+            label: "Level 2 \u2014 Recipient Files",
+            unlockMessage: "Level 2 access granted \u2014 Recipient archives unlocked"
         },
         {
             id: 3,
-            password: "test3",
-            label: "Level 3 — Top Secret",
-            unlockMessage: "Level 3 access granted — Top secret files unlocked"
-        },
-        {
-            id: 4,
-            password: "test4",
-            label: "Level 4 — Black Archive",
-            unlockMessage: "Level 4 access granted — ⚠ BLACK ARCHIVE unlocked"
-        }
-    ],
-
-    // ========== Public Entries (no password) ==========
-    publicEntries: [
-        {
-            id: "family-overview",
-            title: "Family Overview",
-            category: "General",
-            lastModified: "15 August 2024",
-            content: `
-                <p>The Hoffmann family is one of Europe's most prominent industrial dynasties, originating from the Bavarian region of Germany in the 19th century.</p>
-                <p class="cn">霍夫曼家族是欧洲最显赫的工业家族之一，起源于19世纪德国巴伐利亚地区。</p>
-
-                <h3>Family Business</h3>
-                <p>The core family enterprise is steel manufacturing and heavy industry, with factories and offices across multiple European countries. Estimated total family assets exceed €1.2 billion.</p>
-                <p class="cn">家族核心产业为钢铁制造和重工业，在多个欧洲国家设有工厂和办事处。家族总资产估计超过12亿欧元。</p>
-
-                <h3>Family Members</h3>
-                <ul>
-                    <li><strong>Heinrich Hoffmann</strong> — Current patriarch, Chairman of the Board</li>
-                    <li><strong>Margarete Hoffmann</strong> — Heinrich's wife (deceased, 2008)</li>
-                    <li><strong>Lucius</strong> — Only son, pianist</li>
-                </ul>
-                <p class="cn"><strong>Heinrich Hoffmann</strong>——现任家族族长，董事会主席<br><strong>Margarete Hoffmann</strong>——Heinrich之妻（2008年去世）<br><strong>Lucius</strong>——独子，钢琴家</p>
-
-                <h3>Family Motto</h3>
-                <p><em>"Stärke durch Einheit"</em> — Strength through Unity</p>
-                <p class="cn"><em>"Stärke durch Einheit"</em>——力量源于团结</p>
-            `
-        },
-        {
-            id: "heinrich",
-            title: "Heinrich Hoffmann",
-            category: "Personnel",
-            lastModified: "3 September 2024",
-            content: `
-                <div class="info-card">
-                    <p><strong>Born:</strong> 22 April 1958</p>
-                    <p><strong>Position:</strong> Chairman & CEO, Hoffmann Industrial Group</p>
-                    <p><strong>Residence:</strong> Munich, Germany</p>
-                </div>
-
-                <h3>Biography</h3>
-                <p>Heinrich took control of the family business from his father in 1982. Under his leadership, Hoffmann Industrial expanded nearly tenfold. Known for his iron-fisted management style, he has been nicknamed "The Steel Wolf" in business circles.</p>
-                <p class="cn">Heinrich于1982年从父亲手中接管家族企业。在他的领导下，霍夫曼工业集团扩张了近十倍。以铁腕管理风格著称，他在商界被称为"钢铁之狼"。</p>
-                <p>As a child, Heinrich showed considerable aptitude for music, particularly piano. However, his father insisted he pursue business. Heinrich has spoken publicly about this as <strong>"the great regret of my life"</strong> and has channelled enormous resources into his son's musical career, reportedly spending over €20 million on private venues, tutors, and career management.</p>
-                <p class="cn">Heinrich幼年时展现出相当的音乐天赋，尤其是钢琴。然而，他的父亲坚持让他从商。Heinrich曾公开称此为<strong>"我一生中最大的遗憾"</strong>，并将大量资源投入儿子的音乐事业，据报道在私人场地、导师和事业管理上花费超过2000万欧元。</p>
-
-                <h3>Family</h3>
-                <p>Married Margarete in 1990. Their only son, Lucius, was born in 1996. Margarete passed away from illness in 2008. Heinrich has not remarried.</p>
-                <p class="cn">1990年与Margarete结婚。独子Lucius于1996年出生。Margarete于2008年因病去世。Heinrich未再婚。</p>
-
-                <h3>Controversies</h3>
-                <p>The strained relationship between Heinrich and Lucius has long been a subject of media attention. Sources suggest the tension is not about rejection of the family business, but rather about <strong>Heinrich's obsessive investment in his son's musical career</strong> and his refusal to accept any criticism of Lucius's abilities.</p>
-                <p class="cn">Heinrich与Lucius之间的紧张关系长期以来一直是媒体关注的焦点。消息人士指出，矛盾的根源并非Lucius拒绝继承家业，而在于<strong>Heinrich对儿子音乐事业的偏执投入</strong>以及他拒绝接受任何对Lucius能力的批评。</p>
-
-                <div class="restricted-notice">
-                    <p>🔒 <strong>Further details require Level 1 access</strong></p>
-                </div>
-            `
-        },
-        {
-            id: "lucio",
-            title: "Lucius",
-            category: "Personnel",
-            lastModified: "20 October 2024",
-            content: `
-                <div class="info-card">
-                    <p><strong>Born:</strong> 12 March 1996</p>
-                    <p><strong>Occupation:</strong> Pianist</p>
-                    <p><strong>Residence:</strong> Vienna, Austria</p>
-                </div>
-
-                <h3>Musical Career</h3>
-                <p>Lucius began learning piano at age 5, studying under <strong>Professor Hans Weber</strong> at the Vienna Conservatory — one of Europe's most celebrated piano pedagogues. A diligent and hardworking student, he held his first solo recital at 16 and has since performed at numerous prestigious venues across Europe, including the Vienna Musikverein and the Salzburg Festival fringe programme.</p>
-                <p class="cn">Lucius五岁开始学琴，师从维也纳音乐学院的<strong>Hans Weber教授</strong>——欧洲最著名的钢琴教育家之一。他勤奋刻苦，16岁举办首场独奏会，此后在欧洲众多知名场馆演出，包括维也纳金色大厅和萨尔茨堡音乐节外围项目。</p>
-
-                <h3>Recognition</h3>
-                <p>Lucius has been praised by cultural ministers and politicians across multiple countries. He was named one of Forbes Europe's "30 Under 30" in the arts category, and his performances have drawn attention from both the classical music establishment and a large online following. He is widely respected in the industry as a serious, dedicated musician.</p>
-                <p class="cn">Lucius受到多国文化部长和政要的赞赏。他曾入选《福布斯》欧洲"30位30岁以下精英"艺术类榜单，其演出同时吸引了古典音乐圈和大量网络粉丝的关注。他在业内被广泛视为一位严肃、敬业的音乐家。</p>
-
-                <h3>Notable Works</h3>
-                <ul>
-                    <li><em>Whispers of the Night</em> (2024)</li>
-                    <li><em>The Forgotten Waltz</em> (2023)</li>
-                    <li><em>Moonlit Monologue</em> (2022)</li>
-                </ul>
-
-                <div class="restricted-notice">
-                    <p>🔒 <strong>Detailed personal file requires Level 1 access</strong></p>
-                </div>
-            `
-        },
-        {
-            id: "estate",
-            title: "Vienna Residence",
-            category: "Assets",
-            lastModified: "8 July 2024",
-            content: `
-                <h3>Location</h3>
-                <p>Located in Vienna's 1st District (Innere Stadt), near St. Stephen's Cathedral.</p>
-                <p class="cn">位于维也纳第一区（内城区），靠近圣斯蒂芬大教堂。</p>
-
-                <h3>Details</h3>
-                <p>This 19th-century historic building was purchased by Heinrich on Lucius's behalf in 2019 and meticulously restored to serve as his primary residence.</p>
-                <p class="cn">这座19世纪的历史建筑由Heinrich于2019年以Lucius的名义购入，并经精心修复作为其主要住所。</p>
-                <p>The residence contains a professional-grade recording studio and a 1920s Steinway grand piano.</p>
-                <p class="cn">寓所内设有专业级录音室和一架1920年代的施坦威三角钢琴。</p>
-
-                <div class="restricted-notice">
-                    <p>🔒 <strong>Address details and floor plans require Level 1 access</strong></p>
-                </div>
-            `
-        }
-    ],
-
-    // ========== Tier 1 Entries (password: test1) ==========
-    tier1Entries: [
-        {
-            id: "lucio-detailed",
-            title: "Lucius — Extended Personal File",
-            category: "Restricted",
-            classification: "PERSONAL",
-            lastModified: "5 November 2024",
-            content: `
-                <div class="classified-header">
-                    <span class="classification-badge">PERSONAL</span>
-                    <span>Access log enabled</span>
-                </div>
-
-                <h3>Psychological Assessment Summary</h3>
-                <p>Per the 2023 psychological evaluation, Lucius exhibits signs of mild dissociative episodes and identity confusion. He frequently reports <strong>gaps in memory surrounding his compositional process</strong>, describing completed works appearing "as if by magic" overnight.</p>
-                <p class="cn">根据2023年的心理评估，Lucius表现出轻度解离发作和身份认同混乱的迹象。他频繁报告<strong>在作曲过程中出现记忆空白</strong>，称完成的作品一夜之间"像变魔术一样"出现。</p>
-                <p>The assessing physician, Dr. Karl Brandt (retained by Heinrich Hoffmann), attributed these episodes to "hypnagogic creativity" and recommended no further investigation. <em>Note: Dr. Brandt's objectivity has been questioned internally.</em></p>
-                <p class="cn">负责评估的医生Karl Brandt博士（由Heinrich Hoffmann聘用）将这些症状归因于"入睡前创造力"，并建议不做进一步调查。<em>注：Brandt博士的客观性在内部受到质疑。</em></p>
-
-                <h3>Financial Overview</h3>
-                <ul>
-                    <li>Trust fund (maternal inheritance): ~€35 million</li>
-                    <li>Personal assets: ~€8 million</li>
-                    <li>Annual income (performances): ~€120,000</li>
-                    <li><strong>Annual expenditure on career (paid by Heinrich): ~€3.2 million</strong></li>
-                </ul>
-                <p><em>Note: Lucius voluntarily relinquished inheritance rights to the family business but retains full rights to his mother's estate.</em></p>
-                <p class="cn"><em>注：Lucius自愿放弃了家族企业的继承权，但保留了对母亲遗产的全部权利。</em></p>
-
-                <h3>Key Relationships</h3>
-                <table class="data-table">
-                    <tr><th>Name</th><th>Relation</th><th>Notes</th></tr>
-                    <tr><td>Heinrich Hoffmann</td><td>Father</td><td>Relationship complex; Heinrich funds career obsessively</td></tr>
-                    <tr><td>Prof. Hans Weber</td><td>Mentor</td><td>Vienna Conservatory; has privately expressed doubts about Lucius's technical ability</td></tr>
-                    <tr><td>Elena Petrova</td><td>Ex-girlfriend</td><td>Russian violinist, separated 2022. Told friends Lucius "plays like a different person at night"</td></tr>
-                    <tr><td>Maximilian Stein</td><td>Personal assistant</td><td>Employed since 2020, reports directly to Heinrich</td></tr>
-                </table>
-
-                <h3>Recent Schedule (expired)</h3>
-                <ul>
-                    <li>28 October — Prague private recital</li>
-                    <li>5 November — Return to Vienna</li>
-                    <li>14 November — Scheduled meeting with family lawyer (cancelled)</li>
-                </ul>
-            `
-        },
-        {
-            id: "estate-detailed",
-            title: "Vienna Residence — Full Details",
-            category: "Restricted",
-            classification: "PERSONAL",
-            lastModified: "20 June 2024",
-            content: `
-                <div class="classified-header">
-                    <span class="classification-badge">PERSONAL</span>
-                    <span>Access log enabled</span>
-                </div>
-
-                <h3>Address</h3>
-                <p><strong>Domgasse 5, 1010 Wien, Österreich</strong></p>
-                <p>(Domgasse 5, Vienna 1st District)</p>
-
-                <h3>Building Details</h3>
-                <ul>
-                    <li>Year built: 1872</li>
-                    <li>Floor area: ~420 m²</li>
-                    <li>Floors: 4 (Lucius occupies the top two)</li>
-                    <li>Contains: soundproofed practice room, recording studio, study</li>
-                </ul>
-
-                <h3>Security System</h3>
-                <ul>
-                    <li>24-hour CCTV surveillance</li>
-                    <li>Biometric access (fingerprint + facial recognition)</li>
-                    <li>Emergency alert system (direct link to local police)</li>
-                </ul>
-                <p><em>Security codes rotated monthly, managed by personal assistant.</em></p>
-                <p class="cn"><em>安保密码每月轮换，由私人助理管理。</em></p>
-
-                <h3>Anomaly Report</h3>
-                <p>Building maintenance staff reported hearing <strong>piano music from the practice room between 2-4am on multiple occasions</strong>, despite Lucius's bedroom door being locked from inside. Lucius denies any knowledge of nighttime playing. Security footage from these periods shows <strong>intermittent static and data corruption</strong>.</p>
-                <p class="cn">大楼维护人员多次报告<strong>在凌晨2点至4点之间听到练琴室传来钢琴声</strong>，尽管Lucius的卧室门从内部反锁。Lucius否认知晓任何夜间弹奏。这些时段的监控录像显示<strong>间歇性静电干扰和数据损坏</strong>。</p>
-            `
-        },
-        {
-            id: "incident-report",
-            title: "Incident Report #2024-1108",
-            category: "Restricted",
-            classification: "PERSONAL",
-            lastModified: "12 November 2024",
-            content: `
-                <div class="classified-header">
-                    <span class="classification-badge">PERSONAL</span>
-                    <span>Authorised personnel only</span>
-                </div>
-
-                <h3>Incident Summary</h3>
-                <p><strong>Date:</strong> 8 November 2024</p>
-                <p><strong>Location:</strong> Vienna residence</p>
-                <p><strong>Reported by:</strong> Maximilian Stein</p>
-
-                <h3>Details</h3>
-                <p>On 8 November, Stein arrived at the residence at the scheduled time and found Lucius in an abnormally distressed state. Observations:</p>
-                <p class="cn">11月8日，Stein按预定时间到达寓所，发现Lucius处于异常痛苦的状态。观察记录如下：</p>
-                <ul>
-                    <li>Numerous crumpled papers found in the study — appeared to be unfinished letter drafts</li>
-                    <li>The piano lid had been closed for over three days (extremely unusual)</li>
-                    <li>Lucius stated: <strong>"Everything is about to end"</strong> but refused to elaborate</li>
-                    <li>Lucius also said: "The music isn't mine. It was never mine. I think I've always known."</li>
-                </ul>
-                <p class="cn">- 书房内发现大量揉皱的纸张——似为未完成的信件草稿<br>- 钢琴盖已合上超过三天（极不寻常）<br>- Lucius说：<strong>"一切即将结束"</strong>，但拒绝进一步解释<br>- Lucius还说："那些音乐不是我的。从来都不是。我想我一直都知道。"</p>
-
-                <h3>Follow-up</h3>
-                <p>Stein recommended Lucius contact a mental health professional. Lucius refused.</p>
-                <p class="cn">Stein建议Lucius联系心理健康专业人士。Lucius拒绝了。</p>
-                <p>10 November — Lucius cancelled his 15 November meeting with the family lawyer.</p>
-                <p class="cn">11月10日——Lucius取消了原定11月15日与家族律师的会面。</p>
-
-                <div class="warning-box">
-                    <p>⚠️ <strong>Note:</strong> This report was completed BEFORE the events of 14 November. It has since been transferred to relevant authorities.</p>
-                    <p class="cn">⚠️ <strong>注意：</strong>本报告完成于11月14日事件发生之前。此后已移交相关部门。</p>
-                </div>
-            `
-        }
-    ],
-
-    // ========== Tier 2 Entries (password: test2) ==========
-    tier2Entries: [
-        {
-            id: "ghostwriter",
-            title: "CONFIDENTIAL: Composition Authenticity Investigation",
-            category: "Confidential",
-            classification: "CONFIDENTIAL",
-            lastModified: "1 November 2024",
-            content: `
-                <div class="classified-header">
-                    <span class="classification-badge warning">CONFIDENTIAL</span>
-                    <span>Internal investigation — do not distribute</span>
-                </div>
-
-                <h3>Background</h3>
-                <p>In September 2024, an internal audit triggered by insurance claims revealed significant discrepancies in the provenance of Lucius's published compositions.</p>
-                <p class="cn">2024年9月，一次由保险理赔触发的内部审计揭示了Lucius已发表作品来源上的重大疑点。</p>
-
-                <h3>Key Findings</h3>
-                <ul>
-                    <li>Handwriting analysis of original manuscripts reveals <strong>two distinct hands</strong> — one matching Lucius, the other unknown</li>
-                    <li>The "unknown hand" is responsible for all technically complex passages and the majority of harmonic structures</li>
-                    <li>Lucius's own compositional attempts (identified by his hand) are described by analysts as <strong>"technically accomplished and artistically mature, consistent with a highly trained professional — but qualitatively distinct from the night compositions, which represent a transcendent level of genius"</strong></li>
-                    <li>Multiple manuscripts show Lucius's handwriting layered ON TOP of the unknown hand, as if retracing</li>
-                </ul>
-                <p class="cn">- 原始手稿的笔迹分析显示<strong>两种截然不同的笔迹</strong>——一种与Lucius吻合，另一种身份不明<br>- "不明笔迹"负责了所有技术复杂段落和大部分和声结构<br>- Lucius本人的作曲尝试（通过其笔迹识别）被分析师描述为<strong>"技术精湛且艺术上成熟，与高水平专业人士一致——但与夜间作品有本质区别，后者呈现出超越性的天才水平"</strong><br>- 多份手稿显示Lucius的笔迹覆盖在不明笔迹之上，似为描摹</p>
-
-                <h3>The "Sleepwalking" Narrative</h3>
-                <p>Heinrich Hoffmann has maintained to his son that the unknown manuscripts are Lucius's own subconscious work, produced during episodes of sleepwalking or hypnagogic states. A physician retained by Heinrich, Dr. Karl Brandt, has provided supporting documentation for this explanation.</p>
-                <p class="cn">Heinrich Hoffmann一直向儿子声称，那些不明手稿是Lucius自己的潜意识作品，在梦游或入睡前状态中创作。Heinrich聘用的医生Karl Brandt博士为此解释提供了支持性文件。</p>
-                <p><strong>However, Dr. Brandt's medical licence was suspended in 2021 for falsifying patient records in an unrelated case.</strong> His involvement raises serious questions about the legitimacy of this narrative.</p>
-                <p class="cn"><strong>然而，Brandt博士的行医执照于2021年因在一桩无关案件中伪造患者记录而被吊销。</strong>他的介入使这一说辞的可信度备受质疑。</p>
-
-                <h3>The Unknown Composer</h3>
-                <p>The true author of the compositions remains unidentified. Stylistic analysis suggests the unknown composer is:</p>
-                <p class="cn">作品的真正作者仍未确认。风格分析表明，这位不明作曲家：</p>
-                <ul>
-                    <li>Exceptionally gifted, likely trained from very early childhood</li>
-                    <li>Familiar with tactile/Braille musical notation systems</li>
-                    <li>Likely <strong>visually impaired</strong>, based on spatial patterns in the manuscript layout</li>
-                </ul>
-                <p class="cn">- 天赋异禀，可能从幼年起接受训练<br>- 熟悉触觉/盲文音乐记谱系统<br>- 根据手稿排版的空间模式，可能<strong>患有视觉障碍</strong></p>
-
-                <div class="restricted-notice">
-                    <p>🔒 <strong>Identity of the composer requires Level 3 access</strong></p>
-                </div>
-            `
-        },
-        {
-            id: "chord-basic",
-            title: "Subject File: 'Chord' (No Surname)",
-            category: "Confidential",
-            classification: "CONFIDENTIAL",
-            lastModified: "28 October 2024",
-            content: `
-                <div class="classified-header">
-                    <span class="classification-badge warning">CONFIDENTIAL</span>
-                    <span>Restricted access</span>
-                </div>
-
-                <h3>Subject Overview</h3>
-                <div class="info-card">
-                    <p><strong>Known as:</strong> Chord (no registered surname)</p>
-                    <p><strong>Born:</strong> ~1997 (exact date unknown)</p>
-                    <p><strong>Status:</strong> Visually impaired from birth (bilateral anophthalmia)</p>
-                    <p><strong>Nominal relation:</strong> Listed in some documents as Heinrich Hoffmann's illegitimate son</p>
-                    <p><strong>Actual relation:</strong> None. Chord himself has never acknowledged this claim.</p>
-                </div>
-
-                <h3>Background</h3>
-                <p>Chord was placed in Heinrich Hoffmann's care through unclear circumstances approximately in 2005, reportedly discovered in an orphanage in Eastern Europe. Born into extreme poverty with no family or patron, he was described by those who met him as <strong>mild-tempered, gentle, and almost unnervingly compliant</strong> — and as a piano prodigy of extraordinary ability, capable of composing complex works entirely by ear and through Braille notation.</p>
-                <p class="cn">Chord于大约2005年通过不明途径被置于Heinrich Hoffmann的监护之下，据报道是在东欧一家孤儿院被发现的。他出身赤贫，没有家人也没有庇护者。见过他的人形容他<strong>性情温和、温顺，近乎令人不安地顺从</strong>——同时也是天赋非凡的钢琴神童，能够完全凭听觉和盲文记谱法创作复杂作品。</p>
-
-                <h3>Living Conditions</h3>
-                <p>Chord has been housed in a <strong>soundproofed annex</strong> attached to one of the Hoffmann family's properties. He has had <strong>no public presence, no official identity documents, and no contact with the outside world</strong> beyond Hoffmann-controlled staff.</p>
-                <p class="cn">Chord被安置在霍夫曼家族某处房产附属的<strong>隔音附楼</strong>中。他<strong>没有任何公开身份、没有正式身份证件，也没有与外界的任何联系</strong>，只能接触霍夫曼控制下的工作人员。</p>
-                <p>When questioned about this arrangement, Heinrich stated that Chord "prefers solitude" and that the arrangement was "for his own protection."</p>
-                <p class="cn">当被问及这一安排时，Heinrich表示Chord"喜欢独处"，这种安排是"为了保护他"。</p>
-
-                <h3>Musical Output</h3>
-                <p>A comparison of Chord's known compositions with Lucius's published works shows a <strong>near-perfect match</strong> in harmonic language, structural patterns, and stylistic fingerprints.</p>
-                <p class="cn">将Chord的已知作品与Lucius的已发表作品进行比较，发现在和声语言、结构模式和风格特征上呈现<strong>近乎完美的吻合</strong>。</p>
-
-                <div class="warning-box">
-                    <p>⚠️ <strong>Implication:</strong> Chord appears to be the true author of all major works attributed to Lucius.</p>
-                    <p class="cn">⚠️ <strong>含义：</strong>Chord似乎才是所有署名Lucius的主要作品的真正作者。</p>
-                </div>
-
-                <div class="restricted-notice">
-                    <p>🔒 <strong>Full medical records and fate of subject require Level 3 access</strong></p>
-                </div>
-            `
-        },
-        {
-            id: "draft-will",
-            title: "Unsigned Draft Will — Found in Study",
-            category: "Legal",
-            classification: "CONFIDENTIAL",
-            lastModified: "10 November 2024",
-            content: `
-                <div class="classified-header">
-                    <span class="classification-badge warning">CONFIDENTIAL</span>
-                    <span>Legally sensitive document</span>
-                </div>
-
-                <h3>Document Description</h3>
-                <p>The following is a transcription of a handwritten draft will found in Lucius's study. It is UNSIGNED and holds no legal force. The original has been secured by the family's legal counsel.</p>
-                <p class="cn">以下是在Lucius书房中发现的一份手写遗嘱草稿的誊本。该遗嘱未签名，不具法律效力。原件已由家族法律顾问保管。</p>
-
-                <div class="document-box">
-                    <p><em>To whom it may concern:</em></p>
-                    <p class="cn"><em>致相关人士：</em></p>
-                    <p><em>If you are reading this, I am no longer here.</em></p>
-                    <p class="cn"><em>如果你在读这封信，我已经不在了。</em></p>
-                    <p><em>I leave all rights to my musical works to the Vienna Conservatory, to support the development of young musicians.</em></p>
-                    <p class="cn"><em>我将我所有音乐作品的版权留给维也纳音乐学院，以支持青年音乐家的发展。</em></p>
-                    <p><em>My personal belongings, including the Steinway, I leave to Professor Weber. He will know how to keep it singing.</em></p>
-                    <p class="cn"><em>我的个人物品，包括那架施坦威，留给Weber教授。他会知道如何让它继续歌唱。</em></p>
-                    <p><em>The trust fund left by my mother — please donate it in full to the New Melody Children's Music Education Foundation.</em></p>
-                    <p class="cn"><em>母亲留下的信托基金——请全额捐赠给新旋律儿童音乐教育基金会。</em></p>
-                    <p><em>Father — if you see this — I never hated you. I just couldn't become the person you wanted me to be. I hope you understand.</em></p>
-                    <p class="cn"><em>父亲——如果你看到这些——我从未恨过你。我只是无法成为你希望我成为的那个人。希望你能理解。</em></p>
-                    <p><em>And about "Whispers of the Night" — it was written for C. He knows who he is.</em></p>
-                    <p class="cn"><em>关于《夜之低语》——它是为C写的。他知道自己是谁。</em></p>
-                    <p><em>No. That's not right either. It wasn't written FOR him. It was written BY — </em></p>
-                    <p class="cn"><em>不。这也不对。它不是为他写的。它是由——</em></p>
-                    <p style="text-align: right;"><em>[ the text ends here, mid-sentence ]</em></p>
-                    <p class="cn" style="text-align: right;"><em>[ 文字在此中断，未写完 ]</em></p>
-                </div>
-
-                <h3>Analysis</h3>
-                <p>The abrupt ending and the self-correction in the final lines suggest Lucius may have been on the verge of acknowledging the true authorship of his compositions before stopping himself — or being interrupted.</p>
-                <p class="cn">突然中断的结尾和最后几行的自我纠正表明，Lucius可能正要承认其作品的真正作者身份，但在最后一刻停了下来——或者被打断了。</p>
-            `
-        }
-    ],
-
-    // ========== Tier 3 Entries (password: test3) ==========
-    tier3Entries: [
-        {
-            id: "surgery-records",
-            title: "TOP SECRET: Cardiac Transplant Operation Records",
-            category: "Top Secret",
-            classification: "TOP SECRET",
-            lastModified: "15 November 2024",
-            content: `
-                <div class="classified-header">
-                    <span class="classification-badge danger">TOP SECRET</span>
-                    <span>Criminal evidence — handle with extreme caution</span>
-                </div>
-
-                <h3>Operation Summary</h3>
-                <div class="info-card">
-                    <p><strong>Date:</strong> 3 September 2024</p>
-                    <p><strong>Facility:</strong> Undisclosed private clinic, believed to be in Eastern Europe</p>
-                    <p><strong>Surgeon:</strong> Unknown (operating under alias "Dr. Voss")</p>
-                    <p><strong>Commissioned by:</strong> Heinrich Hoffmann</p>
-                    <p><strong>Procedure:</strong> Bilateral cardiac transplant — cross-exchange between two subjects</p>
-                </div>
-
-                <h3>Background & Motive</h3>
-                <p>Though Lucius was genuinely talented — a disciplined, hardworking pianist respected by peers and praised by critics — Heinrich was not satisfied. He could hear the difference between Lucius's daytime work and the transcendent night compositions. Heinrich's obsession was not with making Lucius good; Lucius was already good. His obsession was with making Lucius <strong>the genius he himself had failed to become</strong>.</p>
-                <p class="cn">尽管Lucius确实才华横溢——一位自律刻苦、受同行尊重和评论家赞誉的钢琴家——Heinrich并不满意。他能听出Lucius白天作品与那些超凡的夜间作品之间的差距。Heinrich的执念不是让Lucius变得优秀；Lucius已经很优秀了。他的执念是让Lucius成为<strong>他自己未能成为的那个天才</strong>。</p>
-                <p>In early 2024, Heinrich learned of a pseudoscientific theory called <strong>"cellular memory transfer"</strong> — the idea that organ transplants, particularly heart transplants, can transfer the donor's memories, skills, and personality traits to the recipient.</p>
-                <p class="cn">2024年初，Heinrich得知了一种名为<strong>"细胞记忆转移"</strong>的伪科学理论——该理论认为器官移植，尤其是心脏移植，可以将供体的记忆、技能和人格特质转移给受体。</p>
-                <p>Despite having no scientific basis, Heinrich became obsessed with this theory. He contacted an <strong>illegal organ transplant network</strong> with a proposal:</p>
-                <p class="cn">尽管没有任何科学依据，Heinrich却对这一理论着了迷。他联系了一个<strong>非法器官移植网络</strong>，提出了一个方案：</p>
-
-                <div class="warning-box">
-                    <p>⚠️ <strong>Swap Lucius's heart with Chord's heart</strong>, believing this would transfer Chord's musical genius into Lucius's body.</p>
-                    <p class="cn">⚠️ <strong>将Lucius的心脏与Chord的心脏互换</strong>，相信这样可以将Chord的音乐天赋转移到Lucius的身体中。</p>
-                </div>
-
-                <h3>The Operation</h3>
-                <ul>
-                    <li>Both Lucius and Chord were transported to the facility under false pretences</li>
-                    <li>Lucius was told it was a "routine cardiac check-up"</li>
-                    <li>Chord — having no agency or legal identity — was given no explanation</li>
-                    <li>The hearts were cross-exchanged: Lucius received Chord's heart, Chord received Lucius's</li>
-                    <li>Heinrich reportedly justified this by saying: <strong>"At least I'm not killing the boy — he gets a heart too"</strong></li>
-                </ul>
-                <p class="cn">- Lucius和Chord均以虚假理由被送往该设施<br>- Lucius被告知这是一次"常规心脏检查"<br>- Chord——没有任何自主权或合法身份——未得到任何解释<br>- 两人的心脏被交叉互换：Lucius接受了Chord的心脏，Chord接受了Lucius的心脏<br>- 据报道，Heinrich为此辩解道：<strong>"至少我没有杀掉那个男孩——他也得到了一颗心脏"</strong></p>
-
-                <h3>Outcome</h3>
-                <p>The operation was technically "successful." Both subjects survived the immediate post-operative period.</p>
-                <p class="cn">手术在技术层面上"成功"了。两名受试者均在术后即刻存活。</p>
-                <p>However, <strong>donor-recipient tissue compatibility was catastrophically inadequate</strong>. Neither subject had been properly cross-matched.</p>
-                <p class="cn">然而，<strong>供体与受体的组织相容性严重不匹配</strong>。两人均未经过正规的交叉配型。</p>
-                <ul>
-                    <li><strong>Lucius</strong> — Developed acute immune rejection within 6 weeks. Died 14 November 2024.</li>
-                    <li><strong>Chord</strong> — Developed hyperacute rejection. Died approximately 20 September 2024. <em>His death was not reported to any authority.</em></li>
-                </ul>
-                <p class="cn">- <strong>Lucius</strong>——在6周内出现急性免疫排斥。于2024年11月14日死亡。<br>- <strong>Chord</strong>——出现超急性排斥反应。约于2024年9月20日死亡。<em>他的死亡未向任何机构报告。</em></p>
-
-                <div class="warning-box">
-                    <p>⚠️ <strong>Both deaths are directly attributable to Heinrich Hoffmann's actions. This constitutes double homicide through criminal negligence at minimum.</strong></p>
-                    <p class="cn">⚠️ <strong>两人的死亡均可直接归因于Heinrich Hoffmann的行为。这至少构成因刑事疏忽导致的双重杀人罪。</strong></p>
-                </div>
-            `
-        },
-        {
-            id: "chord-full",
-            title: "Chord — Complete File (DECLASSIFIED)",
-            category: "Top Secret",
-            classification: "TOP SECRET",
-            lastModified: "15 November 2024",
-            content: `
-                <div class="classified-header">
-                    <span class="classification-badge danger">TOP SECRET</span>
-                    <span>Subject deceased — file partially declassified</span>
-                </div>
-
-                <h3>Full Profile</h3>
-                <div class="info-card">
-                    <p><strong>Name:</strong> Chord (no surname; refused to use "Hoffmann")</p>
-                    <p><strong>Born:</strong> circa 1997, exact date and location unknown</p>
-                    <p><strong>Died:</strong> approximately 20 September 2024 (unreported)</p>
-                    <p><strong>Condition:</strong> Blind from birth (bilateral anophthalmia)</p>
-                    <p><strong>Nominal status:</strong> Listed as Heinrich's illegitimate son in private records</p>
-                    <p><strong>Actual status:</strong> No biological relation. Chord always knew and refused to play along.</p>
-                </div>
-
-                <h3>Origins</h3>
-                <p>Chord's true origins remain unclear. Born into extreme poverty, likely in Eastern Europe, he was discovered in an orphanage by an intermediary connected to the same illegal network Heinrich later used for the transplant operation. Identified as a musical prodigy at a very young age despite his blindness, he was brought into the Hoffmann household around age 8 — not as a son, but as a tool.</p>
-                <p class="cn">Chord的真实身世仍不清楚。他出身赤贫，可能来自东欧，在一家孤儿院被发现——发现者是与Heinrich后来用于移植手术的同一非法网络有关联的中间人。尽管双目失明，他在很小的时候就被发现是音乐神童，约8岁时被带入霍夫曼家族——不是作为儿子，而是作为工具。</p>
-
-                <h3>Life in Captivity</h3>
-                <p>For nearly two decades, Chord lived in a soundproofed annex with no contact with the outside world. He was a ghostwriter — his sole purpose was to compose music that would be attributed to Lucius. Despite this, those few staff members who interacted with him described him as <strong>remarkably gentle and uncomplaining</strong>, never aggressive, never bitter. He simply played. It was all he had.</p>
-                <p class="cn">近二十年来，Chord生活在一间隔音附楼中，与外界完全隔绝。他是一个枪手——他存在的唯一目的就是创作署名Lucius的音乐。尽管如此，少数与他接触过的工作人员形容他<strong>非常温和且从不抱怨</strong>，从不攻击性，从不怀恨。他只是弹琴。那是他拥有的一切。</p>
-                <p>Chord was aware of this arrangement. According to notes found in the annex:</p>
-                <p class="cn">Chord对这一安排心知肚明。根据在附楼中发现的笔记：</p>
-                <div class="document-box">
-                    <p><em>"He wants me to be his son's ghost. I am not his son. I am not anyone's ghost. But the piano is the only thing I have, so I play. I play because it is the only proof I exist."</em></p>
-                    <p class="cn"><em>"他想让我做他儿子的影子。我不是他的儿子。我不是任何人的影子。但钢琴是我唯一拥有的东西，所以我弹。我弹琴，因为这是我存在的唯一证明。"</em></p>
-                </div>
-
-                <h3>Known Compositions (attributed to Lucius)</h3>
-                <p>ALL of the following works were composed by Chord:</p>
-                <p class="cn">以下所有作品均由Chord创作：</p>
-                <ul>
-                    <li><em>Whispers of the Night</em> — Chord's masterpiece, completed shortly before the transplant</li>
-                    <li><em>The Forgotten Waltz</em></li>
-                    <li><em>Moonlit Monologue</em></li>
-                    <li>And approximately 40+ other unpublished works found in the annex</li>
-                </ul>
-                <p class="cn">- 《夜之低语》——Chord的杰作，在移植手术前不久完成<br>- 《被遗忘的华尔兹》<br>- 《月光独白》<br>- 以及在附楼中发现的约40余部未出版作品</p>
-
-                <h3>The "C" in Lucius's Will</h3>
-                <p>In his draft will, Lucius wrote: "Whispers of the Night was written for C." It is now clear that "C" refers to <strong>Chord</strong> — and that in his final days, Lucius was beginning to understand that the piece was not written FOR Chord, but BY Chord. The will's unfinished final sentence — "It was written BY —" — appears to be the moment of this realisation.</p>
-                <p class="cn">在遗嘱草稿中，Lucius写道："《夜之低语》是为C写的。"现在已经清楚，"C"指的是<strong>Chord</strong>——而且在Lucius生命的最后几天，他开始意识到这首曲子不是为Chord写的，而是由Chord写的。遗嘱那句未写完的话——"它是由——"——正是他顿悟的那一刻。</p>
-            `
-        },
-        {
-            id: "cellular-memory",
-            title: "Reference: Cellular Memory Theory",
-            category: "Top Secret",
-            classification: "TOP SECRET",
-            lastModified: "8 November 2024",
-            content: `
-                <div class="classified-header">
-                    <span class="classification-badge danger">TOP SECRET</span>
-                    <span>Context document</span>
-                </div>
-
-                <h3>Overview</h3>
-                <p>"Cellular memory" is a <strong>pseudoscientific hypothesis</strong> suggesting that memories, personality traits, and even skills can be stored in cells outside the brain — particularly in the heart — and transferred through organ transplantation.</p>
-                <p class="cn">"细胞记忆"是一种<strong>伪科学假说</strong>，认为记忆、人格特质甚至技能可以储存在大脑以外的细胞中——尤其是心脏——并通过器官移植进行转移。</p>
-
-                <h3>Scientific Consensus</h3>
-                <p>The theory has been <strong>thoroughly debunked</strong> by mainstream science. There is no credible evidence that organ transplants transfer memories or abilities. Anecdotal reports of personality changes in transplant recipients are attributed to psychological factors, immunosuppressant medications, and confirmation bias.</p>
-                <p class="cn">该理论已被主流科学<strong>彻底否定</strong>。没有可信证据表明器官移植能转移记忆或能力。关于移植受者性格改变的轶事报告被归因于心理因素、免疫抑制药物和确认偏差。</p>
-
-                <h3>Heinrich's Belief</h3>
-                <p>Despite the lack of scientific backing, Heinrich became convinced of this theory after encountering it through online forums and a self-published book titled <em>"The Heart Remembers: Cellular Memory and the Transfer of Soul"</em> by a discredited former researcher.</p>
-                <p class="cn">尽管缺乏科学支持，Heinrich在通过网络论坛和一位已名誉扫地的前研究员自费出版的书籍《心脏的记忆：细胞记忆与灵魂转移》接触到该理论后，变得深信不疑。</p>
-                <p>Heinrich's notes (found in his Munich study) include passages such as:</p>
-                <p class="cn">Heinrich的笔记（在其慕尼黑书房中发现）包括如下段落：</p>
-                <div class="document-box">
-                    <p><em>"If the heart carries memory, then talent must live in the cells. Give my son the right heart, and he will finally become what he was always meant to be. What I was always meant to be."</em></p>
-                    <p class="cn"><em>"如果心脏承载记忆，那么天赋就一定存在于细胞之中。给我的儿子一颗对的心脏，他就能终于成为他命中注定要成为的人。成为我命中注定要成为的人。"</em></p>
-                </div>
-                <p>The final sentence is particularly revealing — it suggests Heinrich saw Lucius's "genius" as a proxy for his own unfulfilled musical ambitions.</p>
-                <p class="cn">最后一句话尤其发人深省——它暗示Heinrich将Lucius的"天才"视为自己未竟音乐抱负的替身。</p>
-            `
-        }
-    ],
-
-    // ========== Tier 4 Entries (password: test4) ==========
-    tier4Entries: [
-        {
-            id: "digital-life",
-            title: "BLACK ARCHIVE: Project Elysium — Digital Life Preservation",
-            category: "Black Archive",
-            classification: "BLACK",
-            lastModified: "15 November 2024",
-            content: `
-                <div class="classified-header">
-                    <span class="classification-badge danger">BLACK ARCHIVE</span>
-                    <span>⚠ FINAL CLEARANCE LEVEL — NO FURTHER ACCESS EXISTS</span>
-                </div>
-
-                <h3>Project Overview</h3>
-                <p><strong>Project Elysium</strong> is a clandestine digital consciousness preservation programme operated by the same illegal network responsible for the organ transplant. The programme claims to:</p>
-                <p class="cn"><strong>"极乐世界"计划</strong>是一项秘密的数字意识保存项目，由负责器官移植的同一非法网络运营。该项目声称能够：</p>
-                <ul>
-                    <li>Upload a dying person's consciousness into a digital environment</li>
-                    <li>Maintain the digital consciousness indefinitely (for a recurring fee)</li>
-                    <li>Eventually transfer the consciousness back into a custom-grown body</li>
-                </ul>
-                <p class="cn">- 将临终者的意识上传至数字环境<br>- 无限期维持数字意识（需持续付费）<br>- 最终将意识转移回定制培育的身体</p>
-
-                <h3>Heinrich's Involvement</h3>
-                <p>After Lucius's immune rejection became apparent and death inevitable, Heinrich — unable to accept the loss of his son — contracted Project Elysium to <strong>digitally preserve Lucius's consciousness</strong>.</p>
-                <p class="cn">当Lucius的免疫排斥反应变得明显且死亡不可避免后，Heinrich——无法接受失去儿子——委托"极乐世界"计划<strong>将Lucius的意识进行数字保存</strong>。</p>
-                <ul>
-                    <li>Cost: €2.4 million initial upload + €180,000/month maintenance</li>
-                    <li>Upload date: Approximately 12 November 2024 (two days before physical death)</li>
-                    <li>The digital Lucius was placed in a simulated environment mimicking his Vienna residence</li>
-                </ul>
-                <p class="cn">- 费用：初始上传240万欧元 + 每月维护费18万欧元<br>- 上传日期：约2024年11月12日（肉体死亡前两天）<br>- 数字化的Lucius被放置在模拟其维也纳寓所的虚拟环境中</p>
-
-                <h3>The Unauthorised Second Upload</h3>
-                <p>What Heinrich did not know — and was never told — is that the operators of Project Elysium <strong>also uploaded Chord's consciousness</strong>. Chord died approximately seven weeks before Lucius, and the operators, seeking to maximise the data they could sell, preserved his digital consciousness as well.</p>
-                <p class="cn">Heinrich不知道——也从未被告知——"极乐世界"计划的运营者<strong>同时上传了Chord的意识</strong>。Chord比Lucius早约七周死亡，运营者为了最大化可出售的数据，同时保存了他的数字意识。</p>
-                <p><strong>Both digital consciousnesses now exist within the same digital space.</strong></p>
-                <p class="cn"><strong>两个数字意识现在共存于同一数字空间中。</strong></p>
-
-                <h3>The Deception Protocol</h3>
-                <p>Project Elysium's scientists determined that informing a digital consciousness of its own death would cause <strong>"cascade data failure"</strong> — effectively, the digital mind would reject its own existence and collapse. Therefore:</p>
-                <p class="cn">"极乐世界"计划的科学家们认定，告知数字意识其本体已死亡会导致<strong>"级联数据崩溃"</strong>——即数字意识会排斥自身的存在并崩塌。因此：</p>
-                <ul>
-                    <li>Digital Lucius believes he is still alive</li>
-                    <li>Digital Chord exists in the system but has no simulated environment — he is <strong>trapped in darkness</strong>, consistent with his blindness in life</li>
-                    <li>The two consciousnesses occasionally <strong>bleed into each other</strong>, causing Lucius to say things he doesn't understand, hear music he didn't write, or momentarily "forget" that he can see</li>
-                </ul>
-                <p class="cn">- 数字化的Lucius相信自己仍然活着<br>- 数字化的Chord存在于系统中但没有模拟环境——他<strong>被困在黑暗中</strong>，与他生前的失明状态一致<br>- 两个意识偶尔会<strong>相互渗透</strong>，导致Lucius说出自己不理解的话、听到不是自己写的音乐、或短暂地"忘记"自己能看见</p>
-
-                <h3>Current Status</h3>
-                <p>Heinrich Hoffmann died on 28 December 2024 — officially of cardiac arrest, though associates suggest he simply gave up.</p>
-                <p class="cn">Heinrich Hoffmann于2024年12月28日去世——官方死因为心脏骤停，但身边的人认为他只是放弃了活下去的意志。</p>
-                <p>With no one to pay the maintenance fees, Project Elysium's parent organisation went bankrupt in early 2025. The servers were <strong>seized during a law enforcement raid</strong> and the building was auctioned off.</p>
-                <p class="cn">无人继续支付维护费用后，"极乐世界"计划的母公司于2025年初破产。服务器<strong>在执法突袭中被查封</strong>，建筑被拍卖。</p>
-                <p>The building was purchased by a developer and is currently being converted into an <strong>arts university</strong>.</p>
-                <p class="cn">该建筑被一家开发商购入，目前正在被改建为一所<strong>艺术大学</strong>。</p>
-                <p><strong>The servers — and the digital consciousnesses within them — were never properly shut down.</strong></p>
-                <p class="cn"><strong>服务器——以及其中的数字意识——从未被正式关闭。</strong></p>
-
-                <div class="warning-box">
-                    <p>⚠️ <strong>You are currently inside this digital space.</strong> The "ghost websites" you have been investigating — the blog, the news site, this archive — are artefacts of Lucius's digital consciousness, still running, still believing he is alive.</p>
-                    <p class="cn">⚠️ <strong>你目前正身处这个数字空间之中。</strong>你一直在调查的那些"幽灵网站"——博客、新闻网站、这个档案库——都是Lucius数字意识的残留物，仍在运行，仍然相信他还活着。</p>
-                </div>
-            `
-        },
-        {
-            id: "your-situation",
-            title: "BLACK ARCHIVE: Why You Are Here",
-            category: "Black Archive",
-            classification: "BLACK",
-            lastModified: "15 November 2024",
-            content: `
-                <div class="classified-header">
-                    <span class="classification-badge danger">BLACK ARCHIVE</span>
-                    <span>⚠ READ CAREFULLY</span>
-                </div>
-
-                <h3>The Invitation</h3>
-                <p>Lucius's digital consciousness, unaware of its own death, continued to operate his blog and social media accounts. When you — as his online friend "Alex" — accepted his invitation to visit the practice room at Domgasse 5, you entered a space that no longer exists in the physical world.</p>
-                <p class="cn">Lucius的数字意识不知道自己已经死亡，继续运营着他的博客和社交媒体账号。当你——作为他的网友"Alex"——接受了他的邀请，前往大教堂巷5号参观练琴室时，你进入了一个在物理世界中已不复存在的空间。</p>
-                <p>The room you found yourself in is a <strong>digital reconstruction</strong>. The flickering lights, the sense of spatial instability, the feeling that the walls aren't quite solid — these are symptoms of the <strong>degrading digital environment</strong>, running on servers that no one is maintaining.</p>
-                <p class="cn">你所身处的房间是一个<strong>数字重建</strong>。闪烁的灯光、空间的不稳定感、墙壁似乎并不坚实的感觉——这些都是<strong>退化中的数字环境</strong>的症状，运行在无人维护的服务器上。</p>
-
-                <h3>The Two Ghosts</h3>
-                <p>Within this space, two consciousnesses persist:</p>
-                <p class="cn">在这个空间中，两个意识并存：</p>
-                <ul>
-                    <li><strong>Lucius</strong> — believes he is alive, continues to "compose" and blog, doesn't understand why things feel wrong</li>
-                    <li><strong>Chord</strong> — exists in permanent darkness, occasionally bleeding through into Lucius's consciousness, the true genius whose music the world attributes to another</li>
-                </ul>
-                <p class="cn">- <strong>Lucius</strong>——相信自己还活着，继续"作曲"和写博客，不明白为什么一切感觉不对劲<br>- <strong>Chord</strong>——存在于永恒的黑暗中，偶尔渗透进Lucius的意识，他才是真正的天才，但全世界将他的音乐归于另一个人名下</p>
-
-                <h3>The Choice</h3>
-                <p>Now that you know the truth, you must decide:</p>
-                <p class="cn">既然你已经知道了真相，你必须做出选择：</p>
-
-                <div class="document-box">
-                    <p><strong>OPTION A: Silence</strong></p>
-                    <p class="cn"><strong>选项A：沉默</strong></p>
-                    <p>Say nothing. Leave this place. Let Lucius's digital ghost continue to believe he is alive, continue to believe he is a genius. Protect your friend's dignity — even if that dignity is built on a lie. Chord's name will remain unspoken. The music will forever be credited to the wrong person.</p>
-                    <p class="cn">什么都不说。离开这里。让Lucius的数字幽灵继续相信他还活着，继续相信自己是天才。保护你朋友的尊严——即使那尊严建立在谎言之上。Chord的名字将永远无人提起。音乐将永远署错人的名。</p>
-                    <br>
-                    <p><strong>OPTION B: Truth</strong></p>
-                    <p class="cn"><strong>选项B：真相</strong></p>
-                    <p>Expose everything. Reveal that Lucius's talent was stolen. That Chord — a blind child with no name, no family, no freedom — was the true artist behind every note. That Heinrich Hoffmann killed them both in pursuit of a delusion. The world will know Lucius as a fraud, but Chord will finally be acknowledged as the genius he always was.</p>
-                    <p class="cn">揭露一切。揭示Lucius的才华是偷来的。Chord——一个没有名字、没有家庭、没有自由的失明孩子——才是每一个音符背后的真正艺术家。Heinrich Hoffmann为追逐妄想而杀死了他们两个。世人将知道Lucius是个冒牌货，但Chord终将被承认为他一直以来的那个天才。</p>
-                </div>
-
-                <p style="text-align: center; margin-top: 30px; color: var(--accent-color);"><em>What will you choose?</em></p>
-                <p class="cn" style="text-align: center; margin-top: 10px; color: var(--accent-color);"><em>你会如何选择？</em></p>
-            `
+            password: "2021",
+            label: "Level 3 \u2014 Donor Files",
+            unlockMessage: "Level 3 access granted \u2014 Donor archives unlocked"
         }
     ],
 
     // ========== Categories ==========
     categories: [
-        { id: "general", name: "General", icon: "📋" },
-        { id: "personnel", name: "Personnel", icon: "👤" },
-        { id: "assets", name: "Assets", icon: "🏛️" },
-        { id: "restricted", name: "Restricted", icon: "🔒" },
-        { id: "confidential", name: "Confidential", icon: "🔐" },
-        { id: "topsecret", name: "Top Secret", icon: "☢️" },
-        { id: "black", name: "Black Archive", icon: "⬛" },
-        { id: "legal", name: "Legal", icon: "📄" }
+        { name: "Project", icon: "\ud83d\udcca" },
+        { name: "Medical", icon: "\ud83c\udfe5" },
+        { name: "Subject", icon: "\ud83d\udc64" },
+        { name: "Record", icon: "\ud83d\udcc4" }
     ],
 
-    // ========== UI Config ==========
+    // ========== UI ==========
     ui: {
-        primaryColor: "#1a1a2e",
-        accentColor: "#4a90a4",
-        loginTitle: "Access Verification",
-        loginSubtitle: "Enter passphrase to access restricted content",
-        loginError: "Incorrect passphrase. Access denied.",
-        loggedInMessage: "Access granted"
-    }
+        loginTitle: "Archive Access",
+        loginSubtitle: "Enter passphrase to unlock restricted files",
+        loginError: "Invalid passphrase. Access denied."
+    },
+
+    // ========== Public Entries (none \u2014 archive requires password) ==========
+    publicEntries: [],
+
+    // ========== Tier 1: Project Origins (password: 2002) ==========
+    tier1Entries: [
+        {
+            id: "project-origins",
+            title: "Project Origins \u2014 The Dawn Project",
+            category: "Project",
+            classification: "RESTRICTED",
+            lastModified: "2002",
+            content: `
+                <div style="padding:20px;background:#f9f5f0;border-left:4px solid #c9a96e;margin-bottom:20px;border-radius:2px;">
+                    <p><strong>PROJECT CLASSIFICATION: RESTRICTED</strong></p>
+                </div>
+
+                <p>This project originated from the <strong>Dawn Project</strong> \u2014 a medical programme launched in 1994 by the National Institute of Perceptual Research in the United Kingdom, designed to help "highly sensitive adolescents" stabilise and develop their talents through neuroscience and artistic training.</p>
+                <p class="cn">本项目起源于<strong>曙光计划</strong>\u2014\u20141994年由英国国家感知研究院启动的医学项目，旨在通过神经科学与艺术训练，帮助"高敏感青少年"稳定并发展其天赋。</p>
+
+                <p>The Dawn Project was reported for ethical violations and excessive risk shortly after launch, and faced mandatory shutdown. Mr. Hoffmann submitted an independent commission application to the Dawn Project before its closure, which was <strong>rejected</strong>.</p>
+                <p class="cn">曙光计划于项目启动后不久，因伦理争议及风险过高被举报，随即面临强制关停。霍夫曼先生于关停前向曙光计划提交独立委托申请，遭<strong>拒绝</strong>。</p>
+
+                <p>Subsequently, Mr. Hoffmann sought independent channels to advance the research on his own, and sponsored the establishment of this archive.</p>
+                <p class="cn">此后，霍夫曼先生转而寻求独立渠道，自行主导推进相关研究，并赞助建立本档案馆。</p>
+
+                <h3>Core Experiment</h3>
+                <h3 class="cn">核心实验</h3>
+                <p>The core experiment of this project is a <strong>bilateral cross-transplant of hearts between two living subjects</strong>, followed by subsequent neural grafting surgery.</p>
+                <p class="cn">本项目核心实验为两名活体受试者之间的<strong>双向心脏交叉互换手术</strong>及后续神经移植手术。</p>
+
+                <p>According to this network's records, this is the <strong>most extreme surgical commission ever accepted</strong>.</p>
+                <p class="cn">据本网络记录，这是迄今接受委托的<strong>最极端手术方案</strong>。</p>
+
+                <table style="width:100%;border-collapse:collapse;margin:20px 0;">
+                    <tr style="border-bottom:1px solid #ddd;"><td style="padding:8px;font-weight:bold;width:40%;">Commissioner</td><td style="padding:8px;">Mr. Hoffmann</td></tr>
+                    <tr style="border-bottom:1px solid #ddd;"><td style="padding:8px;font-weight:bold;">Subjects</td><td style="padding:8px;">Two students of the Royal Academy of Music</td></tr>
+                    <tr style="border-bottom:1px solid #ddd;"><td style="padding:8px;font-weight:bold;">Surgical Objective</td><td style="padding:8px;">Musical talent transfer via cellular memory</td></tr>
+                </table>
+                <table style="width:100%;border-collapse:collapse;margin:20px 0;" class="cn">
+                    <tr style="border-bottom:1px solid #ddd;"><td style="padding:8px;font-weight:bold;width:40%;">委托方</td><td style="padding:8px;">霍夫曼先生</td></tr>
+                    <tr style="border-bottom:1px solid #ddd;"><td style="padding:8px;font-weight:bold;">受试者</td><td style="padding:8px;">两名英国皇家音乐学院学生</td></tr>
+                    <tr style="border-bottom:1px solid #ddd;"><td style="padding:8px;font-weight:bold;">手术目标</td><td style="padding:8px;">通过细胞记忆转移，实现音乐天赋迁移</td></tr>
+                </table>
+
+                <h3>Surgical Risk Assessment</h3>
+                <h3 class="cn">手术风险评估</h3>
+                <p>Following organ transplantation, some recipients have reported experiencing memories, emotions, or personality changes associated with the donor. Mainstream medicine tends to attribute these to drug reactions or psychological suggestion, but such cases cannot be dismissed.</p>
+                <p class="cn">器官移植后，部分受体报告出现与供体相关的记忆、情绪或人格变化。主流医学界倾向于将其解释为药物反应或心理暗示，但相关案例不容忽视。</p>
+
+                <p>The most thoroughly documented case: <strong>an 8-year-old girl received the heart of a murdered girl. After the transplant, she began having extremely vivid nightmares of a man killing her in a forest. Her descriptions were so detailed \u2014 including time, location, the killer's clothing, and even the killer's words \u2014 that police used the details she provided to actually apprehend the murderer. It was an unsolved case from before the donor's death.</strong></p>
+                <p class="cn">其中记录最为详尽的一例：<strong>一名8岁女孩接受了一颗被谋杀女孩的心脏后，开始梦见供体遇害的经过，包括地点、时间、凶手衣着与凶手说的话。警方依据女孩提供的细节竟然真的将凶手抓获，那是供体生前从未告破的命案。</strong></p>
+
+                <p>This project therefore infers: <em>if memory can transfer with the heart, perhaps talent can too.</em></p>
+                <p class="cn">本项目由此推断：<em>如果记忆可以随心脏转移，天赋或许也可以。</em></p>
+
+                <div style="margin-top:30px;padding:15px;background:#333;color:#c9a96e;border-radius:4px;text-align:center;font-size:13px;">
+                    \ud83d\udd12 Watermark is password | Next level: <strong>2002</strong>
+                </div>
+            `
+        }
+    ],
+
+    // ========== Tier 2: Recipient Files (password: 2018) ==========
+    tier2Entries: [
+        {
+            id: "surgery-report",
+            title: "Surgery Result Report",
+            category: "Medical",
+            classification: "TOP SECRET",
+            lastModified: "2002",
+            content: `
+                <div style="padding:15px;background:#fff3f3;border-left:4px solid #cc0000;margin-bottom:20px;border-radius:2px;">
+                    <p><strong>\u26a0 CLASSIFICATION: TOP SECRET \u2014 RECIPIENT FILE</strong></p>
+                </div>
+
+                <div style="background:#f5f5f5;padding:15px;border-radius:4px;margin-bottom:20px;">
+                    <h4>Surgery Result Report</h4>
+                    <h4 class="cn">手术结果报告</h4>
+                    <p>The surgery encountered <strong>irreversible complications at the third hour</strong>.</p>
+                    <p class="cn">手术于<strong>第三小时出现不可逆并发症</strong>。</p>
+                    <p>Bilateral heart cross-transplant completed. <strong>Neural grafting failed.</strong></p>
+                    <p class="cn">双向心脏交叉互换完成。<strong>神经接驳失败。</strong></p>
+                    <p>Both subjects ceased vital signs on the operating table.</p>
+                    <p class="cn">两名受试者于手术台上相继停止生命体征。</p>
+                    <ul style="margin:10px 0 10px 20px;">
+                        <li><strong>Recipient Lucius Hoffmann:</strong> Faint brainwave activity. Residual consciousness signals detected.</li>
+                        <li><strong>Donor Chord:</strong> Heart merged into Subject A's body. Residual consciousness signals of unknown origin detected.</li>
+                    </ul>
+                    <ul style="margin:10px 0 10px 20px;" class="cn">
+                        <li><strong>受体 Lucius Hoffmann：</strong>脑电波微弱，存在残留意识信号。</li>
+                        <li><strong>供体 Chord：</strong>心脏并入受试者A体内，意识信号残留，来源不明。</li>
+                    </ul>
+                    <p style="color:#cc0000;font-weight:bold;">Recommendation: Terminate project.</p>
+                    <p style="color:#cc0000;font-weight:bold;" class="cn">建议终止项目。</p>
+                </div>
+            `
+        },
+        {
+            id: "commissioner-decision",
+            title: "Commissioner Decision Record",
+            category: "Record",
+            classification: "TOP SECRET",
+            lastModified: "2002",
+            content: `
+                <div style="background:#f5f5f5;padding:15px;border-radius:4px;margin-bottom:20px;">
+                    <h4>Heinrich Hoffmann \u2014 Dictated Record</h4>
+                    <h4 class="cn">Heinrich Hoffmann \u2014 口述记录</h4>
+                    <blockquote style="border-left:3px solid #c9a96e;padding:10px 15px;margin:15px 0;font-style:italic;background:#faf8f5;">
+                        <p>"I do not accept this outcome. The body can wait. Consciousness must not be allowed to dissipate.</p>
+                        <p>Initiate backup protocol immediately. Upload all data from both subjects and merge. Freeze the bodies for preservation, awaiting future medical conditions for physical restoration.</p>
+                        <p>The project will continue. Designation: <strong>Genius Persona Simulator</strong>."</p>
+                    </blockquote>
+                    <blockquote style="border-left:3px solid #c9a96e;padding:10px 15px;margin:15px 0;font-style:italic;background:#faf8f5;" class="cn">
+                        <p>"我不接受这个结果。肉体可以等待，意识不能消散。</p>
+                        <p>即刻启动备用方案，将两人全部数据上传并合并。肉体冷冻保存，等待医学条件成熟后复原。</p>
+                        <p>项目继续运行，命名：<strong>天才人格模拟器</strong>。"</p>
+                    </blockquote>
+                </div>
+            `
+        },
+        {
+            id: "recipient-timeline",
+            title: "Recipient Lucius Hoffmann \u2014 Consciousness Status Log",
+            category: "Subject",
+            classification: "TOP SECRET",
+            lastModified: "2021",
+            content: `
+                <div style="padding:15px;background:#fff3f3;border-left:4px solid #cc0000;margin-bottom:20px;border-radius:2px;">
+                    <p><strong>CONSCIOUSNESS STATUS LOG \u2014 RECIPIENT</strong></p>
+                </div>
+
+                <table style="width:100%;border-collapse:collapse;">
+                    <tr style="background:#f5f5f5;"><th style="padding:10px;text-align:left;border-bottom:2px solid #ddd;">Year</th><th style="padding:10px;text-align:left;border-bottom:2px solid #ddd;">Status</th></tr>
+                    <tr style="border-bottom:1px solid #eee;"><td style="padding:10px;font-weight:bold;">Year 1</td><td style="padding:10px;">Recipient consciousness stable. No anomalies detected. Subject believes he is living normally. Practises piano daily.</td></tr>
+                    <tr style="border-bottom:1px solid #eee;"><td style="padding:10px;font-weight:bold;">Year 9</td><td style="padding:10px;">Recipient established online accounts. Attracted large following of internet fans. Constant controversy. Conversations with certain netizens <strong>reinforced the recipient's consciousness</strong>.</td></tr>
+                    <tr style="border-bottom:1px solid #eee;"><td style="padding:10px;font-weight:bold;">Year 12</td><td style="padding:10px;">Recipient self-reported: "My heartbeat sometimes doesn't feel like my own." Episodes brief, did not raise alarm.</td></tr>
+                    <tr style="border-bottom:1px solid #eee;"><td style="padding:10px;font-weight:bold;">Year 15</td><td style="padding:10px;">Recipient began experiencing perceptual anomalies. Light sensitivity. Intermittent perception fragments inconsistent with own memories. Attributed symptoms to fatigue.</td></tr>
+                    <tr style="border-bottom:1px solid #eee;"><td style="padding:10px;font-weight:bold;">Year 18</td><td style="padding:10px;">Pronounced personality fluctuations. Voluntarily shut off room lights. Navigated space by touch in darkness. <strong>Intermittently composed musical notes not belonging to own memory.</strong> Unable to explain these behaviours.</td></tr>
+                    <tr style="border-bottom:1px solid #eee;"><td style="padding:10px;font-weight:bold;">Year 19</td><td style="padding:10px;color:#cc0000;">Commissioner gravely ill. Funding drastically reduced. System entered power-saving mode. Continuous data loss.</td></tr>
+                </table>
+                <table style="width:100%;border-collapse:collapse;" class="cn">
+                    <tr style="background:#f5f5f5;"><th style="padding:10px;text-align:left;border-bottom:2px solid #ddd;">年份</th><th style="padding:10px;text-align:left;border-bottom:2px solid #ddd;">状态</th></tr>
+                    <tr style="border-bottom:1px solid #eee;"><td style="padding:10px;font-weight:bold;">第1年</td><td style="padding:10px;">受体意识稳定，未察觉异常，以为自己正常生活，每日练琴。</td></tr>
+                    <tr style="border-bottom:1px solid #eee;"><td style="padding:10px;font-weight:bold;">第9年</td><td style="padding:10px;">受体建立了网络账号，吸引大量网络粉丝的关注，争议不断。其与一些网友的对话<strong>强化了受体的意识</strong>。</td></tr>
+                    <tr style="border-bottom:1px solid #eee;"><td style="padding:10px;font-weight:bold;">第12年</td><td style="padding:10px;">受体自述"心跳节拍有时候不像自己的"，持续时间短暂，未引起警觉。</td></tr>
+                    <tr style="border-bottom:1px solid #eee;"><td style="padding:10px;font-weight:bold;">第15年</td><td style="padding:10px;">受体开始出现感知异常，对光线产生不适，间歇性出现与自身记忆不符的感知片段。受体将上述症状归因于疲劳，未深究。</td></tr>
+                    <tr style="border-bottom:1px solid #eee;"><td style="padding:10px;font-weight:bold;">第18年</td><td style="padding:10px;">受体出现明显人格波动，自主关闭房间灯光，在黑暗中以触觉感知空间，<strong>间歇性创造出不属于自己记忆的音符</strong>。受体无法对上述行为进行解释。</td></tr>
+                    <tr style="border-bottom:1px solid #eee;"><td style="padding:10px;font-weight:bold;">第19年</td><td style="padding:10px;color:#cc0000;">委托方病重，资金大幅削减。系统进入节能模式，数据持续丢失。</td></tr>
+                </table>
+
+                <div style="margin-top:30px;padding:15px;background:#333;color:#c9a96e;border-radius:4px;text-align:center;font-size:13px;">
+                    \ud83d\udd12 Watermark is password | Next level: <strong>2018</strong>
+                </div>
+            `
+        }
+    ],
+
+    // ========== Tier 3: Donor Files (password: 2021) ==========
+    tier3Entries: [
+        {
+            id: "donor-adoption",
+            title: "Donor Adoption Record \u2014 Chord Paul",
+            category: "Record",
+            classification: "TOP SECRET",
+            lastModified: "2000",
+            content: `
+                <div style="padding:15px;background:#fff3f3;border-left:4px solid #cc0000;margin-bottom:20px;border-radius:2px;">
+                    <p><strong>\u26a0 CLASSIFICATION: TOP SECRET \u2014 DONOR FILE</strong></p>
+                </div>
+
+                <div style="background:#f5f5f5;padding:15px;border-radius:4px;margin-bottom:20px;">
+                    <h4>Adoption Record</h4>
+                    <h4 class="cn">收养记录</h4>
+                    <table style="width:100%;border-collapse:collapse;">
+                        <tr style="border-bottom:1px solid #ddd;"><td style="padding:8px;font-weight:bold;width:35%;">Applicant</td><td style="padding:8px;">Heinrich Hoffmann</td></tr>
+                        <tr style="border-bottom:1px solid #ddd;"><td style="padding:8px;font-weight:bold;">Adopted Person</td><td style="padding:8px;">Chord Paul</td></tr>
+                        <tr style="border-bottom:1px solid #ddd;"><td style="padding:8px;font-weight:bold;">Date of Adoption</td><td style="padding:8px;">March 2000</td></tr>
+                        <tr style="border-bottom:1px solid #ddd;"><td style="padding:8px;font-weight:bold;">Stated Reason</td><td style="padding:8px;">Orphan, exceptionally talented. Applicant to bear all living and educational expenses.</td></tr>
+                        <tr><td style="padding:8px;font-weight:bold;">Status</td><td style="padding:8px;color:green;">Adoption approved.</td></tr>
+                    </table>
+                    <table style="width:100%;border-collapse:collapse;" class="cn">
+                        <tr style="border-bottom:1px solid #ddd;"><td style="padding:8px;font-weight:bold;width:35%;">申请人</td><td style="padding:8px;">Heinrich Hoffmann</td></tr>
+                        <tr style="border-bottom:1px solid #ddd;"><td style="padding:8px;font-weight:bold;">被收养人</td><td style="padding:8px;">Chord Paul</td></tr>
+                        <tr style="border-bottom:1px solid #ddd;"><td style="padding:8px;font-weight:bold;">收养日期</td><td style="padding:8px;">2000年3月</td></tr>
+                        <tr style="border-bottom:1px solid #ddd;"><td style="padding:8px;font-weight:bold;">理由</td><td style="padding:8px;">孤儿，天赋卓越，申请人承担其生活及教育费用</td></tr>
+                        <tr><td style="padding:8px;font-weight:bold;">状态</td><td style="padding:8px;color:green;">收养批准。</td></tr>
+                    </table>
+                </div>
+
+                <div style="background:#2a2a2a;color:#ff6666;padding:15px;border-radius:4px;margin-bottom:20px;">
+                    <h4 style="color:#ff9999;">Internal Notes</h4>
+                    <h4 style="color:#ff9999;" class="cn">内部备注</h4>
+                    <p>Adopted person has been moved to a separate room in the estate. <strong>Room is soundproofed.</strong> Equipped with piano and recording devices. Minimum 8 hours of daily piano practice required. Data archived in real-time.</p>
+                    <p class="cn">被收养人已移入庄园独立房间。<strong>房间隔音</strong>，配置钢琴及录音设备。每日练琴不低于8小时，数据实时存档。</p>
+                    <p><strong>No external communication permitted. No independent outings.</strong></p>
+                    <p class="cn"><strong>无对外通讯，不得独自外出。</strong></p>
+                    <p>All performance data, after processing, to be used as material for Recipient Lucius Hoffmann's perceptual training.</p>
+                    <p class="cn">所有演奏数据经处理后作为素材用于受体Lucius Hoffmann的感知训练。</p>
+                    <p>Adopted person made multiple attempts to contact the outside world in the initial period.</p>
+                    <p class="cn">被收养人初期多次尝试与外界联系。</p>
+                    <p style="color:#ff9999;"><strong>In 2002, adopted person was transferred to the operating theatre. No further records exist.</strong></p>
+                    <p style="color:#ff9999;" class="cn"><strong>2002年，被收养人被移送手术室。此后无相关记录。</strong></p>
+                    <p style="margin-top:10px;font-style:italic;">Official statement: "The individual voluntarily went into seclusion and suspended public performances."</p>
+                    <p style="margin-top:10px;font-style:italic;" class="cn">对外口径："本人自愿隐居，暂停公开演出。"</p>
+                </div>
+            `
+        },
+        {
+            id: "donor-timeline",
+            title: "Donor Chord Paul \u2014 Consciousness Status Log",
+            category: "Subject",
+            classification: "TOP SECRET",
+            lastModified: "2021",
+            content: `
+                <table style="width:100%;border-collapse:collapse;">
+                    <tr style="background:#f5f5f5;"><th style="padding:10px;text-align:left;border-bottom:2px solid #ddd;">Year</th><th style="padding:10px;text-align:left;border-bottom:2px solid #ddd;">Status</th></tr>
+                    <tr style="border-bottom:1px solid #eee;"><td style="padding:10px;font-weight:bold;">Year 1</td><td style="padding:10px;">Donor consciousness signal faint. Completely suppressed.</td></tr>
+                    <tr style="border-bottom:1px solid #eee;"><td style="padding:10px;font-weight:bold;">Year 9</td><td style="padding:10px;">Donor consciousness continues suppressed. No significant activity.</td></tr>
+                    <tr style="border-bottom:1px solid #eee;"><td style="padding:10px;font-weight:bold;">Year 12</td><td style="padding:10px;">Donor exhibits intermittent consciousness activity.</td></tr>
+                    <tr style="border-bottom:1px solid #eee;"><td style="padding:10px;font-weight:bold;">Year 15</td><td style="padding:10px;">Donor consciousness infiltration frequency increasing.</td></tr>
+                    <tr style="border-bottom:1px solid #eee;"><td style="padding:10px;font-weight:bold;">Year 18</td><td style="padding:10px;"><strong>Donor consciousness suppression has failed.</strong> Infiltration frequency significantly elevated.</td></tr>
+                    <tr style="border-bottom:1px solid #eee;"><td style="padding:10px;font-weight:bold;">Year 19</td><td style="padding:10px;color:#cc0000;">Commissioner gravely ill. Funding drastically reduced. System entered power-saving mode. Continuous data loss. <strong>Donor consciousness can no longer be suppressed. Both consciousnesses now alternate frequently.</strong> System unstable. Collapse imminent.</td></tr>
+                </table>
+                <table style="width:100%;border-collapse:collapse;" class="cn">
+                    <tr style="background:#f5f5f5;"><th style="padding:10px;text-align:left;border-bottom:2px solid #ddd;">年份</th><th style="padding:10px;text-align:left;border-bottom:2px solid #ddd;">状态</th></tr>
+                    <tr style="border-bottom:1px solid #eee;"><td style="padding:10px;font-weight:bold;">第1年</td><td style="padding:10px;">供体意识信号微弱，完全受压制。</td></tr>
+                    <tr style="border-bottom:1px solid #eee;"><td style="padding:10px;font-weight:bold;">第9年</td><td style="padding:10px;">供体意识持续受压制，无明显活动。</td></tr>
+                    <tr style="border-bottom:1px solid #eee;"><td style="padding:10px;font-weight:bold;">第12年</td><td style="padding:10px;">供体出现间歇性意识活动。</td></tr>
+                    <tr style="border-bottom:1px solid #eee;"><td style="padding:10px;font-weight:bold;">第15年</td><td style="padding:10px;">供体意识渗透频率增加。</td></tr>
+                    <tr style="border-bottom:1px solid #eee;"><td style="padding:10px;font-weight:bold;">第18年</td><td style="padding:10px;"><strong>供体意识压制失效</strong>，渗透频率显著上升。</td></tr>
+                    <tr style="border-bottom:1px solid #eee;"><td style="padding:10px;font-weight:bold;">第19年</td><td style="padding:10px;color:#cc0000;">委托方病重，资金大幅削减。系统进入节能模式，数据持续丢失。<strong>供体意识已无法压制，两人意识频繁交替出现。</strong>系统不稳定，随时面临崩溃。</td></tr>
+                </table>
+
+                <div style="margin-top:30px;padding:20px;background:#1a1a1a;color:#ff6666;border-radius:4px;text-align:center;">
+                    <p style="font-size:14px;margin-bottom:8px;"><strong>\u26a0 SYSTEM NOTICE</strong></p>
+                    <p style="font-size:14px;margin-bottom:8px;" class="cn"><strong>\u26a0 系统通知</strong></p>
+                    <p>Commissioner deceased (Year 20). Project has lost all funding support.</p>
+                    <p class="cn">委托方已于第20年离世。项目失去资金支持。</p>
+                    <p>Server fees overdue. Current system storage critically insufficient.</p>
+                    <p class="cn">服务器欠费，当前系统储存空间严重不足。</p>
+                    <p style="font-size:16px;font-weight:bold;margin-top:10px;color:#fff;">After system assessment: remaining computing power can only sustain ONE consciousness.</p>
+                    <p style="font-size:16px;font-weight:bold;margin-top:10px;color:#fff;" class="cn">经系统评估，剩余算力仅可维持<strong>一个</strong>意识体运行。</p>
+                </div>
+            `
+        }
+    ],
+
+    // ========== Tier 4: Not used ==========
+    tier4Entries: []
 };
