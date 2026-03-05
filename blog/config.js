@@ -7,11 +7,11 @@
 const BLOG_CONFIG = {
     // ========== Blogger Info ==========
     blogger: {
-        name: "lucius",
+        name: "Lucius",
         displayName: "Lucius",
         avatar: "../assets/images/lucius-avatar.jpg",
         bio: "sound. silence. somewhere in between.",
-        location: "Vienna",
+        location: "London",
         verified: true,
         followers: 24800,
         following: 84,
@@ -30,61 +30,6 @@ const BLOG_CONFIG = {
     // Reverse chronological (newest first)
     posts: [
         {
-            id: 0,
-            title: "first meet.",
-            content: `
-                <p>I found this. I don't know when it was recorded. I don't remember being there.</p>
-                <p class="cn">我找到了这个。不知道什么时候录的。我不记得我曾到过那里。</p>
-                <p>Something about it won't let me go.</p>
-                <p class="cn">有关它的某事我无法放下。</p>
-                <p>I have to keep it secret.</p>
-                <p class="cn">我必须保密。</p>
-                <div class="encrypted-video" id="encrypted-video-0">
-                    <div class="video-lock">
-                        <div class="lock-icon">🔒</div>
-                        <p>This video is encrypted.</p>
-                        <p class="cn">此视频已加密。</p>
-                        <input type="password" class="video-password" id="video-pwd-0" placeholder="Enter extraction code..." autocomplete="off">
-                        <button class="video-unlock-btn" onclick="unlockVideo(0)">Unlock</button>
-                        <p class="video-error" id="video-error-0"></p>
-                    </div>
-                    <div class="video-player" id="video-player-0" style="display:none;">
-                        <video controls preload="metadata" playsinline width="100%">
-                            <source src="../assets/videos/first_meet.mp4" type="video/mp4">
-                            <source src="../assets/videos/first_meet.webm" type="video/webm">
-                            <source src="../assets/videos/first_meet.ogg" type="video/ogg">
-                            Your browser does not support the video tag.
-                        </video>
-                    </div>
-                </div>
-            `,
-            images: [],
-            publishDate: "10 November 2024",
-            publishTime: "03:47",
-            views: 41,
-            likes: 3,
-            liked: false,
-            videoPassword: "1234",
-            comments: [
-                {
-                    id: 1,
-                    username: "fiorella.mp3",
-                    avatar: "../assets/images/user1.jpg",
-                    content: "wait there's a password? Lucius what is this",
-                    time: "10 Nov 08:20",
-                    likes: 12
-                },
-                {
-                    id: 2,
-                    username: "nacht.kind",
-                    avatar: "../assets/images/user14.jpg",
-                    content: "\"I don't remember being there\" ...are you okay?",
-                    time: "10 Nov 09:45",
-                    likes: 8
-                }
-            ]
-        },
-        {
             id: 1,
             title: "Prague.",
             content: `
@@ -96,8 +41,8 @@ const BLOG_CONFIG = {
                 <p class="cn">音乐就该如此。不是填满房间，而是清空它。</p>
                 <p>Drove home at dawn. The city was all fog and stone.</p>
                 <p class="cn">黎明时分开车回去。整座城市只剩雾和石头。</p>
-                <p><small>P.S. — Woke at 3am again. New pages on the stand. Don't remember writing them. The melodies are better than anything I write awake. Father says genius works like that — in the dark, without permission. Maybe.</small></p>
-                <p class="cn"><small>附言——又在凌晨三点醒了。谱架上多了几页新的。不记得写过。那些旋律比我清醒时写的好得多。父亲说天才就是这样运作的——在黑暗中，不经允许。也许吧。</small></p>
+                <p><small>P.S. — Woke at 3am again. New pages on the stand. Don't remember writing them. The melodies are better than anything I write awake. Father used to say genius works like that — in the dark, without permission. Maybe.</small></p>
+                <p class="cn"><small>附言——又在凌晨三点醒了。谱架上多了几页新的。不记得写过。那些旋律比我清醒时写的好得多。父亲以前常说天才就是这样运作的——在黑暗中，不经允许。也许吧。</small></p>
             `,
             images: ["../assets/images/prague-concert.jpg"],
             publishDate: "28 October 2024",
@@ -124,7 +69,7 @@ const BLOG_CONFIG = {
                 },
                 {
                     id: 103,
-                    username: "lucius",
+                    username: "Lucius",
                     avatar: "../assets/images/lucius-avatar.jpg",
                     content: "@vnn_golden yes.",
                     time: "29 Oct 09:20",
@@ -180,7 +125,7 @@ const BLOG_CONFIG = {
                 },
                 {
                     id: 110,
-                    username: "lucius",
+                    username: "Lucius",
                     avatar: "../assets/images/lucius-avatar.jpg",
                     content: "@pianofraud_ funny how you know the exact price of everything and the value of nothing. tell me about your last performance — oh wait.",
                     time: "29 Oct 14:02",
@@ -190,7 +135,7 @@ const BLOG_CONFIG = {
                     id: 111,
                     username: "nacht.kind",
                     avatar: "../assets/images/user14.jpg",
-                    content: "SONG/// ATE HIM ALIVE \ud83d\udd25\ud83d\udd25\ud83d\udd25",
+                    content: "Lucius ATE HIM ALIVE \ud83d\udd25\ud83d\udd25\ud83d\udd25",
                     time: "29 Oct 14:05",
                     likes: 312
                 },
@@ -206,13 +151,13 @@ const BLOG_CONFIG = {
                     id: 113,
                     username: "RealTalk_Anon",
                     avatar: "../assets/images/user3.jpg",
-                    content: "\"Don't remember writing them.\" That's a very specific thing to say publicly. Most composers remember their process quite clearly. Interesting that you don't.",
+                    content: "\"Don't remember writing them.\" That's a very specific thing to say publicly. Most composers remember their process quite clearly. Interesting that you don't. <span class='cn-inline' style='color:#999;font-size:0.85em;display:block;margin-top:4px;'>\"不记得写过。\"这话公开说很耐人寻味。大多数作曲家对创作过程记得很清楚。</span>",
                     time: "29 Oct 14:20",
                     likes: 7
                 },
                 {
                     id: 114,
-                    username: "lucius",
+                    username: "Lucius",
                     avatar: "../assets/images/lucius-avatar.jpg",
                     content: "@RealTalk_Anon not everything needs to be remembered to be real.",
                     time: "29 Oct 15:03",
@@ -222,7 +167,7 @@ const BLOG_CONFIG = {
                     id: 115,
                     username: "ghostkeys_",
                     avatar: "../assets/images/user24.jpg",
-                    content: "\"The melodies are better than anything I write awake.\" Yeah. Because they're not yours. There's a blind street pianist at Stephansplatz who improvises the EXACT same harmonic language you publish under your name. I've done a full style palette — same voicing, same ornamental figures, same everything. <a href='../palette/index.html'>here's the breakdown</a>. But sure, keep pretending it's \"genius working in the dark.\" We both know whose hands actually wrote those melodies.",
+                    content: "\"The melodies are better than anything I write awake.\" Yeah. Because they're not yours. There's a blind street pianist at Trafalgar Square who improvises the EXACT same harmonic language you publish under your name. I've done a full style palette — same voicing, same ornamental figures, same everything. <a href='../palette/index.html'>here's the breakdown</a>. But sure, keep pretending it's \"genius working in the dark.\" We both know whose hands actually wrote those melodies.",
                     time: "29 Oct 22:18",
                     likes: 2
                 }
@@ -236,8 +181,8 @@ const BLOG_CONFIG = {
                 <p class="cn">连着三天的雨。城市这样看更好。</p>
                 <p>Found an out-of-tune upright in the back lounge of the hotel. Played it all afternoon. Sometimes the broken ones sound more honest than a concert grand.</p>
                 <p class="cn">在酒店后面的休息室发现了一架走音的立式钢琴。弹了一下午。有时候坏掉的琴比音乐会三角钢琴听起来更诚实。</p>
-                <p>Father called. He wants bigger venues. I want smaller rooms. We don't have much to say to each other anymore.</p>
-                <p class="cn">父亲来电话了。他想要更大的场地。我想要更小的房间。我们之间已经没什么好说的了。</p>
+                <p>Father used to call about bigger venues. I always wanted smaller rooms. We never had much to say to each other.</p>
+                <p class="cn">父亲以前常打电话来说要更大的场地。我总是想要更小的房间。我们之间从没什么好说的。</p>
                 <p>Drove through Tiergarten after midnight. Got a ticket on Unter den Linden. Worth it.</p>
                 <p class="cn">午夜后开车穿过蒂尔加滕。在菩提树下大街吃了张罚单。值得。</p>
                 <p><small>...the notes come so easily at night but during the day my hands feel like they belong to someone else. Like they're waiting for someone else to move them. I don't know what that means yet.</small></p>
@@ -268,7 +213,7 @@ const BLOG_CONFIG = {
                 },
                 {
                     id: 203,
-                    username: "lucius",
+                    username: "Ludius",
                     avatar: "../assets/images/lucius-avatar.jpg",
                     content: "@autohaus.91 the chalk one.",
                     time: "15 Oct 21:45",
@@ -326,7 +271,7 @@ const BLOG_CONFIG = {
                     id: 210,
                     username: "MusicTheory_Nerd",
                     avatar: "../assets/images/user8.jpg",
-                    content: "\"Hands feel like they belong to someone else.\" Lucius, I've been analysing your published scores. The voicing in your night compositions uses advanced contrapuntal techniques \u2014 voice-leading patterns you've never once discussed in interviews. Your daytime playing and your night compositions read like two completely different skill levels. Has anyone pointed that out to you?",
+                    content: "\"Hands feel like they belong to someone else.\" Lucius, I've been analysing your published scores. The voicing in your night compositions uses advanced contrapuntal techniques \u2014 voice-leading patterns you've never once discussed in interviews. Your daytime playing and your night compositions read like two completely different skill levels. Has anyone pointed that out to you? <span class='cn-inline' style='color:#999;font-size:0.85em;display:block;margin-top:4px;'>\"手像属于别人的。\"我分析过你发表的乐谱。你夜间作品的声部写作使用了高级对位技巧——你在采访中从未提过的声部进行模式。你白天的演奏和夜间作品完全是两个水平。</span>",
                     time: "16 Oct 14:55",
                     likes: 4
                 },
@@ -334,7 +279,7 @@ const BLOG_CONFIG = {
                     id: 211,
                     username: "ghostkeys_",
                     avatar: "../assets/images/user24.jpg",
-                    content: "\"my hands feel like they belong to someone else\" — because the music DOES belong to someone else. I've documented the entire thing. There's a blind pianist at Stephansplatz whose improvisations match your published scores note for note. <a href='../palette/index.html'>full comparison here</a>. @MusicTheory_Nerd you're onto something. it's not two skill levels. it's two people.",
+                    content: "\"my hands feel like they belong to someone else\" — because the music DOES belong to someone else. I've documented the entire thing. There's a blind pianist at Trafalgar Square whose improvisations match your published scores note for note. <a href='../palette/index.html'>full comparison here</a>. @MusicTheory_Nerd you're onto something. it's not two skill levels. it's two people. <span class='cn-inline' style='color:#999;font-size:0.85em;display:block;margin-top:4px;'>\"我的手像属于别人的\"——因为音乐确实属于别人。Trafalgar Square有个盲人钢琴家，即兴演奏和你发表的乐谱完全吻合。不是两个水平，是两个人。</span>",
                     time: "17 Oct 03:44",
                     likes: 1
                 }
@@ -348,11 +293,11 @@ const BLOG_CONFIG = {
                 <p class="cn">三首新作。一口气。从午夜到天亮。</p>
                 <p>I don't remember most of the process. I sat down and the music was already there, waiting. Like it had been written before I arrived.</p>
                 <p class="cn">过程大部分我都不记得了。坐下来，音乐就已经在那里了，等着。好像在我到来之前就已经写好了。</p>
-                <p>The centrepiece is <em>Whispers of the Night</em>. It's for someone. Someone who may never hear it. That's all I want to say about it.</p>
-                <p class="cn">核心作品是《夜之低语》。为某个人而写。一个也许永远无法听到的人。我只想说这些。</p>
+                <p><strong>The centrepiece is <em>Whispers of the Night</em>. It's for someone. Someone who may never hear it. That's all I want to say about it.</strong></p>
+                <p class="cn"><strong>核心作品是《夜之低语》。为某个人而写。一个也许永远无法听到的人。我只想说这些。</strong></p>
                 <p>Premiering next week in Munich. Small venue. The way I like it.</p>
                 <p class="cn">下周在慕尼黑首演。小场地。我喜欢的方式。</p>
-                <p><small>I should be honest. I found the last three pages tucked inside the piano bench this morning. My handwriting, apparently. But the third movement \u2014 it's extraordinary. Far beyond anything I could write consciously. Father's doctor called it hypnagogic creativity. I don't think that's what it is. It's almost too good. Like someone else wrote it through me.</small></p>
+                <p><small>I should be honest. I found the last three pages tucked inside the piano bench this morning. My handwriting, apparently. But the third movement \u2014 it's extraordinary. Far beyond anything I could write consciously. Father's doctor once called it hypnagogic creativity. I don't think that's what it is. It's almost too good. Like someone else wrote it through me.</small></p>
                 <p class="cn"><small>我应该坦白。今早在琴凳里发现了最后三页。看起来是我的笔迹。但第三乐章——非凡。远超我清醒时能写出的任何东西。父亲的医生说是入睡前创造力。我不觉得是那样。太好了。好得像是别人通过我写的。</small></p>
             `,
             images: ["../assets/images/composing.jpg"],
@@ -406,7 +351,7 @@ const BLOG_CONFIG = {
                     id: 306,
                     username: "m_richter",
                     avatar: "../assets/images/user6.jpg",
-                    content: "got tickets! honestly more excited to see the Domgasse apartment you keep teasing than the recital itself. sorry not sorry",
+                    content: "got tickets! honestly more excited to see the Wimpole Street flat you keep teasing than the recital itself. sorry not sorry",
                     time: "20 Sep 11:23",
                     likes: 127
                 },
@@ -420,7 +365,7 @@ const BLOG_CONFIG = {
                 },
                 {
                     id: 308,
-                    username: "lucius",
+                    username: "Lucius",
                     avatar: "../assets/images/lucius-avatar.jpg",
                     content: "@sofie.kl no.",
                     time: "20 Sep 13:42",
@@ -436,7 +381,7 @@ const BLOG_CONFIG = {
                 },
                 {
                     id: 310,
-                    username: "lucius",
+                    username: "Lucius",
                     avatar: "../assets/images/lucius-avatar.jpg",
                     content: "@pianofraud_ the reason is that I don't need a concert hall full of strangers to validate what I already know. you seem to spend a lot of time thinking about me for someone who thinks I'm talentless. maybe use that energy on something productive? just a thought.",
                     time: "20 Sep 14:55",
@@ -446,13 +391,13 @@ const BLOG_CONFIG = {
                     id: 311,
                     username: "pianofraud_",
                     avatar: "../assets/images/user20.jpg",
-                    content: "@lucius \"what I already know\" you KNOW you're good? based on what? private recitals funded by daddy where hand-picked audiences clap on cue? one open audition, Lucius. just one. let's see what happens without the Hoffmann name on the door.",
+                    content: "@Lucius \"what I already know\" you KNOW you're good? based on what? private recitals funded by daddy where hand-picked audiences clap on cue? one open audition, Lucius. just one. let's see what happens without the Hoffmann name on the door.",
                     time: "20 Sep 15:12",
                     likes: 47
                 },
                 {
                     id: 312,
-                    username: "lucius",
+                    username: "Lucius",
                     avatar: "../assets/images/lucius-avatar.jpg",
                     content: "@pianofraud_ based on the music. which you've never heard live because you can't afford a ticket \u2014 not that we sell them, the events are free. but you'd have to actually know someone to get invited. and clearly, you don't.",
                     time: "20 Sep 15:20",
@@ -462,7 +407,7 @@ const BLOG_CONFIG = {
                     id: 313,
                     username: "nacht.kind",
                     avatar: "../assets/images/user14.jpg",
-                    content: "SONG/// JUST ENDED THAT MAN'S WHOLE EXISTENCE \ud83d\udca0\ud83d\udca0\ud83d\udca0",
+                    content: "Lucius JUST ENDED THAT MAN'S WHOLE EXISTENCE \ud83d\udca0\ud83d\udca0\ud83d\udca0",
                     time: "20 Sep 15:22",
                     likes: 389
                 },
@@ -494,7 +439,7 @@ const BLOG_CONFIG = {
                     id: 317,
                     username: "MusicTheory_Nerd",
                     avatar: "../assets/images/user8.jpg",
-                    content: "Three pieces in one sitting, fully orchestrated. I've analysed your published scores, Lucius. The harmonic language in your night works is radically different from the theory you discuss in livestreams. The third movement uses invertible counterpoint at the octave and twelfth \u2014 conservatory-level technique you've never once referenced. Almost like two different composers. I mean that literally.",
+                    content: "Three pieces in one sitting, fully orchestrated. I've analysed your published scores, Lucius. The harmonic language in your night works is radically different from the theory you discuss in livestreams. The third movement uses invertible counterpoint at the octave and twelfth \u2014 conservatory-level technique you've never once referenced. Almost like two different composers. I mean that literally. <span class='cn-inline' style='color:#999;font-size:0.85em;display:block;margin-top:4px;'>三首曲子一口气写完。你夜间作品的和声语言与你直播中讨论的乐理完全不同。第三乐章使用了八度和十二度的可逆对位——你从未提及的音乐学院级技巧。几乎像两个不同的作曲家。我说的是字面意思。</span>",
                     time: "21 Sep 02:14",
                     likes: 3
                 },
@@ -502,7 +447,7 @@ const BLOG_CONFIG = {
                     id: 318,
                     username: "ghostkeys_",
                     avatar: "../assets/images/user24.jpg",
-                    content: "Three pieces in one night but you can't improvise a single phrase in public? I was at Munich. Someone asked you to improvise on a theme. You laughed it off and played something prepared. Meanwhile the anonymous blind pianist at Stephansplatz does THIS LEVEL of music as pure improv every single night. I've put together a full style palette. <a href='../palette/index.html'>look at it</a>. The melodic fingerprint is identical. @MusicTheory_Nerd \"two different composers\" — you're closer to the truth than you think.",
+                    content: "Three pieces in one night but you can't improvise a single phrase in public? I was at Munich. Someone asked you to improvise on a theme. You laughed it off and played something prepared. Meanwhile the anonymous blind pianist at Trafalgar Square does THIS LEVEL of music as pure improv every single night. I've put together a full style palette. <a href='../palette/index.html'>look at it</a>. The melodic fingerprint is identical. @MusicTheory_Nerd \"two different composers\" — you're closer to the truth than you think.",
                     time: "21 Sep 04:30",
                     likes: 1
                 }
@@ -512,11 +457,11 @@ const BLOG_CONFIG = {
             id: 4,
             title: "inheritance",
             content: `
-                <p>People keep asking why I won't take over Father's company. I don't owe anyone that explanation, but here it is anyway.</p>
-                <p class="cn">人们一直问我为什么不接手父亲的公司。我不欠任何人这个解释，但还是说一下。</p>
+                <p>People keep asking why I never took over Father's company. I don't owe anyone that explanation, but here it is anyway.</p>
+                <p class="cn">人们一直问我为什么没有接手父亲的公司。我不欠任何人这个解释，但还是说一下。</p>
                 <p>I grew up in a house where the piano was always there. Every room had one. It was the first sound I remember and the last sound I hear before sleep. That's not privilege. That's just home.</p>
                 <p class="cn">我在一栋钢琴永远在场的房子里长大。每个房间都有一架。它是我记忆中最早的声音，也是入睡前最后一个声音。那不是特权，那只是家。</p>
-                <p>Steel is Father's language. Music is mine. I don't think either of us chose.</p>
+                <p>Steel was Father's language. Music is mine. I don't think either of us chose.</p>
                 <p class="cn">钢铁是父亲的语言。音乐是我的。我觉得我们都没得选。</p>
                 <p>Sometimes I wonder if I'd still play if I had to. If there was no Steinway, no family name, no foundation funding my recitals. I think I would. I hope I would.</p>
                 <p class="cn">有时候我在想，如果必须的话，我还会弹吗。如果没有施坦威，没有家族姓氏，没有基金会赞助我的演奏会。我想我会的。我希望我会。</p>
@@ -620,7 +565,7 @@ const BLOG_CONFIG = {
                 },
                 {
                     id: 412,
-                    username: "lucius",
+                    username: "Lucius",
                     avatar: "../assets/images/lucius-avatar.jpg",
                     content: "@pianofraud_ @get_real_music you both spend so much time analyzing my life. don't you have your own? I've never asked anyone to validate me. I play because I love it. you teach 30 students a week \u2014 congratulations. I play one concert and the room cries. we're not the same.",
                     time: "5 Aug 22:30",
@@ -630,13 +575,13 @@ const BLOG_CONFIG = {
                     id: 413,
                     username: "get_real_music",
                     avatar: "../assets/images/user22.jpg",
-                    content: "@lucius \"the room cries\" \u2014 a room of 30 hand-picked guests who got in through your father's foundation. try making a stranger cry. try playing for someone who doesn't already know your last name.",
+                    content: "@Lucius \"the room cries\" \u2014 a room of 30 hand-picked guests who got in through your father's foundation. try making a stranger cry. try playing for someone who doesn't already know your last name.",
                     time: "5 Aug 22:45",
                     likes: 67
                 },
                 {
                     id: 414,
-                    username: "lucius",
+                    username: "Lucius",
                     avatar: "../assets/images/lucius-avatar.jpg",
                     content: "@get_real_music a stranger DID cry. in Prague. you'd know that if you read the post instead of just looking for things to be angry about. honestly \u2014 go practice. get better. come back when you've written something people actually want to hear. this thread is beneath me.",
                     time: "5 Aug 23:01",
@@ -670,13 +615,13 @@ const BLOG_CONFIG = {
                     id: 418,
                     username: "TruthSeeker404",
                     avatar: "../assets/images/user10.jpg",
-                    content: "\"Foundation funding my recitals\" \u2014 you mean the Hoffmann Arts Foundation, chaired by your father, which funds exclusively your performances? The one that paid the Bavarian Music Critic's editor to kill a negative review of your Hamburg concert? What did you inherit, Lucius \u2014 talent, or infrastructure?",
+                    content: "\"Foundation funding my recitals\" \u2014 you mean the Hoffmann Arts Foundation, chaired by your father, which funds exclusively your performances? The one that paid the Bavarian Music Critic's editor to kill a negative review of your Hamburg concert? What did you inherit, Lucius \u2014 talent, or infrastructure? <span class='cn-inline' style='color:#999;font-size:0.85em;display:block;margin-top:4px;'>\"基金会赞助我的演奏会\"——你是说你父亲主持的霍夫曼艺术基金会吗？那个花钱让乐评编辑撤掉汉堡音乐会差评的基金会？你继承的是天赋，还是体制？</span>",
                     time: "6 Aug 01:47",
                     likes: 5
                 },
                 {
                     id: 419,
-                    username: "lucius",
+                    username: "Lucius",
                     avatar: "../assets/images/lucius-avatar.jpg",
                     content: "@TruthSeeker404 I don't know what you're referring to. The Hamburg concert was well received.",
                     time: "6 Aug 09:15",
@@ -686,7 +631,7 @@ const BLOG_CONFIG = {
                     id: 420,
                     username: "ghostkeys_",
                     avatar: "../assets/images/user24.jpg",
-                    content: "\"I wonder if I'd still play if I had to.\" You wouldn't. Because you CAN'T. Not at the level people think you can. There's a man with no name, no home, no eyes who sits at Stephansplatz every night and plays music that sounds EXACTLY like your published compositions — except he does it as improvisation. You can't even improvise a four-bar phrase. I've documented everything. <a href='../palette/index.html'>the full style palette is here</a>. What did you inherit, Lucius? not talent.",
+                    content: "\"I wonder if I'd still play if I had to.\" You wouldn't. Because you CAN'T. Not at the level people think you can. There's a man with no name, no home, no eyes who sits at Trafalgar Square every night and plays music that sounds EXACTLY like your published compositions — except he does it as improvisation. You can't even improvise a four-bar phrase. I've documented everything. <a href='../palette/index.html'>the full style palette is here</a>. What did you inherit, Lucius? not talent.",
                     time: "7 Aug 02:55",
                     likes: 3
                 }
@@ -694,18 +639,18 @@ const BLOG_CONFIG = {
         },
         {
             id: 5,
-            title: "Domgasse 5",
+            title: "Wimpole Street",
             content: `
                 <p>Morning light. The Steinway. Coffee going cold on the windowsill. Some days this is all I need.</p>
                 <p class="cn">晨光。施坦威。窗台上放凉的咖啡。有些日子这就是我所需要的全部。</p>
-                <p>The apartment is on the same street as Mozart's old place. That wasn't a coincidence when Father chose it, and I've stopped pretending it was. Third floor, south-facing. The light at six in the evening turns everything gold.</p>
-                <p class="cn">公寓和莫扎特故居在同一条街。父亲选这里不是巧合，我也不再假装是了。三楼，朝南。傍晚六点的光线把一切染成金色。</p>
-                <p>I practice in the mornings. Walk to Caf\u00e9 Central for coffee \u2014 they know my order. Sometimes Steirereck for lunch if I feel like sitting still. Then back to the piano until the light goes.</p>
-                <p class="cn">早上练琴。走路去中央咖啡馆喝咖啡——他们记得我的单。有时候去Steirereck吃午饭，如果想静坐一会儿的话。然后回到钢琴前，直到光线消失。</p>
+                <p>The flat is two streets from where Handel used to live. That wasn't a coincidence when Father chose it, and I stopped pretending it was long ago. Third floor, south-facing. The light at six in the evening turns everything gold.</p>
+                <p class="cn">公寓离亨德尔故居只隔两条街。父亲选这里不是巧合，我也不再假装是了。三楼，朝南。傍晚六点的光线把一切染成金色。</p>
+                <p>I practice in the mornings. Walk to The Wolseley for coffee \u2014 they know my order. Sometimes Scott's for lunch if I feel like sitting still. Then back to the piano until the light goes.</p>
+                <p class="cn">早上练琴。走路去The Wolseley喝咖啡——他们记得我的单。有时候去Scott's吃午饭，如果想静坐一会儿的话。然后回到钢琴前，直到光线消失。</p>
                 <p>The piano remembers every note I've ever played. And some I don't remember playing.</p>
                 <p class="cn">钢琴记得我弹过的每一个音符。还有一些我不记得弹过的。</p>
-                <p>If you're ever in Vienna and you care about music \u2014 actually care \u2014 <strong>DM me. I don't invite people here. But for real ones, the door is open.</strong></p>
-                <p class="cn">如果你来维也纳，而且你真的在乎音乐——真正在乎的话——<strong>私信我。我不邀请人来这里。但对真正的人，门是开着的。</strong></p>
+                <p>If you're ever in London and you care about music \u2014 actually care \u2014 <strong>DM me. I don't invite people here. But for real ones, the door is open.</strong></p>
+                <p class="cn">如果你来伦敦，而且你真的在乎音乐——真正在乎的话——<strong>私信我。我不邀请人来这里。但对真正的人，门是开着的。</strong></p>
             `,
             images: ["../assets/images/practice-room.jpg"],
             publishDate: "12 July 2024",
@@ -718,7 +663,7 @@ const BLOG_CONFIG = {
                     id: 501,
                     username: "fiorella.mp3",
                     avatar: "../assets/images/user1.jpg",
-                    content: "\"father chose it\" SIR. your dad bought you a flat on Mozart's street as what \u2014 a housewarming gift?? a Tuesday present?? \ud83d\ude2d\ud83d\ude2d",
+                    content: "\"father chose it\" SIR. your dad bought you a flat near Handel's old house as what \u2014 a housewarming gift?? a Tuesday present?? \ud83d\ude2d\ud83d\ude2d",
                     time: "12 Jul 15:05",
                     likes: 445
                 },
@@ -726,7 +671,7 @@ const BLOG_CONFIG = {
                     id: 502,
                     username: "sofie.kl",
                     avatar: "../assets/images/user11.jpg",
-                    content: "Caf\u00e9 Central and Steirereck as your daily rotation. Lucius your normal Tuesday costs more than my vacation \ud83d\udc80",
+                    content: "The Wolseley and Scott's as your daily rotation. Lucius your normal Tuesday costs more than my vacation \ud83d\udc80",
                     time: "12 Jul 15:12",
                     likes: 287
                 },
@@ -742,7 +687,7 @@ const BLOG_CONFIG = {
                     id: 504,
                     username: "r.m",
                     avatar: "../assets/images/user12.jpg",
-                    content: "@mattes.k Domgasse is literally Vienna 1st district. a 3rd floor south-facing flat there is probably \u20AC1.5-2 million. MINIMUM. his dad just bought it for his birthday. as a present. I'm fine. this is fine.",
+                    content: "@mattes.k Wimpole Street is literally Marylebone. a 3rd floor south-facing flat there is probably \u00A32-3 million. MINIMUM. his dad just bought it for his birthday. as a present. I'm fine. this is fine.",
                     time: "12 Jul 15:45",
                     likes: 234
                 },
@@ -766,7 +711,7 @@ const BLOG_CONFIG = {
                     id: 507,
                     username: "mrs.hoffmann",
                     avatar: "../assets/images/user21.jpg",
-                    content: "morning light, Steinway, coffee, Domgasse... this is literally a marriage proposal to myself. I accept. @lucius when can I move in \ud83d\udc8d",
+                    content: "morning light, Steinway, coffee, Wimpole Street... this is literally a marriage proposal to myself. I accept. @Lucius when can I move in \ud83d\udc8d",
                     time: "12 Jul 16:15",
                     likes: 178
                 },
@@ -780,7 +725,7 @@ const BLOG_CONFIG = {
                 },
                 {
                     id: 509,
-                    username: "lucius",
+                    username: "Lucius",
                     avatar: "../assets/images/lucius-avatar.jpg",
                     content: "@Alex_Music_Lover anytime. the door's open.",
                     time: "12 Jul 16:45",
@@ -804,9 +749,9 @@ const BLOG_CONFIG = {
                 },
                 {
                     id: 512,
-                    username: "lucius",
+                    username: "Lucius",
                     avatar: "../assets/images/lucius-avatar.jpg",
-                    content: "@pianofraud_ you're still here? genuinely asking. don't you have somewhere to be? a job? a hobby? anything? because I just had Steirereck for lunch, practiced for three hours, and now I'm watching the sunset from Domgasse, and you're writing comments on my blog. one of us is wasting their life and it isn't me.",
+                    content: "@pianofraud_ you're still here? genuinely asking. don't you have somewhere to be? a job? a hobby? anything? because I just had Scott's for lunch, practiced for three hours, and now I'm watching the sunset from Wimpole Street, and you're writing comments on my blog. one of us is wasting their life and it isn't me.",
                     time: "12 Jul 19:30",
                     likes: 678
                 },
@@ -814,7 +759,7 @@ const BLOG_CONFIG = {
                     id: 513,
                     username: "jennagrm",
                     avatar: "../assets/images/user19.jpg",
-                    content: "@ellaxrose he just said \"one of us is wasting their life and it isn't me\" while casually mentioning his Steirereck lunch. the man fights with a wine glass in one hand and a Steinway in the other. I'm obsessed",
+                    content: "@ellaxrose he just said \"one of us is wasting their life and it isn't me\" while casually mentioning his Scott's lunch. the man fights with a wine glass in one hand and a Steinway in the other. I'm obsessed",
                     time: "12 Jul 19:35",
                     likes: 389
                 },
@@ -838,9 +783,77 @@ const BLOG_CONFIG = {
                     id: 516,
                     username: "ghostkeys_",
                     avatar: "../assets/images/user24.jpg",
-                    content: "first post. might as well start here. @lucius there's a blind street pianist at Stephansplatz who plays every night. no name, no audience, no Steinway, no Domgasse apartment. just a public piano and his hands. and his improvisations sound EXACTLY like your published scores. I don't know how you sleep at night but I'm guessing the answer is: you don't actually compose when you do. I'm putting together a full comparison. <a href='../palette/index.html'>it's already live</a>. everyone in this comment section worshipping the lifestyle — try listening to the music. then listen to his. then tell me it's a coincidence.",
+                    content: "first post. might as well start here. @Lucius there's a blind street pianist at Trafalgar Square who plays every night. no name, no audience, no Steinway, no Wimpole Street flat. just a public piano and his hands. and his improvisations sound EXACTLY like your published scores. I don't know how you sleep at night but I'm guessing the answer is: you don't actually compose when you do. I'm putting together a full comparison. <a href='../palette/index.html'>it's already live</a>. everyone in this comment section worshipping the lifestyle — try listening to the music. then listen to his. then tell me it's a coincidence.",
                     time: "13 Jul 01:12",
                     likes: 0
+                }
+            ]
+        },
+        {
+            id: 6,
+            title: "father.",
+            content: `
+                <p>Father passed away yesterday.</p>
+                <p class="cn">父亲昨天去世了。</p>
+                <p>I don't know what to write, but I feel like I should write something.</p>
+                <p class="cn">我不知道该写什么，但我想写点什么。</p>
+                <p>He wasn't an easy man. When I was young, I could only call him once a month. He sometimes forgot my birthday. His expectations for me never had an upper limit. I practised until my fingers bled, and he stood beside me and said, <strong>"Again."</strong></p>
+                <p class="cn">他不是一个容易相处的人。我小时候一个月只能给他打一次电话，他有时候会忘记我的生日，他对我的要求从来没有上限。我练琴练到手指出血，他站在旁边说<strong>"再来一遍。"</strong></p>
+                <p>But he was also the first person who believed I could stand on that stage. After my first solo recital at sixteen, he waited backstage and said two words: <strong>"Not bad."</strong> Just those two words. I've remembered them for years.</p>
+                <p class="cn">但他也是第一个相信我能站上那个舞台的人。我16岁第一场独奏会，他在后台等我，说了一句<strong>"不错。"</strong>就这两个字，我记了很多年。</p>
+                <p>There were so many things left unsaid between us. I thought there was still time.</p>
+                <p class="cn">我们之间有很多话没有说完。我以为还有时间。</p>
+                <p>Today I sat at the piano and played nothing. Just sat there, for a long time.</p>
+                <p class="cn">今天我坐在钢琴前，什么都没弹，只是坐着，坐了很久。</p>
+                <p>The room is very quiet. Quieter than before. I don't know why.</p>
+                <p class="cn">房间很安静，比以前安静，我不知道为什么。</p>
+            `,
+            images: [],
+            publishDate: "3 March 2022",
+            publishTime: "22:14",
+            views: 18900,
+            likes: 4120,
+            liked: true,
+            comments: [
+                {
+                    id: 601,
+                    username: "fiorella.mp3",
+                    avatar: "../assets/images/user1.jpg",
+                    content: "Lucius... I'm so sorry. Sending you all the strength in the world.",
+                    time: "4 Mar 08:20",
+                    likes: 312
+                },
+                {
+                    id: 602,
+                    username: "nacht.kind",
+                    avatar: "../assets/images/user14.jpg",
+                    content: "\"Not bad.\" Sometimes the smallest words carry the heaviest weight. Take care of yourself.",
+                    time: "4 Mar 09:15",
+                    likes: 287
+                },
+                {
+                    id: 603,
+                    username: "Alex_Music_Lover",
+                    avatar: "../assets/images/visitor-avatar.jpg",
+                    content: "I'm here if you need to talk. The piano will wait.",
+                    time: "4 Mar 10:30",
+                    likes: 45
+                },
+                {
+                    id: 604,
+                    username: "ellaxrose",
+                    avatar: "../assets/images/user18.jpg",
+                    content: "This is the most human thing you've ever posted. Rest in peace, Mr. Hoffmann.",
+                    time: "4 Mar 11:02",
+                    likes: 198
+                },
+                {
+                    id: 605,
+                    username: "sofie.kl",
+                    avatar: "../assets/images/user11.jpg",
+                    content: "\"I thought there was still time.\" This broke me. We always think there's more time.",
+                    time: "4 Mar 12:45",
+                    likes: 234
                 }
             ]
         }
@@ -848,57 +861,432 @@ const BLOG_CONFIG = {
 
     // ========== Chat / DM System ==========
     chat: {
-        // Historical messages (chronological)
+        // Historical messages (chronological) — full conversation from first contact to last message
         history: [
             {
                 sender: "visitor",
-                content: "Hi! I'm the one from the Munich recital \u2014 third row. Remember me?",
-                time: "25 Sep 2024 14:30"
+                content: "Hi, I heard your performance online \u2014 the Chopin piece. I've listened to it many times.",
+                time: "15 Mar 2021 14:30"
             },
             {
                 sender: "blogger",
-                content: "Alex! yes. you stayed after and actually talked about the Nocturne arrangement instead of asking for a photo. that was nice.",
-                time: "25 Sep 2024 15:12"
+                content: "which one?",
+                time: "15 Mar 2021 14:45"
             },
             {
                 sender: "visitor",
-                content: "Haha yeah! Whispers of the Night was absolutely stunning. I still can't get it out of my head.",
-                time: "25 Sep 2024 15:20"
+                content: "The Nocturne. There's a part in the middle I really love \u2014 that crescendo. Everyone else pushes it up, but you pulled it back.",
+                time: "15 Mar 2021 14:52"
             },
             {
                 sender: "blogger",
-                content: "that one means a lot to me. wrote it in one sitting \u2014 midnight to 5am. barely remember the process. it's like the music was already there and I just... found it.",
-                time: "25 Sep 2024 16:45"
+                content: "you have a good ear.",
+                time: "15 Mar 2021 15:10"
             },
             {
                 sender: "visitor",
-                content: "Three pieces in one night? How is that even possible?",
-                time: "25 Sep 2024 17:02"
+                content: "I listened to your recording from last week again.",
+                time: "22 Mar 2021 20:00"
             },
             {
                 sender: "blogger",
-                content: "honestly? no idea. I sit down and it happens. the scores are just there in the morning, fully written out. during the day I can barely get through a melody without second-guessing myself. anyway \u2014 come to Prague next month. playing at Lobkowicz. only 30 seats. I'll get you in.",
-                time: "25 Sep 2024 17:30"
+                content: "and?",
+                time: "22 Mar 2021 20:15"
             },
             {
                 sender: "visitor",
-                content: "Wait \u2014 you're playing at an entire palace? For 30 people?",
-                time: "25 Sep 2024 17:35"
+                content: "I don't really know much about piano, but I feel like there's something in the way you play. I can't explain it.",
+                time: "22 Mar 2021 20:20"
             },
             {
                 sender: "blogger",
-                content: "it's not about the palace. it's about the acoustics. baroque halls do something to sound that modern venues can't. Father arranged it. he wants me in bigger rooms but I like it small. I'll send you details.",
-                time: "25 Sep 2024 18:00"
+                content: "haha, that's more useful than all the people who say technical things.",
+                time: "22 Mar 2021 20:30"
             },
             {
                 sender: "visitor",
-                content: "By the way, about your blog post \u2014 the Domgasse 5 invitation \u2014 were you serious?",
-                time: "10 Oct 2024 20:15"
+                content: "I recommended your recordings to a friend. He couldn't explain what's good about it either. I tried to explain for ages.",
+                time: "5 Apr 2021 19:00"
             },
             {
                 sender: "blogger",
-                content: "completely. come to Vienna. I'll show you the Steinway \u2014 1920s Model D, took two years to find her. the apartment is under renovation so I've moved the piano to my studio \u2014 LCC tower block, room T1004. And the door number is C3469X. Just tell the front desk you're here for Lucius. let me know when.",
-                time: "10 Oct 2024 21:40"
+                content: "did you manage to explain?",
+                time: "5 Apr 2021 19:12"
+            },
+            {
+                sender: "visitor",
+                content: "No. But I just know it's good. When you play, it feels like something is real.",
+                time: "5 Apr 2021 19:15"
+            },
+            {
+                sender: "blogger",
+                content: '<span style="color:red;">you are the first person to say that.</span>',
+                time: "5 Apr 2021 19:20"
+            },
+            {
+                sender: "visitor",
+                content: "What do other people say?",
+                time: "5 Apr 2021 19:22"
+            },
+            {
+                sender: "blogger",
+                content: "great technique, high talent, has the air of a master. that sort of thing.",
+                time: "5 Apr 2021 19:25"
+            },
+            {
+                sender: "visitor",
+                content: "Those aren't really praising you as a person. They're just praising your playing.",
+                time: "5 Apr 2021 19:28"
+            },
+            {
+                sender: "blogger",
+                content: "yeah.",
+                time: "5 Apr 2021 19:30"
+            },
+            {
+                sender: "visitor",
+                content: "Still practising?",
+                time: "18 Jun 2021 23:50"
+            },
+            {
+                sender: "blogger",
+                content: "mhm.",
+                time: "18 Jun 2021 23:55"
+            },
+            {
+                sender: "visitor",
+                content: <span style="color:blue;">It is midnight. Go eat something. I will wait.</span>,
+                time: "19 Jun 2021 00:01"
+            },
+            {
+                sender: "blogger",
+                content: "you don't have to wait.",
+                time: "19 Jun 2021 00:03"
+            },
+            {
+                sender: "visitor",
+                content: "I want to. Go eat.",
+                time: "19 Jun 2021 00:05"
+            },
+            {
+                sender: "blogger",
+                content: "practised all day today. feels like nothing stuck.",
+                time: "19 Jun 2021 00:45"
+            },
+            {
+                sender: "visitor",
+                content: "Then stop practising. I haven't finished listening to the one you sent last time.",
+                time: "19 Jun 2021 00:48"
+            },
+            {
+                sender: "blogger",
+                content: "which part haven't you finished?",
+                time: "19 Jun 2021 00:50"
+            },
+            {
+                sender: "visitor",
+                content: "The second half. It feels like you're describing some kind of scene.",
+                time: "19 Jun 2021 00:55"
+            },
+            {
+                sender: "blogger",
+                content: "it's an afternoon from a long time ago. Wind on the rooftop.",
+                time: "19 Jun 2021 01:00"
+            },
+            {
+                sender: "visitor",
+                content: "What rooftop?",
+                time: "19 Jun 2021 01:02"
+            },
+            {
+                sender: "blogger",
+                content: <span style="color:red;">the school's. I used to go there a lot when I was young. Then I just... stopped."</span>,
+                time: "19 Jun 2021 01:05"
+            },
+            {
+                sender: "visitor",
+                content: "Why did you stop?",
+                time: "19 Jun 2021 01:08"
+            },
+            {
+                sender: "blogger",
+                content: "no reason. just stopped.",
+                time: "19 Jun 2021 01:10"
+            },
+            {
+                sender: "visitor",
+                content: "I told my mum about your playing. She said you must be a genius \u2014 listening to you makes her feel at peace.",
+                time: "10 Sep 2021 15:00"
+            },
+            {
+                sender: "blogger",
+                content: "thank you.",
+                time: "10 Sep 2021 15:20"
+            },
+            {
+                sender: "visitor",
+                content:<span style="color:blue;"> "I've always thought you're underrated. The controversies are just nonsense."</span>,
+                time: "10 Sep 2021 15:25"
+            },
+            {
+                sender: "blogger",
+                content: "what controversies?",
+                time: "10 Sep 2021 15:30"
+            },
+            {
+                sender: "visitor",
+                content: <span style="color:blue;">"Some people online saying your audio is synthesised."</span>,
+                time: "10 Sep 2021 15:32"
+            },
+            {
+                sender: "blogger",
+                content: "let them talk.",
+                time: "10 Sep 2021 15:35"
+            },
+            {
+                sender: "visitor",
+                content: "I'm angry on your behalf. I can tell it's real.",
+                time: "10 Sep 2021 15:38"
+            },
+            {
+                sender: "blogger",
+                content: "I know.",
+                time: "10 Sep 2021 15:40"
+            },
+            {
+                sender: "blogger",
+                content: "there's a performance next week. will you come?",
+                time: "2 May 2023 18:00"
+            },
+            {
+                sender: "visitor",
+                content: "I'd love to! Where?",
+                time: "2 May 2023 18:10"
+            },
+            {
+                sender: "blogger",
+                content: "a small venue near London. I really like the sound system there.",
+                time: "2 May 2023 18:15"
+            },
+            {
+                sender: "visitor",
+                content: "OK, let me check for tickets.",
+                time: "2 May 2023 18:20"
+            },
+            {
+                sender: "blogger",
+                content: "there's a small show end of May. new setlist. I'm really looking forward to it myself.",
+                time: "15 May 2023 20:00"
+            },
+            {
+                sender: "visitor",
+                content:<span style="color:blue;"> "Tell me the venue. I couldn't find any info last time."</span>,
+                time: "15 May 2023 20:10"
+            },
+            {
+                sender: "blogger",
+                content: "same place as last time.",
+                time: "15 May 2023 20:15"
+            },
+            {
+                sender: "visitor",
+                content: "I checked all the venues nearby. There are no shows next week.",
+                time: "15 May 2023 20:45"
+            },
+            {
+                sender: "blogger",
+                content: "they probably haven't posted it online yet. they don't really do online promotion.",
+                time: "15 May 2023 21:00"
+            },
+            {
+                sender: "blogger",
+                content: "finished a new piece tonight. sending it to you.",
+                time: "8 Aug 2024 01:30"
+            },
+            {
+                sender: "visitor",
+                content: "got it.",
+                time: "8 Aug 2024 01:35"
+            },
+            {
+                sender: "visitor",
+                content: "I finished listening. What were you thinking about when you played this?",
+                time: "8 Aug 2024 01:45"
+            },
+            {
+                sender: "blogger",
+                content:<span style="color:red;" >"a friend I haven't seen in a very long time."</span>,
+                time: "8 Aug 2024 01:50"
+            },
+            {
+                sender: "visitor",
+                content: "Are you still in touch?",
+                time: "8 Aug 2024 01:55"
+            },
+            {
+                sender: "blogger",
+                content: "no. it was a long time ago.",
+                time: "8 Aug 2024 02:00"
+            },
+            {
+                sender: "blogger",
+                content: "there's a show in November. I've been preparing for a long time. will you come?",
+                time: "20 Sep 2024 19:00"
+            },
+            {
+                sender: "visitor",
+                content: "of course. give me the details and I'll book flights in advance.",
+                time: "20 Sep 2024 19:10"
+            },
+            {
+                sender: "blogger",
+                content: "November 14th. Wigmore Hall.",
+                time: "20 Sep 2024 19:15"
+            },
+            {
+                sender: "visitor",
+                content: "OK, let me check now.",
+                time: "20 Sep 2024 19:20"
+            },
+            {
+                sender: "visitor",
+                content:<span style="color:blue;" >"I checked. Konzerthaus has no show by you on November 14th. There's one but it's someone else."</span>,
+                time: "20 Sep 2024 19:50"
+            },
+            {
+                sender: "blogger",
+                content: "let me double-check.",
+                time: "20 Sep 2024 19:55"
+            },
+            {
+                sender: "visitor",
+                content: "OK. I'll wait for your update.",
+                time: "20 Sep 2024 20:00"
+            },
+            {
+                sender: "visitor",
+                content: "You never sent the address. Is the show over?",
+                time: "16 Nov 2024 10:00"
+            },
+            {
+                sender: "blogger",
+                content: "it's over. sorry, forgot to send it.",
+                time: "16 Nov 2024 11:30"
+            },
+            {
+                sender: "visitor",
+                content: "It's OK. How did it go?",
+                time: "16 Nov 2024 11:35"
+            },
+            {
+                sender: "blogger",
+                content: "not bad.",
+                time: "16 Nov 2024 11:40"
+            },
+            {
+                sender: "visitor",
+                content: <span style="color:blue;">"Next time you have to tell me. I really want to hear you play live."</span>,
+                time: "16 Nov 2024 11:45"
+            },
+            {
+                sender: "blogger",
+                content: "next time. for sure.",
+                time: "16 Nov 2024 11:50"
+            },
+            {
+                sender: "visitor",
+                content: <span style="color:blue;">"I've known you for years and I've never made it to a single live performance."</span>,
+                time: "16 Nov 2024 12:00"
+            },
+            {
+                sender: "blogger",
+                content: "I know. I'm sorry.",
+                time: "16 Nov 2024 12:10"
+            },
+            {
+                sender: "visitor",
+                content: "I'm not blaming you. Just feels like a shame. I really want to hear you play in person.",
+                time: "16 Nov 2024 12:15"
+            },
+            {
+                sender: "blogger",
+                content: "there will be a chance.",
+                time: "16 Nov 2024 12:20"
+            },
+            {
+                sender: "blogger",
+                content: "are you there today?",
+                time: "14 Nov 2024 20:00"
+            },
+            {
+                sender: "visitor",
+                content: "Yeah, what's up?",
+                time: "14 Nov 2024 20:05"
+            },
+            {
+                sender: "blogger",
+                content: "good.",
+                time: "14 Nov 2024 20:06"
+            },
+            {
+                sender: "visitor",
+                content: "What's going on? You've been messaging less and less lately.",
+                time: "14 Nov 2024 20:10"
+            },
+            {
+                sender: "blogger",
+                content:<span style="color:red;"> "nothing. just the room has been... strange lately. thought I'd say something."</span>,
+                time: "14 Nov 2024 20:15"
+            },
+            {
+                sender: "visitor",
+                content: "Strange how? Did you check it out?",
+                time: "14 Nov 2024 20:18"
+            },
+            {
+                sender: "blogger",
+                content: "I don't want to move.",
+                time: "14 Nov 2024 20:20"
+            },
+            {
+                sender: "visitor",
+                content: "Are you OK?",
+                time: "14 Nov 2024 20:22"
+            },
+            {
+                sender: "blogger",
+                content: "yeah. just tired. if I can't be reached after this, can you come find me?",
+                time: "14 Nov 2024 20:25"
+            },
+            {
+                sender: "visitor",
+                content: "What are you talking about?",
+                time: "14 Nov 2024 20:27"
+            },
+            {
+                sender: "blogger",
+                content: "I've told you the room address before. the password is <strong>C3469X</strong>. remember it.",
+                time: "14 Nov 2024 20:30"
+            },
+            {
+                sender: "visitor",
+                content: "You're scaring me. What's happening?",
+                time: "14 Nov 2024 20:32"
+            },
+            {
+                sender: "blogger",
+                content: "don't be scared. thank you for always listening to me play.",
+                time: "14 Nov 2024 20:35"
+            },
+            {
+                sender: "visitor",
+                content: "Lucius?",
+                time: "14 Nov 2024 20:40"
+            },
+            {
+                sender: "visitor",
+                content: "Are you still there?",
+                time: "14 Nov 2024 21:30"
             }
         ],
 
@@ -910,7 +1298,7 @@ const BLOG_CONFIG = {
                 delay: 3000
             },
             {
-                reply: "strange dreams again. I keep hearing a melody I didn't write. or did I? getting harder to tell. the night pieces are always better than anything I write during the day. Father says that's normal for genius. but is it?",
+                reply: "strange dreams again. I keep hearing a melody I didn't write. or did I? getting harder to tell. the night pieces are always better than anything I write during the day. Father used to say that's normal for genius. but is it?",
                 delay: 4000
             },
             {
