@@ -105,9 +105,6 @@ const WIKI_CONFIG = {
                 <p>This project therefore infers: <em>if memory can transfer with the heart, perhaps talent can too.</em></p>
                 <p class="cn">本项目由此推断：<em>如果记忆可以随心脏转移，天赋或许也可以。</em></p>
 
-                <div style="position:relative;margin-top:40px;height:80px;overflow:hidden;display:flex;align-items:center;justify-content:center;">
-                    <span style="font-family:'Times New Roman',serif;font-size:72px;font-weight:bold;color:rgba(201,169,110,0.08);letter-spacing:0.15em;user-select:none;pointer-events:none;">2002</span>
-                </div>
             `
         }
     ],
@@ -200,9 +197,6 @@ const WIKI_CONFIG = {
                     <tr style="border-bottom:1px solid #eee;"><td style="padding:10px;font-weight:bold;">第19年</td><td style="padding:10px;color:#cc0000;">委托方病重，资金大幅削减。系统进入节能模式，数据持续丢失。</td></tr>
                 </table>
 
-                <div style="position:relative;margin-top:40px;height:80px;overflow:hidden;display:flex;align-items:center;justify-content:center;">
-                    <span style="font-family:'Times New Roman',serif;font-size:72px;font-weight:bold;color:rgba(201,169,110,0.08);letter-spacing:0.15em;user-select:none;pointer-events:none;">2018</span>
-                </div>
             `
         }
     ],
@@ -294,9 +288,6 @@ const WIKI_CONFIG = {
                     <p style="font-size:16px;font-weight:bold;margin-top:10px;color:#fff;" class="cn">经系统评估，剩余算力仅可维持<strong>一个</strong>意识体运行。</p>
                 </div>
 
-                <div style="position:relative;margin-top:40px;height:80px;overflow:hidden;display:flex;align-items:center;justify-content:center;">
-                    <span style="font-family:'Times New Roman',serif;font-size:72px;font-weight:bold;color:rgba(201,169,110,0.08);letter-spacing:0.15em;user-select:none;pointer-events:none;">2021</span>
-                </div>
             `
         }
     ],

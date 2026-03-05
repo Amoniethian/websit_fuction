@@ -176,7 +176,7 @@
             letter-spacing: 0.1em;
             white-space: nowrap;
             text-shadow: 0 0 80px rgba(255,0,0,1), 0 0 120px rgba(255,0,0,0.8);
-            animation: jumpscareZoom 0.5s ease-in forwards;
+            animation: jumpscareZoom 0.17s ease-in forwards;
         }
         @keyframes horrorShake {
             0% { transform: translate(var(--tx, -50%), var(--ty, -50%)) skewX(0deg); }
@@ -509,7 +509,7 @@
                         // Phase 5: Redirect after jumpscare
                         setTimeout(() => {
                             window.location.href = '../blog/index.html';
-                        }, 550);
+                        }, 200);
                     }, 1800);
                 }, 2000);
             }, 1500);

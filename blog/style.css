@@ -967,11 +967,11 @@ body.show-cn .cn {
 }
 
 .cn-inline {
-    display: none;
+    display: none !important;
 }
 
 body.show-cn .cn-inline {
-    display: block;
+    display: block !important;
 }
 
 /* ───────── Encrypted Video ───────── */
