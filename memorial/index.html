@@ -35,7 +35,7 @@
         <div class="portrait-frame">
             <div class="ribbon"></div>
             <div class="portrait-inner" id="portrait">
-                <img src="/assets/images/portrait.jpg" alt="Lucio"
+                <img src="../assets/images/portrait.jpg" alt="Lucio"
                      onerror="this.outerHTML='<div class=\'portrait-placeholder-icon\'>🎹</div><div class=\'portrait-placeholder-text\'>Portrait</div>'">
             </div>
         </div>
@@ -72,6 +72,8 @@
             <h2 class="section-title">Eulogy</h2>
             <h2 class="section-title cn">悼 词</h2>
             <div class="eulogy-text">
+                <b>can you play the song for me?</b>
+
                 <p>Lucius once wrote: "Music should not fill a room. It should empty it." Perhaps that is what his departure has done — emptied a space in the world that only his melodies could fill.</p>
                 <p class="cn">Lucius曾写道："音乐不应该填满房间，而应该清空它。" 也许他的离去正是如此——在这个世界上清空了一片只有他的旋律才能填满的空间。</p>
 
@@ -80,6 +82,7 @@
 
                 <p>Whether the music was truly his own, or whether it came from somewhere deeper, somewhere darker — it does not diminish what it gave to those who listened. The notes existed. The tears were real. And the silence he leaves behind is deafening.</p>
                 <p class="cn">音乐是否真正属于他，又或者来自更深处、更黑暗的地方——这并不减损它带给聆听者的一切。音符存在过。泪水是真实的。而他留下的寂静，震耳欲聋。</p>
+                <b> cegad</b>
 
                 <p>Rest now, Lucius. The piano remembers.</p>
                 <p class="cn">安息吧，Lucius。钢琴记得一切。</p>
@@ -270,11 +273,11 @@
             initAudio();
 
             if (isPlaying) {
-                isPlaying = false;
+                isPlaying = true;
                 if (currentTimeout) clearTimeout(currentTimeout);
                 // Disconnect old gainNode to immediately silence all scheduled oscillators
                 if (gainNode) gainNode.disconnect();
-                document.getElementById('audio-icon').textContent = '🔇';
+                document.getElementById('audio-icon').textContent = '🔊';
                 document.getElementById('audio-text').textContent = 'Play Music';
             } else {
                 // Create fresh gainNode so old (disconnected) oscillators don't bleed through

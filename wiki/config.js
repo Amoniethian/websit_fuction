@@ -88,8 +88,8 @@ const WIKI_CONFIG = {
                 <p class="cn">Heinrich幼年时展现出相当的音乐天赋，尤其是钢琴。然而，他的父亲坚持让他从商。Heinrich曾公开称此为<strong>"我一生中最大的遗憾"</strong>，并将大量资源投入儿子的音乐事业，据报道在私人场地、导师和事业管理上花费超过2000万欧元。</p>
 
                 <h3>Family</h3>
-                <p>Married Margarete in 1990. Their only son, Lucius, was born in 1996. Margarete passed away from illness in 2008. Heinrich has not remarried.</p>
-                <p class="cn">1990年与Margarete结婚。独子Lucius于1996年出生。Margarete于2008年因病去世。Heinrich未再婚。</p>
+                <p>Married Margarete in 1956. Their only son, Lucius, was born in 1980. After Margarete passed away from illness. Heinrich has not remarried.</p>
+                <p class="cn">1956年与Margarete结婚。独子Lucius于1980年出生。Margarete因病去世后。Heinrich未再婚。</p>
 
                 <h3>Controversies</h3>
                 <p>The strained relationship between Heinrich and Lucius has long been a subject of media attention. Sources suggest the tension is not about rejection of the family business, but rather about <strong>Heinrich's obsessive investment in his son's musical career</strong> and his refusal to accept any criticism of Lucius's abilities.</p>
@@ -107,7 +107,7 @@ const WIKI_CONFIG = {
             lastModified: "20 October 2024",
             content: `
                 <div class="info-card">
-                    <p><strong>Born:</strong> 12 March 1996</p>
+                    <p><strong>Born:</strong> 12 January 1980.</p>
                     <p><strong>Occupation:</strong> Pianist</p>
                     <p><strong>Residence:</strong> Vienna, Austria</p>
                 </div>
@@ -170,8 +170,8 @@ const WIKI_CONFIG = {
                 </div>
 
                 <h3>Psychological Assessment Summary</h3>
-                <p>Per the 2023 psychological evaluation, Lucius exhibits signs of mild dissociative episodes and identity confusion. He frequently reports <strong>gaps in memory surrounding his compositional process</strong>, describing completed works appearing "as if by magic" overnight.</p>
-                <p class="cn">根据2023年的心理评估，Lucius表现出轻度解离发作和身份认同混乱的迹象。他频繁报告<strong>在作曲过程中出现记忆空白</strong>，称完成的作品一夜之间"像变魔术一样"出现。</p>
+                <p>Per the 2001 psychological evaluation, Lucius exhibits signs of mild dissociative episodes and identity confusion. He frequently reports <strong>gaps in memory surrounding his compositional process</strong>, describing completed works appearing "as if by magic" overnight.</p>
+                <p class="cn">根据2001年的心理评估，Lucius表现出轻度解离发作和身份认同混乱的迹象。他频繁报告<strong>在作曲过程中出现记忆空白</strong>，称完成的作品一夜之间"像变魔术一样"出现。</p>
                 <p>The assessing physician, Dr. Karl Brandt (retained by Heinrich Hoffmann), attributed these episodes to "hypnagogic creativity" and recommended no further investigation. <em>Note: Dr. Brandt's objectivity has been questioned internally.</em></p>
                 <p class="cn">负责评估的医生Karl Brandt博士（由Heinrich Hoffmann聘用）将这些症状归因于"入睡前创造力"，并建议不做进一步调查。<em>注：Brandt博士的客观性在内部受到质疑。</em></p>
 
@@ -258,46 +258,7 @@ const WIKI_CONFIG = {
                 <p class="cn">大楼维护人员多次报告<strong>在凌晨2点至4点之间听到练琴室传来钢琴声</strong>，尽管Lucius的卧室门从内部反锁。Lucius否认知晓任何夜间弹奏。这些时段的监控录像显示<strong>间歇性静电干扰和数据损坏</strong>。</p>
             `
         },
-        {
-            id: "incident-report",
-            title: "Incident Report #2024-1108",
-            category: "Restricted",
-            classification: "PERSONAL",
-            lastModified: "12 November 2024",
-            content: `
-                <div class="classified-header">
-                    <span class="classification-badge">PERSONAL</span>
-                    <span>Authorised personnel only</span>
-                </div>
-
-                <h3>Incident Summary</h3>
-                <p><strong>Date:</strong> 8 November 2024</p>
-                <p><strong>Location:</strong> Vienna residence</p>
-                <p><strong>Reported by:</strong> Maximilian Stein</p>
-
-                <h3>Details</h3>
-                <p>On 8 November, Stein arrived at the residence at the scheduled time and found Lucius in an abnormally distressed state. Observations:</p>
-                <p class="cn">11月8日，Stein按预定时间到达寓所，发现Lucius处于异常痛苦的状态。观察记录如下：</p>
-                <ul>
-                    <li>Numerous crumpled papers found in the study — appeared to be unfinished letter drafts</li>
-                    <li>The piano lid had been closed for over three days (extremely unusual)</li>
-                    <li>Lucius stated: <strong>"Everything is about to end"</strong> but refused to elaborate</li>
-                    <li>Lucius also said: "The music isn't mine. It was never mine. I think I've always known."</li>
-                </ul>
-                <p class="cn">- 书房内发现大量揉皱的纸张——似为未完成的信件草稿<br>- 钢琴盖已合上超过三天（极不寻常）<br>- Lucius说：<strong>"一切即将结束"</strong>，但拒绝进一步解释<br>- Lucius还说："那些音乐不是我的。从来都不是。我想我一直都知道。"</p>
-
-                <h3>Follow-up</h3>
-                <p>Stein recommended Lucius contact a mental health professional. Lucius refused.</p>
-                <p class="cn">Stein建议Lucius联系心理健康专业人士。Lucius拒绝了。</p>
-                <p>10 November — Lucius cancelled his 15 November meeting with the family lawyer.</p>
-                <p class="cn">11月10日——Lucius取消了原定11月15日与家族律师的会面。</p>
-
-                <div class="warning-box">
-                    <p>⚠️ <strong>Note:</strong> This report was completed BEFORE the events of 14 November. It has since been transferred to relevant authorities.</p>
-                    <p class="cn">⚠️ <strong>注意：</strong>本报告完成于11月14日事件发生之前。此后已移交相关部门。</p>
-                </div>
-            `
-        }
+    
     ],
 
     // ========== Tier 2 Entries (password: test2) ==========
@@ -370,14 +331,12 @@ const WIKI_CONFIG = {
                 </div>
 
                 <h3>Background</h3>
-                <p>Chord was placed in Heinrich Hoffmann's care through unclear circumstances approximately in 2005, reportedly discovered in an orphanage in Eastern Europe. Born into extreme poverty with no family or patron, he was described by those who met him as <strong>mild-tempered, gentle, and almost unnervingly compliant</strong> — and as a piano prodigy of extraordinary ability, capable of composing complex works entirely by ear and through Braille notation.</p>
-                <p class="cn">Chord于大约2005年通过不明途径被置于Heinrich Hoffmann的监护之下，据报道是在东欧一家孤儿院被发现的。他出身赤贫，没有家人也没有庇护者。见过他的人形容他<strong>性情温和、温顺，近乎令人不安地顺从</strong>——同时也是天赋非凡的钢琴神童，能够完全凭听觉和盲文记谱法创作复杂作品。</p>
+                <p>Chord was placed in Heinrich Hoffmann's care through unclear circumstances approximately in 2000. Born into extreme poverty with no family or patron, he was described by those who met him as <strong>mild-tempered, gentle, and almost unnervingly compliant</strong> — and as a piano prodigy of extraordinary ability, capable of composing complex works entirely by ear and through Braille notation.</p>
+                <p class="cn">Chord于大约2000年通过不明途径被置于Heinrich Hoffmann的监护之下。他出身赤贫，没有家人也没有庇护者。见过他的人形容他<strong>性情温和、温顺，近乎令人不安地顺从</strong>——同时也是天赋非凡的钢琴神童，能够完全凭听觉和盲文记谱法创作复杂作品。</p>
 
                 <h3>Living Conditions</h3>
                 <p>Chord has been housed in a <strong>soundproofed annex</strong> attached to one of the Hoffmann family's properties. He has had <strong>no public presence, no official identity documents, and no contact with the outside world</strong> beyond Hoffmann-controlled staff.</p>
                 <p class="cn">Chord被安置在霍夫曼家族某处房产附属的<strong>隔音附楼</strong>中。他<strong>没有任何公开身份、没有正式身份证件，也没有与外界的任何联系</strong>，只能接触霍夫曼控制下的工作人员。</p>
-                <p>When questioned about this arrangement, Heinrich stated that Chord "prefers solitude" and that the arrangement was "for his own protection."</p>
-                <p class="cn">当被问及这一安排时，Heinrich表示Chord"喜欢独处"，这种安排是"为了保护他"。</p>
 
                 <h3>Musical Output</h3>
                 <p>A comparison of Chord's known compositions with Lucius's published works shows a <strong>near-perfect match</strong> in harmonic language, structural patterns, and stylistic fingerprints.</p>
@@ -473,8 +432,8 @@ const WIKI_CONFIG = {
                     <li><strong>Track B (covert):</strong> Illegal organ procurement, black-market transplants, and experimental surgical procedures for wealthy clients willing to pay</li>
                 </ul>
                 <p class="cn">- <strong>A轨（公开）：</strong>真正的器官捐赠协调——约30%的手术是合法的，用以提供掩护<br>- <strong>B轨（隐蔽）：</strong>非法器官采购、黑市移植手术，以及为愿意付费的富裕客户进行实验性外科手术</p>
-                <p>Heinrich Hoffmann was one of Track B's most significant clients. His transplant order — a bilateral cardiac cross-exchange between two living subjects — was reportedly the most extreme procedure ever commissioned through the network.</p>
-                <p class="cn">Heinrich Hoffmann是B轨最重要的客户之一。他下达的移植订单——两个活体受试者之间的双向心脏交叉互换——据报道是该网络有史以来接受委托的最极端手术。</p>
+                <p>Heinrich Hoffmann was one of Track B's most important clients. A transplant order he once placed with Track B — a bilateral cross-exchange of living hearts between two live subjects — was reportedly the most extreme surgical commission the network had ever received, and was consequently rejected by Track B.</p>
+                <p class="cn">Heinrich Hoffmann是B轨最重要的客户之一。他曾经向B轨下达的移植订单——两个活体受试者之间的双向心脏交叉互换——据报道是该网络有史以来接受委托的最极端手术，因此被B轨拒绝。</p>
 
                 <div class="warning-box">
                     <p>⚠️ Project Aurora's charitable activities were a <strong>calculated smokescreen</strong>. Every legitimate transplant it facilitated served to mask dozens of illegal ones.</p>
@@ -487,7 +446,7 @@ const WIKI_CONFIG = {
         },
         {
             id: "gifted-children-foundation",
-            title: "TOP SECRET: Gifted Children Foundation (天才儿童基金会)",
+            title: "TOP SECRET:The Foundation for Music Education of Visually Impaired Children (视觉障碍儿童音乐教育基金会)",
             category: "Top Secret",
             classification: "TOP SECRET",
             lastModified: "15 November 2024",
@@ -499,7 +458,7 @@ const WIKI_CONFIG = {
 
                 <h3>Organisation Profile</h3>
                 <div class="info-card">
-                    <p><strong>Full name:</strong> The Hoffmann Foundation for Gifted Children (天才儿童基金会)</p>
+                    <p><strong>Full name:</strong> The Hoffmann Foundation for The Foundation for Music Education of Visually Impaired Children (视觉障碍儿童音乐教育基金会)</p>
                     <p><strong>Founded:</strong> 2019, Vienna, Austria</p>
                     <p><strong>Founder:</strong> Heinrich Hoffmann</p>
                     <p><strong>Board members:</strong> Heinrich Hoffmann (chair), two unnamed associates, one legal proxy</p>
@@ -508,12 +467,12 @@ const WIKI_CONFIG = {
                 </div>
 
                 <h3>The Cover</h3>
-                <p>The Gifted Children Foundation (GCF) presented itself as a philanthropic initiative dedicated to nurturing musical prodigies. It awarded scholarships, hosted masterclasses, and funded concert tours for young pianists. Heinrich frequently cited the foundation in interviews as proof of his commitment to "the next generation of talent."</p>
-                <p class="cn">天才儿童基金会（GCF）对外宣称是一个致力于培养音乐神童的慈善机构。它颁发奖学金、举办大师班、并资助年轻钢琴家的音乐会巡演。Heinrich在采访中频繁提及该基金会，作为他"致力于下一代人才"的证明。</p>
+                <p>The Foundation for Music Education of Visually Impaired Children presented itself as a philanthropic initiative dedicated to nurturing musical prodigies. It awarded scholarships, hosted masterclasses, and funded concert tours for young pianists. Heinrich frequently cited the foundation in interviews as proof of his commitment to "the next generation of talent."</p>
+                <p class="cn">天才儿童基金会对外宣称是一个致力于培养音乐神童的慈善机构。它颁发奖学金、举办大师班、并资助年轻钢琴家的音乐会巡演。Heinrich在采访中频繁提及该基金会，作为他"致力于下一代人才"的证明。</p>
 
                 <h3>The Truth</h3>
-                <p>Financial records recovered from Heinrich's Munich study reveal that <strong>over 70% of the foundation's funds were funnelled directly to Project Aurora</strong>. The GCF served three critical functions:</p>
-                <p class="cn">从Heinrich慕尼黑书房中找到的财务记录显示，<strong>基金会超过70%的资金被直接输送到了曙光计划</strong>。天才儿童基金会承担了三个关键功能：</p>
+                <p>Financial records recovered from Heinrich's Munich study reveal that <strong>over 70% of the foundation's funds were funnelled directly to Project Aurora</strong>. The Foundation for Music Education of Visually Impaired Children served three critical functions:</p>
+                <p class="cn">从Heinrich慕尼黑书房中找到的财务记录显示，<strong>基金会超过70%的资金被直接输送到了曙光计划</strong>。视觉障碍儿童音乐教育基金会承担了三个关键功能：</p>
                 <ul>
                     <li><strong>Money laundering:</strong> Charitable donations were reclassified as "medical grants" and wired to Aurora's offshore accounts</li>
                     <li><strong>Talent scouting:</strong> The foundation's "scholarship programme" was used to identify musically gifted children — some of whom were flagged for Aurora's experimental programme</li>
@@ -533,8 +492,9 @@ const WIKI_CONFIG = {
                 <p class="cn"><strong>日期：</strong>2024年8月18日 | <strong>来自：</strong>GCF账户（维也纳Erste银行）| <strong>至：</strong>曙光医疗服务有限公司（布拉迪斯拉发Raiffeisen银行）| <strong>金额：</strong>€1,850,000 | <strong>备注：</strong>"紧急心脏干预——学者#12"<br><em>注："学者#12"与GCF记录中任何真实奖学金获得者均不对应。</em></p>
 
                 <div class="warning-box">
-                    <p>⚠️ The Gifted Children Foundation was <strong>not a charity</strong>. It was a purpose-built instrument to fund the heart transplant that killed Lucius and Chord.</p>
-                    <p class="cn">⚠️ 天才儿童基金会<strong>不是慈善机构</strong>。它是一个专门用来资助那场杀死Lucius和Chord的换心手术的工具。</p>
+                    <p>⚠️ The Foundation for Music Education of Visually Impaired Children was <strong>not a charity</strong>. It was a purpose-built instrument to fund the heart transplant that killed Lucius and Chord.</p>
+                    <p class="cn">⚠️ 视觉障碍儿童音乐教育基金会
+                    <strong>不是慈善机构</strong>。它是一个专门用来资助那场杀死Lucius和Chord的换心手术的工具。</p>
                 </div>
 
                 <p style="margin-top:20px; color: var(--accent-color);"><em>→ See BLACK ARCHIVE (Level 4) for scanned financial documents and internal communications.</em></p>
@@ -655,8 +615,8 @@ const WIKI_CONFIG = {
                 </div>
 
                 <h3>Document 4 — Financial Transfer Records (GCF → Dr. Voss)</h3>
-                <p>Bank transfer records showing €1.85 million moved from the Gifted Children Foundation to Aurora Medical Services Ltd, disguised as "emergency cardiac intervention — Scholar #12." A second transfer of €400,000 was labelled "post-operative care."</p>
-                <p class="cn">银行转账记录显示185万欧元从天才儿童基金会转至曙光医疗服务有限公司，伪装为"紧急心脏干预——学者#12"。第二笔40万欧元的转账标注为"术后护理"。</p>
+                <p>Bank transfer records showing €1.85 million moved from The Foundation for Music Education of Visually Impaired Children to Aurora Medical Services Ltd, disguised as "emergency cardiac intervention — Scholar #12." A second transfer of €400,000 was labelled "post-operative care."</p>
+                <p class="cn">银行转账记录显示185万欧元从视觉障碍儿童音乐教育基金会转至曙光医疗服务有限公司，伪装为"紧急心脏干预——学者#12"。第二笔40万欧元的转账标注为"术后护理"。</p>
                 <div style="margin:15px 0; border:1px solid var(--border-color); border-radius:4px; overflow:hidden;">
                     <img src="/assets/images/scan-04.jpg" alt="Scan 04 — Financial transfer records" style="width:100%; display:block;">
                 </div>
