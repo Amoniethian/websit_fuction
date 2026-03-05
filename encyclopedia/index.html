@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hoffmann Family Encyclopedia</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="../email-gate.js"></script>
+</head>
+<body>
+    <!-- Search Page -->
+    <div class="search-page" id="search-page">
+        <div class="search-container">
+            <div class="logo-area">
+                <div class="logo-text">Hoffmann</div>
+                <div class="logo-subtitle">Family Encyclopedia</div>
+            </div>
+            <div class="search-box">
+                <input type="text" id="search-input" placeholder="Search entries..." autocomplete="off" onkeypress="if(event.key==='Enter') doSearch()">
+                <button class="search-btn" onclick="doSearch()">Search</button>
+            </div>
+            <div class="search-suggestions">
+                Try: <a href="#" onclick="searchFor('none')">Something about their names.</a> |
+                <a href="#" onclick="searchFor('none')">imformation.</a> |
+                <a href="#" onclick="searchFor('none')">guess.</a> |
+                <a href="#" onclick="searchFor('none')">file.</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Results Page -->
+    <div class="results-page" id="results-page" style="display:none;">
+        <div class="results-header">
+            <a href="#" class="back-logo" onclick="goHome(); return false;">
+                <span class="logo-text-small">Hoffmann</span>
+                <span class="logo-subtitle-small">Encyclopedia</span>
+            </a>
+            <div class="results-search-box">
+                <input type="text" id="results-search-input" placeholder="Search entries..." autocomplete="off" onkeypress="if(event.key==='Enter') doResultsSearch()">
+                <button class="search-btn-small" onclick="doResultsSearch()">Search</button>
+            </div>
+        </div>
+
+        <div class="results-body">
+            <!-- No results -->
+            <div class="no-results" id="no-results" style="display:none;">
+                <p>No entries found for "<span id="no-results-query"></span>"</p>
+                <p class="cn">未找到 "<span id="no-results-query-cn"></span>" 的相关条目</p>
+                <p class="no-results-hint">This encyclopedia only contains entries related to the Hoffmann family.</p>
+                <p class="no-results-hint cn">本百科仅收录与霍夫曼家族相关的条目。</p>
+            </div>
+
+            <!-- Entry display -->
+            <div class="entry-card" id="entry-card" style="display:none;">
+                <div class="entry-image" id="entry-image"></div>
+                <h1 class="entry-title" id="entry-title"></h1>
+                <div class="entry-meta" id="entry-meta"></div>
+                <div class="entry-content" id="entry-content"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bilingual toggle -->
+    <button id="cn-toggle" onclick="document.body.classList.toggle('show-cn'); this.textContent = document.body.classList.contains('show-cn') ? '中/EN' : '中/EN'" style="position:fixed;bottom:20px;right:20px;z-index:9999;background:#333;color:#fff;border:none;padding:8px 14px;border-radius:20px;font-size:12px;cursor:pointer;opacity:0.7;transition:opacity 0.2s;font-family:sans-serif;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'">中/EN</button>
+
+    <script>
+        // ========== Encyclopedia Entries ==========
+        const ENTRIES = [
+            {
+                id: "heinrich",
+                name: "Heinrich Hoffmann",
+                aliases: ["heinrich", "hoffmann", "heinrich hoffmann", "father"],
+                meta: "Industrialist | Chairman, Hoffmann Industrial Group",
+                metaCn: "实业家 | 霍夫曼工业集团董事长",
+                content: `
+                    <p>Heinrich Hoffmann was the patriarch of the Hoffmann family and Chairman of the Board of Hoffmann Industrial Group. The family's core business is steel manufacturing and heavy industry, with total family assets estimated at over 7 billion euros.</p>
+                    <p class="cn">Heinrich Hoffmann是霍夫曼家族前任族长，董事会主席。家族核心产业为钢铁制造和重工业，家族总资产估计超过70亿欧元。</p>
+
+                    <p>In his youth, Heinrich displayed considerable musical talent, particularly in piano. However, his father insisted he pursue a career in business. Heinrich publicly referred to this as <strong>"the greatest regret of my life"</strong>, and invested substantial resources into his son's music career, reportedly spending over 20 million euros on private venues, tutors, and career management.</p>
+                    <p class="cn">其幼年时展现出相当的音乐天赋，尤其是钢琴。然而，他的父亲坚持让他从商。Heinrich曾公开称此为<strong>"我一生中最大的遗憾"</strong>，并将大量资源投入儿子的音乐事业，据报道在私人场地、导师和事业管理上花费超过2000万欧元。</p>
+
+                    <p>Pianist Lucius Hoffmann is his only son, who inherited his musical talent.</p>
+                    <p class="cn">钢琴家Lucius Hoffmann是其独子，继承了他的音乐天赋。</p>
+                `
+            },
+            {
+                id: "lucius",
+                name: "Lucius Hoffmann",
+                aliases: ["lucius", "lucius hoffmann", "song///", "song"],
+                meta: "Pianist | Royal Academy of Music",
+                metaCn: "钢琴家 | 英国皇家音乐学院",
+                content: `
+                    <p>Lucius Hoffmann was a student at the Royal Academy of Music, studying under Professor Hans Weber. He held his first solo recital at the age of 16.</p>
+                    <p class="cn">Lucius Hoffmann，英国皇家音乐学院学生，师从Hans Weber教授，16岁举办首场独奏会。</p>
+
+                    <p>His substantial family background attracted a large following of online fans, but his musical works have remained a subject of controversy.</p>
+                    <p class="cn">雄厚的家庭背景使他吸引大量网络粉丝的关注，但他的音乐作品一直饱受争议。</p>
+                `
+            },
+            {
+                id: "chord",
+                name: "Chord Paul",
+                aliases: ["chord", "chord paul", "blind pianist"],
+                meta: "Pianist | Royal Academy of Music",
+                metaCn: "钢琴家 | 英国皇家音乐学院",
+                content: `
+                    <p>Chord Paul was a student at the Royal Academy of Music, studying under Professor Hans Weber. He rose to prominence as a child piano prodigy, but gradually disappeared from the public eye.</p>
+                    <p class="cn">Chord Paul，英国皇家音乐学院学生，师从Hans Weber教授，曾作为天才琴童声名鹊起，后逐渐消失在公众视野。</p>
+                `
+            },
+            {
+                id: "dawn",
+                name: "Dawn Project",
+                aliases: ["dawn project", "dawn", "曙光计划", "曙光"],
+                meta: "Medical Research Programme | 1994",
+                metaCn: "医学研究项目 | 1994年",
+                content: `
+                    <p>The Dawn Project was a medical programme launched in 1994 by the National Institute of Perceptual Research in the United Kingdom. It was designed to help "highly sensitive adolescents" stabilise their perceptual abilities through neuroscience and artistic training, allowing their talents to be protected and developed, thereby improving quality of life.</p>
+                    <p class="cn">曙光计划是1994年由英国国家感知研究院启动的医学项目，旨在通过神经科学与艺术训练，帮助"高敏感青少年"稳定感知力，让天赋得到保护和发展，提高生命质量。</p>
+
+                    <p>However, shortly after its launch, the project was reported for excessive risk and ethical concerns, and was subsequently shut down.</p>
+                    <p class="cn">然而项目启动不久，由于风险过高和有关伦理的舆论举报已关停。</p>
+                `
+            }
+        ];
+
+        // ========== Search Logic ==========
+        function doSearch() {
+            const query = document.getElementById('search-input').value.trim();
+            if (!query) return;
+            showResults(query);
+        }
+
+        function doResultsSearch() {
+            const query = document.getElementById('results-search-input').value.trim();
+            if (!query) return;
+            showResults(query);
+        }
+
+        function searchFor(term) {
+            document.getElementById('search-input').value = term;
+            showResults(term);
+            return false;
+        }
+
+        function showResults(query) {
+            document.getElementById('search-page').style.display = 'none';
+            document.getElementById('results-page').style.display = 'block';
+            document.getElementById('results-search-input').value = query;
+
+            const q = query.toLowerCase().trim();
+            let found = null;
+
+            for (const entry of ENTRIES) {
+                for (const alias of entry.aliases) {
+                    if (q.includes(alias) || alias.includes(q)) {
+                        found = entry;
+                        break;
+                    }
+                }
+                if (found) break;
+            }
+
+            if (found) {
+                document.getElementById('no-results').style.display = 'none';
+                document.getElementById('entry-card').style.display = 'block';
+                document.getElementById('entry-title').textContent = found.name;
+                document.getElementById('entry-meta').innerHTML = `
+                    <span>${found.meta}</span>
+                    <span class="cn">${found.metaCn}</span>
+                `;
+                document.getElementById('entry-content').innerHTML = found.content;
+                document.getElementById('entry-image').innerHTML = '<div class="placeholder-img">[ Image ]</div>';
+            } else {
+                document.getElementById('entry-card').style.display = 'none';
+                document.getElementById('no-results').style.display = 'block';
+                document.getElementById('no-results-query').textContent = query;
+                document.getElementById('no-results-query-cn').textContent = query;
+            }
+        }
+
+        function goHome() {
+            document.getElementById('search-page').style.display = 'block';
+            document.getElementById('results-page').style.display = 'none';
+            document.getElementById('search-input').value = '';
+        }
+
+        // Dev mode: show Chinese with ?cn=1
+        if (new URLSearchParams(window.location.search).has('cn')) {
+            document.body.classList.add('show-cn');
+        }
+    </script>
+</body>
+</html>

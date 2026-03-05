@@ -73,7 +73,7 @@
             </div>
 
             <!-- Article View -->
-            <div id="article-view" style="display: none;">
+            <div id="article-view" style="display: none; position: relative;">
                 <div class="content-header">
                     <div class="breadcrumb">
                         <a href="#" onclick="showWelcome(); return false;">Home</a> / <span id="breadcrumb-category"></span>
@@ -84,7 +84,8 @@
                         <span>Last modified: <span id="article-modified"></span></span>
                     </div>
                 </div>
-                <div class="article-content" id="article-content"></div>
+                <div class="article-content" id="article-content" style="position:relative;"></div>
+                <div id="watermark-overlay" style="position:absolute;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:1;display:none;"></div>
             </div>
         </main>
     </div>
@@ -193,17 +194,43 @@
             }
 
             // Hide "locked" placeholder if all tiers unlocked
-            document.getElementById('locked-tiers').style.display = unlockedTier >= 4 ? 'none' : 'block';
+            document.getElementById('locked-tiers').style.display = unlockedTier >= 3 ? 'none' : 'block';
+        }
+
+        // ========== Watermark ==========
+        const TIER_WATERMARKS = { 1: '2002', 2: '2018', 3: '2021' };
+
+        function buildWatermarkBg(text) {
+            // Generate SVG tile with rotated icon + year, repeated as background
+            const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='220' height='160'>
+                <text transform='rotate(-25 110 80)' x='50%' y='50%' text-anchor='middle' dominant-baseline='central'
+                      font-family="'Times New Roman',serif" font-size='28' font-weight='bold'
+                      fill='rgba(201,169,110,0.15)' letter-spacing='4'>${text}</text>
+            </svg>`;
+            return `url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
+        }
+
+        function applyWatermark(tierNum) {
+            const overlay = document.getElementById('watermark-overlay');
+            const year = TIER_WATERMARKS[tierNum];
+            if (!year) {
+                overlay.style.display = 'none';
+                return;
+            }
+            overlay.style.backgroundImage = buildWatermarkBg(year);
+            overlay.style.backgroundRepeat = 'repeat';
+            overlay.style.display = 'block';
         }
 
         // ========== Article Loading ==========
         function loadArticle(id, source) {
             let entry = null;
+            let tierNum = 0;
 
             if (source === 'public') {
                 entry = config.publicEntries.find(e => e.id === id);
             } else {
-                const tierNum = parseInt(source.replace('tier', ''));
+                tierNum = parseInt(source.replace('tier', ''));
                 if (tierNum > unlockedTier) {
                     openLogin();
                     return;
@@ -229,11 +256,15 @@
             document.getElementById('article-category').textContent = entry.category;
             document.getElementById('article-modified').textContent = entry.lastModified;
             document.getElementById('article-content').innerHTML = entry.content;
+
+            // Apply repeating watermark based on tier
+            applyWatermark(tierNum);
         }
 
         function showWelcome() {
             document.getElementById('welcome-page').style.display = 'block';
             document.getElementById('article-view').style.display = 'none';
+            document.getElementById('watermark-overlay').style.display = 'none';
             document.querySelectorAll('.sidebar-nav a').forEach(a => a.classList.remove('active'));
             currentArticle = null;
         }
@@ -315,8 +346,8 @@
         function updateAccessDisplay() {
             const display = document.getElementById('access-level-display');
             if (unlockedTier === 0) {
-                display.textContent = 'Current access: Public records only. Enter a passphrase to unlock restricted files.';
-            } else if (unlockedTier < 4) {
+                display.textContent = 'Access denied. Enter a passphrase to unlock archive files.';
+            } else if (unlockedTier < 3) {
                 display.textContent = `Current access: ${config.tiers[unlockedTier - 1].label}. Higher clearance levels exist.`;
             } else {
                 display.textContent = 'Maximum clearance. All archives accessible.';
