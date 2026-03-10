@@ -2,8 +2,8 @@
  * Genius Persona Simulator — Archive Configuration
  * ==================================================
  * 3-tier password system
- * Passwords: Muse (🜠), EMBER (🜜), AEONS (☊)
- * Watermarks on each tier page: ☉1618, ♃0714, ✡1001
+ * Passwords: Muse (☿), EMBER (☉), AEONS (☊)
+ * Watermarks on each tier page: 🜠1618, 🜜0714, ✡1001
  */
 
 const WIKI_CONFIG = {
@@ -18,14 +18,14 @@ const WIKI_CONFIG = {
         {
             id: 1,
             password: "Muse",
-            label: "🜠 Level 1 \u2014 Project Origins",
-            unlockMessage: "🜠 Level 1 access granted \u2014 Project Origins unlocked"
+            label: "☿ Level 1 \u2014 Project Origins",
+            unlockMessage: "☿ Level 1 access granted \u2014 Project Origins unlocked"
         },
         {
             id: 2,
             password: "EMBER",
-            label: "🜜 Level 2 \u2014 Recipient Files",
-            unlockMessage: "🜜 Level 2 access granted \u2014 Recipient archives unlocked"
+            label: "☉ Level 2 \u2014 Recipient Files",
+            unlockMessage: "☉ Level 2 access granted \u2014 Recipient archives unlocked"
         },
         {
             id: 3,
@@ -57,7 +57,7 @@ const WIKI_CONFIG = {
     tier1Entries: [
         {
             id: "project-origins",
-            title: "🜠 Project Origins \u2014 The Dawn Project",
+            title: "☿ Project Origins \u2014 The Dawn Project",
             category: "Project",
             classification: "RESTRICTED",
             lastModified: "2002",
@@ -113,7 +113,7 @@ const WIKI_CONFIG = {
     tier2Entries: [
         {
             id: "surgery-report",
-            title: "🜜 Surgery Result Report",
+            title: "☉ Surgery Result Report",
             category: "Medical",
             classification: "TOP SECRET",
             lastModified: "2002",
