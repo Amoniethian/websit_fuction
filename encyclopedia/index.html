@@ -20,10 +20,7 @@
                 <button class="search-btn" onclick="doSearch()">Search</button>
             </div>
             <div class="search-suggestions">
-                Try: <a href="#" onclick="searchFor('Heinrich Hoffmann')">Heinrich Hoffmann</a> |
-                <a href="#" onclick="searchFor('Lucius Hoffmann')">Lucius Hoffmann</a> |
-                <a href="#" onclick="searchFor('Chord Paul')">Chord Paul</a> |
-                <a href="#" onclick="searchFor('Daybreak Project')">Daybreak Project</a>
+                Type something here. Check news. What's on your mind?
             </div>
         </div>
     </div>
@@ -114,13 +111,13 @@
             {
                 id: "daybreak",
                 name: "Daybreak Project",
-                aliases: ["daybreak project", "daybreak", "破晓计划", "破晓"],
+                aliases: ["daybreak project", "daybreak", "曙光计划", "曙光"],
                 video: "../assets/videos/daybreak.mp4",
                 meta: "Medical Research Programme | 1994",
                 metaCn: "医学研究项目 | 1994年",
                 content: `
                     <p>The Daybreak Project was a medical programme launched in 1994 by the National Institute of Perceptual Research in the United Kingdom. It was designed to help "highly sensitive adolescents" stabilise their perceptual abilities through neuroscience and artistic training, allowing their talents to be protected and developed, thereby improving quality of life.</p>
-                    <p class="cn">破晓计划是1994年由英国国家感知研究院启动的医学项目，旨在通过神经科学与艺术训练，帮助"高敏感青少年"稳定感知力，让天赋得到保护和发展，提高生命质量。</p>
+                    <p class="cn">曙光计划是1994年由英国国家感知研究院启动的医学项目，旨在通过神经科学与艺术训练，帮助"高敏感青少年"稳定感知力，让天赋得到保护和发展，提高生命质量。</p>
 
                     <p>However, shortly after its launch, the project was reported for excessive risk and ethical concerns, and was subsequently shut down.</p>
                     <p class="cn">然而项目启动不久，由于风险过高和有关伦理的舆论举报已关停。</p>
@@ -138,18 +135,6 @@
                     <p class="cn">霍夫曼家族是巴伐利亚工业王朝，以钢铁制造和重工业起家，家族总资产估计超过70亿欧元。</p>
                 `
             },
-            {
-                id: "paul-family",
-                name: "Paul Family",
-                aliases: ["paul family", "paul"],
-                image: "../assets/images/paul-family.jpg",
-                meta: "Family | United Kingdom",
-                metaCn: "家族 | 英国",
-                content: `
-                    <p>No detailed records exist for the Paul family. Their son Chord Paul was adopted into the family at a young age and showed extraordinary musical talent from early childhood.</p>
-                    <p class="cn">保罗家族无详细记录。其子Chord Paul幼年被收养入家庭，自幼展现出非凡的音乐天赋。</p>
-                `
-            }
         ];
 
         // ========== Search Logic ==========

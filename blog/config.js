@@ -866,426 +866,511 @@ const BLOG_CONFIG = {
             {
                 sender: "visitor",
                 content: "Hi, I heard your performance online \u2014 the Chopin piece. I've listened to it many times.",
+                contentCn: "嗨，我在网上听了你的演奏——肖邦那首。我听了很多遍。",
                 time: "15 Mar 2021 14:30"
             },
             {
                 sender: "blogger",
                 content: "which one?",
+                contentCn: "哪一首？",
                 time: "15 Mar 2021 14:45"
             },
             {
                 sender: "visitor",
                 content: "The Nocturne. There's a part in the middle I really love \u2014 that crescendo. Everyone else pushes it up, but you pulled it back.",
+                contentCn: "夜曲。中间有一段我特别喜欢——那个渐强。别人都往上推，但你收回去了。",
                 time: "15 Mar 2021 14:52"
             },
             {
                 sender: "blogger",
                 content: "you have a good ear.",
+                contentCn: "你耳朵很好。",
                 time: "15 Mar 2021 15:10"
             },
             {
                 sender: "visitor",
                 content: "I listened to your recording from last week again.",
+                contentCn: "我又听了你上周的录音。",
                 time: "22 Mar 2021 20:00"
             },
             {
                 sender: "blogger",
                 content: "and?",
+                contentCn: "然后呢？",
                 time: "22 Mar 2021 20:15"
             },
             {
                 sender: "visitor",
                 content: "I don't really know much about piano, but I feel like there's something in the way you play. I can't explain it.",
+                contentCn: "我其实不太懂钢琴，但我觉得你弹的方式里有某种东西。我说不上来。",
                 time: "22 Mar 2021 20:20"
             },
             {
                 sender: "blogger",
                 content: "haha, that's more useful than all the people who say technical things.",
+                contentCn: "哈哈，这比所有说技术性评价的人都有用。",
                 time: "22 Mar 2021 20:30"
             },
             {
                 sender: "visitor",
                 content: "I recommended your recordings to a friend. He couldn't explain what's good about it either. I tried to explain for ages.",
+                contentCn: "我推荐你的录音给朋友了。他也说不出好在哪里。我解释了半天。",
                 time: "5 Apr 2021 19:00"
             },
             {
                 sender: "blogger",
                 content: "did you manage to explain?",
+                contentCn: "解释清楚了吗？",
                 time: "5 Apr 2021 19:12"
             },
             {
                 sender: "visitor",
                 content: "No. But I just know it's good. When you play, it feels like something is real.",
+                contentCn: "没有。但我就是知道它好。你弹的时候，感觉有什么东西是真的。",
                 time: "5 Apr 2021 19:15"
             },
             {
                 sender: "blogger",
                 content: '<span style="color:red;">you are the first person to say that.</span>',
+                contentCn: '<span style="color:red;">你是第一个这样说的人。</span>',
                 time: "5 Apr 2021 19:20"
             },
             {
                 sender: "visitor",
                 content: "What do other people say?",
+                contentCn: "其他人怎么说的？",
                 time: "5 Apr 2021 19:22"
             },
             {
                 sender: "blogger",
                 content: "great technique, high talent, has the air of a master. that sort of thing.",
+                contentCn: "技巧好，天赋高，有大师风范。大概就那些。",
                 time: "5 Apr 2021 19:25"
             },
             {
                 sender: "visitor",
                 content: "Those aren't really praising you as a person. They're just praising your playing.",
+                contentCn: "那些其实不是在夸你这个人。只是在夸你弹的。",
                 time: "5 Apr 2021 19:28"
             },
             {
                 sender: "blogger",
                 content: "yeah.",
+                contentCn: "嗯。",
                 time: "5 Apr 2021 19:30"
             },
             {
                 sender: "visitor",
                 content: "Still practising?",
+                contentCn: "还在练吗？",
                 time: "18 Jun 2021 23:50"
             },
             {
                 sender: "blogger",
                 content: "mhm.",
+                contentCn: "嗯。",
                 time: "18 Jun 2021 23:55"
             },
             {
                 sender: "visitor",
                 content: '<span style="color:blue;">It is midnight. Go eat something. I will wait.</span>',
+                contentCn: '<span style="color:blue;">已经半夜了。去吃点东西。我等你。</span>',
                 time: "19 Jun 2021 00:01"
             },
             {
                 sender: "blogger",
                 content: "you don't have to wait.",
+                contentCn: "你不用等。",
                 time: "19 Jun 2021 00:03"
             },
             {
                 sender: "visitor",
                 content: "I want to. Go eat.",
+                contentCn: "我想等。去吃吧。",
                 time: "19 Jun 2021 00:05"
             },
             {
                 sender: "blogger",
                 content: "practised all day today. feels like nothing stuck.",
+                contentCn: "今天练了一天。感觉什么都没留住。",
                 time: "19 Jun 2021 00:45"
             },
             {
                 sender: "visitor",
                 content: "Then stop practising. I haven't finished listening to the one you sent last time.",
+                contentCn: "那就别练了。你上次发我的那个我还没听完。",
                 time: "19 Jun 2021 00:48"
             },
             {
                 sender: "blogger",
                 content: "which part haven't you finished?",
+                contentCn: "哪部分没听完？",
                 time: "19 Jun 2021 00:50"
             },
             {
                 sender: "visitor",
                 content: "The second half. It feels like you're describing some kind of scene.",
+                contentCn: "后半段。感觉你在描述某种画面。",
                 time: "19 Jun 2021 00:55"
             },
             {
                 sender: "blogger",
                 content: "it's an afternoon from a long time ago. Wind on the rooftop.",
+                contentCn: "是很久以前的一个下午。天台上有风。",
                 time: "19 Jun 2021 01:00"
             },
             {
                 sender: "visitor",
                 content: "What rooftop?",
+                contentCn: "什么天台？",
                 time: "19 Jun 2021 01:02"
             },
             {
                 sender: "blogger",
                 content: '<span style="color:red;">the school\'s. I used to go there a lot when I was young. Then I just... stopped.</span>',
+                contentCn: '<span style="color:red;">学校的。小时候常去。后来就……不去了。</span>',
                 time: "19 Jun 2021 01:05"
             },
             {
                 sender: "visitor",
                 content: "Why did you stop?",
+                contentCn: "为什么不去了？",
                 time: "19 Jun 2021 01:08"
             },
             {
                 sender: "blogger",
                 content: "no reason. just stopped.",
+                contentCn: "没有原因。就是不去了。",
                 time: "19 Jun 2021 01:10"
             },
             {
                 sender: "visitor",
                 content: "I told my mum about your playing. She said you must be a genius \u2014 listening to you makes her feel at peace.",
+                contentCn: "我跟我妈说了你弹的琴。她说你一定是天才——听你弹琴让她感到安宁。",
                 time: "10 Sep 2021 15:00"
             },
             {
                 sender: "blogger",
                 content: "thank you.",
+                contentCn: "谢谢。",
                 time: "10 Sep 2021 15:20"
             },
             {
                 sender: "visitor",
                 content: '<span style="color:blue;">I\'ve always thought you\'re underrated. The controversies are just nonsense.</span>',
+                contentCn: '<span style="color:blue;">我一直觉得你被低估了。那些争议都是胡扯。</span>',
                 time: "10 Sep 2021 15:25"
             },
             {
                 sender: "blogger",
                 content: "what controversies?",
+                contentCn: "什么争议？",
                 time: "10 Sep 2021 15:30"
             },
             {
                 sender: "visitor",
                 content: '<span style="color:blue;">Some people online saying your audio is synthesised.</span>',
+                contentCn: '<span style="color:blue;">网上有人说你的音频是合成的。</span>',
                 time: "10 Sep 2021 15:32"
             },
             {
                 sender: "blogger",
                 content: "let them talk.",
+                contentCn: "随他们说吧。",
                 time: "10 Sep 2021 15:35"
             },
             {
                 sender: "visitor",
                 content: "I'm angry on your behalf. I can tell it's real.",
+                contentCn: "我替你生气。我听得出那是真的。",
                 time: "10 Sep 2021 15:38"
             },
             {
                 sender: "blogger",
                 content: "I know.",
+                contentCn: "我知道。",
                 time: "10 Sep 2021 15:40"
             },
             {
                 sender: "blogger",
                 content: "there's a performance next week. will you come?",
+                contentCn: "下周有场演出。你来吗？",
                 time: "2 May 2023 18:00"
             },
             {
                 sender: "visitor",
                 content: "I'd love to! Where?",
+                contentCn: "当然想去！在哪里？",
                 time: "2 May 2023 18:10"
             },
             {
                 sender: "blogger",
                 content: "a small venue near London. I really like the sound system there.",
+                contentCn: "伦敦附近一个小场地。我很喜欢那里的音响系统。",
                 time: "2 May 2023 18:15"
             },
             {
                 sender: "visitor",
                 content: "OK, let me check for tickets.",
+                contentCn: "好的，我去查查票。",
                 time: "2 May 2023 18:20"
             },
             {
                 sender: "blogger",
                 content: "there's a small show end of May. new setlist. I'm really looking forward to it myself.",
+                contentCn: "五月底有场小演出。新曲目单。我自己也很期待。",
                 time: "15 May 2023 20:00"
             },
             {
                 sender: "visitor",
                 content: '<span style="color:blue;">Tell me the venue. I couldn\'t find any info last time.</span>',
+                contentCn: '<span style="color:blue;">告诉我场地吧。上次我什么信息都找不到。</span>',
                 time: "15 May 2023 20:10"
             },
             {
                 sender: "blogger",
                 content: "same place as last time.",
+                contentCn: "和上次一样的地方。",
                 time: "15 May 2023 20:15"
             },
             {
                 sender: "visitor",
                 content: "I checked all the venues nearby. There are no shows next week.",
+                contentCn: "我查了附近所有场地。下周没有演出。",
                 time: "15 May 2023 20:45"
             },
             {
                 sender: "blogger",
                 content: "they probably haven't posted it online yet. they don't really do online promotion.",
+                contentCn: "可能还没在网上发布。他们不怎么做线上推广。",
                 time: "15 May 2023 21:00"
             },
             {
                 sender: "blogger",
                 content: "finished a new piece tonight. sending it to you.",
+                contentCn: "今晚写完了一首新曲子。发给你。",
                 time: "8 Aug 2024 01:30"
             },
             {
                 sender: "visitor",
                 content: "got it.",
+                contentCn: "收到了。",
                 time: "8 Aug 2024 01:35"
             },
             {
                 sender: "visitor",
                 content: "I finished listening. What were you thinking about when you played this?",
+                contentCn: "听完了。你弹这首的时候在想什么？",
                 time: "8 Aug 2024 01:45"
             },
             {
                 sender: "blogger",
                 content: '<span style="color:red;">a friend I haven\'t seen in a very long time.</span>',
+                contentCn: '<span style="color:red;">一个很久没见过的朋友。</span>',
                 time: "8 Aug 2024 01:50"
             },
             {
                 sender: "visitor",
                 content: "Are you still in touch?",
+                contentCn: "还有联系吗？",
                 time: "8 Aug 2024 01:55"
             },
             {
                 sender: "blogger",
                 content: "no. it was a long time ago.",
+                contentCn: "没有了。很久以前的事了。",
                 time: "8 Aug 2024 02:00"
             },
             {
                 sender: "blogger",
                 content: "there's a show in November. I've been preparing for a long time. will you come?",
+                contentCn: "十一月有场演出。我准备了很久。你来吗？",
                 time: "20 Sep 2024 19:00"
             },
             {
                 sender: "visitor",
                 content: "of course. give me the details and I'll book flights in advance.",
+                contentCn: "当然。给我细节，我提前订机票。",
                 time: "20 Sep 2024 19:10"
             },
             {
                 sender: "blogger",
                 content: "November 14th. Wigmore Hall.",
+                contentCn: "11月14日。Wigmore Hall。",
                 time: "20 Sep 2024 19:15"
             },
             {
                 sender: "visitor",
                 content: "OK, let me check now.",
+                contentCn: "好，我现在查查。",
                 time: "20 Sep 2024 19:20"
             },
             {
                 sender: "visitor",
                 content: '<span style="color:blue;">I checked. Konzerthaus has no show by you on November 14th. There\'s one but it\'s someone else.</span>',
+                contentCn: '<span style="color:blue;">我查了。Konzerthaus 11月14日没有你的演出。有一场，但是别人的。</span>',
                 time: "20 Sep 2024 19:50"
             },
             {
                 sender: "blogger",
                 content: "let me double-check.",
+                contentCn: "我再确认一下。",
                 time: "20 Sep 2024 19:55"
             },
             {
                 sender: "visitor",
                 content: "OK. I'll wait for your update.",
+                contentCn: "好的。我等你消息。",
                 time: "20 Sep 2024 20:00"
             },
             {
                 sender: "visitor",
                 content: "You never sent the address. Is the show over?",
+                contentCn: "你一直没发地址。演出结束了吗？",
                 time: "16 Nov 2024 10:00"
             },
             {
                 sender: "blogger",
                 content: "it's over. sorry, forgot to send it.",
+                contentCn: "结束了。抱歉，忘了发。",
                 time: "16 Nov 2024 11:30"
             },
             {
                 sender: "visitor",
                 content: "It's OK. How did it go?",
+                contentCn: "没关系。怎么样？",
                 time: "16 Nov 2024 11:35"
             },
             {
                 sender: "blogger",
                 content: "not bad.",
+                contentCn: "还行。",
                 time: "16 Nov 2024 11:40"
             },
             {
                 sender: "visitor",
                 content: '<span style="color:blue;">Next time you have to tell me. I really want to hear you play live.</span>',
+                contentCn: '<span style="color:blue;">下次你一定要告诉我。我真的很想听你现场弹。</span>',
                 time: "16 Nov 2024 11:45"
             },
             {
                 sender: "blogger",
                 content: "next time. for sure.",
+                contentCn: "下次。一定。",
                 time: "16 Nov 2024 11:50"
             },
             {
                 sender: "visitor",
                 content: '<span style="color:blue;">I\'ve known you for years and I\'ve never made it to a single live performance.</span>',
+                contentCn: '<span style="color:blue;">认识你这么多年，我一场现场都没听到过。</span>',
                 time: "16 Nov 2024 12:00"
             },
             {
                 sender: "blogger",
                 content: "I know. I'm sorry.",
+                contentCn: "我知道。对不起。",
                 time: "16 Nov 2024 12:10"
             },
             {
                 sender: "visitor",
                 content: "I'm not blaming you. Just feels like a shame. I really want to hear you play in person.",
+                contentCn: "我不是怪你。只是觉得可惜。我真的很想亲耳听你弹。",
                 time: "16 Nov 2024 12:15"
             },
             {
                 sender: "blogger",
                 content: "there will be a chance.",
+                contentCn: "会有机会的。",
                 time: "16 Nov 2024 12:20"
             },
             {
                 sender: "blogger",
                 content: "are you there today?",
+                contentCn: "你今天在吗？",
                 time: "14 Nov 2024 20:00"
             },
             {
                 sender: "visitor",
                 content: "Yeah, what's up?",
+                contentCn: "在，怎么了？",
                 time: "14 Nov 2024 20:05"
             },
             {
                 sender: "blogger",
                 content: "good.",
+                contentCn: "嗯。",
                 time: "14 Nov 2024 20:06"
             },
             {
                 sender: "visitor",
                 content: "What's going on? You've been messaging less and less lately.",
+                contentCn: "怎么了？你最近消息越来越少了。",
                 time: "14 Nov 2024 20:10"
             },
             {
                 sender: "blogger",
                 content: '<span style="color:red;">nothing. just the room has been... strange lately. thought I\'d say something.</span>',
+                contentCn: '<span style="color:red;">没事。就是房间最近……有点奇怪。想说一声。</span>',
                 time: "14 Nov 2024 20:15"
             },
             {
                 sender: "visitor",
                 content: "Strange how? Did you check it out?",
+                contentCn: "怎么奇怪？你去看了吗？",
                 time: "14 Nov 2024 20:18"
             },
             {
                 sender: "blogger",
                 content: "I don't want to move.",
+                contentCn: "我不想动。",
                 time: "14 Nov 2024 20:20"
             },
             {
                 sender: "visitor",
                 content: "Are you OK?",
+                contentCn: "你还好吗？",
                 time: "14 Nov 2024 20:22"
             },
             {
                 sender: "blogger",
                 content: "yeah. just tired. if I can't be reached after this, can you come find me?",
+                contentCn: "嗯。只是累了。如果之后联系不上我，你能来找我吗？",
                 time: "14 Nov 2024 20:25"
             },
             {
                 sender: "visitor",
                 content: "What are you talking about?",
+                contentCn: "你在说什么？",
                 time: "14 Nov 2024 20:27"
             },
             {
                 sender: "blogger",
                 content: "I've told you the room address before. the password is <strong>C3469X</strong>. remember it.",
+                contentCn: "房间地址我之前告诉过你。密码是 <strong>C3469X</strong>。记住它。",
                 time: "14 Nov 2024 20:30"
             },
             {
                 sender: "visitor",
                 content: "You're scaring me. What's happening?",
+                contentCn: "你吓到我了。发生什么了？",
                 time: "14 Nov 2024 20:32"
             },
             {
                 sender: "blogger",
                 content: "don't be scared. thank you for always listening to me play.",
+                contentCn: "别怕。谢谢你一直听我弹琴。",
                 time: "14 Nov 2024 20:35"
             },
             {
                 sender: "visitor",
                 content: "Lucius?",
+                contentCn: "Lucius？",
                 time: "14 Nov 2024 20:40"
             },
             {
                 sender: "visitor",
                 content: "Are you still there?",
+                contentCn: "你还在吗？",
                 time: "14 Nov 2024 21:30"
             }
         ],
@@ -1295,39 +1380,48 @@ const BLOG_CONFIG = {
         autoReplies: [
             {
                 reply: "hey. sorry for the late reply. been at the piano all day. what's up?",
+                replyCn: "嘿。抱歉回晚了。在琴前坐了一天。怎么了？",
                 delay: 3000
             },
             {
                 reply: "strange dreams again. I keep hearing a melody I didn't write. or did I? getting harder to tell. the night pieces are always better than anything I write during the day. Father used to say that's normal for genius. but is it?",
+                replyCn: "又做了奇怪的梦。总是听到一段我没写过的旋律。还是说我写过？越来越分不清了。夜里写的曲子总比白天好。父亲说那是天才的常态。但真的是吗？",
                 delay: 4000
             },
             {
                 reply: "do you ever feel like you're living in someone else's memory? like the walls aren't quite solid? I was playing just now and for a second I forgot where I was. the room felt smaller. darker.",
+                replyCn: "你有没有过那种感觉，像是活在别人的记忆里？墙壁好像不太真实？刚才在弹琴，有一瞬间忘了自己在哪。房间变小了。更暗了。",
                 delay: 5000
             },
             {
                 reply: "I can't see. wait \u2014 that's not right. I CAN see. why did I say that? ignore me. haven't been sleeping. there's a sound in the walls... like someone else is playing. but I live alone.",
+                replyCn: "我看不见了。等等——不对。我看得见。我为什么会那样说？别理我。没怎么睡。墙壁里有声音……像是有人在弹琴。但我一个人住。",
                 delay: 6000
             },
             {
                 reply: "there's someone else here. in the dark. they play better than me. they've always played better than me. I think the music was never mine.",
+                replyCn: "这里还有另一个人。在黑暗里。他弹得比我好。一直都比我好。我觉得那些音乐从来就不是我的。",
                 delay: 7000
             },
             {
                 reply: "the room is getting smaller. the Steinway is still here but the walls are wrong. I can hear breathing that isn't mine. Alex, am I real?",
+                replyCn: "房间越来越小了。施坦威还在，但墙壁不对。我能听到不属于我的呼吸声。Alex，我是真实的吗？",
                 delay: 8000
             },
             {
                 reply: "tell me the truth. am I good? or am I just a face they put on someone else's music? the boy in the dark \u2014 he's been here longer than me. he can't see but he plays. he plays and plays and I just... take the bow.",
+                replyCn: "告诉我真相。我好吗？还是我只是他们放在别人音乐上的一张脸？黑暗中的那个男孩——他比我先到这里。他看不见，但他弹。他不停地弹，而我只是……谢幕。",
                 delay: 5000
             },
             {
                 reply: "...",
+                replyCn: "……",
                 delay: 10000
             }
         ],
         maxReplies: 8,
         noMoreReplyMessage: "Connection lost. The digital space appears to be destabilizing...",
+        noMoreReplyMessageCn: "连接中断。数字空间似乎正在崩解……",
 
         // Blogger status
         bloggerStatus: "Last seen 14 Nov 2024 21:30",
