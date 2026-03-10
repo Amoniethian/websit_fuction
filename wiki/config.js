@@ -2,8 +2,8 @@
  * Genius Persona Simulator — Archive Configuration
  * ==================================================
  * 3-tier password system
- * Passwords: test1, test2, test3
- * Watermarks on each tier page: 2002, 2018, 2021
+ * Passwords: Muse (🜠), EMBER (🜜), AEONS (☊)
+ * Watermarks on each tier page: ☉1618, ♃0714, ✡1001
  */
 
 const WIKI_CONFIG = {
@@ -17,21 +17,21 @@ const WIKI_CONFIG = {
     tiers: [
         {
             id: 1,
-            password: "test1",
-            label: "Level 1 \u2014 Project Origins",
-            unlockMessage: "Level 1 access granted \u2014 Project Origins unlocked"
+            password: "Muse",
+            label: "🜠 Level 1 \u2014 Project Origins",
+            unlockMessage: "🜠 Level 1 access granted \u2014 Project Origins unlocked"
         },
         {
             id: 2,
-            password: "test2",
-            label: "Level 2 \u2014 Recipient Files",
-            unlockMessage: "Level 2 access granted \u2014 Recipient archives unlocked"
+            password: "EMBER",
+            label: "🜜 Level 2 \u2014 Recipient Files",
+            unlockMessage: "🜜 Level 2 access granted \u2014 Recipient archives unlocked"
         },
         {
             id: 3,
-            password: "test3",
-            label: "Level 3 \u2014 Donor Files",
-            unlockMessage: "Level 3 access granted \u2014 Donor archives unlocked"
+            password: "AEONS",
+            label: "☊ Level 3 \u2014 Donor Files",
+            unlockMessage: "☊ Level 3 access granted \u2014 Donor archives unlocked"
         }
     ],
 
@@ -57,7 +57,7 @@ const WIKI_CONFIG = {
     tier1Entries: [
         {
             id: "project-origins",
-            title: "Project Origins \u2014 The Dawn Project",
+            title: "🜠 Project Origins \u2014 The Dawn Project",
             category: "Project",
             classification: "RESTRICTED",
             lastModified: "2002",
@@ -113,7 +113,7 @@ const WIKI_CONFIG = {
     tier2Entries: [
         {
             id: "surgery-report",
-            title: "Surgery Result Report",
+            title: "🜜 Surgery Result Report",
             category: "Medical",
             classification: "TOP SECRET",
             lastModified: "2002",
@@ -205,7 +205,7 @@ const WIKI_CONFIG = {
     tier3Entries: [
         {
             id: "donor-adoption",
-            title: "Donor Adoption Record \u2014 Chord Paul",
+            title: "☊ Donor Adoption Record \u2014 Chord Paul",
             category: "Record",
             classification: "TOP SECRET",
             lastModified: "2000",

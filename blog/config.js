@@ -213,7 +213,7 @@ const BLOG_CONFIG = {
                 },
                 {
                     id: 203,
-                    username: "Ludius",
+                    username: "Lucius",
                     avatar: "../assets/images/lucius-avatar.jpg",
                     content: "@autohaus.91 the chalk one.",
                     time: "15 Oct 21:45",

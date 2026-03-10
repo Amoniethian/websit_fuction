@@ -11,8 +11,8 @@ const NEWS_CONFIG = {
 
     // Headline (Obituary)
     headline: {
-        title: "Young Pianist Lucius Found Dead in London Residence, Aged 28",
-        titleCn: "青年钢琴家Lucius被发现死于伦敦寓所，年仅28岁",
+        title: "⊕ Young Pianist Lucius Found Dead in London Residence, Aged 28",
+        titleCn: "⊕ 青年钢琴家Lucius被发现死于伦敦寓所，年仅28岁",
         author: "Anna Weber",
         publishDate: "15 November 2024",
         publishTime: "09:32 CET",

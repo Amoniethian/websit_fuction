@@ -99,7 +99,7 @@ websit_fuction/
 │   ├── index.html          # BBC-style English UI
 │   └── style.css           # BBC red accent, serif typography
 ├── blog/
-│   ├── config.js           # Posts, comments, DM system (LCC T1004 address)
+│   ├── config.js           # Posts, comments, DM system (password C3469X)
 │   ├── index.html          # Blog renderer + chat + new-msg badge
 │   └── style.css           # Coral/teal youth aesthetic
 ├── memorial/
@@ -108,7 +108,7 @@ websit_fuction/
 │   │                       #   Amazing Grace synth, BSOD transition
 │   └── style.css           # Dark solemn theme, gold accents
 └── wiki/
-    ├── config.js           # 4-tier password content (test1-test4)
+    ├── config.js           # 3-tier password content (Muse/EMBER/AEONS)
     ├── index.html          # Password system + dynamic rendering
     └── style.css           # Dark conspiracy fan-wiki theme
 ```
@@ -132,7 +132,7 @@ News article (obituary)
 
 ## Pending / Future
 - [ ] Add actual `first_meet.mp4` video file to `assets/videos/`
-- [ ] Replace placeholder passwords (test1-test4, 1234) with real game passwords
+- [x] Replace placeholder passwords (test1-test3 → Muse/EMBER/AEONS) with real game passwords
 - [ ] Deploy to Netlify
 - [ ] Wiki comment/discussion section for conspiracy theories (mentioned but not yet implemented)
 - [ ] Replace memorial portrait placeholder with actual character image
