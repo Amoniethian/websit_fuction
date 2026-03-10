@@ -53,11 +53,11 @@ const WIKI_CONFIG = {
     // ========== Public Entries (none \u2014 archive requires password) ==========
     publicEntries: [],
 
-    // ========== Tier 1: Project Origins (password: test1) ==========
+    // ========== Tier 1: Project Origins (password: Muse) ==========
     tier1Entries: [
         {
             id: "project-origins",
-            title: "☿ Project Origins \u2014 The Dawn Project",
+            title: "☿ Project Origins \u2014 The Daybreak Project",
             category: "Project",
             classification: "RESTRICTED",
             lastModified: "2002",
@@ -66,11 +66,11 @@ const WIKI_CONFIG = {
                     <p><strong>PROJECT CLASSIFICATION: RESTRICTED</strong></p>
                 </div>
 
-                <p>This project originated from the <strong>Dawn Project</strong> \u2014 a medical programme launched in 1994 by the National Institute of Perceptual Research in the United Kingdom, designed to help "highly sensitive adolescents" stabilise and develop their talents through neuroscience and artistic training.</p>
-                <p class="cn">本项目起源于<strong>曙光计划</strong>\u2014\u20141994年由英国国家感知研究院启动的医学项目，旨在通过神经科学与艺术训练，帮助"高敏感青少年"稳定并发展其天赋。</p>
+                <p>This project originated from the <strong>Daybreak Project</strong> \u2014 a medical programme launched in 1994 by the National Institute of Perceptual Research in the United Kingdom, designed to help "highly sensitive adolescents" stabilise and develop their talents through neuroscience and artistic training.</p>
+                <p class="cn">本项目起源于<strong>破晓计划</strong>\u2014\u20141994年由英国国家感知研究院启动的医学项目，旨在通过神经科学与艺术训练，帮助"高敏感青少年"稳定并发展其天赋。</p>
 
-                <p>The Dawn Project was reported for ethical violations and excessive risk shortly after launch, and faced mandatory shutdown. Mr. Hoffmann submitted an independent commission application to the Dawn Project before its closure, which was <strong>rejected</strong>.</p>
-                <p class="cn">曙光计划于项目启动后不久，因伦理争议及风险过高被举报，随即面临强制关停。霍夫曼先生于关停前向曙光计划提交独立委托申请，遭<strong>拒绝</strong>。</p>
+                <p>The Daybreak Project was reported for ethical violations and excessive risk shortly after launch, and faced mandatory shutdown. Mr. Hoffmann submitted an independent commission application to the Daybreak Project before its closure, which was <strong>rejected</strong>.</p>
+                <p class="cn">破晓计划于项目启动后不久，因伦理争议及风险过高被举报，随即面临强制关停。霍夫曼先生于关停前向破晓计划提交独立委托申请，遭<strong>拒绝</strong>。</p>
 
                 <p>Subsequently, Mr. Hoffmann sought independent channels to advance the research on his own, and sponsored the establishment of this archive.</p>
                 <p class="cn">此后，霍夫曼先生转而寻求独立渠道，自行主导推进相关研究，并赞助建立本档案馆。</p>
@@ -109,7 +109,7 @@ const WIKI_CONFIG = {
         }
     ],
 
-    // ========== Tier 2: Recipient Files (password: test2) ==========
+    // ========== Tier 2: Recipient Files (password: EMBER) ==========
     tier2Entries: [
         {
             id: "surgery-report",
@@ -201,7 +201,7 @@ const WIKI_CONFIG = {
         }
     ],
 
-    // ========== Tier 3: Donor Files (password: test3) ==========
+    // ========== Tier 3: Donor Files (password: AEONS) ==========
     tier3Entries: [
         {
             id: "donor-adoption",

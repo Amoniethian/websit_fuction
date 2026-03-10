@@ -23,7 +23,7 @@
                 Try: <a href="#" onclick="searchFor('Heinrich Hoffmann')">Heinrich Hoffmann</a> |
                 <a href="#" onclick="searchFor('Lucius Hoffmann')">Lucius Hoffmann</a> |
                 <a href="#" onclick="searchFor('Chord Paul')">Chord Paul</a> |
-                <a href="#" onclick="searchFor('Dawn Project')">Dawn Project</a>
+                <a href="#" onclick="searchFor('Daybreak Project')">Daybreak Project</a>
             </div>
         </div>
     </div>
@@ -70,6 +70,7 @@
                 id: "heinrich",
                 name: "Heinrich Hoffmann",
                 aliases: ["heinrich", "hoffmann", "heinrich hoffmann", "father"],
+                image: "../assets/images/heinrich.jpg",
                 meta: "Industrialist | Chairman, Hoffmann Industrial Group",
                 metaCn: "实业家 | 霍夫曼工业集团董事长",
                 content: `
@@ -87,6 +88,7 @@
                 id: "lucius",
                 name: "Lucius Hoffmann",
                 aliases: ["lucius", "lucius hoffmann", "song///", "song"],
+                image: "../assets/images/lucius-avatar.jpg",
                 meta: "Pianist | Royal Academy of Music",
                 metaCn: "钢琴家 | 英国皇家音乐学院",
                 content: `
@@ -101,6 +103,7 @@
                 id: "chord",
                 name: "Chord Paul",
                 aliases: ["chord", "chord paul", "blind pianist"],
+                image: "../assets/images/chord.jpg",
                 meta: "Pianist | Royal Academy of Music",
                 metaCn: "钢琴家 | 英国皇家音乐学院",
                 content: `
@@ -109,22 +112,75 @@
                 `
             },
             {
-                id: "dawn",
-                name: "Dawn Project",
-                aliases: ["dawn project", "dawn", "曙光计划", "曙光"],
+                id: "daybreak",
+                name: "Daybreak Project",
+                aliases: ["daybreak project", "daybreak", "破晓计划", "破晓"],
+                video: "../assets/videos/daybreak.mp4",
                 meta: "Medical Research Programme | 1994",
                 metaCn: "医学研究项目 | 1994年",
                 content: `
-                    <p>The Dawn Project was a medical programme launched in 1994 by the National Institute of Perceptual Research in the United Kingdom. It was designed to help "highly sensitive adolescents" stabilise their perceptual abilities through neuroscience and artistic training, allowing their talents to be protected and developed, thereby improving quality of life.</p>
-                    <p class="cn">曙光计划是1994年由英国国家感知研究院启动的医学项目，旨在通过神经科学与艺术训练，帮助"高敏感青少年"稳定感知力，让天赋得到保护和发展，提高生命质量。</p>
+                    <p>The Daybreak Project was a medical programme launched in 1994 by the National Institute of Perceptual Research in the United Kingdom. It was designed to help "highly sensitive adolescents" stabilise their perceptual abilities through neuroscience and artistic training, allowing their talents to be protected and developed, thereby improving quality of life.</p>
+                    <p class="cn">破晓计划是1994年由英国国家感知研究院启动的医学项目，旨在通过神经科学与艺术训练，帮助"高敏感青少年"稳定感知力，让天赋得到保护和发展，提高生命质量。</p>
 
                     <p>However, shortly after its launch, the project was reported for excessive risk and ethical concerns, and was subsequently shut down.</p>
                     <p class="cn">然而项目启动不久，由于风险过高和有关伦理的舆论举报已关停。</p>
+                `
+            },
+            {
+                id: "hoffmann-family",
+                name: "Hoffmann Family",
+                aliases: ["hoffmann family", "hoffmann industrial", "霍夫曼"],
+                image: "../assets/images/hoffmann-estate.jpg",
+                meta: "Industrial Dynasty | Bavaria, Germany",
+                metaCn: "工业王朝 | 德国巴伐利亚",
+                content: `
+                    <p>The Hoffmann family is a Bavarian industrial dynasty whose fortune was built on steel manufacturing and heavy industry, with total family assets estimated at over 7 billion euros.</p>
+                    <p class="cn">霍夫曼家族是巴伐利亚工业王朝，以钢铁制造和重工业起家，家族总资产估计超过70亿欧元。</p>
+                `
+            },
+            {
+                id: "paul-family",
+                name: "Paul Family",
+                aliases: ["paul family", "paul"],
+                image: "../assets/images/paul-family.jpg",
+                meta: "Family | United Kingdom",
+                metaCn: "家族 | 英国",
+                content: `
+                    <p>No detailed records exist for the Paul family. Their son Chord Paul was adopted into the family at a young age and showed extraordinary musical talent from early childhood.</p>
+                    <p class="cn">保罗家族无详细记录。其子Chord Paul幼年被收养入家庭，自幼展现出非凡的音乐天赋。</p>
                 `
             }
         ];
 
         // ========== Search Logic ==========
+        // Requires at least 3 consecutive matching characters to find an entry
+        function matchEntry(query) {
+            const q = query.toLowerCase().trim();
+            if (q.length < 3) return null;
+
+            for (const entry of ENTRIES) {
+                for (const alias of entry.aliases) {
+                    // Check if query contains at least 3 consecutive chars from alias
+                    // or alias contains at least 3 consecutive chars from query
+                    if (hasConsecutiveMatch(q, alias, 3) || hasConsecutiveMatch(alias, q, 3)) {
+                        return entry;
+                    }
+                }
+            }
+            return null;
+        }
+
+        function hasConsecutiveMatch(haystack, needle, minLen) {
+            // Check if any substring of needle of length >= minLen appears in haystack
+            for (let len = needle.length; len >= minLen; len--) {
+                for (let i = 0; i <= needle.length - len; i++) {
+                    const sub = needle.substring(i, i + len);
+                    if (haystack.includes(sub)) return true;
+                }
+            }
+            return false;
+        }
+
         function doSearch() {
             const query = document.getElementById('search-input').value.trim();
             if (!query) return;
@@ -148,18 +204,7 @@
             document.getElementById('results-page').style.display = 'block';
             document.getElementById('results-search-input').value = query;
 
-            const q = query.toLowerCase().trim();
-            let found = null;
-
-            for (const entry of ENTRIES) {
-                for (const alias of entry.aliases) {
-                    if (q.includes(alias) || alias.includes(q)) {
-                        found = entry;
-                        break;
-                    }
-                }
-                if (found) break;
-            }
+            const found = matchEntry(query);
 
             if (found) {
                 document.getElementById('no-results').style.display = 'none';
@@ -170,7 +215,25 @@
                     <span class="cn">${found.metaCn}</span>
                 `;
                 document.getElementById('entry-content').innerHTML = found.content;
-                document.getElementById('entry-image').innerHTML = '<div class="placeholder-img">[ Image ]</div>';
+
+                // Render image or video above entry
+                const imageContainer = document.getElementById('entry-image');
+                if (found.video) {
+                    imageContainer.innerHTML = `
+                        <video class="entry-video" controls preload="metadata" style="width:100%;max-width:480px;border-radius:4px;">
+                            <source src="${found.video}" type="video/mp4">
+                            <div class="placeholder-img">[ Video ]</div>
+                        </video>
+                    `;
+                } else if (found.image) {
+                    imageContainer.innerHTML = `
+                        <img src="${found.image}" alt="${found.name}" class="entry-img"
+                             style="width:200px;height:250px;object-fit:cover;border-radius:4px;border:1px solid #ddd;"
+                             onerror="this.outerHTML='<div class=\\'placeholder-img\\'>[ Image ]</div>'">
+                    `;
+                } else {
+                    imageContainer.innerHTML = '<div class="placeholder-img">[ Image ]</div>';
+                }
             } else {
                 document.getElementById('entry-card').style.display = 'none';
                 document.getElementById('no-results').style.display = 'block';

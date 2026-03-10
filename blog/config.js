@@ -31,7 +31,7 @@ const BLOG_CONFIG = {
     posts: [
         {
             id: 1,
-            title: "Prague.",
+            title: "PRAGUE.",
             content: `
                 <p>Played Lobkowicz last night. Candlelight, thirty people, the Imperial. Closed with <em>The Forgotten Waltz</em>.</p>
                 <p class="cn">昨晚在洛布科维茨演奏。烛光，三十个人，帝王琴。用《被遗忘的华尔兹》收尾。</p>
@@ -167,7 +167,7 @@ const BLOG_CONFIG = {
                     id: 115,
                     username: "ghostkeys_",
                     avatar: "../assets/images/user24.jpg",
-                    content: "\"The melodies are better than anything I write awake.\" Yeah. Because they're not yours. There's a blind street pianist at Trafalgar Square who improvises the EXACT same harmonic language you publish under your name. I've done a full style palette — same voicing, same ornamental figures, same everything. <a href='../palette/index.html'>here's the breakdown</a>. But sure, keep pretending it's \"genius working in the dark.\" We both know whose hands actually wrote those melodies.",
+                    content: "\"The melodies are better than anything I write awake.\" Yeah. Because they're not yours. There's a blind street pianist at Trafalgar Square who improvises the EXACT same harmonic language you publish under your name. I've done a full style palette — same voicing, same ornamental figures, same everything. <a href='../palette/index.html'>here's the breakdown</a>. But sure, keep pretending it's \"genius working in the dark.\" We both know whose hands actually wrote those melodies. <span class='cn-inline' style='color:#999;font-size:0.85em;display:block;margin-top:4px;'>\"那些旋律比我清醒时写的好得多。\"对，因为那不是你的。Trafalgar Square有个盲人街头钢琴家，即兴演奏的和声语言和你署名发表的完全一样。我做了完整的风格比对——相同的声部排列、相同的装饰音型、一模一样。<a href='../palette/index.html'>这是详细分析</a>。但你继续假装这是\"天才在黑暗中运作\"吧。我们都知道那些旋律到底是谁的手写的。</span>",
                     time: "29 Oct 22:18",
                     likes: 2
                 }
@@ -175,7 +175,7 @@ const BLOG_CONFIG = {
         },
         {
             id: 2,
-            title: "rain, Berlin",
+            title: "RAIN, BERLIN",
             content: `
                 <p>Three days of rain. The city looks better like this.</p>
                 <p class="cn">连着三天的雨。城市这样看更好。</p>
@@ -287,7 +287,7 @@ const BLOG_CONFIG = {
         },
         {
             id: 3,
-            title: "Whispers of the Night",
+            title: "WHISPERS OF THE NIGHT",
             content: `
                 <p>Three new pieces. One sitting. Midnight to dawn.</p>
                 <p class="cn">三首新作。一口气。从午夜到天亮。</p>
@@ -447,7 +447,7 @@ const BLOG_CONFIG = {
                     id: 318,
                     username: "ghostkeys_",
                     avatar: "../assets/images/user24.jpg",
-                    content: "Three pieces in one night but you can't improvise a single phrase in public? I was at Munich. Someone asked you to improvise on a theme. You laughed it off and played something prepared. Meanwhile the anonymous blind pianist at Trafalgar Square does THIS LEVEL of music as pure improv every single night. I've put together a full style palette. <a href='../palette/index.html'>look at it</a>. The melodic fingerprint is identical. @MusicTheory_Nerd \"two different composers\" — you're closer to the truth than you think.",
+                    content: "Three pieces in one night but you can't improvise a single phrase in public? I was at Munich. Someone asked you to improvise on a theme. You laughed it off and played something prepared. Meanwhile the anonymous blind pianist at Trafalgar Square does THIS LEVEL of music as pure improv every single night. I've put together a full style palette. <a href='../palette/index.html'>look at it</a>. The melodic fingerprint is identical. @MusicTheory_Nerd \"two different composers\" — you're closer to the truth than you think. <span class='cn-inline' style='color:#999;font-size:0.85em;display:block;margin-top:4px;'>一晚上三首曲子，但你在公开场合连一个乐句都即兴不出来？我在慕尼黑现场。有人请你即兴演奏一个主题，你笑着敷衍过去，弹了首准备好的。而Trafalgar Square那位匿名盲人钢琴家每晚都用纯即兴演奏出这种水准的音乐。我整理了完整的风格比对。<a href='../palette/index.html'>看看吧</a>。旋律指纹完全一致。@MusicTheory_Nerd \"两个不同的作曲家\"——你比你想的更接近真相。</span>",
                     time: "21 Sep 04:30",
                     likes: 1
                 }
@@ -455,7 +455,7 @@ const BLOG_CONFIG = {
         },
         {
             id: 4,
-            title: "inheritance",
+            title: "INHERITANCE",
             content: `
                 <p>People keep asking why I never took over Father's company. I don't owe anyone that explanation, but here it is anyway.</p>
                 <p class="cn">人们一直问我为什么没有接手父亲的公司。我不欠任何人这个解释，但还是说一下。</p>
@@ -631,7 +631,7 @@ const BLOG_CONFIG = {
                     id: 420,
                     username: "ghostkeys_",
                     avatar: "../assets/images/user24.jpg",
-                    content: "\"I wonder if I'd still play if I had to.\" You wouldn't. Because you CAN'T. Not at the level people think you can. There's a man with no name, no home, no eyes who sits at Trafalgar Square every night and plays music that sounds EXACTLY like your published compositions — except he does it as improvisation. You can't even improvise a four-bar phrase. I've documented everything. <a href='../palette/index.html'>the full style palette is here</a>. What did you inherit, Lucius? not talent.",
+                    content: "\"I wonder if I'd still play if I had to.\" You wouldn't. Because you CAN'T. Not at the level people think you can. There's a man with no name, no home, no eyes who sits at Trafalgar Square every night and plays music that sounds EXACTLY like your published compositions — except he does it as improvisation. You can't even improvise a four-bar phrase. I've documented everything. <a href='../palette/index.html'>the full style palette is here</a>. What did you inherit, Lucius? not talent. <span class='cn-inline' style='color:#999;font-size:0.85em;display:block;margin-top:4px;'>\"如果必须的话，我还会弹吗。\"你不会。因为你弹不了。不是人们以为的那个水平。有个没有名字、没有家、没有眼睛的人，每晚坐在Trafalgar Square演奏的音乐和你发表的作品一模一样——只不过他是即兴的。你连四小节都即兴不出来。我已经记录了一切。<a href='../palette/index.html'>完整风格比对在这里</a>。你继承了什么，Lucius？不是天赋。</span>",
                     time: "7 Aug 02:55",
                     likes: 3
                 }
@@ -639,7 +639,7 @@ const BLOG_CONFIG = {
         },
         {
             id: 5,
-            title: "Wimpole Street",
+            title: "WIMPOLE STREET",
             content: `
                 <p>Morning light. The Steinway. Coffee going cold on the windowsill. Some days this is all I need.</p>
                 <p class="cn">晨光。施坦威。窗台上放凉的咖啡。有些日子这就是我所需要的全部。</p>
@@ -783,7 +783,7 @@ const BLOG_CONFIG = {
                     id: 516,
                     username: "ghostkeys_",
                     avatar: "../assets/images/user24.jpg",
-                    content: "first post. might as well start here. @Lucius there's a blind street pianist at Trafalgar Square who plays every night. no name, no audience, no Steinway, no Wimpole Street flat. just a public piano and his hands. and his improvisations sound EXACTLY like your published scores. I don't know how you sleep at night but I'm guessing the answer is: you don't actually compose when you do. I'm putting together a full comparison. <a href='../palette/index.html'>it's already live</a>. everyone in this comment section worshipping the lifestyle — try listening to the music. then listen to his. then tell me it's a coincidence.",
+                    content: "first post. might as well start here. @Lucius there's a blind street pianist at Trafalgar Square who plays every night. no name, no audience, no Steinway, no Wimpole Street flat. just a public piano and his hands. and his improvisations sound EXACTLY like your published scores. I don't know how you sleep at night but I'm guessing the answer is: you don't actually compose when you do. I'm putting together a full comparison. <a href='../palette/index.html'>it's already live</a>. everyone in this comment section worshipping the lifestyle — try listening to the music. then listen to his. then tell me it's a coincidence. <span class='cn-inline' style='color:#999;font-size:0.85em;display:block;margin-top:4px;'>第一条帖子，就从这里开始吧。@Lucius Trafalgar Square有个盲人街头钢琴家，每晚都在弹。没有名字，没有观众，没有施坦威，没有Wimpole Street的公寓。只有一台公共钢琴和他的双手。而他的即兴演奏听起来和你发表的乐谱一模一样。我不知道你晚上怎么睡得着，但我猜答案是：你睡着的时候其实并没有在作曲。我正在整理完整对比。<a href='../palette/index.html'>已经上线了</a>。评论区所有人都在崇拜生活方式——试着听听音乐吧。然后听听他的。然后告诉我这是巧合。</span>",
                     time: "13 Jul 01:12",
                     likes: 0
                 }
@@ -791,7 +791,7 @@ const BLOG_CONFIG = {
         },
         {
             id: 6,
-            title: "father.",
+            title: "FATHER.",
             content: `
                 <p>Father passed away yesterday.</p>
                 <p class="cn">父亲昨天去世了。</p>
