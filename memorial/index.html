@@ -339,12 +339,30 @@
             }
         }
 
-        // Auto-start music on first user interaction (any click except the audio control)
-        document.addEventListener('click', function firstClick(e) {
-            // Skip if clicking the audio control button (it handles itself)
-            if (e.target.closest('#audio-control')) return;
+        // Auto-start music on page load
+        // Browsers require user gesture to start AudioContext, so we attempt on first interaction
+        function autoStartMusic() {
             if (!isPlaying) {
                 toggleAudio();
+            }
+        }
+        // Try immediately (works if AudioContext policy allows)
+        document.addEventListener('DOMContentLoaded', function() {
+            initAudio();
+            if (audioCtx && audioCtx.state === 'running') {
+                autoStartMusic();
+            }
+        });
+        // Fallback: start on first user interaction if browser blocks autoplay
+        document.addEventListener('click', function firstClick(e) {
+            if (e.target.closest('#audio-control')) return;
+            if (!isPlaying) {
+                autoStartMusic();
+            }
+        }, { once: true });
+        document.addEventListener('keydown', function firstKey() {
+            if (!isPlaying) {
+                autoStartMusic();
             }
         }, { once: true });
 
