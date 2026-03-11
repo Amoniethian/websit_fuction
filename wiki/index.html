@@ -94,6 +94,7 @@
     <div class="login-overlay" id="login-overlay">
         <div class="login-modal">
             <div class="tier-symbol" id="tier-symbol"></div>
+            <div class="tier-source" id="tier-source"></div>
             <h2 id="login-title"></h2>
             <p class="subtitle" id="login-subtitle"></p>
             <form onsubmit="handleLogin(event)">
@@ -273,6 +274,7 @@
         // ========== Login / Password System ==========
         // Symbols for each tier (shown on the password input page)
         const TIER_SYMBOLS = { 1: '☿', 2: '☉', 3: '☊' };
+        const TIER_SOURCES = { 1: 'WARDROBE', 2: 'DIARY', 3: 'CUBE' };
 
         function openLogin() {
             document.getElementById('login-overlay').classList.add('active');
@@ -281,14 +283,18 @@
             document.getElementById('login-error').classList.remove('active');
             document.getElementById('login-success').classList.remove('active');
 
-            // Show the symbol for the next tier to unlock
+            // Show the symbol and source for the next tier to unlock
             const nextTier = unlockedTier + 1;
             const symbolEl = document.getElementById('tier-symbol');
+            const sourceEl = document.getElementById('tier-source');
             if (nextTier <= 3 && TIER_SYMBOLS[nextTier]) {
                 symbolEl.textContent = TIER_SYMBOLS[nextTier];
                 symbolEl.style.display = 'block';
+                sourceEl.textContent = TIER_SOURCES[nextTier];
+                sourceEl.style.display = 'block';
             } else {
                 symbolEl.style.display = 'none';
+                sourceEl.style.display = 'none';
             }
         }
 
