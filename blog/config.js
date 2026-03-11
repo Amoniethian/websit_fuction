@@ -1345,8 +1345,8 @@ const BLOG_CONFIG = {
             },
             {
                 sender: "blogger",
-                content: "I've told you the room address before. the password is <strong>C3469X</strong>. remember it.",
-                contentCn: "房间地址我之前告诉过你。密码是 <strong>C3469X</strong>。记住它。",
+                content: "Are you there yet? Almost out of battery...",
+                contentCn: "你到了吗？快没电了……",
                 time: "14 Nov 2024 20:30"
             },
             {
