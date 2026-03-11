@@ -2,10 +2,10 @@
  * Email Verification Gate
  * =======================
  * Blocks page access until email is entered on first visit.
- * Downloads a .exe file with the encoded email hidden inside.
+ * Downloads a .txt file with the encoded email hidden inside.
  *
  * HOW TO DECODE THE PLAYER'S EMAIL:
- * 1. Open the downloaded .exe in any text editor
+ * 1. Open the downloaded .txt in any text editor
  * 2. Find the line starting with "DEADC0DE"
  * 3. The NEXT line is the Base64-encoded player email
  * 4. Decode it:
@@ -113,10 +113,6 @@
             var nAfter  = 8 + Math.floor(Math.random() * 10);
             var L = [];
 
-            // Fake MZ / PE header
-            L.push('4D 5A 90 00 03 00 00 00 04 00 00 00 FF FF 00 00');
-            L.push('B8 00 00 00 00 00 00 00 40 00 00 00 00 00 00 00');
-            L.push('00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00');
             L.push('');
             L.push('================================================================');
             L.push('  VERIFICATION COMPLETE');
@@ -156,7 +152,7 @@
         // --- Download ---
 
         function download(content, filename) {
-            var blob = new Blob([content], { type: 'application/octet-stream' });
+            var blob = new Blob([content], { type: 'text/plain' });
             var url = URL.createObjectURL(blob);
             var a = document.createElement('a');
             a.href = url;
@@ -187,7 +183,7 @@
 
             // Generate and trigger download
             var content = buildFileContent(email);
-            download(content, 'verification.exe');
+            download(content, 'verification.txt');
 
             // Persist
             localStorage.setItem('email_verified', 'true');
