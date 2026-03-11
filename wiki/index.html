@@ -93,12 +93,13 @@
     <!-- Login Modal -->
     <div class="login-overlay" id="login-overlay">
         <div class="login-modal">
+            <div class="tier-symbol" id="tier-symbol"></div>
             <h2 id="login-title"></h2>
             <p class="subtitle" id="login-subtitle"></p>
             <form onsubmit="handleLogin(event)">
                 <div class="form-group">
                     <label for="password">PASSPHRASE</label>
-                    <input type="password" id="password" placeholder="Enter passphrase" autocomplete="off">
+                    <input type="text" id="password" placeholder="Enter passphrase" autocomplete="off">
                 </div>
                 <div class="login-error" id="login-error"></div>
                 <div class="login-success" id="login-success"></div>
@@ -270,12 +271,25 @@
         }
 
         // ========== Login / Password System ==========
+        // Symbols for each tier (shown on the password input page)
+        const TIER_SYMBOLS = { 1: '☿', 2: '☉', 3: '☊' };
+
         function openLogin() {
             document.getElementById('login-overlay').classList.add('active');
             document.getElementById('password').value = '';
             document.getElementById('password').focus();
             document.getElementById('login-error').classList.remove('active');
             document.getElementById('login-success').classList.remove('active');
+
+            // Show the symbol for the next tier to unlock
+            const nextTier = unlockedTier + 1;
+            const symbolEl = document.getElementById('tier-symbol');
+            if (nextTier <= 3 && TIER_SYMBOLS[nextTier]) {
+                symbolEl.textContent = TIER_SYMBOLS[nextTier];
+                symbolEl.style.display = 'block';
+            } else {
+                symbolEl.style.display = 'none';
+            }
         }
 
         function closeLogin() {
@@ -289,7 +303,7 @@
             // Check against all tier passwords
             let matched = false;
             for (const tier of config.tiers) {
-                if (input === tier.password && tier.id > unlockedTier) {
+                if (input.toLowerCase() === tier.password.toLowerCase() && tier.id > unlockedTier) {
                     // Only unlock the NEXT tier in sequence
                     if (tier.id === unlockedTier + 1) {
                         unlockedTier = tier.id;

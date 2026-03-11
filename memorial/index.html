@@ -133,63 +133,6 @@
 
     <!-- Transition overlays -->
     <div class="transition-overlay black-screen" id="black-screen"></div>
-    <div class="transition-overlay horror-screen" id="horror-screen"></div>
-    <style>
-        .horror-screen {
-            background: #000 !important;
-            overflow: hidden;
-        }
-        .horror-single {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-family: 'Times New Roman', serif;
-            font-size: 5vw;
-            color: #cc0000;
-            text-transform: uppercase;
-            letter-spacing: 0.3em;
-            text-shadow: 0 0 20px rgba(255,0,0,0.6);
-            white-space: nowrap;
-            animation: horrorShake 0.12s infinite;
-        }
-        .horror-clone {
-            position: absolute;
-            font-family: 'Times New Roman', serif;
-            color: #cc0000;
-            text-transform: uppercase;
-            letter-spacing: 0.15em;
-            white-space: nowrap;
-            animation: horrorShake 0.08s infinite;
-            text-shadow: 0 0 15px rgba(255,0,0,0.5);
-        }
-        .horror-jumpscare {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(1);
-            font-family: 'Times New Roman', serif;
-            font-size: 18vw;
-            color: #ff0000;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            white-space: nowrap;
-            text-shadow: 0 0 80px rgba(255,0,0,1), 0 0 120px rgba(255,0,0,0.8);
-            animation: jumpscareZoom 0.17s ease-in forwards;
-        }
-        @keyframes horrorShake {
-            0% { transform: translate(var(--tx, -50%), var(--ty, -50%)) skewX(0deg); }
-            25% { transform: translate(calc(var(--tx, -50%) + 3px), calc(var(--ty, -50%) - 2px)) skewX(-2deg); }
-            50% { transform: translate(calc(var(--tx, -50%) - 4px), calc(var(--ty, -50%) + 3px)) skewX(2deg); }
-            75% { transform: translate(calc(var(--tx, -50%) + 2px), calc(var(--ty, -50%) - 1px)) skewX(-1deg); }
-            100% { transform: translate(calc(var(--tx, -50%) - 3px), calc(var(--ty, -50%) + 2px)) skewX(1deg); }
-        }
-        @keyframes jumpscareZoom {
-            0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
-            70% { transform: translate(-50%, -50%) scale(6); opacity: 1; }
-            100% { transform: translate(-50%, -50%) scale(12); opacity: 0; }
-        }
-    </style>
 
     <!-- Bilingual toggle -->
     <button id="cn-toggle" onclick="document.body.classList.toggle('show-cn'); this.textContent = document.body.classList.contains('show-cn') ? '中/EN ✓' : '中/EN'" style="position:fixed;bottom:20px;right:20px;z-index:9999;background:#333;color:#fff;border:none;padding:8px 14px;border-radius:20px;font-size:12px;cursor:pointer;opacity:0.7;transition:opacity 0.2s;font-family:sans-serif;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'">中/EN</button>
@@ -469,7 +412,7 @@
             }
         }
 
-        // ========== Transition: Black → Horror "Talk to Me" → Redirect ==========
+        // ========== Transition: Black → Redirect ==========
         function triggerTransition() {
             // Mute all memorial audio immediately
             isPlaying = false;
@@ -482,53 +425,12 @@
             // Set flag for blog page
             localStorage.setItem('memorial_secret_unlocked', 'true');
 
-            // Phase 1: Black screen
+            // Black screen fade then redirect
             const blackScreen = document.getElementById('black-screen');
             blackScreen.classList.add('active');
 
-            // Phase 2: Single "Talk to Me" after 1.5s
             setTimeout(() => {
-                blackScreen.classList.remove('active');
-                const horrorScreen = document.getElementById('horror-screen');
-                horrorScreen.innerHTML = '';
-                horrorScreen.classList.add('active');
-
-                // One centered shaking text
-                const single = document.createElement('div');
-                single.className = 'horror-single';
-                single.textContent = 'Talk to Me';
-                horrorScreen.appendChild(single);
-
-                // Phase 3: After 2s, explode into many copies
-                setTimeout(() => {
-                    single.remove();
-                    const count = 35 + Math.floor(Math.random() * 15);
-                    for (let i = 0; i < count; i++) {
-                        const clone = document.createElement('div');
-                        clone.className = 'horror-clone';
-                        clone.textContent = 'Talk to Me';
-                        const x = Math.random() * 90 + 5;
-                        const y = Math.random() * 90 + 5;
-                        const size = 1.2 + Math.random() * 4;
-                        const delay = Math.random() * 0.1;
-                        clone.style.cssText = `left:${x}%;top:${y}%;font-size:${size}vw;animation-delay:${delay}s;--tx:0px;--ty:0px;`;
-                        horrorScreen.appendChild(clone);
-                    }
-
-                    // Phase 4: After 1.8s of chaos, jumpscare
-                    setTimeout(() => {
-                        horrorScreen.innerHTML = '';
-                        const scare = document.createElement('div');
-                        scare.className = 'horror-jumpscare';
-                        scare.textContent = 'TALK TO ME';
-                        horrorScreen.appendChild(scare);
-
-                        // Phase 5: Redirect after jumpscare
-                        setTimeout(() => {
-                            window.location.href = 'disconnected.html';
-                        }, 200);
-                    }, 1800);
-                }, 2000);
+                window.location.href = 'disconnected.html';
             }, 1500);
         }
 

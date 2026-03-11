@@ -588,7 +588,7 @@
             if (!post || !post.videoPassword) return;
             const pwd = document.getElementById('video-pwd-' + postId).value;
             const errorEl = document.getElementById('video-error-' + postId);
-            if (pwd === post.videoPassword) {
+            if (pwd.toLowerCase() === post.videoPassword.toLowerCase()) {
                 document.querySelector('#encrypted-video-' + postId + ' .video-lock').style.display = 'none';
                 const player = document.getElementById('video-player-' + postId);
                 player.style.display = 'block';
