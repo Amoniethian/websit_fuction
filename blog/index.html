@@ -344,7 +344,12 @@
         function openChat() {
             document.getElementById('chat-overlay').classList.add('active');
             scrollChatToBottom();
-            document.getElementById('chat-input').focus();
+            const chatInput = document.getElementById('chat-input');
+            // Pre-fill unsent draft message
+            if (!chatInput.dataset.draftCleared) {
+                chatInput.value = 'where are you Lucius?';
+            }
+            chatInput.focus();
 
             // Clear new message badge when opening chat
             const badge = document.getElementById('new-msg-badge');
@@ -533,6 +538,7 @@
 
             addMessageToChat(content, true, getCurrentTime());
             input.value = '';
+            input.dataset.draftCleared = 'true';
 
             // Check for Talk to Me trigger keywords
             if (checkTalkToMeTrigger(content)) {
