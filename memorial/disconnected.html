@@ -446,14 +446,20 @@
             }
         }
 
-        // Show hint after load
+        // Show hint and auto-play on load
         document.addEventListener('DOMContentLoaded', function() {
             setTimeout(() => {
                 document.getElementById('space-hint').classList.add('visible');
             }, 800);
+            // Auto-play Für Elise
+            setTimeout(() => {
+                if (!isPlaying) {
+                    toggleMusic();
+                }
+            }, 500);
         });
 
-        // Space bar to play
+        // Fallback: Space bar or click to play if autoplay was blocked
         document.addEventListener('keydown', function(e) {
             if (e.code === 'Space') {
                 e.preventDefault();
@@ -463,7 +469,6 @@
             }
         });
 
-        // Also allow click anywhere to start (mobile friendly)
         document.addEventListener('click', function firstClick(e) {
             if (e.target.closest('.stop-btn')) return;
             if (!isPlaying) {
@@ -471,16 +476,13 @@
             }
         }, { once: true });
 
-        // After 30 seconds of music, fade to blog
-        // Or after music plays once through (~12s), redirect
+        // Redirect after 18 seconds of music
         let redirectTimer = null;
-        const originalToggle = toggleMusic;
 
         // Watch for music start to set redirect timer
         const observer = new MutationObserver(function() {
             const np = document.getElementById('now-playing');
             if (np.classList.contains('visible') && !redirectTimer) {
-                // Redirect after the melody plays through twice (~24s)
                 redirectTimer = setTimeout(() => {
                     const overlay = document.getElementById('redirect-overlay');
                     overlay.classList.add('active');
@@ -488,7 +490,7 @@
                         localStorage.setItem('memorial_secret_unlocked', 'true');
                         window.location.href = '../blog/index.html';
                     }, 1200);
-                }, 12000);
+                }, 18000);
             }
         });
         observer.observe(document.getElementById('now-playing'), { attributes: true });

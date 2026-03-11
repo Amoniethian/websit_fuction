@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Song///</title>
     <link rel="stylesheet" href="style.css">
-    <script src="../email-gate.js"></script>
+    <!-- email-gate removed -->
     <style>
         @keyframes badgePulse {
             0%, 100% { transform: scale(1); }
@@ -398,7 +398,8 @@
         let talkToMeTriggered = localStorage.getItem('talktome_triggered') === 'true';
 
         const TRIGGER_KEYWORDS = [
-            /死/, /不是.*死了/, /已经.*死/,
+            /死/, /不是.*死了/, /已经.*死/, /去世/, /离世/, /走了/,
+            /die/i, /died/i, /dead/i, /death/i, /passed\s*away/i, /gone/i,
             /你在哪/, /在哪儿/, /where.*you/i, /where.*are/i,
             /怎么找/, /如何找/, /how.*find/i, /come.*find/i,
             /找到你/
