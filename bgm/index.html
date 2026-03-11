@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>BGM Controller</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+--bg: #08080b;
+--surface: #111116;
+--surface2: #19191f;
+--border: #252530;
+--text: #e4e2ed;
+--text-dim: #5e5b70;
+--accent: #a888e0;
+--blue: #4a8fd4;
+--blue-glow: rgba(74, 143, 212, 0.2);
+--green: #3dba8a;
+--green-glow: rgba(61, 186, 138, 0.2);
+--orange: #d4874a;
+--orange-glow: rgba(212, 135, 74, 0.2);
+--black-btn: #2a2a32;
+--black-glow: rgba(42, 42, 50, 0.3);
+}
+
+html, body {
+height: 100%;
+overflow-y: auto;
+overflow-x: hidden;
+background: var(--bg);
+color: var(--text);
+font-family: 'Noto Sans SC', sans-serif;
+-webkit-tap-highlight-color: transparent;
+user-select: none;
+}
+
+body {
+display: flex;
+flex-direction: column;
+padding: env(safe-area-inset-top) 0 env(safe-area-inset-bottom) 0;
+min-height: 100%;
+}
+
+/* ── Toast ── */
+.toast {
+position: fixed;
+top: 16px;
+left: 50%;
+transform: translateX(-50%) translateY(-60px);
+font-family: 'JetBrains Mono', monospace;
+font-size: 11px;
+letter-spacing: 0.5px;
+padding: 6px 16px;
+border-radius: 20px;
+background: var(--surface2);
+border: 1px solid var(--border);
+color: var(--accent);
+z-index: 200;
+transition: transform 0.3s ease;
+pointer-events: none;
+white-space: nowrap;
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+
+/* ── Section Title ── */
+.section-label {
+font-family: 'JetBrains Mono', monospace;
+font-size: 10px;
+text-transform: uppercase;
+letter-spacing: 2px;
+color: var(--text-dim);
+padding: 16px 20px 8px;
+}
+
+/* ══════════════════════════════════════
+BGM LOOP SECTION
+══════════════════════════════════════ */
+.bgm-section {
+padding: 0 16px 8px;
+}
+
+.bgm-card {
+background: var(--surface);
+border: 1px solid var(--border);
+border-radius: 14px;
+padding: 16px;
+}
+
+.bgm-top-row {
+display: flex;
+align-items: center;
+gap: 12px;
+}
+
+.bgm-play-btn {
+width: 52px;
+height: 52px;
+border-radius: 50%;
+background: var(--surface2);
+border: 1px solid var(--border);
+color: var(--text-dim);
+display: flex;
+align-items: center;
+justify-content: center;
+cursor: pointer;
+flex-shrink: 0;
+transition: all 0.15s;
+}
+.bgm-play-btn:active { transform: scale(0.92); background: var(--accent); color: var(--bg); }
+.bgm-play-btn.playing { border-color: var(--accent); color: var(--accent); }
+.bgm-play-btn svg { width: 22px; height: 22px; fill: currentColor; }
+
+.bgm-info {
+flex: 1;
+min-width: 0;
+}
+.bgm-name {
+font-size: 15px;
+font-weight: 500;
+white-space: nowrap;
+overflow: hidden;
+text-overflow: ellipsis;
+color: var(--text-dim);
+transition: color 0.3s;
+}
+.bgm-name.active { color: var(--text); }
+
+.bgm-meta {
+font-family: 'JetBrains Mono', monospace;
+font-size: 10px;
+color: var(--text-dim);
+margin-top: 3px;
+display: flex;
+gap: 10px;
+align-items: center;
+}
+.loop-tag {
+color: var(--accent);
+cursor: pointer;
+padding: 2px 0;
+}
+.loop-tag.off { color: var(--text-dim); text-decoration: line-through; }
+
+.bgm-load-btn {
+background: var(--surface2);
+border: 1px dashed var(--border);
+color: var(--text-dim);
+font-family: 'JetBrains Mono', monospace;
+font-size: 10px;
+padding: 6px 10px;
+border-radius: 6px;
+cursor: pointer;
+flex-shrink: 0;
+transition: all 0.15s;
+}
+.bgm-load-btn:active { background: var(--accent); color: var(--bg); border-style: solid; }
+
+/* Progress */
+.bgm-progress {
+margin-top: 12px;
+}
+.progress-bar-wrap {
+width: 100%;
+height: 28px;
+display: flex;
+align-items: center;
+cursor: pointer;
+}
+.progress-track {
+width: 100%;
+height: 2px;
+background: var(--surface2);
+border-radius: 1px;
+position: relative;
+}
+.progress-fill {
+height: 100%;
+background: var(--accent);
+border-radius: 1px;
+width: 0%;
+transition: width 0.15s linear;
+}
+.time-row {
+display: flex;
+justify-content: space-between;
+font-family: 'JetBrains Mono', monospace;
+font-size: 10px;
+color: var(--text-dim);
+margin-top: 2px;
+}
+
+/* BGM track list */
+.bgm-list-toggle {
+display: flex;
+align-items: center;
+justify-content: space-between;
+margin-top: 12px;
+padding-top: 10px;
+border-top: 1px solid var(--border);
+}
+.bgm-list-toggle span {
+font-family: 'JetBrains Mono', monospace;
+font-size: 10px;
+color: var(--text-dim);
+letter-spacing: 1px;
+}
+.bgm-nav-btns {
+display: flex;
+gap: 6px;
+}
+.bgm-nav-btn {
+background: var(--surface2);
+border: 1px solid var(--border);
+color: var(--text-dim);
+width: 32px;
+height: 28px;
+border-radius: 6px;
+cursor: pointer;
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 14px;
+transition: all 0.1s;
+}
+.bgm-nav-btn:active { background: var(--accent); color: var(--bg); }
+
+.bgm-tracklist {
+margin-top: 8px;
+max-height: 120px;
+overflow-y: auto;
+}
+.bgm-tracklist::-webkit-scrollbar { display: none; }
+.bgm-track-item {
+display: flex;
+align-items: center;
+padding: 8px;
+border-radius: 8px;
+cursor: pointer;
+gap: 8px;
+font-size: 13px;
+color: var(--text-dim);
+transition: background 0.15s;
+}
+.bgm-track-item:active { background: var(--surface2); }
+.bgm-track-item.playing { color: var(--accent); }
+.bgm-track-item .idx {
+font-family: 'JetBrains Mono', monospace;
+font-size: 11px;
+width: 20px;
+text-align: center;
+flex-shrink: 0;
+}
+.bgm-track-item .tname {
+flex: 1;
+white-space: nowrap;
+overflow: hidden;
+text-overflow: ellipsis;
+}
+.bgm-track-item .rm {
+background: none;
+border: none;
+color: var(--text-dim);
+opacity: 0.3;
+font-size: 16px;
+cursor: pointer;
+padding: 2px 6px;
+}
+.bgm-track-item .rm:active { opacity: 1; color: #e55; }
+
+/* ── Volume / Fade Row ── */
+.slider-row {
+display: flex;
+gap: 12px;
+padding: 4px 16px 8px;
+}
+.slider-group {
+flex: 1;
+display: flex;
+flex-direction: column;
+gap: 4px;
+}
+.slider-label {
+font-family: 'JetBrains Mono', monospace;
+font-size: 9px;
+text-transform: uppercase;
+letter-spacing: 1.5px;
+color: var(--text-dim);
+}
+input[type=range] {
+-webkit-appearance: none;
+appearance: none;
+width: 100%;
+height: 2px;
+background: var(--surface2);
+border-radius: 1px;
+outline: none;
+}
+input[type=range]::-webkit-slider-thumb {
+-webkit-appearance: none;
+width: 16px;
+height: 16px;
+border-radius: 50%;
+background: var(--accent);
+border: 2px solid var(--bg);
+cursor: pointer;
+}
+
+/* ══════════════════════════════════════
+SCENE BUTTONS
+══════════════════════════════════════ */
+.scene-grid {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 10px;
+padding: 4px 16px 20px;
+}
+
+.scene-btn {
+position: relative;
+border: none;
+border-radius: 14px;
+padding: 20px 14px 16px;
+cursor: pointer;
+display: flex;
+flex-direction: column;
+align-items: center;
+gap: 8px;
+transition: all 0.15s;
+overflow: hidden;
+min-height: 110px;
+}
+.scene-btn:active { transform: scale(0.96); }
+
+.scene-btn .scene-name {
+font-family: 'Noto Sans SC', sans-serif;
+font-size: 16px;
+font-weight: 700;
+letter-spacing: 2px;
+z-index: 1;
+}
+.scene-btn .scene-status {
+font-family: 'JetBrains Mono', monospace;
+font-size: 9px;
+letter-spacing: 1px;
+text-transform: uppercase;
+opacity: 0.6;
+z-index: 1;
+}
+.scene-btn .scene-file-label {
+font-family: 'JetBrains Mono', monospace;
+font-size: 9px;
+opacity: 0.5;
+z-index: 1;
+max-width: 100%;
+white-space: nowrap;
+overflow: hidden;
+text-overflow: ellipsis;
+padding: 0 4px;
+}
+
+/* Pulse ring when playing */
+.scene-btn::after {
+content: '';
+position: absolute;
+inset: 0;
+border-radius: 14px;
+border: 2px solid transparent;
+transition: border-color 0.3s;
+}
+.scene-btn.playing::after {
+animation: pulse-border 1.5s ease-in-out infinite;
+}
+@keyframes pulse-border {
+0%, 100% { border-color: rgba(255,255,255,0.1); }
+50% { border-color: rgba(255,255,255,0.3); }
+}
+
+/* Blue */
+.scene-blue {
+background: linear-gradient(135deg, #1a3a5c, #0f2240);
+color: var(--blue);
+box-shadow: 0 4px 20px var(--blue-glow);
+}
+.scene-blue::after { border-color: transparent; }
+.scene-blue.playing::after { animation-name: pulse-blue; }
+@keyframes pulse-blue {
+0%, 100% { border-color: rgba(74, 143, 212, 0.15); }
+50% { border-color: rgba(74, 143, 212, 0.5); }
+}
+
+/* Water / Green */
+.scene-green {
+background: linear-gradient(135deg, #143d30, #0c2820);
+color: var(--green);
+box-shadow: 0 4px 20px var(--green-glow);
+}
+.scene-green.playing::after { animation-name: pulse-green; }
+@keyframes pulse-green {
+0%, 100% { border-color: rgba(61, 186, 138, 0.15); }
+50% { border-color: rgba(61, 186, 138, 0.5); }
+}
+
+/* Orange */
+.scene-orange {
+background: linear-gradient(135deg, #3d2a15, #2a1c0e);
+color: var(--orange);
+box-shadow: 0 4px 20px var(--orange-glow);
+}
+.scene-orange.playing::after { animation-name: pulse-orange; }
+@keyframes pulse-orange {
+0%, 100% { border-color: rgba(212, 135, 74, 0.15); }
+50% { border-color: rgba(212, 135, 74, 0.5); }
+}
+
+/* Black / Ending */
+.scene-black {
+background: linear-gradient(135deg, #1e1e24, #111115);
+color: #8a8895;
+box-shadow: 0 4px 20px var(--black-glow);
+border: 1px solid #2a2a32;
+}
+.scene-black.playing::after { animation-name: pulse-black; }
+@keyframes pulse-black {
+0%, 100% { border-color: rgba(138, 136, 149, 0.1); }
+50% { border-color: rgba(138, 136, 149, 0.35); }
+}
+
+/* Long press hint */
+.scene-btn .load-hint {
+position: absolute;
+bottom: 6px;
+font-family: 'JetBrains Mono', monospace;
+font-size: 8px;
+opacity: 0.25;
+letter-spacing: 0.5px;
+}
+
+/* ── Hidden inputs ── */
+.hidden { display: none; }
+
+/* ── Responsive ── */
+@media (min-width: 500px) {
+body { max-width: 420px; margin: 0 auto; }
+}
+</style>
+
+</head>
+<body>
+
+<div class="toast" id="toast"></div>
+
+<!-- ═══ BGM LOOP SECTION ═══ -->
+
+<div class="section-label">BGM · 单曲循环</div>
+<div class="bgm-section">
+  <div class="bgm-card">
+    <div class="bgm-top-row">
+      <button class="bgm-play-btn" id="bgmPlayBtn">
+        <svg id="bgmPlayIcon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        <svg id="bgmPauseIcon" viewBox="0 0 24 24" style="display:none"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+      </button>
+      <div class="bgm-info">
+        <div class="bgm-name" id="bgmName">未加载 BGM</div>
+        <div class="bgm-meta">
+          <span class="loop-tag" id="loopTag" onclick="toggleLoop()">⟳ LOOP</span>
+          <span id="bgmFadeLabel">FADE 2.0s</span>
+        </div>
+      </div>
+      <button class="bgm-load-btn" id="bgmLoadBtn">+ BGM</button>
+    </div>
+
+    <div class="bgm-progress">
+      <div class="progress-bar-wrap" id="bgmProgressWrap">
+        <div class="progress-track">
+          <div class="progress-fill" id="bgmProgressFill"></div>
+        </div>
+      </div>
+      <div class="time-row">
+        <span id="bgmTimeCur">0:00</span>
+        <span id="bgmTimeTotal">0:00</span>
+      </div>
+    </div>
+
+    <div class="bgm-list-toggle">
+      <span id="bgmListCount">0 首</span>
+      <div class="bgm-nav-btns">
+        <button class="bgm-nav-btn" onclick="bgmPrev()">◂</button>
+        <button class="bgm-nav-btn" onclick="bgmNext()">▸</button>
+      </div>
+    </div>
+    <div class="bgm-tracklist" id="bgmTracklist"></div>
+
+  </div>
+</div>
+
+<!-- Volume / Fade -->
+
+<div class="slider-row">
+  <div class="slider-group">
+    <span class="slider-label">BGM 音量</span>
+    <input type="range" id="volSlider" min="0" max="100" value="80">
+  </div>
+  <div class="slider-group">
+    <span class="slider-label">淡入淡出 <span id="fadeDurLabel">2.0s</span></span>
+    <input type="range" id="fadeSlider" min="0" max="50" value="20">
+  </div>
+</div>
+
+<!-- ═══ SCENE BUTTONS ═══ -->
+
+<div class="section-label">场景音效 · 点击播放 / 长按换音频</div>
+<div class="scene-grid">
+  <button class="scene-btn scene-blue" data-scene="blue">
+    <span class="scene-name">蓝色</span>
+    <span class="scene-status" data-status>未加载</span>
+    <span class="scene-file-label" data-fname></span>
+    <span class="load-hint">长按加载</span>
+  </button>
+  <button class="scene-btn scene-green" data-scene="water">
+    <span class="scene-name">水</span>
+    <span class="scene-status" data-status>未加载</span>
+    <span class="scene-file-label" data-fname></span>
+    <span class="load-hint">长按加载</span>
+  </button>
+  <button class="scene-btn scene-orange" data-scene="orange">
+    <span class="scene-name">橙色</span>
+    <span class="scene-status" data-status>未加载</span>
+    <span class="scene-file-label" data-fname></span>
+    <span class="load-hint">长按加载</span>
+  </button>
+  <button class="scene-btn scene-black" data-scene="ending">
+    <span class="scene-name">结局</span>
+    <span class="scene-status" data-status>未加载</span>
+    <span class="scene-file-label" data-fname></span>
+    <span class="load-hint">长按加载</span>
+  </button>
+</div>
+
+<!-- Hidden file inputs -->
+
+<input type="file" id="bgmFileInput" accept="audio/*" multiple class="hidden">
+<input type="file" id="sceneFileInput" accept="audio/*" class="hidden">
+
+<script>
+// ══════════════════════════════════════
+// STATE
+// ══════════════════════════════════════
+const bgm = {
+  audio: new Audio(),
+  tracks: [],        // {name, url, dur}
+  idx: -1,
+  playing: false,
+  loop: true,
+  vol: 0.8,
+  fadeSec: 2.0,
+  fading: false,
+  pausedByScene: false  // was paused by a scene button
+};
+bgm.audio.loop = true;
+bgm.audio.volume = bgm.vol;
+
+const scenes = {
+  blue:   { audio: new Audio(), url: null, name: null, playing: false, pausesBgm: true, fadesBgm: false },
+  water:  { audio: new Audio(), url: null, name: null, playing: false, pausesBgm: true, fadesBgm: false },
+  orange: { audio: new Audio(), url: null, name: null, playing: false, pausesBgm: true, fadesBgm: false },
+  ending: { audio: new Audio(), url: null, name: null, playing: false, pausesBgm: true, fadesBgm: true },
+};
+
+// ══════════════════════════════════════
+// DOM
+// ══════════════════════════════════════
+const $ = id => document.getElementById(id);
+const toast = $('toast');
+const bgmPlayBtn = $('bgmPlayBtn');
+const bgmPlayIcon = $('bgmPlayIcon');
+const bgmPauseIcon = $('bgmPauseIcon');
+const bgmName = $('bgmName');
+const bgmProgressFill = $('bgmProgressFill');
+const bgmProgressWrap = $('bgmProgressWrap');
+const bgmTimeCur = $('bgmTimeCur');
+const bgmTimeTotal = $('bgmTimeTotal');
+const bgmTracklist = $('bgmTracklist');
+const bgmListCount = $('bgmListCount');
+const loopTag = $('loopTag');
+const volSlider = $('volSlider');
+const fadeSlider = $('fadeSlider');
+const fadeDurLabel = $('fadeDurLabel');
+const bgmFadeLabel = $('bgmFadeLabel');
+const bgmFileInput = $('bgmFileInput');
+const sceneFileInput = $('sceneFileInput');
+
+// ══════════════════════════════════════
+// UTILS
+// ══════════════════════════════════════
+function fmt(s) {
+  if (!s || !isFinite(s)) return '0:00';
+  return Math.floor(s/60) + ':' + String(Math.floor(s%60)).padStart(2,'0');
+}
+
+function showToast(msg) {
+  toast.textContent = msg;
+  toast.classList.add('show');
+  clearTimeout(showToast._t);
+  showToast._t = setTimeout(() => toast.classList.remove('show'), 1800);
+}
+
+function fadeVol(audio, from, to, dur, baseVol) {
+  return new Promise(res => {
+    if (dur <= 0) { audio.volume = to * baseVol; res(); return; }
+    const steps = 25;
+    const interval = (dur * 1000) / steps;
+    const delta = (to - from) / steps;
+    let cur = from, step = 0;
+    const t = setInterval(() => {
+      step++; cur += delta;
+      audio.volume = Math.max(0, Math.min(1, cur)) * baseVol;
+      if (step >= steps) { clearInterval(t); audio.volume = to * baseVol; res(); }
+    }, interval);
+  });
+}
+
+// ══════════════════════════════════════
+// BGM PLAYBACK
+// ══════════════════════════════════════
+async function bgmPlay(idx, fade = true) {
+  if (idx < 0 || idx >= bgm.tracks.length) return;
+
+  if (bgm.playing && fade && bgm.fadeSec > 0) {
+    showToast('FADE OUT');
+    await fadeVol(bgm.audio, 1, 0, bgm.fadeSec, bgm.vol);
+  }
+
+  bgm.audio.src = bgm.tracks[idx].url;
+  bgm.audio.loop = bgm.loop;
+  bgm.idx = idx;
+  bgm.audio.volume = 0;
+  await bgm.audio.play();
+  bgm.playing = true;
+  bgm.pausedByScene = false;
+  updateBgmUI();
+
+  if (fade && bgm.fadeSec > 0) {
+    showToast('FADE IN');
+    await fadeVol(bgm.audio, 0, 1, bgm.fadeSec, bgm.vol);
+  } else {
+    bgm.audio.volume = bgm.vol;
+  }
+}
+
+async function bgmToggle() {
+  if (bgm.tracks.length === 0) { bgmFileInput.click(); return; }
+  if (bgm.idx < 0) { bgmPlay(0); return; }
+
+  if (bgm.playing) {
+    if (bgm.fadeSec > 0) {
+      showToast('FADE OUT');
+      await fadeVol(bgm.audio, 1, 0, bgm.fadeSec, bgm.vol);
+    }
+    bgm.audio.pause();
+    bgm.playing = false;
+    bgm.pausedByScene = false;
+    showToast('BGM 已暂停');
+  } else {
+    bgm.audio.play();
+    bgm.playing = true;
+    bgm.pausedByScene = false;
+    if (bgm.fadeSec > 0) {
+      showToast('FADE IN');
+      await fadeVol(bgm.audio, 0, 1, bgm.fadeSec, bgm.vol);
+    } else {
+      bgm.audio.volume = bgm.vol;
+    }
+    showToast('BGM 播放中');
+  }
+  updateBgmUI();
+}
+
+function bgmPrev() {
+  if (!bgm.tracks.length) return;
+  bgmPlay(bgm.idx <= 0 ? bgm.tracks.length - 1 : bgm.idx - 1);
+}
+function bgmNext() {
+  if (!bgm.tracks.length) return;
+  bgmPlay((bgm.idx + 1) % bgm.tracks.length);
+}
+
+function toggleLoop() {
+  bgm.loop = !bgm.loop;
+  bgm.audio.loop = bgm.loop;
+  loopTag.classList.toggle('off', !bgm.loop);
+  showToast(bgm.loop ? 'LOOP ON' : 'LOOP OFF');
+}
+
+// BGM UI
+function updateBgmUI() {
+  bgmPlayIcon.style.display = bgm.playing ? 'none' : 'block';
+  bgmPauseIcon.style.display = bgm.playing ? 'block' : 'none';
+  bgmPlayBtn.classList.toggle('playing', bgm.playing);
+
+  if (bgm.idx >= 0 && bgm.tracks[bgm.idx]) {
+    bgmName.textContent = bgm.tracks[bgm.idx].name;
+    bgmName.classList.add('active');
+  } else {
+    bgmName.textContent = '未加载 BGM';
+    bgmName.classList.remove('active');
+  }
+  bgmListCount.textContent = bgm.tracks.length + ' 首';
+  renderBgmList();
+}
+
+function renderBgmList() {
+  if (!bgm.tracks.length) { bgmTracklist.innerHTML = ''; return; }
+  bgmTracklist.innerHTML = bgm.tracks.map((t, i) =>
+    `<div class="bgm-track-item ${i===bgm.idx?'playing':''}" data-bgm-idx="${i}">
+      <span class="idx">${i===bgm.idx?'▸':(i+1)}</span>
+      <span class="tname">${t.name}</span>
+      <button class="rm" data-bgm-rm="${i}">×</button>
+    </div>`
+  ).join('');
+}
+
+// Progress
+bgm.audio.addEventListener('timeupdate', () => {
+  if (!bgm.audio.duration) return;
+  bgmProgressFill.style.width = (bgm.audio.currentTime / bgm.audio.duration * 100) + '%';
+  bgmTimeCur.textContent = fmt(bgm.audio.currentTime);
+});
+bgm.audio.addEventListener('loadedmetadata', () => {
+  bgmTimeTotal.textContent = fmt(bgm.audio.duration);
+  if (bgm.idx >= 0) bgm.tracks[bgm.idx].dur = bgm.audio.duration;
+});
+bgm.audio.addEventListener('ended', () => {
+  if (!bgm.loop) bgmNext();
+});
+bgmProgressWrap.addEventListener('click', e => {
+  if (!bgm.audio.duration) return;
+  const r = bgmProgressWrap.getBoundingClientRect();
+  bgm.audio.currentTime = ((e.clientX - r.left) / r.width) * bgm.audio.duration;
+});
+
+// Controls
+bgmPlayBtn.addEventListener('click', bgmToggle);
+$('bgmLoadBtn').addEventListener('click', () => bgmFileInput.click());
+
+volSlider.addEventListener('input', e => {
+  bgm.vol = e.target.value / 100;
+  if (!bgm.fading) bgm.audio.volume = bgm.vol;
+});
+fadeSlider.addEventListener('input', e => {
+  bgm.fadeSec = e.target.value / 10;
+  const s = bgm.fadeSec.toFixed(1) + 's';
+  fadeDurLabel.textContent = s;
+  bgmFadeLabel.textContent = 'FADE ' + s;
+});
+
+// BGM file loading
+bgmFileInput.addEventListener('change', e => {
+  const files = Array.from(e.target.files);
+  if (!files.length) return;
+  let loaded = 0;
+  files.forEach(f => {
+    const url = URL.createObjectURL(f);
+    const name = f.name.replace(/\.[^.]+$/, '');
+    const probe = new Audio(); probe.src = url;
+    probe.addEventListener('loadedmetadata', () => {
+      bgm.tracks.push({ name, url, dur: probe.duration });
+      loaded++;
+      if (loaded === files.length) {
+        updateBgmUI();
+        showToast(files.length + ' BGM 已添加');
+        if (bgm.idx < 0) bgmPlay(0);
+      }
+    });
+    probe.addEventListener('error', () => { loaded++; if (loaded === files.length) updateBgmUI(); });
+  });
+  bgmFileInput.value = '';
+});
+
+// BGM list clicks
+bgmTracklist.addEventListener('click', e => {
+  const rm = e.target.closest('[data-bgm-rm]');
+  if (rm) {
+    const i = +rm.dataset.bgmRm;
+    URL.revokeObjectURL(bgm.tracks[i].url);
+    const wasCur = i === bgm.idx;
+    bgm.tracks.splice(i, 1);
+    if (wasCur) {
+      bgm.audio.pause(); bgm.playing = false;
+      if (bgm.tracks.length) { bgm.idx = Math.min(i, bgm.tracks.length-1); bgmPlay(bgm.idx, false); }
+      else { bgm.idx = -1; }
+    } else if (i < bgm.idx) bgm.idx--;
+    updateBgmUI();
+    return;
+  }
+  const item = e.target.closest('[data-bgm-idx]');
+  if (item) {
+    const i = +item.dataset.bgmIdx;
+    if (i !== bgm.idx) bgmPlay(i);
+  }
+});
+
+// ══════════════════════════════════════
+// SCENE BUTTONS
+// ══════════════════════════════════════
+let longPressTarget = null;
+let longPressTimer = null;
+let wasLongPress = false;
+
+document.querySelectorAll('.scene-btn').forEach(btn => {
+  const key = btn.dataset.scene;
+  const sc = scenes[key];
+
+  // Long press = load file
+  btn.addEventListener('pointerdown', e => {
+    wasLongPress = false;
+    longPressTarget = key;
+    longPressTimer = setTimeout(() => {
+      wasLongPress = true;
+      sceneFileInput.dataset.target = key;
+      sceneFileInput.click();
+    }, 600);
+  });
+  btn.addEventListener('pointerup', () => { clearTimeout(longPressTimer); });
+  btn.addEventListener('pointerleave', () => { clearTimeout(longPressTimer); });
+  btn.addEventListener('pointercancel', () => { clearTimeout(longPressTimer); });
+
+  // Short tap = play/stop
+  btn.addEventListener('click', async () => {
+    if (wasLongPress) return;
+    if (!sc.url) {
+      // No file loaded, prompt
+      sceneFileInput.dataset.target = key;
+      sceneFileInput.click();
+      return;
+    }
+
+    if (sc.playing) {
+      // Stop scene audio
+      sc.audio.pause();
+      sc.audio.currentTime = 0;
+      sc.playing = false;
+      updateSceneBtn(key);
+      return;
+    }
+
+    // Stop any other playing scene
+    Object.entries(scenes).forEach(([k, s]) => {
+      if (s.playing) {
+        s.audio.pause();
+        s.audio.currentTime = 0;
+        s.playing = false;
+        updateSceneBtn(k);
+      }
+    });
+
+    // If this scene pauses BGM
+    if (sc.pausesBgm && bgm.playing) {
+      if (sc.fadesBgm && bgm.fadeSec > 0) {
+        // Fade out BGM first, then pause, then play scene
+        showToast('BGM 渐弱中...');
+        await fadeVol(bgm.audio, 1, 0, bgm.fadeSec, bgm.vol);
+      }
+      bgm.audio.pause();
+      bgm.playing = false;
+      bgm.pausedByScene = true;
+      updateBgmUI();
+      showToast('BGM 已暂停 — 需手动恢复');
+    }
+
+    // Play scene audio
+    sc.audio.currentTime = 0;
+    sc.audio.play();
+    sc.playing = true;
+    updateSceneBtn(key);
+  });
+
+  // When scene audio ends
+  sc.audio.addEventListener('ended', () => {
+    sc.playing = false;
+    updateSceneBtn(key);
+  });
+});
+
+// Scene file input
+sceneFileInput.addEventListener('change', e => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const key = sceneFileInput.dataset.target;
+  const sc = scenes[key];
+
+  if (sc.url) URL.revokeObjectURL(sc.url);
+  sc.url = URL.createObjectURL(file);
+  sc.name = file.name.replace(/\.[^.]+$/, '');
+  sc.audio.src = sc.url;
+  sc.playing = false;
+  updateSceneBtn(key);
+  showToast(sc.name + ' → ' + key.toUpperCase());
+  sceneFileInput.value = '';
+});
+
+function updateSceneBtn(key) {
+  const sc = scenes[key];
+  const btn = document.querySelector(`[data-scene="${key}"]`);
+  const status = btn.querySelector('[data-status]');
+  const fname = btn.querySelector('[data-fname]');
+
+  btn.classList.toggle('playing', sc.playing);
+
+  if (sc.url) {
+    status.textContent = sc.playing ? '▸ 播放中' : '已就绪';
+    fname.textContent = sc.name || '';
+  } else {
+    status.textContent = '未加载';
+    fname.textContent = '';
+  }
+}
+
+// Volume for scene audio follows a fixed 1.0 (full)
+// Could add per-scene volume later
+
+// ══════════════════════════════════════
+// KEYBOARD
+// ══════════════════════════════════════
+document.addEventListener('keydown', e => {
+  if (e.code === 'Space') { e.preventDefault(); bgmToggle(); }
+});
+</script>
+
+</body>
+</html>
