@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>No internet</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: #1a1a1a;
+            color: #ccc;
+            font-family: 'Segoe UI', 'Arial', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            overflow: hidden;
+            user-select: none;
+        }
+
+        .container {
+            text-align: center;
+            max-width: 500px;
+            padding: 40px 20px;
+        }
+
+        /* Icon area - stylized planet/connection icon */
+        .icon-area {
+            margin-bottom: 30px;
+            position: relative;
+            display: inline-block;
+        }
+        .icon-area .planet {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #f7a84c 40%, #e06c3a 100%);
+            display: inline-block;
+            position: relative;
+        }
+        .icon-area .ring {
+            position: absolute;
+            width: 120px;
+            height: 40px;
+            border: 4px solid #5bc4a8;
+            border-radius: 50%;
+            top: 20px;
+            left: -20px;
+            transform: rotate(-20deg);
+        }
+        .icon-area .emoji-face {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 36px;
+        }
+
+        .main-text {
+            font-size: 22px;
+            font-weight: 600;
+            color: #e0e0e0;
+            margin-bottom: 12px;
+        }
+
+        .sub-text {
+            font-size: 14px;
+            color: #888;
+            margin-bottom: 8px;
+        }
+
+        .error-code {
+            font-size: 12px;
+            color: #666;
+            font-family: monospace;
+            margin-bottom: 24px;
+        }
+
+        /* The red overlay text */
+        .waiting-text {
+            color: #cc0000;
+            font-size: 28px;
+            font-weight: 700;
+            position: absolute;
+            top: 50%;
+            right: 5%;
+            transform: translateY(-50%);
+            text-shadow: 0 0 10px rgba(200, 0, 0, 0.3);
+            white-space: nowrap;
+            pointer-events: none;
+        }
+
+        .btn-troubleshoot {
+            background: #3a7afe;
+            color: #fff;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+            margin-bottom: 30px;
+            transition: background 0.2s;
+        }
+        .btn-troubleshoot:hover {
+            background: #2a6ae8;
+        }
+
+        .game-prompt {
+            font-size: 13px;
+            color: #666;
+            margin-top: 30px;
+        }
+        .game-prompt a {
+            color: #888;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .game-prompt a:hover {
+            color: #aaa;
+        }
+
+        .space-hint {
+            font-size: 18px;
+            color: #e0e0e0;
+            font-weight: 600;
+            margin-bottom: 20px;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+        .space-hint.visible {
+            opacity: 1;
+        }
+
+        /* Now playing bar */
+        .now-playing {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0,0,0,0.85);
+            color: #ccc;
+            padding: 12px 20px;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            opacity: 0;
+            transition: opacity 0.5s;
+            z-index: 100;
+        }
+        .now-playing.visible {
+            opacity: 1;
+        }
+        .now-playing .bars {
+            display: flex;
+            gap: 2px;
+            align-items: flex-end;
+            height: 16px;
+        }
+        .now-playing .bar {
+            width: 3px;
+            background: #1db954;
+            animation: barBounce 0.6s ease-in-out infinite alternate;
+        }
+        .now-playing .bar:nth-child(1) { height: 6px; animation-delay: 0s; }
+        .now-playing .bar:nth-child(2) { height: 12px; animation-delay: 0.15s; }
+        .now-playing .bar:nth-child(3) { height: 8px; animation-delay: 0.3s; }
+        .now-playing .bar:nth-child(4) { height: 14px; animation-delay: 0.1s; }
+        @keyframes barBounce {
+            from { height: 4px; }
+            to { height: 16px; }
+        }
+
+        .now-playing .track-info {
+            flex: 1;
+        }
+        .now-playing .track-name {
+            font-weight: 600;
+            color: #fff;
+        }
+        .now-playing .track-artist {
+            color: #888;
+            font-size: 12px;
+        }
+        .stop-btn {
+            background: none;
+            border: 1px solid #666;
+            color: #ccc;
+            padding: 4px 14px;
+            border-radius: 12px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+        .stop-btn:hover {
+            border-color: #aaa;
+            color: #fff;
+        }
+
+        /* Nav arrow */
+        .nav-arrow {
+            position: fixed;
+            top: 50%;
+            left: 20px;
+            transform: translateY(-50%);
+            font-size: 24px;
+            color: #555;
+            cursor: pointer;
+            opacity: 0.5;
+            transition: opacity 0.2s;
+        }
+        .nav-arrow:hover { opacity: 1; }
+
+        /* Browser logo */
+        .browser-logo {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #555;
+            font-size: 13px;
+        }
+        .browser-logo .edge-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3b9c5a, #2d7dd2, #1a56db);
+        }
+
+        /* Redirect overlay */
+        .redirect-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: #000;
+            z-index: 9999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 1s;
+        }
+        .redirect-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="nav-arrow">‹</div>
+
+    <div class="waiting-text">请等待连接……</div>
+
+    <div class="container">
+        <div class="icon-area">
+            <div class="planet">
+                <span class="emoji-face">😐</span>
+            </div>
+            <div class="ring"></div>
+        </div>
+
+        <div class="space-hint" id="space-hint">按空格键播放。</div>
+
+        <div class="main-text">让我们将你重新联机!</div>
+        <div class="sub-text">ERR_INTERNET_DISCONNECTED</div>
+        <div class="error-code"></div>
+
+        <button class="btn-troubleshoot">疑难解答</button>
+
+        <div class="game-prompt">想在等待时玩游戏吗？ <a>≡≡≡ 启动游戏</a></div>
+    </div>
+
+    <div class="now-playing" id="now-playing">
+        <div class="bars">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+        <div class="track-info">
+            <div class="track-name">Für Elise</div>
+            <div class="track-artist">Ludwig van Beethoven</div>
+        </div>
+        <button class="stop-btn" onclick="toggleMusic()">■ Stop</button>
+    </div>
+
+    <div class="browser-logo">
+        <div class="edge-icon"></div>
+        Microsoft Edge
+    </div>
+
+    <div class="redirect-overlay" id="redirect-overlay"></div>
+
+    <script>
+        // ========== Für Elise — Web Audio API Synthesizer ==========
+        let audioCtx = null;
+        let isPlaying = false;
+        let scheduledTimeout = null;
+        let masterGain = null;
+
+        // Für Elise opening theme (simplified, recognizable)
+        // E5 D#5 E5 D#5 E5 B4 D5 C5 A4 ...
+        const furEliseNotes = [
+            // Bar 1-2: E5 D#5 E5 D#5 E5 B4 D5 C5 A4
+            { freq: 659.25, dur: 0.3 },  // E5
+            { freq: 622.25, dur: 0.3 },  // D#5
+            { freq: 659.25, dur: 0.3 },  // E5
+            { freq: 622.25, dur: 0.3 },  // D#5
+            { freq: 659.25, dur: 0.3 },  // E5
+            { freq: 493.88, dur: 0.3 },  // B4
+            { freq: 587.33, dur: 0.3 },  // D5
+            { freq: 523.25, dur: 0.3 },  // C5
+            { freq: 440.00, dur: 0.6 },  // A4
+            { freq: 0, dur: 0.15 },
+
+            // Bar 3-4: C4 E4 A4 B4
+            { freq: 261.63, dur: 0.3 },  // C4
+            { freq: 329.63, dur: 0.3 },  // E4
+            { freq: 440.00, dur: 0.3 },  // A4
+            { freq: 493.88, dur: 0.6 },  // B4
+            { freq: 0, dur: 0.15 },
+
+            // Bar 5-6: E4 G#4 B4 C5
+            { freq: 329.63, dur: 0.3 },  // E4
+            { freq: 415.30, dur: 0.3 },  // G#4
+            { freq: 493.88, dur: 0.3 },  // B4
+            { freq: 523.25, dur: 0.6 },  // C5
+            { freq: 0, dur: 0.15 },
+
+            // Bar 7-8: E4 E5 D#5 E5 D#5 E5 B4 D5 C5 A4
+            { freq: 329.63, dur: 0.3 },  // E4
+            { freq: 659.25, dur: 0.3 },  // E5
+            { freq: 622.25, dur: 0.3 },  // D#5
+            { freq: 659.25, dur: 0.3 },  // E5
+            { freq: 622.25, dur: 0.3 },  // D#5
+            { freq: 659.25, dur: 0.3 },  // E5
+            { freq: 493.88, dur: 0.3 },  // B4
+            { freq: 587.33, dur: 0.3 },  // D5
+            { freq: 523.25, dur: 0.3 },  // C5
+            { freq: 440.00, dur: 0.6 },  // A4
+            { freq: 0, dur: 0.15 },
+
+            // Bar 9-10: C4 E4 A4 B4
+            { freq: 261.63, dur: 0.3 },  // C4
+            { freq: 329.63, dur: 0.3 },  // E4
+            { freq: 440.00, dur: 0.3 },  // A4
+            { freq: 493.88, dur: 0.6 },  // B4
+            { freq: 0, dur: 0.15 },
+
+            // Bar 11-12: E4 C5 B4 A4 (resolve)
+            { freq: 329.63, dur: 0.3 },  // E4
+            { freq: 523.25, dur: 0.3 },  // C5
+            { freq: 493.88, dur: 0.3 },  // B4
+            { freq: 440.00, dur: 0.9 },  // A4 (held)
+            { freq: 0, dur: 0.6 },       // pause before repeat
+        ];
+
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                masterGain = audioCtx.createGain();
+                masterGain.gain.value = 0.18;
+                masterGain.connect(audioCtx.destination);
+            }
+        }
+
+        function playNote(freq, duration, startTime) {
+            if (freq === 0) return;
+            const osc = audioCtx.createOscillator();
+            const noteGain = audioCtx.createGain();
+
+            // Piano-like: sine + subtle harmonics
+            osc.type = 'sine';
+            osc.frequency.value = freq;
+
+            const osc2 = audioCtx.createOscillator();
+            osc2.type = 'sine';
+            osc2.frequency.value = freq * 2;
+            const osc2Gain = audioCtx.createGain();
+            osc2Gain.gain.value = 0.06;
+
+            const osc3 = audioCtx.createOscillator();
+            osc3.type = 'sine';
+            osc3.frequency.value = freq * 3;
+            const osc3Gain = audioCtx.createGain();
+            osc3Gain.gain.value = 0.02;
+
+            // Piano envelope: quick attack, gradual decay
+            noteGain.gain.setValueAtTime(0, startTime);
+            noteGain.gain.linearRampToValueAtTime(1, startTime + 0.02);
+            noteGain.gain.exponentialRampToValueAtTime(0.3, startTime + duration * 0.5);
+            noteGain.gain.exponentialRampToValueAtTime(0.01, startTime + duration);
+
+            osc.connect(noteGain);
+            osc2.connect(osc2Gain);
+            osc2Gain.connect(noteGain);
+            osc3.connect(osc3Gain);
+            osc3Gain.connect(noteGain);
+            noteGain.connect(masterGain);
+
+            osc.start(startTime);
+            osc.stop(startTime + duration);
+            osc2.start(startTime);
+            osc2.stop(startTime + duration);
+            osc3.start(startTime);
+            osc3.stop(startTime + duration);
+        }
+
+        function playMelody() {
+            if (!isPlaying) return;
+            const startTime = audioCtx.currentTime + 0.1;
+            let offset = 0;
+            const tempo = 0.55;
+
+            furEliseNotes.forEach(note => {
+                const dur = note.dur * tempo;
+                playNote(note.freq, dur, startTime + offset);
+                offset += dur;
+            });
+
+            const totalDuration = offset * 1000 + 300;
+            scheduledTimeout = setTimeout(() => {
+                if (isPlaying) playMelody();
+            }, totalDuration);
+        }
+
+        function toggleMusic() {
+            initAudio();
+            if (isPlaying) {
+                isPlaying = false;
+                if (scheduledTimeout) clearTimeout(scheduledTimeout);
+                if (masterGain) masterGain.disconnect();
+                document.getElementById('now-playing').classList.remove('visible');
+            } else {
+                masterGain = audioCtx.createGain();
+                masterGain.gain.value = 0.18;
+                masterGain.connect(audioCtx.destination);
+                isPlaying = true;
+                document.getElementById('now-playing').classList.add('visible');
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume().then(() => playMelody());
+                } else {
+                    playMelody();
+                }
+            }
+        }
+
+        // Show hint after load
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(() => {
+                document.getElementById('space-hint').classList.add('visible');
+            }, 800);
+        });
+
+        // Space bar to play
+        document.addEventListener('keydown', function(e) {
+            if (e.code === 'Space') {
+                e.preventDefault();
+                if (!isPlaying) {
+                    toggleMusic();
+                }
+            }
+        });
+
+        // Also allow click anywhere to start (mobile friendly)
+        document.addEventListener('click', function firstClick(e) {
+            if (e.target.closest('.stop-btn')) return;
+            if (!isPlaying) {
+                toggleMusic();
+            }
+        }, { once: true });
+
+        // After 30 seconds of music, fade to blog
+        // Or after music plays once through (~12s), redirect
+        let redirectTimer = null;
+        const originalToggle = toggleMusic;
+
+        // Watch for music start to set redirect timer
+        const observer = new MutationObserver(function() {
+            const np = document.getElementById('now-playing');
+            if (np.classList.contains('visible') && !redirectTimer) {
+                // Redirect after the melody plays through twice (~24s)
+                redirectTimer = setTimeout(() => {
+                    const overlay = document.getElementById('redirect-overlay');
+                    overlay.classList.add('active');
+                    setTimeout(() => {
+                        localStorage.setItem('memorial_secret_unlocked', 'true');
+                        window.location.href = '../blog/index.html';
+                    }, 1200);
+                }, 22000);
+            }
+        });
+        observer.observe(document.getElementById('now-playing'), { attributes: true });
+    </script>
+</body>
+</html>

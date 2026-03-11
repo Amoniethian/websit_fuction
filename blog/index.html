@@ -87,6 +87,28 @@
         </div>
     </div>
 
+    <!-- Talk to Me horror overlay -->
+    <div id="talktome-overlay" style="position:fixed;top:0;left:0;width:100%;height:100%;background:#000;z-index:100000;display:none;overflow:hidden;"></div>
+    <style>
+        .ttm-text {
+            position: absolute;
+            font-family: 'Times New Roman', serif;
+            color: #cc0000;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            white-space: nowrap;
+            text-shadow: 0 0 15px rgba(255,0,0,0.5);
+            animation: ttmShake 0.08s infinite;
+        }
+        @keyframes ttmShake {
+            0% { transform: translate(0, 0) skewX(0deg); }
+            25% { transform: translate(3px, -2px) skewX(-2deg); }
+            50% { transform: translate(-4px, 3px) skewX(2deg); }
+            75% { transform: translate(2px, -1px) skewX(-1deg); }
+            100% { transform: translate(-3px, 2px) skewX(1deg); }
+        }
+    </style>
+
     <!-- Transition-in overlay (prevents flash when arriving from memorial page) -->
     <div id="transition-overlay" style="position:fixed;top:0;left:0;width:100%;height:100%;background:#000;z-index:99999;transition:opacity 0.8s ease;pointer-events:none;"></div>
 
@@ -372,6 +394,136 @@
             return `${now.getDate()} ${months[now.getMonth()]} ${hours}:${minutes}`;
         }
 
+        // ========== Talk to Me Horror Trigger ==========
+        let talkToMeTriggered = localStorage.getItem('talktome_triggered') === 'true';
+
+        const TRIGGER_KEYWORDS = [
+            /死/, /不是.*死了/, /已经.*死/,
+            /你在哪/, /在哪儿/, /where.*you/i, /where.*are/i,
+            /怎么找/, /如何找/, /how.*find/i, /come.*find/i,
+            /找到你/
+        ];
+
+        function checkTalkToMeTrigger(text) {
+            if (talkToMeTriggered) return false;
+            return TRIGGER_KEYWORDS.some(re => re.test(text));
+        }
+
+        function triggerTalkToMeSequence() {
+            talkToMeTriggered = true;
+            localStorage.setItem('talktome_triggered', 'true');
+
+            const typingIndicator = document.getElementById('typing-indicator');
+
+            // Step 1: Lucius replies with the hint
+            typingIndicator.classList.add('active');
+            scrollChatToBottom();
+
+            setTimeout(() => {
+                typingIndicator.classList.remove('active');
+                const hintMsg = "Want to know more? Come find me at T1004. The password is <strong>C3469X</strong>.";
+                const hintMsgCn = "想知道更多？来T1004找我。密码是 <strong>C3469X</strong>。";
+                addMessageToChat(hintMsg, false, getCurrentTime(), hintMsgCn);
+
+                // Mark this message so we can preserve it later
+                const allMsgs = document.querySelectorAll('#chat-messages .message.received');
+                const lastMsg = allMsgs[allMsgs.length - 1];
+                if (lastMsg) lastMsg.setAttribute('data-ttm-hint', 'true');
+
+                // Step 2: Start the "talk to me" spam sequence
+                startTalkToMeSpam();
+            }, 3000);
+        }
+
+        function startTalkToMeSpam() {
+            const spamMessages = [];
+
+            // 3s interval × 2
+            // 1s interval × 3
+            // then 12 rapid fire
+            const timings = [
+                3000, 3000,      // 2 messages, 3s apart
+                1000, 1000, 1000, // 3 messages, 1s apart
+                // 12 rapid fire (100ms each)
+                100, 100, 100, 100, 100, 100,
+                100, 100, 100, 100, 100, 100
+            ];
+
+            let delay = 3000; // initial delay after hint message
+
+            timings.forEach((interval, i) => {
+                delay += interval;
+                setTimeout(() => {
+                    const msg = addMessageToChat("talk to me", false, null);
+                    // Tag spam messages for later removal
+                    const allMsgs = document.querySelectorAll('#chat-messages .message.received:not([data-ttm-hint])');
+                    const lastReceived = allMsgs[allMsgs.length - 1];
+                    if (lastReceived && !lastReceived.hasAttribute('data-ttm-hint')) {
+                        lastReceived.classList.add('ttm-spam');
+                    }
+
+                    // After the last rapid-fire message, trigger the overlay
+                    if (i === timings.length - 1) {
+                        setTimeout(() => showTalkToMeOverlay(), 200);
+                    }
+                }, delay);
+            });
+        }
+
+        function showTalkToMeOverlay() {
+            const overlay = document.getElementById('talktome-overlay');
+            overlay.style.display = 'block';
+            overlay.innerHTML = '';
+
+            const startTime = Date.now();
+            const duration = 3000; // 3 seconds
+
+            // Continuously add shaking "Talk to Me" text during 3 seconds
+            let textCount = 0;
+            const addInterval = setInterval(() => {
+                const elapsed = Date.now() - startTime;
+                if (elapsed >= duration) {
+                    clearInterval(addInterval);
+                    endTalkToMeEffect();
+                    return;
+                }
+
+                // Add 2-4 texts per frame
+                const batchSize = 2 + Math.floor(Math.random() * 3);
+                for (let i = 0; i < batchSize; i++) {
+                    const el = document.createElement('div');
+                    el.className = 'ttm-text';
+                    el.textContent = 'Talk to Me';
+                    const x = Math.random() * 90 + 2;
+                    const y = Math.random() * 90 + 2;
+                    const size = 1 + Math.random() * 5;
+                    el.style.cssText = `left:${x}%;top:${y}%;font-size:${size}vw;animation-delay:${Math.random()*0.1}s;`;
+                    overlay.appendChild(el);
+                    textCount++;
+                }
+            }, 60); // ~16fps text spawn
+        }
+
+        function endTalkToMeEffect() {
+            const overlay = document.getElementById('talktome-overlay');
+
+            // Fade out
+            overlay.style.transition = 'opacity 0.5s';
+            overlay.style.opacity = '0';
+
+            setTimeout(() => {
+                overlay.style.display = 'none';
+                overlay.style.opacity = '1';
+                overlay.style.transition = '';
+                overlay.innerHTML = '';
+
+                // Clean up: remove all "talk to me" spam messages
+                document.querySelectorAll('#chat-messages .ttm-spam').forEach(el => el.remove());
+
+                scrollChatToBottom();
+            }, 600);
+        }
+
         function sendMessage() {
             const input = document.getElementById('chat-input');
             const content = input.value.trim();
@@ -380,6 +532,12 @@
 
             addMessageToChat(content, true, getCurrentTime());
             input.value = '';
+
+            // Check for Talk to Me trigger keywords
+            if (checkTalkToMeTrigger(content)) {
+                triggerTalkToMeSequence();
+                return;
+            }
 
             if (replyCount < config.chat.maxReplies) {
                 const typingIndicator = document.getElementById('typing-indicator');
