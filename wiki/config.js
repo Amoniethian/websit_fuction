@@ -85,7 +85,7 @@ const WIKI_CONFIG = {
 
                 <table style="width:100%;border-collapse:collapse;margin:20px 0;">
                     <tr style="border-bottom:1px solid #ddd;"><td style="padding:8px;font-weight:bold;width:40%;">Commissioner</td><td style="padding:8px;">Mr. Hoffmann</td></tr>
-                    <tr style="border-bottom:1px solid #ddd;"><td style="padding:8px;font-weight:bold;">Subjects</td><td style="padding:8px;">Two students of the Royal Academy of Music</td></tr>
+                    <tr style="border-bottom:1px solid #ddd;"><td style="padding:8px;font-weight:bold;">Subjects</td><td style="padding:8px;">Two students of the Vienna Conservatory</td></tr>
                     <tr style="border-bottom:1px solid #ddd;"><td style="padding:8px;font-weight:bold;">Surgical Objective</td><td style="padding:8px;">Musical talent transfer via cellular memory</td></tr>
                 </table>
                 <table style="width:100%;border-collapse:collapse;margin:20px 0;" class="cn">
