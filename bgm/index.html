@@ -441,6 +441,25 @@ opacity: 0.25;
 letter-spacing: 0.5px;
 }
 
+/* ── Drag & Drop ── */
+.bgm-card.drag-over {
+  border-color: var(--accent);
+  background: rgba(168, 136, 224, 0.08);
+  box-shadow: 0 0 24px rgba(168, 136, 224, 0.15);
+}
+.scene-btn.drag-over {
+  outline: 2px dashed currentColor;
+  outline-offset: -4px;
+  filter: brightness(1.3);
+}
+body.drag-active::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  pointer-events: none;
+}
+
 /* ── Hidden inputs ── */
 .hidden { display: none; }
 
@@ -930,6 +949,63 @@ function updateSceneBtn(key) {
 document.addEventListener('keydown', e => {
   if (e.code === 'Space') { e.preventDefault(); bgmToggle(); }
 });
+
+// ══════════════════════════════════════
+// DRAG & DROP
+// ══════════════════════════════════════
+function isAudioFile(f) { return f.type.startsWith('audio/'); }
+
+// --- BGM card: drop to add tracks ---
+const bgmCard = document.querySelector('.bgm-card');
+bgmCard.addEventListener('dragover', e => { e.preventDefault(); bgmCard.classList.add('drag-over'); });
+bgmCard.addEventListener('dragleave', () => bgmCard.classList.remove('drag-over'));
+bgmCard.addEventListener('drop', e => {
+  e.preventDefault();
+  bgmCard.classList.remove('drag-over');
+  const files = Array.from(e.dataTransfer.files).filter(isAudioFile);
+  if (!files.length) { showToast('不支持的文件格式'); return; }
+  let loaded = 0;
+  files.forEach(f => {
+    const url = URL.createObjectURL(f);
+    const name = f.name.replace(/\.[^.]+$/, '');
+    const probe = new Audio(); probe.src = url;
+    probe.addEventListener('loadedmetadata', () => {
+      bgm.tracks.push({ name, url, dur: probe.duration });
+      loaded++;
+      if (loaded === files.length) {
+        updateBgmUI();
+        showToast(files.length + ' BGM 已添加');
+        if (bgm.idx < 0) bgmPlay(0);
+      }
+    });
+    probe.addEventListener('error', () => { loaded++; if (loaded === files.length) updateBgmUI(); });
+  });
+});
+
+// --- Scene buttons: drop to load ---
+document.querySelectorAll('.scene-btn').forEach(btn => {
+  const key = btn.dataset.scene;
+  btn.addEventListener('dragover', e => { e.preventDefault(); btn.classList.add('drag-over'); });
+  btn.addEventListener('dragleave', () => btn.classList.remove('drag-over'));
+  btn.addEventListener('drop', e => {
+    e.preventDefault();
+    btn.classList.remove('drag-over');
+    const file = Array.from(e.dataTransfer.files).find(isAudioFile);
+    if (!file) { showToast('不支持的文件格式'); return; }
+    const sc = scenes[key];
+    if (sc.url) URL.revokeObjectURL(sc.url);
+    sc.url = URL.createObjectURL(file);
+    sc.name = file.name.replace(/\.[^.]+$/, '');
+    sc.audio.src = sc.url;
+    sc.playing = false;
+    updateSceneBtn(key);
+    showToast(sc.name + ' → ' + key.toUpperCase());
+  });
+});
+
+// Prevent default browser behavior for file drops outside targets
+document.addEventListener('dragover', e => e.preventDefault());
+document.addEventListener('drop', e => e.preventDefault());
 </script>
 
 </body>
