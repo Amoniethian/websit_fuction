@@ -963,7 +963,7 @@ body {
 }
 
 body.show-cn .cn {
-    display: block;
+    display: block !important;
 }
 
 .cn-inline {
