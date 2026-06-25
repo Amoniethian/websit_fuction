@@ -6,7 +6,15 @@ export default defineConfig({
   base: "./",  // Relative paths so it works on GitHub Pages without subpath config
   build: {
     target: "es2020",
-    sourcemap: true
+    sourcemap: true,
+    chunkSizeWarningLimit: 900,
+    rollupOptions: {
+      // Split Three.js into its own chunk — it rarely changes, so browsers
+      // can cache it across app updates.
+      output: {
+        manualChunks: { three: ["three"] }
+      }
+    }
   },
   server: { port: 5173, open: false }
 });

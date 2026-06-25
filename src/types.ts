@@ -70,6 +70,17 @@ export type Cosmetics = {
   palette: { water: number; sand: number };
 };
 
+/** A placed decoration in the 3D tank (rocks + earned structures). */
+export type DecorType = "rock" | "coral" | "anemone" | "seaweed";
+export type DecorItem = {
+  id: string;
+  type: DecorType;
+  x: number;   // sand-plane position
+  z: number;
+  rot: number; // y-rotation (radians)
+  def?: boolean; // part of the default scenery (never auto-removed)
+};
+
 export type State = {
   vocab: Vocab[];
   inv: Inventory;
@@ -79,6 +90,7 @@ export type State = {
   learnSession: LearnSession;
   reviewSession: { attempts: number; correct: number };
   cosmetics: Cosmetics;
+  tankDecor: DecorItem[];
 
   // Sync metadata (set on each successful cloud push)
   _syncedAt?: string;
@@ -118,6 +130,19 @@ export function emptyInventory(): Inventory {
 
 export function emptyTodayStats(): TodayStats {
   return { date: todayKey(), learnedToday: 0, attempts: 0, correct: 0, minutes: 0 };
+}
+
+/** A small built-in scene so a fresh tank already looks alive (matches the sketch). */
+export function defaultDecor(): DecorItem[] {
+  return [
+    { id: "d-rock-1", type: "rock", x: -0.4, z: 0.1, rot: 0.6, def: true },
+    { id: "d-rock-2", type: "rock", x: 0.5, z: -0.5, rot: 2.1, def: true },
+    { id: "d-rock-3", type: "rock", x: -1.7, z: 0.7, rot: 1.2, def: true },
+    { id: "d-anem-1", type: "anemone", x: 0.0, z: 0.5, rot: 0, def: true },
+    { id: "d-weed-1", type: "seaweed", x: -1.9, z: -0.7, rot: 0, def: true },
+    { id: "d-weed-2", type: "seaweed", x: 1.7, z: 0.6, rot: 0, def: true },
+    { id: "d-coral-1", type: "coral", x: 1.5, z: -0.7, rot: 0.4, def: true }
+  ];
 }
 
 export function emptyCosmetics(): Cosmetics {

@@ -13,9 +13,12 @@ A vocabulary study app structured as a slow-living virtual aquarium.
 - **学习**：速记新词 → 四步学习（熟悉 → 句子配对 → 选词成句 → 默写单词）→ 每 10 词整组拼配测验 + 3 句默写
 - **复习**：按词状态切换 句子填空 / 整句默写 / 闪卡；会话结束按错误率扣鱼
 - **奖惩**：每 10/25/50/100/200 词产出小鱼/月亮鱼/小丑鱼/大鱼/海龟；番茄钟时长产出海草/海葵/珊瑚；超阈值凝成奖牌
-- **2D 鱼缸**：Canvas 低多边形背景 + 像素精灵 + Boids 群游，库存变化实时增减生物
+- **3D 海缸**（Three.js）：低多边形玻璃缸 + 沙底 + 默认造景；鱼按库存游动，OrbitControls 拖拽 360° 旋转/缩放、自动旋转
+  - **观赏模式**：隐藏面板、海缸铺满屏幕
+  - **布置模式**：拖动缸里的造景（岩石/海葵/珊瑚/海草）重新摆放，位置本地保存
+  - **GLB 替换**：鱼 / 造景 / 整个缸子都能上传 Fab 的 `.glb`（自动按包围盒缩放）替换占位模型
+  - **配色**：水色 5 选 1、沙色 4 选 1
 - **音频**：Web Audio 合成的环境音（深海白噪 + 缓慢和声垫 + 气泡 / 水流）＝ BGM；反馈音用于答对 / 答错、新生物诞生、番茄结束、整套掌握。两套独立开关 + 音量，设置本地持久化
-- **外观**：上传自定义背景图与物种形象
 - **套级掌握**：每 50 词为一套，正确率 ≥ 90% 升级为整句默写
 
 详见 [`DESIGN.md`](./DESIGN.md) §8 的版本路线图。下一步：v0.2 3D 鱼缸、v0.3 Drive 云同步、v0.4 AI 富化接线。
@@ -25,7 +28,7 @@ A vocabulary study app structured as a slow-living virtual aquarium.
 - **Vite 5** + **React 18** + **TypeScript 5**
 - **Zustand** + `persist` 中间件做状态管理
 - **localforage**（IndexedDB）持久化
-- **Three.js r160** —— 预留给 v0.2 的 3D 鱼缸（当前 2D 鱼缸为纯 Canvas，不依赖它）
+- **Three.js r160** —— 3D 海缸（玻璃缸 / OrbitControls / GLTFLoader 加载 .glb）
 - 可选 Google Drive OAuth 同步（`src/lib/drive-sync.ts`，待接线）
 - 可选 LLM 速记富化（`src/lib/llm-enrich.ts`，配置 `VITE_LLM_*` 后启用）
 

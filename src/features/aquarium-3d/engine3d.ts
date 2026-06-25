@@ -1,0 +1,575 @@
+import * as THREE from "three";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import type { Inventory, DecorItem, DecorType } from "../../types";
+import { getModel, hasModel, type ModelSlot } from "./modelStore";
+
+/**
+ * 3D glass aquarium, ported from legacy/cihai-3d-preview.html and extended:
+ *  - decor placed by persistent id (drag-to-arrange)
+ *  - fish reconciled to inventory counts (they swim)
+ *  - any slot (fish / decor / whole tank) replaceable by an uploaded GLB
+ *
+ * Coordinates are cleaned up vs the prototype so the sand sits on the tank
+ * floor and decor rests on the sand.
+ */
+
+const BOX_W = 8, BOX_H = 5, BOX_D = 5;
+const AQ_Y = BOX_H / 2 - 2;                 // tank centre: 0.5
+const TANK_BOTTOM = AQ_Y - BOX_H / 2;       // -2
+const SAND_THICK = 0.5;
+const SAND_TOP_Y = TANK_BOTTOM + SAND_THICK; // -1.5
+const SAND_CENTER_Y = TANK_BOTTOM + SAND_THICK / 2;
+const WATER_Y = AQ_Y + BOX_H / 2 - 0.1;      // 2.9
+
+const FISH_TYPES = ["smallFish", "moonFish", "clownfish", "bigFish", "turtle"] as const;
+type FishType = (typeof FISH_TYPES)[number];
+
+const DECOR_X = (BOX_W / 2) - 1.0;  // placement clamp
+const DECOR_Z = (BOX_D / 2) - 0.9;
+
+function lowPolyMat(color: number) {
+  return new THREE.MeshStandardMaterial({ color, roughness: 0.55, metalness: 0, flatShading: true });
+}
+
+export class Aquarium3D {
+  private cv: HTMLCanvasElement;
+  private scene: THREE.Scene;
+  private camera: THREE.PerspectiveCamera;
+  private renderer: THREE.WebGLRenderer;
+  private controls: OrbitControls;
+  private loader = new GLTFLoader();
+  private raf = 0;
+  private ro: ResizeObserver;
+  private last = performance.now();
+
+  private glassMat!: THREE.MeshPhysicalMaterial;
+  private sandMat!: THREE.MeshStandardMaterial;
+  private tankGroup = new THREE.Group();      // procedural glass + edges + water
+  private sandMesh!: THREE.Mesh;
+  private customTank: THREE.Object3D | null = null;
+  private dir!: THREE.DirectionalLight;
+
+  private fish: THREE.Object3D[] = [];
+  private decorMeshes = new Map<string, THREE.Object3D>();
+  private decorItems: DecorItem[] = [];
+  private models: Partial<Record<ModelSlot, THREE.Object3D>> = {};
+
+  private waterColor = 0xb8dcd8;
+  private sandColor = 0xc8a874;
+
+  // arrange-mode drag
+  private arrange = false;
+  private onMove: ((id: string, x: number, z: number) => void) | null = null;
+  private raycaster = new THREE.Raycaster();
+  private pointer = new THREE.Vector2();
+  private dragPlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), -SAND_TOP_Y);
+  private dragging: THREE.Object3D | null = null;
+
+  constructor(canvas: HTMLCanvasElement) {
+    this.cv = canvas;
+    const wrap = canvas.parentElement!;
+    const w = wrap.clientWidth || 600;
+    const h = wrap.clientHeight || 400;
+
+    this.scene = new THREE.Scene();
+    this.scene.background = new THREE.Color(0xf3efe7);
+
+    this.camera = new THREE.PerspectiveCamera(40, w / h, 0.1, 100);
+    this.camera.position.set(8, 5, 11);
+
+    this.renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+    this.renderer.setSize(w, h, false);
+    this.renderer.setPixelRatio(Math.min(2, window.devicePixelRatio || 1));
+    this.renderer.outputColorSpace = THREE.SRGBColorSpace;
+    this.renderer.shadowMap.enabled = true;
+    this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+    this.controls = new OrbitControls(this.camera, this.renderer.domElement);
+    this.controls.enableDamping = true;
+    this.controls.dampingFactor = 0.08;
+    this.controls.minDistance = 6;
+    this.controls.maxDistance = 20;
+    this.controls.minPolarAngle = Math.PI / 7;
+    this.controls.maxPolarAngle = Math.PI / 2.1;
+    this.controls.target.set(0, 0.4, 0);
+    this.controls.autoRotate = true;
+    this.controls.autoRotateSpeed = 0.6;
+
+    this.scene.add(new THREE.AmbientLight(0xffffff, 0.55));
+    this.dir = new THREE.DirectionalLight(0xfff0d0, 0.85);
+    this.dir.position.set(3, 9, 4);
+    this.dir.castShadow = true;
+    this.dir.shadow.mapSize.set(1024, 1024);
+    Object.assign(this.dir.shadow.camera, { near: 1, far: 30, left: -8, right: 8, top: 8, bottom: -8 });
+    this.scene.add(this.dir);
+    const fill = new THREE.DirectionalLight(0xb8d8e8, 0.25);
+    fill.position.set(-3, 2, 5);
+    this.scene.add(fill);
+
+    this.scene.add(this.tankGroup);
+    this.buildTank();
+
+    this.ro = new ResizeObserver(() => this.resize());
+    this.ro.observe(wrap);
+
+    canvas.addEventListener("pointerdown", this.onPointerDown);
+    window.addEventListener("pointermove", this.onPointerMove);
+    window.addEventListener("pointerup", this.onPointerUp);
+  }
+
+  /* ---------- public API ---------- */
+  start() {
+    const loop = (now: number) => {
+      this.frame(now);
+      this.raf = requestAnimationFrame(loop);
+    };
+    this.raf = requestAnimationFrame(loop);
+  }
+
+  dispose() {
+    cancelAnimationFrame(this.raf);
+    this.ro.disconnect();
+    this.cv.removeEventListener("pointerdown", this.onPointerDown);
+    window.removeEventListener("pointermove", this.onPointerMove);
+    window.removeEventListener("pointerup", this.onPointerUp);
+    this.renderer.dispose();
+  }
+
+  setPalette(water: number, sand: number) {
+    this.waterColor = water;
+    this.sandColor = sand;
+    if (this.glassMat) this.glassMat.color.setHex(water);
+    if (this.sandMat) this.sandMat.color.setHex(sand);
+  }
+
+  setAutoRotate(on: boolean) {
+    this.controls.autoRotate = on;
+  }
+
+  setArrange(on: boolean, onMove: (id: string, x: number, z: number) => void) {
+    this.arrange = on;
+    this.onMove = onMove;
+    this.cv.style.cursor = on ? "grab" : "";
+  }
+
+  /** Load all uploaded models present in storage, then rebuild affected objects. */
+  async loadAllModels() {
+    const slots: ModelSlot[] = [...FISH_TYPES, "rock", "coral", "anemone", "seaweed", "tank"];
+    await Promise.all(slots.filter((s) => hasModel(s)).map((s) => this.refreshModel(s, false)));
+    this.rebuildAllFish();
+    this.rebuildAllDecor();
+    this.applyTankModel();
+  }
+
+  async refreshModel(slot: ModelSlot, rebuild = true) {
+    const url = await getModel(slot);
+    if (!url) {
+      delete this.models[slot];
+    } else {
+      try {
+        const obj = await this.loadGLB(url);
+        const targetMax = slot === "tank" ? BOX_W : (FISH_TYPES as readonly string[]).includes(slot) ? 0.9 : 1.2;
+        this.fit(obj, targetMax);
+        obj.traverse((m) => {
+          if ((m as THREE.Mesh).isMesh) {
+            m.castShadow = true;
+            m.receiveShadow = true;
+          }
+        });
+        this.models[slot] = obj;
+      } catch {
+        delete this.models[slot];
+      }
+    }
+    if (rebuild) {
+      if (slot === "tank") this.applyTankModel();
+      else if ((FISH_TYPES as readonly string[]).includes(slot)) this.rebuildFishType(slot as FishType);
+      else this.rebuildDecorType(slot as DecorType);
+    }
+  }
+
+  setFish(inv: Inventory) {
+    for (const type of FISH_TYPES) {
+      const desired = (inv as any)[type] as number;
+      const have = this.fish.filter((f) => f.userData.type === type);
+      let diff = desired - have.length;
+      while (diff > 0) { this.spawnFish(type); diff--; }
+      while (diff < 0) { this.removeOneFish(type); diff++; }
+    }
+  }
+
+  setDecor(items: DecorItem[]) {
+    this.decorItems = items;
+    const ids = new Set(items.map((d) => d.id));
+    for (const [id, mesh] of this.decorMeshes) {
+      if (!ids.has(id)) {
+        this.scene.remove(mesh);
+        this.decorMeshes.delete(id);
+      }
+    }
+    for (const item of items) {
+      let mesh = this.decorMeshes.get(item.id);
+      if (!mesh) {
+        mesh = this.makeDecor(item.type);
+        mesh.userData.decorType = item.type;
+        this.decorMeshes.set(item.id, mesh);
+        this.scene.add(mesh);
+      }
+      mesh.position.set(item.x, SAND_TOP_Y, item.z);
+      mesh.rotation.y = item.rot;
+    }
+  }
+
+  /* ---------- tank ---------- */
+  private buildTank() {
+    this.glassMat = new THREE.MeshPhysicalMaterial({
+      color: this.waterColor, transparent: true, opacity: 0.15, roughness: 0.05,
+      metalness: 0, transmission: 0.95, thickness: 0.6, side: THREE.DoubleSide, depthWrite: false
+    });
+    const glass = new THREE.Mesh(new THREE.BoxGeometry(BOX_W, BOX_H, BOX_D), this.glassMat);
+    glass.position.y = AQ_Y;
+    this.tankGroup.add(glass);
+
+    const edges = new THREE.LineSegments(
+      new THREE.EdgesGeometry(new THREE.BoxGeometry(BOX_W, BOX_H, BOX_D)),
+      new THREE.LineBasicMaterial({ color: 0x2c4a4d, transparent: true, opacity: 0.45 })
+    );
+    edges.position.y = AQ_Y;
+    this.tankGroup.add(edges);
+
+    const surfMat = new THREE.MeshStandardMaterial({ color: 0xeaf5f4, transparent: true, opacity: 0.18, roughness: 0.1 });
+    const water = new THREE.Mesh(new THREE.PlaneGeometry(BOX_W - 0.1, BOX_D - 0.1), surfMat);
+    water.rotation.x = -Math.PI / 2;
+    water.position.y = WATER_Y;
+    water.name = "water";
+    this.tankGroup.add(water);
+
+    // Sand floor with a gentle bump.
+    this.sandMat = new THREE.MeshStandardMaterial({ color: this.sandColor, roughness: 0.95, flatShading: true });
+    const sandGeom = new THREE.BoxGeometry(BOX_W - 0.1, SAND_THICK, BOX_D - 0.1, 20, 1, 12);
+    const pos = sandGeom.attributes.position;
+    for (let i = 0; i < pos.count; i++) {
+      if (pos.getY(i) > 0) {
+        const x = pos.getX(i), z = pos.getZ(i);
+        pos.setY(i, SAND_THICK / 2 + Math.sin(x * 0.8 + z * 0.6) * 0.06 + Math.cos(x * 0.5 - z * 0.9) * 0.05);
+      }
+    }
+    sandGeom.computeVertexNormals();
+    this.sandMesh = new THREE.Mesh(sandGeom, this.sandMat);
+    this.sandMesh.position.y = SAND_CENTER_Y;
+    this.sandMesh.receiveShadow = true;
+    this.scene.add(this.sandMesh);
+  }
+
+  private applyTankModel() {
+    if (this.customTank) {
+      this.scene.remove(this.customTank);
+      this.customTank = null;
+    }
+    const m = this.models.tank;
+    if (m) {
+      this.customTank = m.clone(true);
+      this.customTank.position.y = AQ_Y;
+      this.scene.add(this.customTank);
+      this.tankGroup.visible = false; // hide procedural glass + water
+    } else {
+      this.tankGroup.visible = true;
+    }
+  }
+
+  /* ---------- factories ---------- */
+  private makeFishGeneric(o: { color: number; tail: number; size: number; stripe?: boolean }): THREE.Group {
+    const g = new THREE.Group();
+    const body = new THREE.Mesh(new THREE.SphereGeometry(o.size, 7, 5), lowPolyMat(o.color));
+    body.scale.set(1.6, 0.9, 0.7);
+    body.castShadow = true;
+    g.add(body);
+    const tail = new THREE.Mesh(new THREE.ConeGeometry(o.size * 0.6, o.size * 0.8, 4), lowPolyMat(o.tail));
+    tail.position.set(-o.size * 1.6, 0, 0);
+    tail.rotation.z = -Math.PI / 2;
+    g.add(tail);
+    g.userData.tail = tail;
+    const fin = new THREE.Mesh(new THREE.ConeGeometry(o.size * 0.35, o.size * 0.5, 3), lowPolyMat(o.tail));
+    fin.position.set(-o.size * 0.1, o.size * 0.6, 0);
+    fin.rotation.x = Math.PI / 8;
+    g.add(fin);
+    for (const dz of [-1, 1]) {
+      const eye = new THREE.Mesh(new THREE.SphereGeometry(o.size * 0.1, 6, 4), new THREE.MeshBasicMaterial({ color: 0x1a1410 }));
+      eye.position.set(o.size * 0.9, o.size * 0.15, dz * o.size * 0.45);
+      g.add(eye);
+    }
+    if (o.stripe) {
+      for (const x of [-o.size * 0.4, o.size * 0.2]) {
+        const s = new THREE.Mesh(new THREE.RingGeometry(o.size * 0.6, o.size * 0.7, 16, 1), new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.DoubleSide }));
+        s.rotation.y = Math.PI / 2;
+        s.position.set(x, 0, 0);
+        g.add(s);
+      }
+    }
+    return g;
+  }
+
+  private makeTurtle(): THREE.Group {
+    const g = new THREE.Group();
+    const shell = new THREE.Mesh(new THREE.SphereGeometry(0.42, 8, 6, 0, Math.PI * 2, 0, Math.PI / 2), lowPolyMat(0x3a6b48));
+    shell.scale.set(1.2, 0.7, 1);
+    shell.castShadow = true;
+    g.add(shell);
+    const head = new THREE.Mesh(new THREE.SphereGeometry(0.16, 6, 5), lowPolyMat(0x5a8a5e));
+    head.position.set(0.55, 0.02, 0);
+    g.add(head);
+    for (const [sx, sz] of [[0.3, 0.4], [0.3, -0.4], [-0.3, 0.4], [-0.3, -0.4]]) {
+      const fl = new THREE.Mesh(new THREE.BoxGeometry(0.28, 0.06, 0.16), lowPolyMat(0x4d7a52));
+      fl.position.set(sx, -0.02, sz);
+      fl.rotation.y = sz > 0 ? 0.5 : -0.5;
+      g.add(fl);
+    }
+    g.userData.turtle = true;
+    return g;
+  }
+
+  private makeRock(): THREE.Group {
+    const g = new THREE.Group();
+    const rock = new THREE.Mesh(new THREE.IcosahedronGeometry(0.5 + Math.random() * 0.3, 0), lowPolyMat(0x35353a));
+    rock.scale.set(1, 0.7 + Math.random() * 0.3, 1);
+    rock.position.y = 0.25;
+    rock.rotation.set(Math.random(), Math.random(), Math.random());
+    rock.castShadow = true;
+    rock.receiveShadow = true;
+    g.add(rock);
+    return g;
+  }
+  private makeCoral(): THREE.Group {
+    const g = new THREE.Group();
+    const palette = [0xe07a8a, 0xd97aa0, 0xea9bb0, 0xc35878];
+    const color = palette[Math.floor(Math.random() * palette.length)];
+    const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.18, 0.7, 6), lowPolyMat(color));
+    trunk.position.y = 0.35;
+    trunk.castShadow = true;
+    g.add(trunk);
+    for (let i = 0; i < 4; i++) {
+      const ang = (i / 4) * Math.PI * 2;
+      const branch = new THREE.Mesh(new THREE.CylinderGeometry(0.07, 0.1, 0.35, 5), lowPolyMat(color));
+      branch.position.set(Math.cos(ang) * 0.18, 0.55, Math.sin(ang) * 0.18);
+      branch.rotation.set(0.5, ang, 0);
+      g.add(branch);
+      const tip = new THREE.Mesh(new THREE.SphereGeometry(0.09, 6, 4), lowPolyMat(0xfac0d0));
+      tip.position.set(Math.cos(ang) * 0.32, 0.78, Math.sin(ang) * 0.32);
+      g.add(tip);
+    }
+    return g;
+  }
+  private makeAnemone(): THREE.Group {
+    const g = new THREE.Group();
+    const palette = [0xd97aa0, 0xea9bb0, 0xc54f8a, 0xe6a8c0];
+    const color = palette[Math.floor(Math.random() * palette.length)];
+    const base = new THREE.Mesh(new THREE.SphereGeometry(0.3, 8, 5, 0, Math.PI * 2, 0, Math.PI / 2), lowPolyMat(color));
+    g.add(base);
+    for (let i = 0; i < 14; i++) {
+      const ang = (i / 14) * Math.PI * 2;
+      const t = new THREE.Mesh(new THREE.CylinderGeometry(0.025, 0.05, 0.4, 4), lowPolyMat(color));
+      t.position.set(Math.cos(ang) * 0.22, 0.22, Math.sin(ang) * 0.22);
+      t.rotation.set(Math.sin(ang) * 0.5, 0, Math.cos(ang) * 0.5);
+      g.add(t);
+    }
+    return g;
+  }
+  private makeSeaweed(): THREE.Group {
+    const g = new THREE.Group();
+    for (let i = 0; i < 5; i++) {
+      const seg = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.05, 0.25, 4), lowPolyMat(0x4d8a4d));
+      seg.position.y = i * 0.22 + 0.12;
+      seg.rotation.z = Math.sin(i * 0.6) * 0.15;
+      g.add(seg);
+    }
+    g.userData.seaweed = true;
+    return g;
+  }
+
+  private makeDecor(type: DecorType): THREE.Group {
+    if (this.models[type]) {
+      const m = this.models[type]!.clone(true);
+      const g = new THREE.Group();
+      g.add(m);
+      return g;
+    }
+    if (type === "rock") return this.makeRock();
+    if (type === "coral") return this.makeCoral();
+    if (type === "anemone") return this.makeAnemone();
+    return this.makeSeaweed();
+  }
+
+  private makeFish(type: FishType): THREE.Group {
+    if (this.models[type]) {
+      const m = this.models[type]!.clone(true);
+      const g = new THREE.Group();
+      g.add(m);
+      return g;
+    }
+    if (type === "smallFish") return this.makeFishGeneric({ color: 0xe9b955, tail: 0xa17a37, size: 0.18 });
+    if (type === "moonFish") return this.makeFishGeneric({ color: 0xe7d9b0, tail: 0xa99b76, size: 0.32 });
+    if (type === "clownfish") return this.makeFishGeneric({ color: 0xe07a3c, tail: 0x8e3f17, size: 0.22, stripe: true });
+    if (type === "bigFish") return this.makeFishGeneric({ color: 0xbb6abf, tail: 0x7e468a, size: 0.42 });
+    return this.makeTurtle();
+  }
+
+  /* ---------- spawn / rebuild ---------- */
+  private spawnFish(type: FishType) {
+    const mesh = this.makeFish(type);
+    mesh.userData.type = type;
+    const x = (Math.random() - 0.5) * (BOX_W - 1.6);
+    const y = AQ_Y + (Math.random() - 0.5) * 1.6;
+    const z = (Math.random() - 0.5) * (BOX_D - 1.6);
+    mesh.position.set(x, y, z);
+    const speed = type === "bigFish" || type === "turtle" ? 0.3 : type === "moonFish" ? 0.5 : 0.8;
+    const dir = new THREE.Vector3((Math.random() - 0.5) * 2, 0, (Math.random() - 0.5) * 2).normalize();
+    mesh.userData.swim = { speed, vel: dir.multiplyScalar(speed * 0.6), phase: Math.random() * 6 };
+    this.fish.push(mesh);
+    this.scene.add(mesh);
+  }
+  private removeOneFish(type: FishType) {
+    const idx = this.fish.findIndex((f) => f.userData.type === type);
+    if (idx >= 0) {
+      this.scene.remove(this.fish[idx]);
+      this.fish.splice(idx, 1);
+    }
+  }
+  private rebuildFishType(type: FishType) {
+    const n = this.fish.filter((f) => f.userData.type === type).length;
+    for (let i = 0; i < n; i++) this.removeOneFish(type);
+    for (let i = 0; i < n; i++) this.spawnFish(type);
+  }
+  private rebuildAllFish() {
+    for (const t of FISH_TYPES) this.rebuildFishType(t);
+  }
+  private rebuildDecorType(type: DecorType) {
+    for (const item of this.decorItems) {
+      if (item.type !== type) continue;
+      const old = this.decorMeshes.get(item.id);
+      if (old) {
+        this.scene.remove(old);
+        this.decorMeshes.delete(item.id);
+      }
+    }
+    this.setDecor(this.decorItems);
+  }
+  private rebuildAllDecor() {
+    for (const mesh of this.decorMeshes.values()) this.scene.remove(mesh);
+    this.decorMeshes.clear();
+    this.setDecor(this.decorItems);
+  }
+
+  /* ---------- GLB helpers ---------- */
+  private async loadGLB(dataUrl: string): Promise<THREE.Object3D> {
+    const buf = await (await fetch(dataUrl)).arrayBuffer();
+    return new Promise((resolve, reject) => {
+      this.loader.parse(buf, "", (g) => resolve(g.scene), reject);
+    });
+  }
+  private fit(obj: THREE.Object3D, targetMax: number) {
+    const box = new THREE.Box3().setFromObject(obj);
+    const size = box.getSize(new THREE.Vector3());
+    const maxDim = Math.max(size.x, size.y, size.z) || 1;
+    const scale = targetMax / maxDim;
+    obj.scale.setScalar(scale);
+    const center = box.getCenter(new THREE.Vector3()).multiplyScalar(scale);
+    obj.position.sub(center);
+    // sit base near origin so decor rests on the sand
+    obj.position.y += (size.y * scale) / 2;
+  }
+
+  /* ---------- arrange drag ---------- */
+  private setPointer(e: PointerEvent) {
+    const r = this.cv.getBoundingClientRect();
+    this.pointer.x = ((e.clientX - r.left) / r.width) * 2 - 1;
+    this.pointer.y = -((e.clientY - r.top) / r.height) * 2 + 1;
+  }
+  private onPointerDown = (e: PointerEvent) => {
+    if (!this.arrange) return;
+    this.setPointer(e);
+    this.raycaster.setFromCamera(this.pointer, this.camera);
+    const hits = this.raycaster.intersectObjects([...this.decorMeshes.values()], true);
+    if (hits.length) {
+      const top = [...this.decorMeshes.entries()].find(([, m]) => this.isAncestor(m, hits[0].object));
+      if (top) {
+        this.dragging = top[1];
+        this.dragging.userData.id = top[0];
+        this.controls.enabled = false;
+        this.cv.style.cursor = "grabbing";
+      }
+    }
+  };
+  private isAncestor(anc: THREE.Object3D, node: THREE.Object3D): boolean {
+    let n: THREE.Object3D | null = node;
+    while (n) {
+      if (n === anc) return true;
+      n = n.parent;
+    }
+    return false;
+  }
+  private onPointerMove = (e: PointerEvent) => {
+    if (!this.arrange || !this.dragging) return;
+    this.setPointer(e);
+    this.raycaster.setFromCamera(this.pointer, this.camera);
+    const hit = new THREE.Vector3();
+    if (this.raycaster.ray.intersectPlane(this.dragPlane, hit)) {
+      const x = THREE.MathUtils.clamp(hit.x, -DECOR_X, DECOR_X);
+      const z = THREE.MathUtils.clamp(hit.z, -DECOR_Z, DECOR_Z);
+      this.dragging.position.x = x;
+      this.dragging.position.z = z;
+    }
+  };
+  private onPointerUp = () => {
+    if (this.dragging) {
+      const id = this.dragging.userData.id as string;
+      this.onMove?.(id, this.dragging.position.x, this.dragging.position.z);
+      this.dragging = null;
+      this.controls.enabled = true;
+      this.cv.style.cursor = this.arrange ? "grab" : "";
+    }
+  };
+
+  /* ---------- loop ---------- */
+  private frame(now: number) {
+    const dt = Math.min(0.05, (now - this.last) / 1000);
+    this.last = now;
+    const halfX = BOX_W / 2 - 0.7, halfZ = BOX_D / 2 - 0.7;
+    const yTop = AQ_Y + BOX_H / 2 - 0.7, yBot = TANK_BOTTOM + 0.7;
+    for (const f of this.fish) {
+      const sw = f.userData.swim;
+      if (!sw) continue;
+      sw.vel.x += (Math.random() - 0.5) * 0.5 * dt;
+      sw.vel.y += (Math.random() - 0.5) * 0.3 * dt;
+      sw.vel.z += (Math.random() - 0.5) * 0.5 * dt;
+      const targ = sw.speed * 0.6;
+      sw.vel.multiplyScalar(targ / Math.max(0.001, sw.vel.length()));
+      if (f.position.x > halfX) sw.vel.x = -Math.abs(sw.vel.x);
+      if (f.position.x < -halfX) sw.vel.x = Math.abs(sw.vel.x);
+      if (f.position.y > yTop) sw.vel.y = -Math.abs(sw.vel.y);
+      if (f.position.y < yBot) sw.vel.y = Math.abs(sw.vel.y);
+      if (f.position.z > halfZ) sw.vel.z = -Math.abs(sw.vel.z);
+      if (f.position.z < -halfZ) sw.vel.z = Math.abs(sw.vel.z);
+      f.position.addScaledVector(sw.vel, dt);
+      if (sw.vel.lengthSq() > 0.001) {
+        f.lookAt(f.position.clone().add(sw.vel));
+        f.rotateY(-Math.PI / 2);
+      }
+      if (f.userData.tail) {
+        sw.phase += dt * 3;
+        f.userData.tail.rotation.x = Math.sin(sw.phase) * 0.3;
+      }
+    }
+    this.controls.update();
+    this.renderer.render(this.scene, this.camera);
+  }
+
+  private resize() {
+    const wrap = this.cv.parentElement!;
+    const w = wrap.clientWidth, h = wrap.clientHeight;
+    if (!w || !h) return;
+    this.camera.aspect = w / h;
+    this.camera.updateProjectionMatrix();
+    this.renderer.setSize(w, h, false);
+  }
+}

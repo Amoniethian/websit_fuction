@@ -7,7 +7,7 @@ import { Pomodoro } from "./features/pomodoro/Pomodoro";
 import { Species } from "./features/species/Species";
 import { VocabTab } from "./features/vocab/VocabTab";
 import { Cosmetics } from "./features/cosmetics/Cosmetics";
-import { Aquarium2D } from "./features/aquarium-2d/Aquarium2D";
+import { Aquarium3D } from "./features/aquarium-3d/Aquarium3D";
 import { Toaster } from "./ui/Toaster";
 
 type Tab = "learn" | "review" | "pomodoro" | "species" | "vocab" | "look";
@@ -18,6 +18,7 @@ const TABS: [Tab, string][] = [
 
 export function App() {
   const [tab, setTab] = useState<Tab>("learn");
+  const [viewMode, setViewMode] = useState(false);
   const vocab = useStore((s) => s.vocab);
   const today = useStore((s) => s.today);
   const learnedTotal = vocab.filter((w) => w.learned).length;
@@ -31,7 +32,7 @@ export function App() {
 
   return (
     <>
-      <div className="app">
+      <div className={"app" + (viewMode ? " view-mode" : "")}>
         <aside className="panel">
           <div className="brand">
             <h1>词海</h1>
@@ -64,7 +65,7 @@ export function App() {
           {tab === "look" && <Cosmetics />}
         </aside>
 
-        <Aquarium2D />
+        <Aquarium3D viewMode={viewMode} onToggleView={() => setViewMode((v) => !v)} />
       </div>
       <Toaster />
     </>

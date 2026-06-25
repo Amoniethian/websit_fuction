@@ -1,13 +1,14 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import localforage from "localforage";
-import type { State, Vocab, CreatureType, Sentence } from "./types";
+import type { State, Vocab, CreatureType, Sentence, DecorType, DecorItem } from "./types";
 import {
   CONV,
   PENALTY,
   emptyInventory,
   emptyTodayStats,
   emptyCosmetics,
+  defaultDecor,
   todayKey
 } from "./types";
 import { enrichConfigFromEnv } from "./lib/llm-enrich";
@@ -74,6 +75,10 @@ type Actions = {
   // cosmetics
   setBackground: (url: string | null) => void;
   setCreatureImage: (type: CreatureType, url: string | null) => void;
+  setPalette: (water: number, sand: number) => void;
+  // 3D decor
+  moveDecor: (id: string, x: number, z: number) => void;
+  syncDecor: () => void;
   resetAll: () => void;
 };
 
@@ -88,8 +93,55 @@ function freshState(): State {
     timeBuckets: { twenty: 0, forty: 0, sixty: 0 },
     learnSession: null,
     reviewSession: { attempts: 0, correct: 0 },
-    cosmetics: emptyCosmetics()
+    cosmetics: emptyCosmetics(),
+    tankDecor: defaultDecor()
   };
+}
+
+const STRUCTURE_TYPES: DecorType[] = ["seaweed", "anemone", "coral"];
+
+/** Random (x,z) on the sand floor, away from the very edges. */
+function randomDecorPos(): { x: number; z: number; rot: number } {
+  return {
+    x: (Math.random() - 0.5) * 5.6,
+    z: (Math.random() - 0.5) * 3.0,
+    rot: Math.random() * Math.PI * 2
+  };
+}
+
+let decorSeq = 0;
+function newDecorId(type: string): string {
+  decorSeq += 1;
+  return `${type}-${Date.now().toString(36)}-${decorSeq}`;
+}
+
+/**
+ * Reconcile the placeable decor list with earned structure counts:
+ * non-default entries of each structure type should equal inventory.
+ * Existing entries keep their (possibly user-arranged) positions.
+ */
+function reconcileDecor(decor: DecorItem[], inv: State["inv"]): DecorItem[] {
+  const next = [...decor];
+  for (const type of STRUCTURE_TYPES) {
+    const owned = next.filter((d) => d.type === type && !d.def);
+    const desired = (inv as any)[type] as number;
+    if (owned.length < desired) {
+      for (let i = owned.length; i < desired; i++) {
+        const p = randomDecorPos();
+        next.push({ id: newDecorId(type), type, x: p.x, z: p.z, rot: p.rot });
+      }
+    } else if (owned.length > desired) {
+      let toRemove = owned.length - desired;
+      // Remove most-recently-added non-default entries first.
+      for (let i = next.length - 1; i >= 0 && toRemove > 0; i--) {
+        if (next[i].type === type && !next[i].def) {
+          next.splice(i, 1);
+          toRemove--;
+        }
+      }
+    }
+  }
+  return next;
 }
 
 export const useStore = create<Store>()(
@@ -124,6 +176,7 @@ export const useStore = create<Store>()(
         while (tb.sixty  >= 60) { tb.sixty  -= 60; inv.coral++;   toast("+ 珊瑚"); audio.birth("coral"); }
         set({ today, timeBuckets: tb, inv });
         get().convertIfNeeded();
+        set({ tankDecor: reconcileDecor(get().tankDecor, get().inv) });
       },
 
       convertIfNeeded: () => {
@@ -138,6 +191,7 @@ export const useStore = create<Store>()(
           }
         }
         set({ inv });
+        set({ tankDecor: reconcileDecor(get().tankDecor, inv) });
       },
 
       /* ---------- Learning flow ---------- */
@@ -361,6 +415,14 @@ export const useStore = create<Store>()(
           }
         }),
 
+      setPalette: (water, sand) =>
+        set({ cosmetics: { ...get().cosmetics, palette: { water, sand } } }),
+
+      moveDecor: (id, x, z) =>
+        set({ tankDecor: get().tankDecor.map((d) => (d.id === id ? { ...d, x, z } : d)) }),
+
+      syncDecor: () => set({ tankDecor: reconcileDecor(get().tankDecor, get().inv) }),
+
       resetAll: () => set(freshState())
     }),
     {
@@ -382,6 +444,9 @@ export const useStore = create<Store>()(
         for (const w of state.vocab) {
           if (w.enrichmentStatus === "loading") w.enrichmentStatus = "failed";
         }
+        // Migrate older saves that predate the 3D tank.
+        if (!state.tankDecor || state.tankDecor.length === 0) state.tankDecor = defaultDecor();
+        state.tankDecor = reconcileDecor(state.tankDecor, state.inv);
       },
       // Persist learnSession (resume mid-group); never persist the live review tally.
       partialize: (s) => ({ ...s, reviewSession: { attempts: 0, correct: 0 } })

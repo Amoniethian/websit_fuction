@@ -1,87 +1,95 @@
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useStore } from "../../store";
-import type { CreatureType } from "../../types";
 import { toast } from "../../ui/toast";
 import { AudioControls } from "../audio/AudioControls";
+import {
+  initModels,
+  subscribeModels,
+  hasModel,
+  setModel,
+  clearModel,
+  fileToDataUrl,
+  type ModelSlot
+} from "../aquarium-3d/modelStore";
 
-const CREATURES: [CreatureType, string][] = [
-  ["smallFish", "小鱼"], ["moonFish", "月亮鱼"], ["clownfish", "小丑鱼"], ["bigFish", "大鱼"],
-  ["turtle", "海龟"], ["seaweed", "海草"], ["anemone", "海葵"], ["coral", "珊瑚"]
+const WATER_PRESETS: [number, string][] = [
+  [0xb8dcd8, "浅青"], [0x6ba6a3, "深青"], [0xa5cce0, "浅蓝"], [0x3a78a5, "深蓝"], [0x4a5d8a, "暮色"]
+];
+const SAND_PRESETS: [number, string][] = [
+  [0xc8a874, "暖沙"], [0xe8d3a3, "米沙"], [0xddcdb0, "贝壳"], [0x3a342c, "黑沙"]
 ];
 
-function readFile(f: File): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const r = new FileReader();
-    r.onload = () => resolve(r.result as string);
-    r.onerror = reject;
-    r.readAsDataURL(f);
-  });
-}
+const MODEL_ROWS: [ModelSlot, string][] = [
+  ["tank", "缸子"],
+  ["smallFish", "小鱼"], ["moonFish", "月亮鱼"], ["clownfish", "小丑鱼"], ["bigFish", "大鱼"], ["turtle", "海龟"],
+  ["rock", "岩石"], ["coral", "珊瑚"], ["anemone", "海葵"], ["seaweed", "海草"]
+];
+
+const hex = (n: number) => "#" + n.toString(16).padStart(6, "0");
 
 export function Cosmetics() {
-  const cosmetics = useStore((s) => s.cosmetics);
-  const setBackground = useStore((s) => s.setBackground);
-  const setCreatureImage = useStore((s) => s.setCreatureImage);
-  const bgInput = useRef<HTMLInputElement>(null);
+  const palette = useStore((s) => s.cosmetics.palette);
+  const setPalette = useStore((s) => s.setPalette);
+
+  // Reflect model presence (stored outside zustand) reactively.
+  const [, bump] = useState(0);
+  useEffect(() => {
+    initModels().then(() => bump((v) => v + 1));
+    return subscribeModels(() => bump((v) => v + 1));
+  }, []);
 
   return (
     <div className="pane">
       <AudioControls />
+
       <div className="cos-section">
-        <h3>海缸背景</h3>
+        <h3>海缸配色</h3>
         <div className="cos-row">
-          <label>背景图</label>
-          <input
-            ref={bgInput}
-            type="file"
-            accept="image/*"
-            style={{ display: "none" }}
-            onChange={async (e) => {
-              const f = e.target.files?.[0];
-              if (!f) return;
-              setBackground(await readFile(f));
-              toast("背景已更新");
-            }}
-          />
-          <button className="file-btn" onClick={() => bgInput.current?.click()}>选择图片</button>
-          <div
-            className="cos-preview"
-            style={{ backgroundImage: cosmetics.background ? `url(${cosmetics.background})` : "" }}
-          />
-          <button className="clear" onClick={() => setBackground(null)}>清除</button>
+          <label>水色</label>
+          <div className="palette">
+            {WATER_PRESETS.map(([c, name]) => (
+              <div
+                key={c}
+                className={"swatch" + (palette.water === c ? " active" : "")}
+                title={name}
+                style={{ background: hex(c) }}
+                onClick={() => setPalette(c, palette.sand)}
+              />
+            ))}
+          </div>
         </div>
-        <div style={{ fontSize: 11, color: "var(--ink-soft)" }}>建议 16:10 横图；留空则使用默认渐变。</div>
+        <div className="cos-row">
+          <label>沙色</label>
+          <div className="palette">
+            {SAND_PRESETS.map(([c, name]) => (
+              <div
+                key={c}
+                className={"swatch" + (palette.sand === c ? " active" : "")}
+                title={name}
+                style={{ background: hex(c) }}
+                onClick={() => setPalette(palette.water, c)}
+              />
+            ))}
+          </div>
+        </div>
       </div>
+
       <div className="cos-section">
-        <h3>物种形象（PNG / SVG，透明背景最佳）</h3>
-        {CREATURES.map(([k, label]) => (
-          <CreatureRow
-            key={k}
-            label={label}
-            url={cosmetics.creatures[k]}
-            onPick={async (f) => {
-              setCreatureImage(k, await readFile(f));
-              toast(label + " 已更新");
-            }}
-            onClear={() => setCreatureImage(k, null)}
-          />
+        <h3>替换为 GLB 模型</h3>
+        <div style={{ fontSize: 11, color: "var(--ink-soft)", lineHeight: 1.7, marginBottom: 8 }}>
+          在 <a href="https://fab.com" target="_blank" rel="noreferrer">fab.com</a> 搜
+          {" "}<code>stylized aquarium</code> / <code>low poly fish</code> / <code>coral</code> 等，筛选「免费 + 可商用」，
+          下载 <code>.glb</code> 后在这里上传替换占位模型（自动按大小缩放）。
+        </div>
+        {MODEL_ROWS.map(([slot, label]) => (
+          <ModelRow key={slot} slot={slot} label={label} replaced={hasModel(slot)} />
         ))}
       </div>
     </div>
   );
 }
 
-function CreatureRow({
-  label,
-  url,
-  onPick,
-  onClear
-}: {
-  label: string;
-  url: string | null;
-  onPick: (f: File) => void;
-  onClear: () => void;
-}) {
+function ModelRow({ slot, label, replaced }: { slot: ModelSlot; label: string; replaced: boolean }) {
   const input = useRef<HTMLInputElement>(null);
   return (
     <div className="cos-row">
@@ -89,16 +97,25 @@ function CreatureRow({
       <input
         ref={input}
         type="file"
-        accept="image/*"
+        accept=".glb,.gltf,model/gltf-binary"
         style={{ display: "none" }}
-        onChange={(e) => {
+        onChange={async (e) => {
           const f = e.target.files?.[0];
-          if (f) onPick(f);
+          if (!f) return;
+          try {
+            await setModel(slot, await fileToDataUrl(f));
+            toast(label + " 模型已替换");
+          } catch {
+            toast(label + " 模型加载失败");
+          }
+          e.target.value = "";
         }}
       />
-      <button className="file-btn" onClick={() => input.current?.click()}>选择</button>
-      <div className="cos-preview" style={{ backgroundImage: url ? `url(${url})` : "" }} />
-      <button className="clear" onClick={onClear}>清除</button>
+      <button className="file-btn" onClick={() => input.current?.click()}>选择 .glb</button>
+      <span className="model-status">{replaced ? "✓ 已替换" : "占位"}</span>
+      {replaced && (
+        <button className="clear" onClick={() => clearModel(slot).then(() => toast(label + " 已恢复占位"))}>清除</button>
+      )}
     </div>
   );
 }
