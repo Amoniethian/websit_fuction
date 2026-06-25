@@ -1,8 +1,11 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import { clone as skeletonClone } from "three/examples/jsm/utils/SkeletonUtils.js";
 import type { Inventory, DecorItem, DecorType } from "../../types";
-import { getModel, hasModel, type ModelSlot } from "./modelStore";
+import { getModel, getHeading, hasModel, type ModelSlot } from "./modelStore";
+
+type ModelTemplate = { object: THREE.Object3D; animations: THREE.AnimationClip[] };
 
 /**
  * 3D glass aquarium, ported from legacy/cihai-3d-preview.html and extended:
@@ -53,7 +56,7 @@ export class Aquarium3D {
   private fish: THREE.Object3D[] = [];
   private decorMeshes = new Map<string, THREE.Object3D>();
   private decorItems: DecorItem[] = [];
-  private models: Partial<Record<ModelSlot, THREE.Object3D>> = {};
+  private models: Partial<Record<ModelSlot, ModelTemplate>> = {};
 
   // atmosphere
   private bubbles: { mesh: THREE.Mesh; speed: number; phase: number }[] = [];
@@ -175,16 +178,16 @@ export class Aquarium3D {
       delete this.models[slot];
     } else {
       try {
-        const obj = await this.loadGLB(url);
+        const { scene, animations } = await this.loadGLB(url);
         const targetMax = slot === "tank" ? BOX_W : (FISH_TYPES as readonly string[]).includes(slot) ? 0.9 : 1.2;
-        this.fit(obj, targetMax);
-        obj.traverse((m) => {
+        this.fit(scene, targetMax);
+        scene.traverse((m) => {
           if ((m as THREE.Mesh).isMesh) {
             m.castShadow = true;
             m.receiveShadow = true;
           }
         });
-        this.models[slot] = obj;
+        this.models[slot] = { object: scene, animations };
       } catch {
         delete this.models[slot];
       }
@@ -276,7 +279,7 @@ export class Aquarium3D {
     }
     const m = this.models.tank;
     if (m) {
-      this.customTank = m.clone(true);
+      this.customTank = m.object.clone(true);
       this.customTank.position.y = AQ_Y;
       this.scene.add(this.customTank);
       this.tankGroup.visible = false; // hide procedural glass + water
@@ -474,13 +477,21 @@ export class Aquarium3D {
     return g;
   }
 
-  private makeDecor(type: DecorType): THREE.Group {
-    if (this.models[type]) {
-      const m = this.models[type]!.clone(true);
-      const g = new THREE.Group();
-      g.add(m);
-      return g;
+  /** Clone a GLB template into a group, wiring up its animation mixer if it has clips. */
+  private instantiateModel(tpl: ModelTemplate): THREE.Group {
+    const m = skeletonClone(tpl.object);
+    const g = new THREE.Group();
+    g.add(m);
+    if (tpl.animations.length) {
+      const mixer = new THREE.AnimationMixer(m);
+      for (const clip of tpl.animations) mixer.clipAction(clip).play();
+      g.userData.mixer = mixer;
     }
+    return g;
+  }
+
+  private makeDecor(type: DecorType): THREE.Group {
+    if (this.models[type]) return this.instantiateModel(this.models[type]!);
     if (type === "rock") return this.makeRock();
     if (type === "coral") return this.makeCoral();
     if (type === "anemone") return this.makeAnemone();
@@ -488,12 +499,7 @@ export class Aquarium3D {
   }
 
   private makeFish(type: FishType): THREE.Group {
-    if (this.models[type]) {
-      const m = this.models[type]!.clone(true);
-      const g = new THREE.Group();
-      g.add(m);
-      return g;
-    }
+    if (this.models[type]) return this.instantiateModel(this.models[type]!);
     if (type === "smallFish") return this.makeFishGeneric({ color: 0xe9b955, tail: 0xa17a37, size: 0.18 });
     if (type === "moonFish") return this.makeFishGeneric({ color: 0xe7d9b0, tail: 0xa99b76, size: 0.32 });
     if (type === "clownfish") return this.makeFishGeneric({ color: 0xe07a3c, tail: 0x8e3f17, size: 0.22, stripe: true });
@@ -548,10 +554,10 @@ export class Aquarium3D {
   }
 
   /* ---------- GLB helpers ---------- */
-  private async loadGLB(dataUrl: string): Promise<THREE.Object3D> {
+  private async loadGLB(dataUrl: string): Promise<{ scene: THREE.Object3D; animations: THREE.AnimationClip[] }> {
     const buf = await (await fetch(dataUrl)).arrayBuffer();
     return new Promise((resolve, reject) => {
-      this.loader.parse(buf, "", (g) => resolve(g.scene), reject);
+      this.loader.parse(buf, "", (g) => resolve({ scene: g.scene, animations: g.animations || [] }), reject);
     });
   }
   private fit(obj: THREE.Object3D, targetMax: number) {
@@ -638,14 +644,20 @@ export class Aquarium3D {
       if (f.position.z > halfZ) sw.vel.z = -Math.abs(sw.vel.z);
       if (f.position.z < -halfZ) sw.vel.z = Math.abs(sw.vel.z);
       f.position.addScaledVector(sw.vel, dt);
-      if (sw.vel.lengthSq() > 0.001) {
-        f.lookAt(f.position.clone().add(sw.vel));
-        f.rotateY(-Math.PI / 2);
-      }
-      if (f.userData.tail) {
-        sw.phase += dt * 3;
-        f.userData.tail.rotation.x = Math.sin(sw.phase) * 0.3;
-      }
+      if (f.userData.mixer) f.userData.mixer.update(dt);
+      sw.phase += dt * 3;
+      // Yaw-only turning: face the horizontal swim direction, stay upright
+      // (so vertical models like a seahorse don't tip over).
+      const tgt = f.position.clone().add(new THREE.Vector3(sw.vel.x, 0, sw.vel.z));
+      f.lookAt(tgt);
+      f.rotateY(-Math.PI / 2 + getHeading(f.userData.type));
+      // Gentle body sway so even un-animated models feel alive.
+      f.rotateZ(Math.sin(sw.phase) * 0.05);
+      if (f.userData.tail) f.userData.tail.rotation.x = Math.sin(sw.phase) * 0.3;
+    }
+    // Animated decor (e.g. a swaying GLB anemone).
+    for (const m of this.decorMeshes.values()) {
+      if (m.userData.mixer) (m.userData.mixer as THREE.AnimationMixer).update(dt);
     }
 
     // Bubbles rise + wobble, recycle at the surface.

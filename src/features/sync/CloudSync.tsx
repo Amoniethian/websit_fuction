@@ -5,14 +5,25 @@ import {
 } from "../../lib/sync";
 import { toast } from "../../ui/toast";
 
-const SQL = `create table if not exists cihai_state (
+const SQL = `-- 进度表
+create table if not exists cihai_state (
   user_id uuid primary key references auth.users on delete cascade,
   data jsonb not null,
   updated_at timestamptz not null default now()
 );
 alter table cihai_state enable row level security;
+drop policy if exists "own row" on cihai_state;
 create policy "own row" on cihai_state
-  for all using (auth.uid() = user_id) with check (auth.uid() = user_id);`;
+  for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
+
+-- 模型文件桶（私有）+ 仅本人可读写自己文件夹
+insert into storage.buckets (id, name, public)
+values ('cihai-models', 'cihai-models', false)
+on conflict (id) do nothing;
+drop policy if exists "cihai own models" on storage.objects;
+create policy "cihai own models" on storage.objects for all
+  using (bucket_id = 'cihai-models' and (storage.foldername(name))[1] = auth.uid()::text)
+  with check (bucket_id = 'cihai-models' and (storage.foldername(name))[1] = auth.uid()::text);`;
 
 export function CloudSync() {
   const existing = loadSupabaseConfig();
@@ -47,15 +58,13 @@ export function CloudSync() {
           <div style={{ fontSize: 11, color: "var(--ink-soft)", lineHeight: 1.7, marginBottom: 8 }}>
             在 <a href="https://supabase.com" target="_blank" rel="noreferrer">supabase.com</a> 免费建一个项目，
             到 Settings → API 复制 <code>Project URL</code> 和 <code>anon public</code> key 填到这里。
-            再去 SQL Editor 跑一次下面的建表语句。
+            再去 SQL Editor 跑一次下面的 SQL（建进度表 + 建模型文件桶）。
           </div>
           <div className="ai-row"><label>Project URL</label>
             <input value={url} onChange={(e) => setUrl(e.target.value)} placeholder="https://xxxx.supabase.co" /></div>
           <div className="ai-row"><label>anon key</label>
             <input value={anonKey} onChange={(e) => setAnonKey(e.target.value)} placeholder="eyJ..." /></div>
-          <div className="vocab-row"><button onClick={saveConfig}>保存配置</button>
-            <button onClick={() => setShowSql((v) => !v)}>{showSql ? "隐藏建表 SQL" : "查看建表 SQL"}</button></div>
-          {showSql && <pre className="sql-box">{SQL}</pre>}
+          <div className="vocab-row"><button onClick={saveConfig}>保存配置</button></div>
         </>
       ) : !signedIn ? (
         <>
@@ -85,6 +94,11 @@ export function CloudSync() {
           </div>
         </>
       )}
+
+      <div className="vocab-row" style={{ marginTop: 8 }}>
+        <button onClick={() => setShowSql((v) => !v)}>{showSql ? "隐藏 SQL" : "建表 + 建桶 SQL"}</button>
+      </div>
+      {showSql && <pre className="sql-box">{SQL}</pre>}
     </div>
   );
 }

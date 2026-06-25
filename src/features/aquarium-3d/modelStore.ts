@@ -52,6 +52,29 @@ export function subscribeModels(l: Listener): () => void {
   };
 }
 
+/* ---------- per-slot heading offset (fix model facing) ---------- */
+const HEADING_KEY = "cihai-model-heading";
+let headings: Record<string, number> = (() => {
+  try {
+    return JSON.parse(localStorage.getItem(HEADING_KEY) || "{}");
+  } catch {
+    return {};
+  }
+})();
+
+export function getHeading(slot: ModelSlot): number {
+  return headings[slot] || 0;
+}
+export function cycleHeading(slot: ModelSlot) {
+  // The engine reads heading live each frame, so no model reload is needed.
+  headings = { ...headings, [slot]: (((headings[slot] || 0) + Math.PI / 2) % (Math.PI * 2)) };
+  try {
+    localStorage.setItem(HEADING_KEY, JSON.stringify(headings));
+  } catch {
+    /* ignore */
+  }
+}
+
 /** Read a File as a base64 data URL (for persisting GLB bytes). */
 export function fileToDataUrl(f: File): Promise<string> {
   return new Promise((resolve, reject) => {

@@ -2,6 +2,9 @@ import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 import { loadSupabaseConfig } from "./supabaseConfig";
 import { useStore } from "../store";
 import { toast } from "../ui/toast";
+import { setModel as setLocalModel, type ModelSlot } from "../features/aquarium-3d/modelStore";
+
+const BUCKET = "cihai-models";
 
 /**
  * Cross-device sync via Supabase.
@@ -171,6 +174,51 @@ async function afterLogin() {
   } else {
     await pushNow();
     toast("已创建云端存档");
+  }
+  await pullModels();
+}
+
+/* ---------- model files (Supabase Storage) ---------- */
+function blobToDataUrl(b: Blob): Promise<string> {
+  return new Promise((res, rej) => {
+    const r = new FileReader();
+    r.onload = () => res(r.result as string);
+    r.onerror = rej;
+    r.readAsDataURL(b);
+  });
+}
+
+/** Upload a just-picked GLB to the user's folder (no-op when signed out). */
+export async function uploadModelFile(slot: ModelSlot, file: File) {
+  const c = getClient();
+  const u = await getUser();
+  if (!c || !u) return;
+  const { error } = await c.storage.from(BUCKET).upload(`${u.id}/${slot}.glb`, file, {
+    upsert: true,
+    contentType: "model/gltf-binary"
+  });
+  if (error) toast("模型上传云端失败：" + error.message);
+}
+
+export async function deleteModelFromCloud(slot: ModelSlot) {
+  const c = getClient();
+  const u = await getUser();
+  if (!c || !u) return;
+  await c.storage.from(BUCKET).remove([`${u.id}/${slot}.glb`]);
+}
+
+/** Download all of the user's model files into the local model store. */
+async function pullModels() {
+  const c = getClient();
+  const u = await getUser();
+  if (!c || !u) return;
+  const { data: files, error } = await c.storage.from(BUCKET).list(u.id);
+  if (error || !files) return;
+  for (const f of files) {
+    if (!f.name.endsWith(".glb")) continue;
+    const slot = f.name.replace(/\.glb$/, "") as ModelSlot;
+    const { data: blob } = await c.storage.from(BUCKET).download(`${u.id}/${f.name}`);
+    if (blob) await setLocalModel(slot, await blobToDataUrl(blob));
   }
 }
 

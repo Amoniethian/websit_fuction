@@ -9,8 +9,12 @@ import {
   setModel,
   clearModel,
   fileToDataUrl,
+  cycleHeading,
   type ModelSlot
 } from "../aquarium-3d/modelStore";
+import { uploadModelFile, deleteModelFromCloud } from "../../lib/sync";
+
+const FISH_SLOTS = new Set<ModelSlot>(["smallFish", "moonFish", "clownfish", "bigFish", "turtle"]);
 
 const WATER_PRESETS: [number, string][] = [
   [0xb8dcd8, "浅青"], [0x6ba6a3, "深青"], [0xa5cce0, "浅蓝"], [0x3a78a5, "深蓝"], [0x4a5d8a, "暮色"]
@@ -104,6 +108,7 @@ function ModelRow({ slot, label, replaced }: { slot: ModelSlot; label: string; r
           if (!f) return;
           try {
             await setModel(slot, await fileToDataUrl(f));
+            uploadModelFile(slot, f); // syncs to cloud if signed in
             toast(label + " 模型已替换");
           } catch {
             toast(label + " 模型加载失败");
@@ -113,8 +118,16 @@ function ModelRow({ slot, label, replaced }: { slot: ModelSlot; label: string; r
       />
       <button className="file-btn" onClick={() => input.current?.click()}>选择 .glb</button>
       <span className="model-status">{replaced ? "✓ 已替换" : "占位"}</span>
+      {replaced && FISH_SLOTS.has(slot) && (
+        <button className="file-btn" title="转 90° 调整朝向" onClick={() => { cycleHeading(slot); toast(label + " 转了 90°"); }}>↻</button>
+      )}
       {replaced && (
-        <button className="clear" onClick={() => clearModel(slot).then(() => toast(label + " 已恢复占位"))}>清除</button>
+        <button
+          className="clear"
+          onClick={() => clearModel(slot).then(() => { deleteModelFromCloud(slot); toast(label + " 已恢复占位"); })}
+        >
+          清除
+        </button>
       )}
     </div>
   );
