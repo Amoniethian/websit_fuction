@@ -2,7 +2,7 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: ["claude/charming-darwin-8zlndj"]
+    branches: ["main"]
   workflow_dispatch:
 
 permissions:
