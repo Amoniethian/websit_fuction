@@ -198,7 +198,8 @@ button { font: inherit; }
 /* species */
 .inv-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
 .inv-item { background: #f1ede4; border-radius: 10px; padding: 8px; text-align: center; }
-.inv-item .ic { font-size: 20px; }
+.inv-item .ic { font-size: 20px; height: 24px; line-height: 24px; }
+.inv-item .ic-3d { height: 46px; line-height: 0; display: flex; justify-content: center; align-items: center; }
 .inv-item .lbl { font-size: 11px; color: var(--ink-soft); }
 .inv-item .num { font-size: 15px; font-weight: 500; }
 .inv-note { font-size: 11px; color: var(--ink-soft); margin-top: 10px; line-height: 1.7; }

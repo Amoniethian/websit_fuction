@@ -386,22 +386,26 @@ export class Aquarium3D {
     return g;
   }
 
-  private makeTurtle(): THREE.Group {
+  // The "turtle" reward slot is rendered as a jellyfish: translucent bell + tentacles.
+  private makeJellyfish(): THREE.Group {
     const g = new THREE.Group();
-    const shell = new THREE.Mesh(new THREE.SphereGeometry(0.42, 8, 6, 0, Math.PI * 2, 0, Math.PI / 2), lowPolyMat(0x3a6b48));
-    shell.scale.set(1.2, 0.7, 1);
-    shell.castShadow = true;
-    g.add(shell);
-    const head = new THREE.Mesh(new THREE.SphereGeometry(0.16, 6, 5), lowPolyMat(0x5a8a5e));
-    head.position.set(0.55, 0.02, 0);
-    g.add(head);
-    for (const [sx, sz] of [[0.3, 0.4], [0.3, -0.4], [-0.3, 0.4], [-0.3, -0.4]]) {
-      const fl = new THREE.Mesh(new THREE.BoxGeometry(0.28, 0.06, 0.16), lowPolyMat(0x4d7a52));
-      fl.position.set(sx, -0.02, sz);
-      fl.rotation.y = sz > 0 ? 0.5 : -0.5;
-      g.add(fl);
+    const bell = new THREE.Mesh(
+      new THREE.SphereGeometry(0.34, 12, 7, 0, Math.PI * 2, 0, Math.PI / 2),
+      new THREE.MeshStandardMaterial({ color: 0xdcaed6, roughness: 0.3, transparent: true, opacity: 0.6, flatShading: true })
+    );
+    bell.castShadow = true;
+    g.add(bell);
+    g.userData.bell = bell;
+    const tentMat = new THREE.MeshStandardMaterial({ color: 0xe7c6e6, transparent: true, opacity: 0.7, flatShading: true });
+    for (let i = 0; i < 8; i++) {
+      const ang = (i / 8) * Math.PI * 2;
+      const t = new THREE.Mesh(new THREE.CylinderGeometry(0.012, 0.022, 0.5, 4), tentMat);
+      t.position.set(Math.cos(ang) * 0.18, -0.26, Math.sin(ang) * 0.18);
+      t.rotation.z = Math.cos(ang) * 0.2;
+      t.rotation.x = Math.sin(ang) * 0.2;
+      g.add(t);
     }
-    g.userData.turtle = true;
+    g.userData.jellyfish = true;
     return g;
   }
 
@@ -490,7 +494,7 @@ export class Aquarium3D {
     if (type === "moonFish") return this.makeFishGeneric({ color: 0xe7d9b0, tail: 0xa99b76, size: 0.32 });
     if (type === "clownfish") return this.makeFishGeneric({ color: 0xe07a3c, tail: 0x8e3f17, size: 0.22, stripe: true });
     if (type === "bigFish") return this.makeFishGeneric({ color: 0xbb6abf, tail: 0x7e468a, size: 0.42 });
-    return this.makeTurtle();
+    return this.makeJellyfish();
   }
 
   /* ---------- spawn / rebuild ---------- */
@@ -632,14 +636,23 @@ export class Aquarium3D {
       f.position.addScaledVector(sw.vel, dt);
       if (f.userData.mixer) f.userData.mixer.update(dt);
       sw.phase += dt * 3;
-      // Yaw-only turning: face the horizontal swim direction, stay upright
-      // (so vertical models like a seahorse don't tip over).
-      const tgt = f.position.clone().add(new THREE.Vector3(sw.vel.x, 0, sw.vel.z));
-      f.lookAt(tgt);
-      f.rotateY(-Math.PI / 2 + getHeading(f.userData.type));
-      // Gentle body sway so even un-animated models feel alive.
-      f.rotateZ(Math.sin(sw.phase) * 0.05);
-      if (f.userData.tail) f.userData.tail.rotation.x = Math.sin(sw.phase) * 0.3;
+      if (f.userData.type === "turtle") {
+        // Jellyfish: stay upright, drift, and pulse the bell (squash-stretch).
+        f.rotation.set(0, getHeading("turtle"), 0);
+        if (f.userData.bell) {
+          const s = Math.sin(sw.phase * 0.7);
+          f.userData.bell.scale.set(1 - s * 0.08, 1 + s * 0.15, 1 - s * 0.08);
+        }
+      } else {
+        // Yaw-only turning: face the horizontal swim direction, stay upright
+        // (so vertical models like a seahorse don't tip over).
+        const tgt = f.position.clone().add(new THREE.Vector3(sw.vel.x, 0, sw.vel.z));
+        f.lookAt(tgt);
+        f.rotateY(-Math.PI / 2 + getHeading(f.userData.type));
+        // Gentle body sway so even un-animated models feel alive.
+        f.rotateZ(Math.sin(sw.phase) * 0.05);
+        if (f.userData.tail) f.userData.tail.rotation.x = Math.sin(sw.phase) * 0.3;
+      }
     }
     // Animated decor (e.g. a swaying GLB anemone).
     for (const m of this.decorMeshes.values()) {

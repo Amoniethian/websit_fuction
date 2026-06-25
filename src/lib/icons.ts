@@ -6,7 +6,7 @@ export const ICONS: Record<CreatureType, string> = {
   moonFish: "𓆝",
   clownfish: "🐠",
   bigFish: "🐟",
-  turtle: "🐢",
+  turtle: "🪼",
   seaweed: "🌿",
   anemone: "🌸",
   coral: "🪸"

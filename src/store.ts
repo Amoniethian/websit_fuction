@@ -28,7 +28,7 @@ import starterVocab from "./data/vocab-scholar-set1.json";
 const SET_SIZE = 50;
 const ICON_LABEL: Record<CreatureType, string> = {
   smallFish: "小鱼", moonFish: "月亮鱼", clownfish: "小丑鱼", bigFish: "大鱼",
-  turtle: "海龟", seaweed: "海草", anemone: "海葵", coral: "珊瑚"
+  turtle: "水母", seaweed: "海草", anemone: "海葵", coral: "珊瑚"
 };
 
 function normalizeVocab(raw: any, id: number): Vocab {
@@ -164,7 +164,7 @@ export const useStore = create<Store>()(
         if (b.twentyFive >= 25)  { b.twentyFive -= 25;  inv.moonFish++;  toast("+ 一条月亮鱼"); audio.birth("moonFish"); }
         if (b.fifty >= 50)       { b.fifty -= 50;       inv.clownfish++; toast("+ 一条小丑鱼"); audio.birth("clownfish"); }
         if (b.hundred >= 100)    { b.hundred -= 100;    inv.bigFish++;   toast("+ 一条大鱼"); audio.birth("bigFish"); }
-        if (b.twoHundred >= 200) { b.twoHundred -= 200; inv.turtle++;    toast("+ 一只海龟"); audio.birth("turtle"); }
+        if (b.twoHundred >= 200) { b.twoHundred -= 200; inv.turtle++;    toast("+ 一只水母"); audio.birth("turtle"); }
         set({ today, rewardBuckets: b, inv });
         get().convertIfNeeded();
       },

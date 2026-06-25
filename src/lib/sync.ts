@@ -1,4 +1,4 @@
-import { createClient, type SupabaseClient } from "@supabase/supabase-js";
+import type { SupabaseClient } from "@supabase/supabase-js";
 import { loadSupabaseConfig } from "./supabaseConfig";
 import { useStore } from "../store";
 import { toast } from "../ui/toast";
@@ -49,10 +49,17 @@ export function subscribeSync(l: (s: SyncStatus) => void): () => void {
 
 let client: SupabaseClient | null = null;
 let clientUrl = "";
-function getClient(): SupabaseClient | null {
+
+/**
+ * Lazily create the Supabase client — and only dynamically import the
+ * (~55KB gz) library when sync is actually configured, so users who never
+ * set up sync don't pay for it on first load.
+ */
+async function ensureClient(): Promise<SupabaseClient | null> {
   const cfg = loadSupabaseConfig();
   if (!cfg) return null;
   if (!client || clientUrl !== cfg.url) {
+    const { createClient } = await import("@supabase/supabase-js");
     client = createClient(cfg.url, cfg.anonKey, {
       auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: false }
     });
@@ -62,7 +69,7 @@ function getClient(): SupabaseClient | null {
 }
 
 async function getUser() {
-  const c = getClient();
+  const c = await ensureClient();
   if (!c) return null;
   const { data } = await c.auth.getUser();
   return data.user ?? null;
@@ -78,7 +85,7 @@ function contentKey(): string {
 
 /* ---------- auth ---------- */
 export async function signUp(email: string, password: string) {
-  const c = getClient();
+  const c = await ensureClient();
   if (!c) return toast("请先填 Supabase 配置");
   const { error } = await c.auth.signUp({ email, password });
   if (error) {
@@ -90,7 +97,7 @@ export async function signUp(email: string, password: string) {
 }
 
 export async function signIn(email: string, password: string) {
-  const c = getClient();
+  const c = await ensureClient();
   if (!c) return toast("请先填 Supabase 配置");
   setStatus({ state: "syncing", message: "登录中…" });
   const { data, error } = await c.auth.signInWithPassword({ email, password });
@@ -104,7 +111,7 @@ export async function signIn(email: string, password: string) {
 }
 
 export async function signOut() {
-  const c = getClient();
+  const c = await ensureClient();
   if (c) await c.auth.signOut();
   setStatus({ state: "signedOut" });
   toast("已退出登录");
@@ -112,7 +119,7 @@ export async function signOut() {
 
 /* ---------- pull / push ---------- */
 async function pull(): Promise<{ data: any; updated_at: string } | null> {
-  const c = getClient();
+  const c = await ensureClient();
   const u = await getUser();
   if (!c || !u) return null;
   const { data, error } = await c.from(TABLE).select("data, updated_at").eq("user_id", u.id).maybeSingle();
@@ -124,7 +131,7 @@ async function pull(): Promise<{ data: any; updated_at: string } | null> {
 }
 
 export async function pushNow(): Promise<void> {
-  const c = getClient();
+  const c = await ensureClient();
   const u = await getUser();
   if (!c || !u) return;
   setStatus({ state: "syncing", email: u.email, message: "上传中…" });
@@ -190,7 +197,7 @@ function blobToDataUrl(b: Blob): Promise<string> {
 
 /** Upload a just-picked GLB to the user's folder (no-op when signed out). */
 export async function uploadModelFile(slot: ModelSlot, file: File) {
-  const c = getClient();
+  const c = await ensureClient();
   const u = await getUser();
   if (!c || !u) return;
   const { error } = await c.storage.from(BUCKET).upload(`${u.id}/${slot}.glb`, file, {
@@ -201,7 +208,7 @@ export async function uploadModelFile(slot: ModelSlot, file: File) {
 }
 
 export async function deleteModelFromCloud(slot: ModelSlot) {
-  const c = getClient();
+  const c = await ensureClient();
   const u = await getUser();
   if (!c || !u) return;
   await c.storage.from(BUCKET).remove([`${u.id}/${slot}.glb`]);
@@ -209,7 +216,7 @@ export async function deleteModelFromCloud(slot: ModelSlot) {
 
 /** Download all of the user's model files into the local model store. */
 async function pullModels() {
-  const c = getClient();
+  const c = await ensureClient();
   const u = await getUser();
   if (!c || !u) return;
   const { data: files, error } = await c.storage.from(BUCKET).list(u.id);
@@ -225,7 +232,8 @@ async function pullModels() {
 /* ---------- auto-push on change ---------- */
 let timer: number | undefined;
 function scheduleAutoPush() {
-  if (!getClient()) return;
+  // Cheap synchronous guard (no Supabase import) when sync isn't configured.
+  if (!loadSupabaseConfig()) return;
   window.clearTimeout(timer);
   timer = window.setTimeout(async () => {
     const u = await getUser();
@@ -240,19 +248,24 @@ export function initSync() {
   if (started) return;
   started = true;
   useStore.subscribe(scheduleAutoPush);
-  const c = getClient();
-  if (!c) {
+  if (!loadSupabaseConfig()) {
     setStatus({ state: "off" });
     return;
   }
-  c.auth.getSession().then(({ data }) => {
-    if (data.session) {
-      setStatus({ state: "idle", email: data.session.user.email });
-      lastContent = contentKey();
-      afterLogin();
-    } else {
-      setStatus({ state: "signedOut" });
+  ensureClient().then((c) => {
+    if (!c) {
+      setStatus({ state: "off" });
+      return;
     }
+    c.auth.getSession().then(({ data }) => {
+      if (data.session) {
+        setStatus({ state: "idle", email: data.session.user.email });
+        lastContent = contentKey();
+        afterLogin();
+      } else {
+        setStatus({ state: "signedOut" });
+      }
+    });
   });
 }
 
