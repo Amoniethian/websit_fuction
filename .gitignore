@@ -1,30 +1,21 @@
-# macOS
-.DS_Store
-.AppleDouble
-.LSOverride
+# Dependencies
+node_modules/
 
-# Windows
-Thumbs.db
-ehthumbs.db
-Desktop.ini
+# Build output
+dist/
+build/
+.output/
 
-# IDE
-.idea/
-.vscode/
-*.swp
-*.swo
+# Env & secrets
+.env
+.env.local
+.env.*.local
 
 # Logs
 *.log
 npm-debug.log*
 
-# Dependencies (if added later)
-node_modules/
-
-# Build output (if added later)
-dist/
-build/
-
-# Temporary files
-*.tmp
-*.temp
+# Editor / OS
+.DS_Store
+.vscode/
+.idea/
