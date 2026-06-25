@@ -13,6 +13,7 @@ import {
 import { enrichConfigFromEnv } from "./lib/llm-enrich";
 import type { EnrichedWord } from "./lib/llm-enrich";
 import { toast } from "./ui/toast";
+import { audio } from "./lib/audio";
 import starterVocab from "./data/vocab-scholar-set1.json";
 
 /**
@@ -103,11 +104,11 @@ export const useStore = create<Store>()(
         const b = { ...s.rewardBuckets };
         const inv = { ...s.inv };
         b.ten++; b.twentyFive++; b.fifty++; b.hundred++; b.twoHundred++;
-        if (b.ten >= 10)         { b.ten -= 10;         inv.smallFish++; toast("+ 一条小鱼"); }
-        if (b.twentyFive >= 25)  { b.twentyFive -= 25;  inv.moonFish++;  toast("+ 一条月亮鱼"); }
-        if (b.fifty >= 50)       { b.fifty -= 50;       inv.clownfish++; toast("+ 一条小丑鱼"); }
-        if (b.hundred >= 100)    { b.hundred -= 100;    inv.bigFish++;   toast("+ 一条大鱼"); }
-        if (b.twoHundred >= 200) { b.twoHundred -= 200; inv.turtle++;    toast("+ 一只海龟"); }
+        if (b.ten >= 10)         { b.ten -= 10;         inv.smallFish++; toast("+ 一条小鱼"); audio.birth("smallFish"); }
+        if (b.twentyFive >= 25)  { b.twentyFive -= 25;  inv.moonFish++;  toast("+ 一条月亮鱼"); audio.birth("moonFish"); }
+        if (b.fifty >= 50)       { b.fifty -= 50;       inv.clownfish++; toast("+ 一条小丑鱼"); audio.birth("clownfish"); }
+        if (b.hundred >= 100)    { b.hundred -= 100;    inv.bigFish++;   toast("+ 一条大鱼"); audio.birth("bigFish"); }
+        if (b.twoHundred >= 200) { b.twoHundred -= 200; inv.turtle++;    toast("+ 一只海龟"); audio.birth("turtle"); }
         set({ today, rewardBuckets: b, inv });
         get().convertIfNeeded();
       },
@@ -118,9 +119,9 @@ export const useStore = create<Store>()(
         const tb = { ...s.timeBuckets };
         const inv = { ...s.inv };
         tb.twenty += m; tb.forty += m; tb.sixty += m;
-        while (tb.twenty >= 20) { tb.twenty -= 20; inv.seaweed++; toast("+ 海草"); }
-        while (tb.forty  >= 40) { tb.forty  -= 40; inv.anemone++; toast("+ 海葵"); }
-        while (tb.sixty  >= 60) { tb.sixty  -= 60; inv.coral++;   toast("+ 珊瑚"); }
+        while (tb.twenty >= 20) { tb.twenty -= 20; inv.seaweed++; toast("+ 海草"); audio.birth("seaweed"); }
+        while (tb.forty  >= 40) { tb.forty  -= 40; inv.anemone++; toast("+ 海葵"); audio.birth("anemone"); }
+        while (tb.sixty  >= 60) { tb.sixty  -= 60; inv.coral++;   toast("+ 珊瑚"); audio.birth("coral"); }
         set({ today, timeBuckets: tb, inv });
         get().convertIfNeeded();
       },
@@ -325,6 +326,7 @@ export const useStore = create<Store>()(
             for (const w of slice) w.mastered = true;
             changed = true;
             toast(`第 ${si + 1} 套词已掌握，复习升级为整句默写`);
+            audio.mastered();
           }
         }
         if (changed) set({ vocab });

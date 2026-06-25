@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useStore } from "./store";
+import { audio } from "./lib/audio";
 import { LearnRoute } from "./features/learn/LearnRoute";
 import { ReviewRoute } from "./features/review/ReviewRoute";
 import { Pomodoro } from "./features/pomodoro/Pomodoro";
@@ -20,6 +21,13 @@ export function App() {
   const vocab = useStore((s) => s.vocab);
   const today = useStore((s) => s.today);
   const learnedTotal = vocab.filter((w) => w.learned).length;
+
+  // Unlock + start the audio context on the first user gesture (browsers require it).
+  useEffect(() => {
+    const onGesture = () => audio.ensure();
+    window.addEventListener("pointerdown", onGesture, { once: true });
+    return () => window.removeEventListener("pointerdown", onGesture);
+  }, []);
 
   return (
     <>

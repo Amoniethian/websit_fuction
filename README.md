@@ -14,6 +14,7 @@ A vocabulary study app structured as a slow-living virtual aquarium.
 - **复习**：按词状态切换 句子填空 / 整句默写 / 闪卡；会话结束按错误率扣鱼
 - **奖惩**：每 10/25/50/100/200 词产出小鱼/月亮鱼/小丑鱼/大鱼/海龟；番茄钟时长产出海草/海葵/珊瑚；超阈值凝成奖牌
 - **2D 鱼缸**：Canvas 低多边形背景 + 像素精灵 + Boids 群游，库存变化实时增减生物
+- **音频**：Web Audio 合成的环境音（深海白噪 + 缓慢和声垫 + 气泡 / 水流）＝ BGM；反馈音用于答对 / 答错、新生物诞生、番茄结束、整套掌握。两套独立开关 + 音量，设置本地持久化
 - **外观**：上传自定义背景图与物种形象
 - **套级掌握**：每 50 词为一套，正确率 ≥ 90% 升级为整句默写
 
@@ -44,7 +45,7 @@ A vocabulary study app structured as a slow-living virtual aquarium.
 │   ├── styles.css            # 全局样式
 │   ├── types.ts              # 数据模型 + 阈值常量
 │   ├── store.ts              # Zustand store：奖励/惩罚/学习/复习/掌握逻辑
-│   ├── lib/                  # text / speech / sentence / icons / drive-sync / llm-enrich
+│   ├── lib/                  # text / speech / sentence / icons / audio / drive-sync / llm-enrich
 │   ├── data/
 │   │   └── vocab-scholar-set1.json   # 31 个学术起始词条
 │   └── features/
@@ -52,6 +53,7 @@ A vocabulary study app structured as a slow-living virtual aquarium.
 │       ├── review/           # 填空 / 默写 / 闪卡复习
 │       ├── pomodoro/         # 番茄钟
 │       ├── species/          # 物种库存
+│       ├── audio/            # 声音设置（环境音 / 反馈音开关 + 音量）
 │       ├── vocab/            # 词库导入 / 进度管理
 │       ├── cosmetics/        # 背景 / 物种形象自定义
 │       └── aquarium-2d/      # Canvas 2D 鱼缸引擎

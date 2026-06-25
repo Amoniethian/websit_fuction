@@ -2,6 +2,7 @@ import { useRef } from "react";
 import { useStore } from "../../store";
 import type { CreatureType } from "../../types";
 import { toast } from "../../ui/toast";
+import { AudioControls } from "../audio/AudioControls";
 
 const CREATURES: [CreatureType, string][] = [
   ["smallFish", "小鱼"], ["moonFish", "月亮鱼"], ["clownfish", "小丑鱼"], ["bigFish", "大鱼"],
@@ -25,6 +26,7 @@ export function Cosmetics() {
 
   return (
     <div className="pane">
+      <AudioControls />
       <div className="cos-section">
         <h3>海缸背景</h3>
         <div className="cos-row">

@@ -4,6 +4,7 @@ import { useStore } from "../../store";
 import { shuffle, normToken, matchSurface } from "../../lib/text";
 import { BlankedEN } from "../../lib/sentence";
 import { toast } from "../../ui/toast";
+import { audio } from "../../lib/audio";
 
 /* ---------- Per-10 group matching quiz ---------- */
 export function GroupTest() {
@@ -133,9 +134,11 @@ export function GroupCheck() {
     setLocked(true);
     if (normToken(v) === normToken(expected)) {
       setFb({ text: "✓ 正确", cls: "right" });
+      audio.correct();
       setTimeout(() => finishItem(true), 350);
     } else {
       setFb({ text: `× 正确答案：${expected}`, cls: "wrong" });
+      audio.wrong();
       setTimeout(() => finishItem(false), 1200);
     }
   }

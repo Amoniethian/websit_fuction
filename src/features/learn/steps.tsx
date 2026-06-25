@@ -5,6 +5,7 @@ import { speak } from "../../lib/speech";
 import { shuffle, tokenize, normToken } from "../../lib/text";
 import { HighlightedEN } from "../../lib/sentence";
 import { toast } from "../../ui/toast";
+import { audio } from "../../lib/audio";
 
 export function confirmExit(exit: () => void) {
   if (window.confirm("退出本组学习？已完成的词会保留为已学。")) exit();
@@ -84,10 +85,12 @@ export function MatchStep({ w }: { w: Vocab }) {
       np.add(c.key);
       setPaired(np);
       setSel(null);
+      audio.correct();
       if (np.size === count) setTimeout(advance, 400);
     } else {
       setWrong([sel, cid]);
       setSel(null);
+      audio.wrong();
       setTimeout(() => setWrong([]), 400);
     }
   }
@@ -176,8 +179,13 @@ export function ReconstructStep({ w }: { w: Vocab }) {
       }
     });
     setWrong(nw);
-    if (allRight) setTimeout(advance, 300);
-    else toast("有词不对，再看看");
+    if (allRight) {
+      audio.correct();
+      setTimeout(advance, 300);
+    } else {
+      audio.wrong();
+      toast("有词不对，再看看");
+    }
   }
 
   return (
@@ -251,9 +259,11 @@ export function DictateStep({ w }: { w: Vocab }) {
   function submit() {
     if (val.trim().toLowerCase() === w.word.toLowerCase()) {
       setFb("✓ 正确");
+      audio.correct();
       setTimeout(advance, 250);
     } else {
       setFb("再试一次（提示首字母：" + w.word[0] + "）");
+      audio.wrong();
       setVal("");
       inputRef.current?.focus();
     }

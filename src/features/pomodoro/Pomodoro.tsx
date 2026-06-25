@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useStore } from "../../store";
 import { toast } from "../../ui/toast";
+import { audio } from "../../lib/audio";
 
 const DUR = 25 * 60;
 
@@ -21,6 +22,7 @@ export function Pomodoro() {
       setRunning(false);
       setRemain(DUR);
       grantMinute(25);
+      audio.pomodoroEnd();
       toast("一个番茄已成");
     }
   }, [remain]);

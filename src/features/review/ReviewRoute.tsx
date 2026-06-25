@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useStore } from "../../store";
 import { normToken } from "../../lib/text";
 import { BlankedEN } from "../../lib/sentence";
+import { audio } from "../../lib/audio";
 import { pickReviewItem, type ReviewItem } from "./pickItem";
 
 export function ReviewRoute() {
@@ -72,10 +73,12 @@ function FillinReview({ item, onFinish }: { item: ReviewItem; onFinish: (c: bool
     if (!v) return;
     if (normToken(v) === normToken(item.expected)) {
       setFb({ text: "✓ 正确", cls: "right" });
+      audio.correct();
       setTimeout(() => onFinish(true), 400);
     } else {
       const u = used + 1;
       setUsed(u);
+      audio.wrong();
       if (u >= 3) {
         setFb({ text: `× 三次未中。正确答案：${item.expected}`, cls: "wrong" });
         setTimeout(() => onFinish(false), 1400);
@@ -164,10 +167,12 @@ function DictationReview({ item, onFinish }: { item: ReviewItem; onFinish: (c: b
     const acc = right / exp.length;
     if (acc >= 0.9) {
       setFb({ text: `✓ ${(acc * 100).toFixed(0)}% 通过`, cls: "right" });
+      audio.correct();
       setTimeout(() => onFinish(true), 1400);
     } else {
       const u = used + 1;
       setUsed(u);
+      audio.wrong();
       if (u >= 3) {
         setFb({ text: `× 三次未达 90%。正确：${item.sentence!.en}`, cls: "wrong" });
         setTimeout(() => onFinish(false), 2000);

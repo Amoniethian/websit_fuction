@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import { useStore } from "../../store";
 import { ICONS } from "../../lib/icons";
 import { AquariumEngine } from "./engine";
+import { AmbientToggle } from "../audio/AudioControls";
 
 export function Aquarium2D() {
   const inv = useStore((s) => s.inv);
@@ -34,7 +35,10 @@ export function Aquarium2D() {
     <main className="aquarium-wrap">
       <div className="aq-head">
         <h2>海 缸</h2>
-        <div className="legend">小鱼 · 月亮鱼 · 小丑鱼 · 大鱼 · 海龟 · 海葵 · 珊瑚 · 海草</div>
+        <div className="aq-head-right">
+          <div className="legend">小鱼 · 月亮鱼 · 小丑鱼 · 大鱼 · 海龟 · 海葵 · 珊瑚 · 海草</div>
+          <AmbientToggle />
+        </div>
       </div>
       <div className="canvas-frame">
         <canvas ref={canvasRef} />
