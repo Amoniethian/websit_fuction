@@ -355,8 +355,8 @@ canvas { display: block; width: 100%; height: 100%; }
 
 /* ---------- 3D aquarium ---------- */
 .canvas-frame.canvas-3d {
-  background: #f3efe7; aspect-ratio: auto; height: 520px; min-height: 360px;
-  box-shadow: inset 0 0 40px rgba(0,0,0,0.08);
+  background: #000; aspect-ratio: auto; height: 520px; min-height: 360px;
+  box-shadow: inset 0 0 40px rgba(0,0,0,0.25);
 }
 .canvas-frame.canvas-3d canvas { width: 100%; height: 100%; }
 .aq-hint {

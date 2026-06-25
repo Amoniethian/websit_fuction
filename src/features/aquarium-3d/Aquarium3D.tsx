@@ -19,7 +19,7 @@ export function Aquarium3D({
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const engineRef = useRef<Engine | null>(null);
-  const [autoRotate, setAutoRotate] = useState(true);
+  const [autoRotate, setAutoRotate] = useState(false);
   const [arrange, setArrange] = useState(false);
 
   // Create the engine once.

@@ -31,6 +31,8 @@ type FishType = (typeof FISH_TYPES)[number];
 const DECOR_X = (BOX_W / 2) - 1.0;  // placement clamp
 const DECOR_Z = (BOX_D / 2) - 0.9;
 
+const DECOR_SCALE: Partial<Record<DecorType, number>> = { coral: 2.5 };
+
 function lowPolyMat(color: number) {
   return new THREE.MeshStandardMaterial({ color, roughness: 0.55, metalness: 0, flatShading: true });
 }
@@ -60,7 +62,6 @@ export class Aquarium3D {
 
   // atmosphere
   private bubbles: { mesh: THREE.Mesh; speed: number; phase: number }[] = [];
-  private beams: THREE.Mesh[] = [];
   private caustic: THREE.Mesh | null = null;
   private causticTex: THREE.CanvasTexture | null = null;
 
@@ -82,7 +83,7 @@ export class Aquarium3D {
     const h = wrap.clientHeight || 400;
 
     this.scene = new THREE.Scene();
-    this.scene.background = new THREE.Color(0xf3efe7);
+    this.scene.background = new THREE.Color(0x000000);
 
     this.camera = new THREE.PerspectiveCamera(40, w / h, 0.1, 100);
     this.camera.position.set(8, 5, 11);
@@ -102,7 +103,7 @@ export class Aquarium3D {
     this.controls.minPolarAngle = Math.PI / 7;
     this.controls.maxPolarAngle = Math.PI / 2.1;
     this.controls.target.set(0, 0.4, 0);
-    this.controls.autoRotate = true;
+    this.controls.autoRotate = false;
     this.controls.autoRotateSpeed = 0.6;
 
     this.scene.add(new THREE.AmbientLight(0xffffff, 0.55));
@@ -228,6 +229,7 @@ export class Aquarium3D {
       }
       mesh.position.set(item.x, SAND_TOP_Y, item.z);
       mesh.rotation.y = item.rot;
+      mesh.scale.setScalar(DECOR_SCALE[item.type] ?? 1);
     }
   }
 
@@ -304,22 +306,6 @@ export class Aquarium3D {
       );
       this.scene.add(mesh);
       this.bubbles.push({ mesh, speed: 0.2 + Math.random() * 0.4, phase: Math.random() * 6 });
-    }
-
-    // God-ray beams: faint additive planes slanting down from the surface.
-    const beamMat = new THREE.MeshBasicMaterial({
-      color: 0xfff0d0, transparent: true, opacity: 0.05,
-      blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide
-    });
-    for (let i = 0; i < 3; i++) {
-      const beam = new THREE.Mesh(new THREE.PlaneGeometry(1.1, BOX_H + 1.5), beamMat.clone());
-      beam.position.set(-2 + i * 2 + (Math.random() - 0.5), AQ_Y + 0.5, -1 + (Math.random() - 0.5));
-      beam.rotation.z = 0.18;
-      beam.rotation.y = -0.5 + Math.random() * 0.4;
-      beam.userData.base = (beam.material as THREE.MeshBasicMaterial).opacity;
-      beam.userData.phase = Math.random() * 6;
-      this.scene.add(beam);
-      this.beams.push(beam);
     }
 
     // Caustics: animated bright web on the sand.
@@ -670,11 +656,6 @@ export class Aquarium3D {
         b.mesh.position.x = (Math.random() - 0.5) * (BOX_W - 1.4);
         b.mesh.position.z = (Math.random() - 0.5) * (BOX_D - 1.4);
       }
-    }
-    // Beams shimmer.
-    for (const beam of this.beams) {
-      const mat = beam.material as THREE.MeshBasicMaterial;
-      mat.opacity = beam.userData.base * (0.6 + 0.4 * Math.sin(t * 0.6 + beam.userData.phase));
     }
     // Caustics drift + breathe.
     if (this.causticTex && this.caustic) {
