@@ -384,6 +384,15 @@ canvas { display: block; width: 100%; height: 100%; }
 .swatch.active { outline:2px solid var(--accent); outline-offset:2px; }
 .model-status { font-size:11px; color:var(--ink-soft); flex:1; }
 
+/* AI settings */
+.ai-row { display:flex; align-items:center; gap:8px; margin-bottom:8px; }
+.ai-row label { flex:0 0 64px; font-size:12px; color:var(--ink-soft); }
+.ai-row input, .ai-row select {
+  flex:1; padding:6px 8px; border:1px solid var(--line); border-radius:6px;
+  background:var(--paper); font:inherit; font-size:12px; color:var(--ink); min-width:0;
+}
+.ai-note { font-size:11px; color:var(--ink-soft); line-height:1.6; margin:2px 0 8px; }
+
 /* 观赏 (view) mode: hide the panel, let the tank fill the screen */
 .app.view-mode { grid-template-columns: 1fr; }
 .app.view-mode .panel { display:none; }

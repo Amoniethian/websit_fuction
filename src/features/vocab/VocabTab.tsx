@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useStore } from "../../store";
 import { toast } from "../../ui/toast";
+import { AiSettings } from "./AiSettings";
 
 const JSON_EXAMPLE = JSON.stringify(
   [
@@ -124,6 +125,7 @@ export function VocabTab() {
         ))}
         {vocab.length > 200 && <div>…还有 {vocab.length - 200} 个未列出</div>}
       </div>
+      <AiSettings />
       <div className="cos-section" style={{ marginTop: 10 }}>
         <h3>数据 · 云端与本地</h3>
         <div style={{ fontSize: 11, color: "var(--ink-soft)", lineHeight: 1.7 }}>

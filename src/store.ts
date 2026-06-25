@@ -11,7 +11,7 @@ import {
   defaultDecor,
   todayKey
 } from "./types";
-import { enrichConfigFromEnv } from "./lib/llm-enrich";
+import { loadLlmConfig } from "./lib/llmConfig";
 import type { EnrichedWord } from "./lib/llm-enrich";
 import { toast } from "./ui/toast";
 import { audio } from "./lib/audio";
@@ -292,7 +292,7 @@ export const useStore = create<Store>()(
         }
         const id = s.vocab.length === 0 ? 0 : Math.max(...s.vocab.map((v) => v.id)) + 1;
         const entry = normalizeVocab({ word }, id);
-        entry.enrichmentStatus = enrichConfigFromEnv() ? "loading" : "minimal";
+        entry.enrichmentStatus = loadLlmConfig() ? "loading" : "minimal";
         set({ vocab: [...s.vocab, entry] });
         return { id, duplicate: false };
       },

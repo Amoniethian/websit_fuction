@@ -55,6 +55,12 @@ export class Aquarium3D {
   private decorItems: DecorItem[] = [];
   private models: Partial<Record<ModelSlot, THREE.Object3D>> = {};
 
+  // atmosphere
+  private bubbles: { mesh: THREE.Mesh; speed: number; phase: number }[] = [];
+  private beams: THREE.Mesh[] = [];
+  private caustic: THREE.Mesh | null = null;
+  private causticTex: THREE.CanvasTexture | null = null;
+
   private waterColor = 0xb8dcd8;
   private sandColor = 0xc8a874;
 
@@ -109,6 +115,7 @@ export class Aquarium3D {
 
     this.scene.add(this.tankGroup);
     this.buildTank();
+    this.buildAtmosphere();
 
     this.ro = new ResizeObserver(() => this.resize());
     this.ro.observe(wrap);
@@ -276,6 +283,86 @@ export class Aquarium3D {
     } else {
       this.tankGroup.visible = true;
     }
+  }
+
+  /* ---------- atmosphere: bubbles + god rays + caustics ---------- */
+  private buildAtmosphere() {
+    // Rising bubbles
+    const bubbleMat = new THREE.MeshStandardMaterial({
+      color: 0xeaffff, roughness: 0.1, transparent: true, opacity: 0.35
+    });
+    for (let i = 0; i < 26; i++) {
+      const r = 0.02 + Math.random() * 0.05;
+      const mesh = new THREE.Mesh(new THREE.SphereGeometry(r, 6, 5), bubbleMat);
+      mesh.position.set(
+        (Math.random() - 0.5) * (BOX_W - 1.4),
+        TANK_BOTTOM + Math.random() * BOX_H,
+        (Math.random() - 0.5) * (BOX_D - 1.4)
+      );
+      this.scene.add(mesh);
+      this.bubbles.push({ mesh, speed: 0.2 + Math.random() * 0.4, phase: Math.random() * 6 });
+    }
+
+    // God-ray beams: faint additive planes slanting down from the surface.
+    const beamMat = new THREE.MeshBasicMaterial({
+      color: 0xfff0d0, transparent: true, opacity: 0.05,
+      blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide
+    });
+    for (let i = 0; i < 3; i++) {
+      const beam = new THREE.Mesh(new THREE.PlaneGeometry(1.1, BOX_H + 1.5), beamMat.clone());
+      beam.position.set(-2 + i * 2 + (Math.random() - 0.5), AQ_Y + 0.5, -1 + (Math.random() - 0.5));
+      beam.rotation.z = 0.18;
+      beam.rotation.y = -0.5 + Math.random() * 0.4;
+      beam.userData.base = (beam.material as THREE.MeshBasicMaterial).opacity;
+      beam.userData.phase = Math.random() * 6;
+      this.scene.add(beam);
+      this.beams.push(beam);
+    }
+
+    // Caustics: animated bright web on the sand.
+    this.causticTex = this.makeCausticTexture();
+    this.causticTex.wrapS = this.causticTex.wrapT = THREE.RepeatWrapping;
+    this.causticTex.repeat.set(2, 1.5);
+    const cMat = new THREE.MeshBasicMaterial({
+      map: this.causticTex, transparent: true, opacity: 0.22,
+      blending: THREE.AdditiveBlending, depthWrite: false
+    });
+    this.caustic = new THREE.Mesh(new THREE.PlaneGeometry(BOX_W - 0.2, BOX_D - 0.2), cMat);
+    this.caustic.rotation.x = -Math.PI / 2;
+    this.caustic.position.y = SAND_TOP_Y + 0.03;
+    this.scene.add(this.caustic);
+  }
+
+  private makeCausticTexture(): THREE.CanvasTexture {
+    const size = 256;
+    const c = document.createElement("canvas");
+    c.width = c.height = size;
+    const ctx = c.getContext("2d")!;
+    const img = ctx.createImageData(size, size);
+    // Sum of integer-frequency sine waves so the pattern tiles seamlessly.
+    const waves: { nx: number; ny: number; ph: number }[] = [];
+    for (let k = 0; k < 6; k++) {
+      const nx = (1 + Math.floor(Math.random() * 3)) * (Math.random() < 0.5 ? -1 : 1);
+      const ny = (1 + Math.floor(Math.random() * 3)) * (Math.random() < 0.5 ? -1 : 1);
+      waves.push({ nx, ny, ph: Math.random() * Math.PI * 2 });
+    }
+    for (let y = 0; y < size; y++) {
+      for (let x = 0; x < size; x++) {
+        let v = 0;
+        for (const w of waves) {
+          v += Math.sin((w.nx * x / size + w.ny * y / size) * Math.PI * 2 + w.ph);
+        }
+        const n = Math.max(0, v / waves.length * 0.5 + 0.5);
+        const b = Math.pow(n, 4) * 255;
+        const i = (y * size + x) * 4;
+        img.data[i] = img.data[i + 1] = img.data[i + 2] = 255;
+        img.data[i + 3] = b;
+      }
+    }
+    ctx.putImageData(img, 0, 0);
+    const tex = new THREE.CanvasTexture(c);
+    tex.colorSpace = THREE.SRGBColorSpace;
+    return tex;
   }
 
   /* ---------- factories ---------- */
@@ -560,6 +647,30 @@ export class Aquarium3D {
         f.userData.tail.rotation.x = Math.sin(sw.phase) * 0.3;
       }
     }
+
+    // Bubbles rise + wobble, recycle at the surface.
+    const t = now * 0.001;
+    for (const b of this.bubbles) {
+      b.mesh.position.y += b.speed * dt;
+      b.mesh.position.x += Math.sin(t + b.phase) * 0.12 * dt;
+      if (b.mesh.position.y > WATER_Y) {
+        b.mesh.position.y = TANK_BOTTOM + 0.2;
+        b.mesh.position.x = (Math.random() - 0.5) * (BOX_W - 1.4);
+        b.mesh.position.z = (Math.random() - 0.5) * (BOX_D - 1.4);
+      }
+    }
+    // Beams shimmer.
+    for (const beam of this.beams) {
+      const mat = beam.material as THREE.MeshBasicMaterial;
+      mat.opacity = beam.userData.base * (0.6 + 0.4 * Math.sin(t * 0.6 + beam.userData.phase));
+    }
+    // Caustics drift + breathe.
+    if (this.causticTex && this.caustic) {
+      this.causticTex.offset.x = (t * 0.012) % 1;
+      this.causticTex.offset.y = (t * 0.008) % 1;
+      (this.caustic.material as THREE.MeshBasicMaterial).opacity = 0.18 + 0.08 * Math.sin(t * 0.5);
+    }
+
     this.controls.update();
     this.renderer.render(this.scene, this.camera);
   }

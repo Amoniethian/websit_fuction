@@ -1,16 +1,20 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useStore } from "../../store";
 import { toast } from "../../ui/toast";
-import { enrichConfigFromEnv, enrichWord } from "../../lib/llm-enrich";
+import { enrichWord } from "../../lib/llm-enrich";
+import { loadLlmConfig, subscribeLlm } from "../../lib/llmConfig";
 
 /** Quick-capture input: type a word, hit enter, optionally enrich via LLM. */
 export function QuickAdd() {
   const [val, setVal] = useState("");
+  const [cfgVer, setCfgVer] = useState(0);
+  useEffect(() => subscribeLlm(() => setCfgVer((v) => v + 1)), []);
   const vocab = useStore((s) => s.vocab);
   const addQuickWord = useStore((s) => s.addQuickWord);
   const applyEnrichment = useStore((s) => s.applyEnrichment);
   const setEnrichmentStatus = useStore((s) => s.setEnrichmentStatus);
-  const cfg = enrichConfigFromEnv();
+  const cfg = loadLlmConfig();
+  void cfgVer;
 
   async function doAdd() {
     const v = val.trim();
@@ -58,7 +62,7 @@ export function QuickAdd() {
       <div className="qa-status">
         {cfg
           ? "已连接 AI 富化：输入英文词，自动补音标、释义、例句"
-          : "AI 富化未连接：保存为简单词条（在 .env 配置 VITE_LLM_* 后启用）"}
+          : "AI 富化未连接：保存为简单词条（去「词库」页填入 API key 后启用）"}
       </div>
       <div className="qa-pending">
         {pending.map((w) => (

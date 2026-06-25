@@ -18,6 +18,8 @@ A vocabulary study app structured as a slow-living virtual aquarium.
   - **布置模式**：拖动缸里的造景（岩石/海葵/珊瑚/海草）重新摆放，位置本地保存
   - **GLB 替换**：鱼 / 造景 / 整个缸子都能上传 Fab 的 `.glb`（自动按包围盒缩放）替换占位模型
   - **配色**：水色 5 选 1、沙色 4 选 1
+  - **氛围**：上升气泡、顶部丁达尔光束、沙底动态焦散
+- **AI 速记富化**：在「词库」页填入自己的 LLM API key（仅存本机），速记新词即自动补音标 / 释义 / 例句；支持 OpenAI 兼容接口（OpenAI / OpenRouter / DeepSeek / Moonshot…）
 - **音频**：Web Audio 合成的环境音（深海白噪 + 缓慢和声垫 + 气泡 / 水流）＝ BGM；反馈音用于答对 / 答错、新生物诞生、番茄结束、整套掌握。两套独立开关 + 音量，设置本地持久化
 - **套级掌握**：每 50 词为一套，正确率 ≥ 90% 升级为整句默写
 
@@ -84,7 +86,9 @@ npm run preview     # 预览生产构建
 
 ## AI 富化（可选）
 
-复制 `.env.example` 为 `.env`，填入任一 OpenAI 兼容端点：
+**推荐**：直接在 app 的「词库」页 → 「AI 速记富化」里选服务商、填 API key（只存你本机浏览器，不进代码、不上传），保存即用。支持 OpenAI 兼容接口（OpenAI / OpenRouter / DeepSeek / Moonshot）。浏览器直连个别服务商可能被 CORS 拦截，OpenRouter 最稳。
+
+本地开发也可用 `.env`（复制 `.env.example`）：
 
 ```
 VITE_LLM_ENDPOINT=https://api.openai.com/v1/chat/completions
@@ -92,10 +96,7 @@ VITE_LLM_API_KEY=sk-...
 VITE_LLM_MODEL=gpt-4o-mini
 ```
 
-配置后，学习页顶部「速记」输入新词会自动补全音标、释义、例句。
-未配置时，新词以简单格式入库，可手动补释义。
-
-> 生产环境不要把 key 打进客户端——用一个薄代理（Cloudflare Worker / Vercel Edge）
+> 公开站点不要把 key 写进构建。若要隐藏 key，用一个薄代理（Cloudflare Worker / Vercel Edge）
 > 转发请求、把 key 留在服务端。`src/lib/llm-enrich.ts` 文末有示例。
 
 ## Deployment
