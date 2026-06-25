@@ -1,21 +1,10 @@
-# Dependencies
 node_modules/
-
-# Build output
 dist/
-build/
-.output/
-
-# Env & secrets
+.DS_Store
 .env
 .env.local
-.env.*.local
-
-# Logs
 *.log
-npm-debug.log*
+.vite/
 
-# Editor / OS
-.DS_Store
-.vscode/
-.idea/
+# TS build info
+*.tsbuildinfo
