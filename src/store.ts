@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import localforage from "localforage";
-import type { State, Vocab, CreatureType, Sentence, DecorType, DecorItem } from "./types";
+import type { State, Vocab, CreatureType, Sentence, DecorType, DecorItem, SyncData } from "./types";
 import {
   CONV,
   PENALTY,
@@ -79,6 +79,10 @@ type Actions = {
   // 3D decor
   moveDecor: (id: string, x: number, z: number) => void;
   syncDecor: () => void;
+  // cloud sync
+  exportState: () => SyncData;
+  importState: (d: SyncData) => void;
+  markSynced: (iso: string) => void;
   resetAll: () => void;
 };
 
@@ -422,6 +426,31 @@ export const useStore = create<Store>()(
         set({ tankDecor: get().tankDecor.map((d) => (d.id === id ? { ...d, x, z } : d)) }),
 
       syncDecor: () => set({ tankDecor: reconcileDecor(get().tankDecor, get().inv) }),
+
+      exportState: () => {
+        const s = get();
+        return {
+          vocab: s.vocab, inv: s.inv, today: s.today,
+          rewardBuckets: s.rewardBuckets, timeBuckets: s.timeBuckets,
+          cosmetics: s.cosmetics, tankDecor: s.tankDecor,
+          _syncedAt: s._syncedAt, _device: s._device
+        };
+      },
+
+      importState: (d) =>
+        set({
+          vocab: d.vocab ?? get().vocab,
+          inv: d.inv ?? get().inv,
+          today: d.today ?? get().today,
+          rewardBuckets: d.rewardBuckets ?? get().rewardBuckets,
+          timeBuckets: d.timeBuckets ?? get().timeBuckets,
+          cosmetics: d.cosmetics ?? get().cosmetics,
+          tankDecor: reconcileDecor(d.tankDecor ?? get().tankDecor, d.inv ?? get().inv),
+          _syncedAt: d._syncedAt,
+          _device: d._device
+        }),
+
+      markSynced: (iso) => set({ _syncedAt: iso }),
 
       resetAll: () => set(freshState())
     }),

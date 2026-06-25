@@ -20,6 +20,7 @@ A vocabulary study app structured as a slow-living virtual aquarium.
   - **配色**：水色 5 选 1、沙色 4 选 1
   - **氛围**：上升气泡、顶部丁达尔光束、沙底动态焦散
 - **AI 速记富化**：在「词库」页填入自己的 LLM API key（仅存本机），速记新词即自动补音标 / 释义 / 例句；支持 OpenAI 兼容接口（OpenAI / OpenRouter / DeepSeek / Moonshot…）
+- **跨设备同步**（Supabase）：在「词库」页填 Project URL + anon key、邮箱登录，进度改动后自动上传，换设备登录同一账号即同步（按时间戳「最后写入获胜」）
 - **音频**：Web Audio 合成的环境音（深海白噪 + 缓慢和声垫 + 气泡 / 水流）＝ BGM；反馈音用于答对 / 答错、新生物诞生、番茄结束、整套掌握。两套独立开关 + 音量，设置本地持久化
 - **套级掌握**：每 50 词为一套，正确率 ≥ 90% 升级为整句默写
 

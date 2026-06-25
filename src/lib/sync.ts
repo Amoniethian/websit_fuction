@@ -1,0 +1,217 @@
+import { createClient, type SupabaseClient } from "@supabase/supabase-js";
+import { loadSupabaseConfig } from "./supabaseConfig";
+import { useStore } from "../store";
+import { toast } from "../ui/toast";
+
+/**
+ * Cross-device sync via Supabase.
+ *
+ * Table (run once in the Supabase SQL editor):
+ *
+ *   create table if not exists cihai_state (
+ *     user_id uuid primary key references auth.users on delete cascade,
+ *     data jsonb not null,
+ *     updated_at timestamptz not null default now()
+ *   );
+ *   alter table cihai_state enable row level security;
+ *   create policy "own row" on cihai_state
+ *     for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
+ *
+ * Strategy: pull on login, last-write-wins by timestamp, debounced push on change.
+ */
+
+const TABLE = "cihai_state";
+
+export type SyncStatus = {
+  state: "off" | "signedOut" | "idle" | "syncing" | "error";
+  email?: string;
+  message?: string;
+};
+
+let status: SyncStatus = { state: "off" };
+const listeners = new Set<(s: SyncStatus) => void>();
+function setStatus(s: SyncStatus) {
+  status = s;
+  listeners.forEach((l) => l(s));
+}
+export function getSyncStatus() {
+  return status;
+}
+export function subscribeSync(l: (s: SyncStatus) => void): () => void {
+  listeners.add(l);
+  return () => {
+    listeners.delete(l);
+  };
+}
+
+let client: SupabaseClient | null = null;
+let clientUrl = "";
+function getClient(): SupabaseClient | null {
+  const cfg = loadSupabaseConfig();
+  if (!cfg) return null;
+  if (!client || clientUrl !== cfg.url) {
+    client = createClient(cfg.url, cfg.anonKey, {
+      auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: false }
+    });
+    clientUrl = cfg.url;
+  }
+  return client;
+}
+
+async function getUser() {
+  const c = getClient();
+  if (!c) return null;
+  const { data } = await c.auth.getUser();
+  return data.user ?? null;
+}
+
+/* ---------- content fingerprint (avoid push loops) ---------- */
+let lastContent = "";
+function contentKey(): string {
+  const s = useStore.getState().exportState();
+  const { _syncedAt, _device, ...rest } = s;
+  return JSON.stringify(rest);
+}
+
+/* ---------- auth ---------- */
+export async function signUp(email: string, password: string) {
+  const c = getClient();
+  if (!c) return toast("请先填 Supabase 配置");
+  const { error } = await c.auth.signUp({ email, password });
+  if (error) {
+    setStatus({ state: "error", message: error.message });
+    toast("注册失败：" + error.message);
+  } else {
+    toast("注册成功，请登录（若开了邮箱验证，先去邮箱确认）");
+  }
+}
+
+export async function signIn(email: string, password: string) {
+  const c = getClient();
+  if (!c) return toast("请先填 Supabase 配置");
+  setStatus({ state: "syncing", message: "登录中…" });
+  const { data, error } = await c.auth.signInWithPassword({ email, password });
+  if (error) {
+    setStatus({ state: "error", message: error.message });
+    toast("登录失败：" + error.message);
+    return;
+  }
+  setStatus({ state: "idle", email: data.user?.email });
+  await afterLogin();
+}
+
+export async function signOut() {
+  const c = getClient();
+  if (c) await c.auth.signOut();
+  setStatus({ state: "signedOut" });
+  toast("已退出登录");
+}
+
+/* ---------- pull / push ---------- */
+async function pull(): Promise<{ data: any; updated_at: string } | null> {
+  const c = getClient();
+  const u = await getUser();
+  if (!c || !u) return null;
+  const { data, error } = await c.from(TABLE).select("data, updated_at").eq("user_id", u.id).maybeSingle();
+  if (error) {
+    setStatus({ state: "error", email: u.email, message: error.message });
+    return null;
+  }
+  return data as any;
+}
+
+export async function pushNow(): Promise<void> {
+  const c = getClient();
+  const u = await getUser();
+  if (!c || !u) return;
+  setStatus({ state: "syncing", email: u.email, message: "上传中…" });
+  const snap = useStore.getState().exportState();
+  const now = new Date().toISOString();
+  snap._syncedAt = now;
+  snap._device = navigator.userAgent.slice(0, 48);
+  const { error } = await c.from(TABLE).upsert({ user_id: u.id, data: snap, updated_at: now });
+  if (error) {
+    setStatus({ state: "error", email: u.email, message: error.message });
+    toast("同步失败：" + error.message);
+    return;
+  }
+  useStore.getState().markSynced(now);
+  lastContent = contentKey();
+  setStatus({ state: "idle", email: u.email, message: "已同步" });
+}
+
+export async function pullNow(): Promise<void> {
+  const remote = await pull();
+  const u = await getUser();
+  if (remote?.data) {
+    useStore.getState().importState(remote.data);
+    lastContent = contentKey();
+    setStatus({ state: "idle", email: u?.email, message: "已载入云端" });
+    toast("已从云端载入进度");
+  } else {
+    toast("云端暂无存档");
+  }
+}
+
+async function afterLogin() {
+  const remote = await pull();
+  const u = await getUser();
+  const localSyncedAt = useStore.getState()._syncedAt;
+  if (remote?.data) {
+    const remoteNewer = !localSyncedAt || new Date(remote.updated_at) > new Date(localSyncedAt);
+    if (remoteNewer) {
+      useStore.getState().importState(remote.data);
+      lastContent = contentKey();
+      toast("已从云端载入进度");
+      setStatus({ state: "idle", email: u?.email, message: "已载入云端" });
+    } else {
+      await pushNow();
+      toast("已把本地进度推送到云端");
+    }
+  } else {
+    await pushNow();
+    toast("已创建云端存档");
+  }
+}
+
+/* ---------- auto-push on change ---------- */
+let timer: number | undefined;
+function scheduleAutoPush() {
+  if (!getClient()) return;
+  window.clearTimeout(timer);
+  timer = window.setTimeout(async () => {
+    const u = await getUser();
+    if (!u) return;
+    if (contentKey() === lastContent) return;
+    await pushNow();
+  }, 8000);
+}
+
+let started = false;
+export function initSync() {
+  if (started) return;
+  started = true;
+  useStore.subscribe(scheduleAutoPush);
+  const c = getClient();
+  if (!c) {
+    setStatus({ state: "off" });
+    return;
+  }
+  c.auth.getSession().then(({ data }) => {
+    if (data.session) {
+      setStatus({ state: "idle", email: data.session.user.email });
+      lastContent = contentKey();
+      afterLogin();
+    } else {
+      setStatus({ state: "signedOut" });
+    }
+  });
+}
+
+/** Re-evaluate after the user edits the Supabase config. */
+export function reinitSync() {
+  client = null;
+  clientUrl = "";
+  started = false;
+  initSync();
+}

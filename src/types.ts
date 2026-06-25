@@ -97,6 +97,19 @@ export type State = {
   _device?: string;
 };
 
+/** The subset of state that syncs to the cloud (excludes transient sessions + local-only blobs). */
+export type SyncData = {
+  vocab: Vocab[];
+  inv: Inventory;
+  today: TodayStats;
+  rewardBuckets: RewardBuckets;
+  timeBuckets: TimeBuckets;
+  cosmetics: Cosmetics;
+  tankDecor: DecorItem[];
+  _syncedAt?: string;
+  _device?: string;
+};
+
 /** Conversion thresholds (50 small fish → keep 25 + medal, etc.) */
 export const CONV: { type: CreatureType; threshold: number; keep: number; label: string }[] = [
   { type: "smallFish", threshold: 50, keep: 25, label: "小鱼" },

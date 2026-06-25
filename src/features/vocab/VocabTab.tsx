@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useStore } from "../../store";
 import { toast } from "../../ui/toast";
 import { AiSettings } from "./AiSettings";
+import { CloudSync } from "../sync/CloudSync";
 
 const JSON_EXAMPLE = JSON.stringify(
   [
@@ -126,13 +127,7 @@ export function VocabTab() {
         {vocab.length > 200 && <div>…还有 {vocab.length - 200} 个未列出</div>}
       </div>
       <AiSettings />
-      <div className="cos-section" style={{ marginTop: 10 }}>
-        <h3>数据 · 云端与本地</h3>
-        <div style={{ fontSize: 11, color: "var(--ink-soft)", lineHeight: 1.7 }}>
-          当前进度自动保存在本机（IndexedDB）。Google Drive 云同步为 v0.3 计划项，
-          接口已在 <code>src/lib/drive-sync.ts</code> 备好，配置 <code>VITE_GOOGLE_CLIENT_ID</code> 后接入。
-        </div>
-      </div>
+      <CloudSync />
     </div>
   );
 }

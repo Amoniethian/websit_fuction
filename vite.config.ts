@@ -12,7 +12,7 @@ export default defineConfig({
       // Split Three.js into its own chunk — it rarely changes, so browsers
       // can cache it across app updates.
       output: {
-        manualChunks: { three: ["three"] }
+        manualChunks: { three: ["three"], supabase: ["@supabase/supabase-js"] }
       }
     }
   },

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useStore } from "./store";
 import { audio } from "./lib/audio";
+import { initSync } from "./lib/sync";
 import { LearnRoute } from "./features/learn/LearnRoute";
 import { ReviewRoute } from "./features/review/ReviewRoute";
 import { Pomodoro } from "./features/pomodoro/Pomodoro";
@@ -28,6 +29,11 @@ export function App() {
     const onGesture = () => audio.ensure();
     window.addEventListener("pointerdown", onGesture, { once: true });
     return () => window.removeEventListener("pointerdown", onGesture);
+  }, []);
+
+  // Restore cloud session + wire auto-sync (no-op until Supabase is configured).
+  useEffect(() => {
+    initSync();
   }, []);
 
   return (
