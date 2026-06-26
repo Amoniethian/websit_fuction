@@ -47,7 +47,7 @@ export function Pomodoro() {
         <button onClick={() => pomodoro.reset()}>重置</button>
       </div>
 
-      <div className="pom-stat">今日累计 {Math.round(minutes)} 分钟 · 可切到别的页面，计时继续走</div>
+      <div className="pom-stat">今日累计 {Math.round(minutes)} 分钟 · 切页面 / 刷新都不打断计时</div>
       <div className="pom-stat">20 分 → 海草 · 40 分 → 海葵 · 60 分 → 珊瑚</div>
     </div>
   );
