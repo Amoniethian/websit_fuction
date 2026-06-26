@@ -109,4 +109,6 @@ VITE_LLM_MODEL=gpt-4o-mini
 
 ## License
 
-Personal use. If you ever publish this, MIT.
+**保留所有权利 (All rights reserved)** — 见 [`LICENSE`](./LICENSE)。
+源码可见 ≠ 允许复制、修改、分发或商用；未经授权请勿照搬。
+（个人自用、学习参考没问题。）
