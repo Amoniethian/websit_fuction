@@ -190,7 +190,7 @@ export class Aquarium3D {
     } else {
       try {
         const { scene, animations } = await this.loadGLB(url);
-        const targetMax = slot === "tank" ? BOX_W : (FISH_TYPES as readonly string[]).includes(slot) ? 0.9 : 1.2;
+        const targetMax = slot === "tank" ? BOX_W : (FISH_TYPES as readonly string[]).includes(slot) ? 0.6 : 1.2;
         this.fit(scene, targetMax);
         scene.traverse((m) => {
           if ((m as THREE.Mesh).isMesh) {
@@ -681,12 +681,47 @@ export class Aquarium3D {
     this.last = now;
     const halfX = BOX_W / 2 - 0.7, halfZ = BOX_D / 2 - 0.7;
     const yTop = AQ_Y + BOX_H / 2 - 0.7, yBot = TANK_BOTTOM + 0.7;
+
+    // Small fish school once there are 3+ of them: gather the shared centre and
+    // average heading so each one can cohere / align / separate (boids).
+    const school = this.fish.filter((f) => f.userData.type === "smallFish" && f.userData.swim);
+    const schooling = school.length >= 3;
+    let schoolCenter: THREE.Vector3 | null = null;
+    let schoolVel: THREE.Vector3 | null = null;
+    if (schooling) {
+      schoolCenter = new THREE.Vector3();
+      schoolVel = new THREE.Vector3();
+      for (const f of school) {
+        schoolCenter.add(f.position);
+        schoolVel.add(f.userData.swim.vel);
+      }
+      schoolCenter.multiplyScalar(1 / school.length);
+      schoolVel.multiplyScalar(1 / school.length);
+    }
+
     for (const f of this.fish) {
       const sw = f.userData.swim;
       if (!sw) continue;
-      sw.vel.x += (Math.random() - 0.5) * 0.5 * dt;
-      sw.vel.y += (Math.random() - 0.5) * 0.3 * dt;
-      sw.vel.z += (Math.random() - 0.5) * 0.5 * dt;
+      if (schooling && f.userData.type === "smallFish") {
+        // Cohesion toward the shoal centre, alignment to its heading,
+        // separation from anyone too close — plus a little jitter.
+        sw.vel.add(schoolCenter!.clone().sub(f.position).multiplyScalar(0.9 * dt));
+        sw.vel.add(schoolVel!.clone().sub(sw.vel).multiplyScalar(1.4 * dt));
+        const sep = new THREE.Vector3();
+        for (const o of school) {
+          if (o === f) continue;
+          const d = f.position.distanceTo(o.position);
+          if (d > 0 && d < 0.55) sep.add(f.position.clone().sub(o.position).multiplyScalar((0.55 - d) / 0.55));
+        }
+        sw.vel.add(sep.multiplyScalar(2.2 * dt));
+        sw.vel.x += (Math.random() - 0.5) * 0.15 * dt;
+        sw.vel.y += (Math.random() - 0.5) * 0.1 * dt;
+        sw.vel.z += (Math.random() - 0.5) * 0.15 * dt;
+      } else {
+        sw.vel.x += (Math.random() - 0.5) * 0.5 * dt;
+        sw.vel.y += (Math.random() - 0.5) * 0.3 * dt;
+        sw.vel.z += (Math.random() - 0.5) * 0.5 * dt;
+      }
       const targ = sw.speed * 0.6;
       sw.vel.multiplyScalar(targ / Math.max(0.001, sw.vel.length()));
       if (f.position.x > halfX) sw.vel.x = -Math.abs(sw.vel.x);
