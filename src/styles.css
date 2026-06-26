@@ -438,6 +438,16 @@ canvas { display: block; width: 100%; height: 100%; }
   border-radius: 8px; padding: 3px 10px; font-size: 12px; cursor: pointer; line-height: 1.4;
 }
 .arrange-panel .ap-btn.on { background: var(--hl); border-color: var(--accent); }
+
+.orient-row {
+  display: flex; gap: 12px; align-items: center;
+  margin: 2px 0 12px; padding: 8px 10px;
+  background: var(--surface); border: 1px solid var(--line); border-radius: 10px;
+}
+.orient-row canvas { border-radius: 8px; background: rgba(0,0,0,0.14); flex: 0 0 auto; }
+.orient-ctrls { display: flex; flex-direction: column; gap: 8px; }
+.orient-hint { font-size: 11px; color: var(--ink-soft); line-height: 1.6; }
+.orient-btns { display: flex; gap: 6px; }
 .aq-btn {
   border:1px solid var(--line); background:var(--paper); color:var(--ink-soft);
   border-radius:14px; padding:3px 10px; font-size:11px; letter-spacing:1px; cursor:pointer;

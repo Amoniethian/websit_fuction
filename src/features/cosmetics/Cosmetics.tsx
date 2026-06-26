@@ -13,6 +13,7 @@ import {
   cyclePitch,
   type ModelSlot
 } from "../aquarium-3d/modelStore";
+import { OrientPreview } from "../aquarium-3d/OrientPreview";
 import { uploadModelFile, deleteModelFromCloud } from "../../lib/sync";
 import { THEMES, getTheme, setTheme, subscribeTheme } from "../../lib/theme";
 
@@ -119,6 +120,7 @@ export function Cosmetics() {
 function ModelRow({ slot, label, replaced }: { slot: ModelSlot; label: string; replaced: boolean }) {
   const input = useRef<HTMLInputElement>(null);
   return (
+    <>
     <div className="cos-row">
       <label>{label}</label>
       <input
@@ -141,12 +143,6 @@ function ModelRow({ slot, label, replaced }: { slot: ModelSlot; label: string; r
       />
       <button className="file-btn" onClick={() => input.current?.click()}>选择 .glb</button>
       <span className="model-status">{replaced ? "✓ 已替换" : "占位"}</span>
-      {replaced && FISH_SLOTS.has(slot) && (
-        <>
-          <button className="file-btn" title="转 90° 调整左右朝向" onClick={() => { cycleHeading(slot); toast(label + " 转了 90°"); }}>↻ 转向</button>
-          <button className="file-btn" title="翻正：把躺平的模型立起来（绕另一个轴转 90°）" onClick={() => { cyclePitch(slot); toast(label + " 翻正 90°"); }}>⤧ 翻正</button>
-        </>
-      )}
       {replaced && (
         <button
           className="clear"
@@ -156,5 +152,18 @@ function ModelRow({ slot, label, replaced }: { slot: ModelSlot; label: string; r
         </button>
       )}
     </div>
+    {replaced && FISH_SLOTS.has(slot) && (
+      <div className="orient-row">
+        <OrientPreview slot={slot} />
+        <div className="orient-ctrls">
+          <div className="orient-hint">把鱼头转到<b>红色箭头方向</b>（= 游动方向），点按钮实时调整：</div>
+          <div className="orient-btns">
+            <button className="file-btn" title="绕竖直轴转 90°：改左右朝向" onClick={() => cycleHeading(slot)}>↻ 转向</button>
+            <button className="file-btn" title="翻正：把躺平/侧躺的模型立起来" onClick={() => cyclePitch(slot)}>⤧ 翻正</button>
+          </div>
+        </div>
+      </div>
+    )}
+    </>
   );
 }
