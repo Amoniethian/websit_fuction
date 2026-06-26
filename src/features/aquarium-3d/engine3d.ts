@@ -6,6 +6,7 @@ import type { Inventory, DecorItem, DecorType } from "../../types";
 import { getModel, getHeading, hasModel, type ModelSlot } from "./modelStore";
 
 type ModelTemplate = { object: THREE.Object3D; animations: THREE.AnimationClip[] };
+export type Spoken = { en: string; zh: string; word?: string };
 
 /**
  * 3D glass aquarium, ported from legacy/cihai-3d-preview.html and extended:
@@ -75,6 +76,13 @@ export class Aquarium3D {
   private pointer = new THREE.Vector2();
   private dragPlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), -SAND_TOP_Y);
   private dragging: THREE.Object3D | null = null;
+
+  // tap-to-speak (a fish shows a random example sentence in a bubble)
+  private downX = 0;
+  private downY = 0;
+  private bubbleFish: THREE.Object3D | null = null;
+  private sentenceProvider: (() => Spoken | null) | null = null;
+  private onBubble: ((s: Spoken | null) => void) | null = null;
 
   constructor(canvas: HTMLCanvasElement) {
     this.cv = canvas;
@@ -569,6 +577,8 @@ export class Aquarium3D {
     this.pointer.y = -((e.clientY - r.top) / r.height) * 2 + 1;
   }
   private onPointerDown = (e: PointerEvent) => {
+    this.downX = e.clientX;
+    this.downY = e.clientY;
     if (!this.arrange) return;
     this.setPointer(e);
     this.raycaster.setFromCamera(this.pointer, this.camera);
@@ -603,15 +613,57 @@ export class Aquarium3D {
       this.dragging.position.z = z;
     }
   };
-  private onPointerUp = () => {
+  private onPointerUp = (e: PointerEvent) => {
     if (this.dragging) {
       const id = this.dragging.userData.id as string;
       this.onMove?.(id, this.dragging.position.x, this.dragging.position.z);
       this.dragging = null;
       this.controls.enabled = true;
       this.cv.style.cursor = this.arrange ? "grab" : "";
+      return;
     }
+    if (this.arrange) return;
+    // A tap (not an orbit drag) selects a fish to speak.
+    const moved = Math.hypot(e.clientX - this.downX, e.clientY - this.downY);
+    if (moved < 6) this.handleTap(e);
   };
+
+  private handleTap(e: PointerEvent) {
+    this.setPointer(e);
+    this.raycaster.setFromCamera(this.pointer, this.camera);
+    const hits = this.raycaster.intersectObjects(this.fish, true);
+    if (hits.length) {
+      const top = this.fish.find((f) => this.isAncestor(f, hits[0].object)) || null;
+      this.bubbleFish = top;
+      const sentence = top ? (this.sentenceProvider?.() ?? null) : null;
+      this.onBubble?.(sentence);
+    } else {
+      // tap empty water → dismiss
+      this.bubbleFish = null;
+      this.onBubble?.(null);
+    }
+  }
+
+  setSentenceProvider(fn: () => Spoken | null) {
+    this.sentenceProvider = fn;
+  }
+  setOnBubble(fn: (s: Spoken | null) => void) {
+    this.onBubble = fn;
+  }
+  /** Screen position (canvas px) of the speaking fish, or null. */
+  projectBubble(): { x: number; y: number } | null {
+    if (!this.bubbleFish || !this.fish.includes(this.bubbleFish)) {
+      if (this.bubbleFish) {
+        this.bubbleFish = null;
+        this.onBubble?.(null);
+      }
+      return null;
+    }
+    const v = this.bubbleFish.position.clone().project(this.camera);
+    if (v.z > 1) return null;
+    const r = this.cv.getBoundingClientRect();
+    return { x: (v.x * 0.5 + 0.5) * r.width, y: (-v.y * 0.5 + 0.5) * r.height };
+  }
 
   /* ---------- loop ---------- */
   private frame(now: number) {

@@ -1,9 +1,20 @@
 import { useEffect, useRef, useState } from "react";
 import { useStore } from "../../store";
 import { ICONS } from "../../lib/icons";
+import { HighlightedEN } from "../../lib/sentence";
 import { AmbientToggle } from "../audio/AudioControls";
-import { Aquarium3D as Engine } from "./engine3d";
+import { Aquarium3D as Engine, type Spoken } from "./engine3d";
 import { initModels, subscribeModels } from "./modelStore";
+
+/** Pick a random example sentence from a learned word, for the fish to "speak". */
+function randomLearnedSentence(): Spoken | null {
+  const vocab = useStore.getState().vocab;
+  const pool = vocab.filter((w) => w.learned && w.sentences.length > 0);
+  if (!pool.length) return null;
+  const w = pool[Math.floor(Math.random() * pool.length)];
+  const s = w.sentences[Math.floor(Math.random() * w.sentences.length)];
+  return { en: s.en, zh: s.zh, word: w.word };
+}
 
 export function Aquarium3D({
   viewMode,
@@ -19,8 +30,10 @@ export function Aquarium3D({
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const engineRef = useRef<Engine | null>(null);
+  const bubbleRef = useRef<HTMLDivElement>(null);
   const [autoRotate, setAutoRotate] = useState(false);
   const [arrange, setArrange] = useState(false);
+  const [bubble, setBubble] = useState<Spoken | null>(null);
 
   // Create the engine once.
   useEffect(() => {
@@ -30,6 +43,8 @@ export function Aquarium3D({
     engine.setPalette(palette.water, palette.sand);
     engine.setDecor(tankDecor);
     engine.setFish(inv);
+    engine.setSentenceProvider(randomLearnedSentence);
+    engine.setOnBubble(setBubble);
     engine.start();
     initModels().then(() => engine.loadAllModels());
     const unsub = subscribeModels((slot) => engine.refreshModel(slot));
@@ -39,6 +54,26 @@ export function Aquarium3D({
       engineRef.current = null;
     };
   }, []);
+
+  // While a bubble is shown, follow the fish each frame (via ref, no re-render).
+  useEffect(() => {
+    if (!bubble) return;
+    let raf = 0;
+    const follow = () => {
+      const p = engineRef.current?.projectBubble();
+      const el = bubbleRef.current;
+      if (p && el) {
+        el.style.left = p.x + "px";
+        el.style.top = p.y + "px";
+        el.style.opacity = "1";
+      } else if (el) {
+        el.style.opacity = "0";
+      }
+      raf = requestAnimationFrame(follow);
+    };
+    raf = requestAnimationFrame(follow);
+    return () => cancelAnimationFrame(raf);
+  }, [bubble]);
 
   useEffect(() => { engineRef.current?.setFish(inv); }, [inv]);
   useEffect(() => { engineRef.current?.setDecor(tankDecor); }, [tankDecor]);
@@ -75,7 +110,13 @@ export function Aquarium3D({
       </div>
       <div className="canvas-frame canvas-3d">
         <canvas ref={canvasRef} />
-        <div className="aq-hint">{arrange ? "布置中：拖动缸里的造景摆放" : "左键拖动旋转 · 滚轮缩放"}</div>
+        {bubble && (
+          <div ref={bubbleRef} className="fish-bubble" onClick={() => setBubble(null)}>
+            <div className="fb-en"><HighlightedEN en={bubble.en} word={bubble.word || ""} /></div>
+            <div className="fb-zh">{bubble.zh}</div>
+          </div>
+        )}
+        <div className="aq-hint">{arrange ? "布置中：拖动缸里的造景摆放" : "点一下鱼，它会说一句例句 · 拖动旋转"}</div>
       </div>
       <div className="medal-shelf">
         {inv.medals.map((m, i) => (

@@ -42,6 +42,9 @@ class AudioEngine {
   private ctx: AudioContext | null = null;
   private ambientBus: GainNode | null = null;
   private fxBus: GainNode | null = null;
+  private musicBus: GainNode | null = null;
+  private melodyTimer = 0;
+  private melodyRunning = false;
   private noiseBuffer: AudioBuffer | null = null;
   private ambientNodes: AudioNode[] = [];
   private ambientRunning = false;
@@ -77,12 +80,11 @@ class AudioEngine {
     }
     if (this.settings.ambientOn) this.startAmbient();
     else this.stopAmbient();
-    // Uploaded music (HTMLAudioElement, independent of the Web Audio graph).
-    if (this.musicEl) {
-      this.musicEl.volume = this.settings.musicVol;
-      if (this.settings.musicOn) this.musicEl.play().catch(() => {});
-      else this.musicEl.pause();
+    if (this.musicEl) this.musicEl.volume = this.settings.musicVol;
+    if (this.musicBus && this.ctx) {
+      this.musicBus.gain.setTargetAtTime(this.settings.musicVol, this.ctx.currentTime, 0.2);
     }
+    this.applyMusic();
     this.emit();
   }
 
@@ -97,11 +99,75 @@ class AudioEngine {
       el.loop = true;
       el.volume = this.settings.musicVol;
       this.musicEl = el;
-      if (this.settings.musicOn && this.ctx) el.play().catch(() => {});
     }
+    this.applyMusic();
   }
   hasMusic() {
     return !!this.musicEl;
+  }
+
+  /**
+   * Music = the uploaded track if present, otherwise a built-in gentle
+   * generated melody. The toggle/volume control whichever is playing.
+   */
+  private applyMusic() {
+    if (!this.ctx) return;
+    if (this.settings.musicOn) {
+      if (this.musicEl) {
+        this.stopMelody();
+        this.musicEl.play().catch(() => {});
+      } else {
+        this.startMelody();
+      }
+    } else {
+      this.musicEl?.pause();
+      this.stopMelody();
+    }
+  }
+
+  /* ---------- built-in gentle melody (royalty-free, synthesized) ---------- */
+  // C major pentatonic across a couple of octaves — calm, no dissonance.
+  private static readonly SCALE = [261.63, 293.66, 329.63, 392.0, 440.0, 523.25, 587.33, 659.25];
+
+  private startMelody() {
+    if (this.melodyRunning || !this.ctx) return;
+    this.melodyRunning = true;
+    this.scheduleNote();
+  }
+  private stopMelody() {
+    this.melodyRunning = false;
+    window.clearTimeout(this.melodyTimer);
+  }
+  private scheduleNote() {
+    if (!this.melodyRunning || !this.ctx || !this.musicBus) return;
+    const ctx = this.ctx;
+    const t = ctx.currentTime + 0.05;
+    const scale = AudioEngine.SCALE;
+    const f = scale[Math.floor(Math.random() * scale.length)];
+    this.softTone(f, t, 2.4, 0.16);
+    // occasionally a soft companion note a third/fifth above
+    if (Math.random() < 0.4) {
+      const f2 = scale[Math.min(scale.length - 1, Math.floor(Math.random() * scale.length))];
+      this.softTone(f2 * (Math.random() < 0.5 ? 1 : 2), t + 0.18, 2.0, 0.08);
+    }
+    const next = 1500 + Math.random() * 1700; // slow, unhurried
+    this.melodyTimer = window.setTimeout(() => this.scheduleNote(), next);
+  }
+  private softTone(freq: number, t: number, dur: number, peak: number) {
+    const ctx = this.ctx!;
+    const o = ctx.createOscillator();
+    o.type = "triangle";
+    o.frequency.value = freq;
+    const lp = ctx.createBiquadFilter();
+    lp.type = "lowpass";
+    lp.frequency.value = 1400;
+    const g = ctx.createGain();
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(peak, t + 0.12); // gentle attack
+    g.gain.exponentialRampToValueAtTime(0.0001, t + dur); // long soft tail
+    o.connect(lp).connect(g).connect(this.musicBus!);
+    o.start(t);
+    o.stop(t + dur + 0.1);
   }
 
   /** Call from a user gesture: creates/resumes the context and starts ambient if enabled. */
@@ -116,11 +182,14 @@ class AudioEngine {
       this.fxBus = this.ctx.createGain();
       this.fxBus.gain.value = this.settings.fxVol;
       this.fxBus.connect(this.ctx.destination);
+      this.musicBus = this.ctx.createGain();
+      this.musicBus.gain.value = this.settings.musicVol;
+      this.musicBus.connect(this.ctx.destination);
       this.noiseBuffer = this.makeNoiseBuffer();
     }
     if (this.ctx.state === "suspended") this.ctx.resume();
     if (this.settings.ambientOn) this.startAmbient();
-    if (this.musicEl && this.settings.musicOn) this.musicEl.play().catch(() => {});
+    this.applyMusic();
   }
 
   private makeNoiseBuffer(): AudioBuffer {

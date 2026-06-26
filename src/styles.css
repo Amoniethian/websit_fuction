@@ -402,6 +402,21 @@ canvas { display: block; width: 100%; height: 100%; }
   box-shadow: inset 0 0 40px rgba(0,0,0,0.25);
 }
 .canvas-frame.canvas-3d canvas { width: 100%; height: 100%; }
+.fish-bubble {
+  position: absolute; left: 0; top: 0; transform: translate(-50%, calc(-100% - 14px));
+  max-width: 240px; background: var(--paper); color: var(--ink);
+  border: 1px solid var(--line); border-radius: 12px; padding: 8px 11px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.35); pointer-events: auto; cursor: pointer;
+  opacity: 0; transition: opacity .25s ease; z-index: 6;
+}
+.fish-bubble::after {
+  content: ""; position: absolute; left: 50%; bottom: -7px; transform: translateX(-50%);
+  border: 7px solid transparent; border-top-color: var(--paper); border-bottom: 0;
+}
+.fish-bubble .fb-en { font-size: 13px; line-height: 1.5; }
+.fish-bubble .fb-en em { font-style: normal; background: var(--hl); padding: 0 2px; border-radius: 2px; }
+.fish-bubble .fb-zh { font-size: 12px; color: var(--ink-soft); margin-top: 3px; }
+
 .aq-hint {
   position: absolute; bottom: 10px; right: 12px;
   background: rgba(20,20,20,0.45); color: #f5f0e2;
