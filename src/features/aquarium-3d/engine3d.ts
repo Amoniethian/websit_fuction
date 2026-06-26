@@ -78,6 +78,8 @@ export class Aquarium3D {
   // reusable temps for the swim loop (avoid per-frame allocation / GC jank)
   private _v1 = new THREE.Vector3();
   private _v2 = new THREE.Vector3();
+  // a shared heading the shoal travels along (so it cruises, not orbits its centre)
+  private schoolHeading = new THREE.Vector3(1, 0, 0.25).normalize();
 
   private waterColor = 0xb8dcd8;
   private sandColor = 0xc8a874;
@@ -672,8 +674,8 @@ export class Aquarium3D {
       return;
     }
     const r = Math.random();
-    if (r < 0.74) { sw.behavior = "cruise"; sw.bTimer = 10 + Math.random() * 10; }
-    else if (r < 0.88) { sw.behavior = "play"; sw.bTimer = 3 + Math.random() * 4; }
+    if (r < 0.85) { sw.behavior = "cruise"; sw.bTimer = 14 + Math.random() * 12; }
+    else if (r < 0.93) { sw.behavior = "play"; sw.bTimer = 3 + Math.random() * 4; }
     else { sw.behavior = "explore"; sw.bTimer = 5 + Math.random() * 5; sw.targetMesh = this.pickDecor(); }
   }
 
@@ -847,16 +849,23 @@ export class Aquarium3D {
     const school = this.fish.filter((f) => f.userData.swim && SCHOOL_TYPES.has(f.userData.type));
     const schooling = school.length >= 3;
     let schoolCenter: THREE.Vector3 | null = null;
-    let schoolVel: THREE.Vector3 | null = null;
     if (schooling) {
       schoolCenter = new THREE.Vector3();
-      schoolVel = new THREE.Vector3();
-      for (const f of school) {
-        schoolCenter.add(f.position);
-        schoolVel.add(f.userData.swim.vel);
-      }
+      for (const f of school) schoolCenter.add(f.position);
       schoolCenter.multiplyScalar(1 / school.length);
-      schoolVel.multiplyScalar(1 / school.length);
+
+      // The shoal travels along a shared heading that wanders slowly and turns
+      // back when it nears a wall — so it cruises the length of the tank (长行)
+      // instead of orbiting its own centre.
+      const sh = this.schoolHeading;
+      const a = (Math.random() - 0.5) * 0.5 * dt;
+      const ca = Math.cos(a), sa = Math.sin(a);
+      sh.set(sh.x * ca - sh.z * sa, 0, sh.x * sa + sh.z * ca);
+      if (schoolCenter.x > halfX - 1.6) sh.x -= 1.2 * dt;
+      if (schoolCenter.x < -halfX + 1.6) sh.x += 1.2 * dt;
+      if (schoolCenter.z > halfZ - 1.2) sh.z -= 1.2 * dt;
+      if (schoolCenter.z < -halfZ + 1.2) sh.z += 1.2 * dt;
+      sh.normalize();
     }
 
     const desired = this._v1;
@@ -886,13 +895,14 @@ export class Aquarium3D {
       const visiting = beh === "explore" || beh === "cling";
 
       if (beh === "cruise" && schooling && SCHOOL_TYPES.has(type)) {
-        // 长行: travel with the shoal — cohesion + alignment + separation.
-        desired.addScaledVector(this._v2.copy(schoolCenter!).sub(f.position), 0.45);
-        desired.addScaledVector(this._v2.copy(schoolVel!).normalize(), 0.7);
+        // 长行: travel along the shared shoal heading, staying together + spaced.
+        desired.copy(this.schoolHeading);                                          // collective travel
+        desired.addScaledVector(sw.wDir, 0.2);                                      // a little individuality
+        desired.addScaledVector(this._v2.copy(schoolCenter!).sub(f.position), 0.3); // cohesion
         for (const o of school) {
           if (o === f) continue;
           const d = f.position.distanceTo(o.position);
-          if (d > 0 && d < 0.6) desired.addScaledVector(this._v2.copy(f.position).sub(o.position).divideScalar(d), ((0.6 - d) / 0.6) * 1.4);
+          if (d > 0 && d < 0.6) desired.addScaledVector(this._v2.copy(f.position).sub(o.position).divideScalar(d), ((0.6 - d) / 0.6) * 1.2);
         }
       } else if (visiting && sw.targetMesh) {
         // 探索 / 依附: swim to a piece of decor, then hover, face it and nuzzle.
@@ -930,8 +940,8 @@ export class Aquarium3D {
       const freeRoam = beh === "cruise" || beh === "play";
       if (sw.dart > 0) sw.dart -= dt;
       else if (freeRoam && sw.speed >= 0.5 && Math.random() < 0.004) sw.dart = 0.3 + Math.random() * 0.5;
-      const ease = 0.5 + 0.32 * Math.sin(sw.spdPhase) + (sw.dart > 0 ? 1.0 : 0);
-      const targetSpeed = sw.speed * Math.max(0.18, ease) * speedScale;
+      const ease = 0.65 + 0.25 * Math.sin(sw.spdPhase) + (sw.dart > 0 ? 1.0 : 0);
+      const targetSpeed = sw.speed * Math.max(0.2, ease) * speedScale;
       sw.dSpeed += (targetSpeed - sw.dSpeed) * Math.min(1, 1.8 * dt);
       desired.multiplyScalar(sw.dSpeed);
 
@@ -949,7 +959,7 @@ export class Aquarium3D {
 
       if (f.userData.mixer) f.userData.mixer.update(dt);
       // Tail/undulation keeps pace with how fast the fish is actually swimming.
-      sw.phase += dt * (2 + 4 * (sw.dSpeed / Math.max(0.01, sw.speed)));
+      sw.phase += dt * (3.5 + 6 * (sw.dSpeed / Math.max(0.01, sw.speed)));
       if (f.userData.type === "turtle") {
         // Jellyfish: stay upright, drift, and pulse the bell (squash-stretch).
         f.rotation.set(0, getHeading("turtle"), 0);
@@ -970,10 +980,10 @@ export class Aquarium3D {
         // Upright correction (rolls a model that was authored lying on its side).
         const pitch = getPitch(type);
         if (pitch) f.rotateX(pitch);
-        // Refined swim: gentle snaking yaw + soft roll + a tail that leads.
-        f.rotateY(Math.sin(sw.phase * 0.9) * 0.07);
-        f.rotateZ(Math.sin(sw.phase * 1.1) * 0.04);
-        if (f.userData.tail) f.userData.tail.rotation.x = Math.sin(sw.phase + 0.5) * 0.35;
+        // Swim: stronger snaking yaw + soft roll + a tail that really beats.
+        f.rotateY(Math.sin(sw.phase * 0.9) * 0.15);
+        f.rotateZ(Math.sin(sw.phase * 1.1) * 0.06);
+        if (f.userData.tail) f.userData.tail.rotation.x = Math.sin(sw.phase + 0.5) * 0.7;
       }
     }
     // Animated decor (e.g. a swaying GLB anemone).
