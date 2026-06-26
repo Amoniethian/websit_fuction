@@ -121,12 +121,10 @@ export const CONV: { type: CreatureType; threshold: number; keep: number; label:
   { type: "coral",     threshold: 8,  keep: 2,  label: "珊瑚" }
 ];
 
-/** Review penalty thresholds — errorRate > X loses one of Y */
+/** Review penalty thresholds — errorRate > X loses one of Y. Kept gentle. */
 export const PENALTY: { errorRate: number; type: CreatureType; label: string }[] = [
-  { errorRate: 0.20, type: "smallFish", label: "小鱼" },
-  { errorRate: 0.35, type: "moonFish",  label: "月亮鱼" },
-  { errorRate: 0.40, type: "clownfish", label: "小丑鱼" },
-  { errorRate: 0.60, type: "bigFish",   label: "大鱼" }
+  { errorRate: 0.55, type: "smallFish", label: "小鱼" },
+  { errorRate: 0.80, type: "moonFish",  label: "月亮鱼" }
 ];
 
 export function todayKey(): string {

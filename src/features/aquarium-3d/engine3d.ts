@@ -498,7 +498,7 @@ export class Aquarium3D {
 
   private makeFish(type: FishType): THREE.Group {
     if (this.models[type]) return this.instantiateModel(this.models[type]!);
-    if (type === "smallFish") return this.makeFishGeneric({ color: 0xe9b955, tail: 0xa17a37, size: 0.18 });
+    if (type === "smallFish") return this.makeFishGeneric({ color: 0xe9b955, tail: 0xa17a37, size: 0.1 });
     if (type === "moonFish") return this.makeFishGeneric({ color: 0xe7d9b0, tail: 0xa99b76, size: 0.32 });
     if (type === "clownfish") return this.makeFishGeneric({ color: 0xe07a3c, tail: 0x8e3f17, size: 0.22, stripe: true });
     if (type === "bigFish") return this.makeFishGeneric({ color: 0xbb6abf, tail: 0x7e468a, size: 0.42 });
@@ -697,13 +697,15 @@ export class Aquarium3D {
         }
       } else {
         // Yaw-only turning: face the horizontal swim direction, stay upright
-        // (so vertical models like a seahorse don't tip over).
+        // (so vertical models like a seahorse don't tip over). The +90° aligns
+        // the model's +X (head) with the swim direction.
         const tgt = f.position.clone().add(new THREE.Vector3(sw.vel.x, 0, sw.vel.z));
         f.lookAt(tgt);
-        f.rotateY(-Math.PI / 2 + getHeading(f.userData.type));
-        // Gentle body sway so even un-animated models feel alive.
-        f.rotateZ(Math.sin(sw.phase) * 0.05);
-        if (f.userData.tail) f.userData.tail.rotation.x = Math.sin(sw.phase) * 0.3;
+        f.rotateY(Math.PI / 2 + getHeading(f.userData.type));
+        // Refined swim: gentle snaking yaw + soft roll + a tail that leads.
+        f.rotateY(Math.sin(sw.phase * 0.9) * 0.07);
+        f.rotateZ(Math.sin(sw.phase * 1.1) * 0.04);
+        if (f.userData.tail) f.userData.tail.rotation.x = Math.sin(sw.phase + 0.5) * 0.35;
       }
     }
     // Animated decor (e.g. a swaying GLB anemone).

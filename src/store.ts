@@ -52,6 +52,7 @@ function normalizeVocab(raw: any, id: number): Vocab {
 type Actions = {
   // rewards
   grantWord: () => void;
+  grantReview: () => void;
   grantMinute: (m: number) => void;
   convertIfNeeded: () => void;
   // learning flow
@@ -168,6 +169,22 @@ export const useStore = create<Store>()(
         if (b.hundred >= 100)    { b.hundred -= 100;    inv.bigFish++;   toast("+ 一条大鱼"); audio.birth("bigFish"); }
         if (b.twoHundred >= 200) { b.twoHundred -= 200; inv.turtle++;    toast("+ 一只水母"); audio.birth("turtle"); }
         set({ today, rewardBuckets: b, inv });
+        get().convertIfNeeded();
+      },
+
+      // Correct reviews also grow the tank (shares the reward buckets with
+      // learning, but does NOT count as a newly-learned word).
+      grantReview: () => {
+        const s = get();
+        const b = { ...s.rewardBuckets };
+        const inv = { ...s.inv };
+        b.ten++; b.twentyFive++; b.fifty++; b.hundred++; b.twoHundred++;
+        if (b.ten >= 10)         { b.ten -= 10;         inv.smallFish++; toast("+ 一条小鱼"); audio.birth("smallFish"); }
+        if (b.twentyFive >= 25)  { b.twentyFive -= 25;  inv.moonFish++;  toast("+ 一条月亮鱼"); audio.birth("moonFish"); }
+        if (b.fifty >= 50)       { b.fifty -= 50;       inv.clownfish++; toast("+ 一条小丑鱼"); audio.birth("clownfish"); }
+        if (b.hundred >= 100)    { b.hundred -= 100;    inv.bigFish++;   toast("+ 一条大鱼"); audio.birth("bigFish"); }
+        if (b.twoHundred >= 200) { b.twoHundred -= 200; inv.turtle++;    toast("+ 一只水母"); audio.birth("turtle"); }
+        set({ rewardBuckets: b, inv });
         get().convertIfNeeded();
       },
 
@@ -361,6 +378,7 @@ export const useStore = create<Store>()(
             correct: s.reviewSession.correct + (correct ? 1 : 0)
           }
         });
+        if (correct) get().grantReview();
       },
 
       endReviewSession: () => {
