@@ -685,7 +685,7 @@ export class Aquarium3D {
     if (type === "smallFish") return this.makeFishGeneric({ color: 0xe9b955, tail: 0xa17a37, size: 0.05 });
     if (type === "emberFish") return this.makeEmberFish();
     if (type === "moonFish") return this.makeFishGeneric({ color: 0xe7d9b0, tail: 0xa99b76, size: 0.32 });
-    if (type === "clownfish") return this.makeFishGeneric({ color: 0xe07a3c, tail: 0x8e3f17, size: 0.155, stripe: true });
+    if (type === "clownfish") return this.makeFishGeneric({ color: 0xe07a3c, tail: 0x8e3f17, size: 0.093, stripe: true });
     if (type === "bigFish") return this.makeFishGeneric({ color: 0xbb6abf, tail: 0x7e468a, size: 0.42 });
     return this.makeJellyfish();
   }
@@ -744,18 +744,24 @@ export class Aquarium3D {
   private assignBehavior(f: THREE.Object3D) {
     const sw = f.userData.swim;
     const type = f.userData.type as FishType;
+    if (type === "clownfish") {
+      // Clownfish live curled up in the coral/anemone — they never leave. Keep
+      // the SAME nest across reassigns; only pick a new one if the old one is
+      // gone (deleted). If the nest still exists, don't reset `hovering` — so a
+      // fish already settled stays settled instead of re-approaching every cycle.
+      sw.behavior = "cling";
+      sw.bTimer = 12 + Math.random() * 10;
+      if (!sw.targetMesh || !sw.targetMesh.parent) {
+        sw.targetMesh = this.pickDecor(["coral", "anemone"]) || this.pickDecor();
+        sw.hovering = false; // brand-new nest: approach it
+      }
+      return;
+    }
     sw.targetMesh = null;
     sw.hovering = false; // re-approach freshly-assigned decor before settling
     if (type === "bigFish" || type === "turtle") {
       sw.behavior = "cruise";
       sw.bTimer = 999;
-      return;
-    }
-    if (type === "clownfish") {
-      // Clownfish almost never leave the coral/anemone — they nestle in it.
-      const r = Math.random();
-      if (r < 0.9) { sw.behavior = "cling"; sw.bTimer = 9 + Math.random() * 8; sw.targetMesh = this.pickDecor(["coral", "anemone"]) || this.pickDecor(); }
-      else { sw.behavior = "explore"; sw.bTimer = 3 + Math.random() * 3; sw.targetMesh = this.pickDecor(["coral", "anemone"]); }
       return;
     }
     // Schooling fish: after a side-quest always return to cruise; from cruise,
@@ -1034,9 +1040,15 @@ export class Aquarium3D {
         if (sw.hovering) { if (dist > near * 1.9) sw.hovering = false; }
         else if (dist <= near) sw.hovering = true;
         if (!sw.hovering) {
-          // Ease the approach speed down as it closes in, so it glides to a stop
-          // instead of lurching past the target and snapping back.
-          const sp = THREE.MathUtils.clamp((dist - near) * 1.6, 0.25, 1.8);
+          // Clinging fish (clownfish) FRANTICALLY rush home if their nest was
+          // moved — fast approach + a dart so the steering snaps. Explorers just
+          // glide in: ease the speed down as they close in so they don't lurch
+          // past the target and snap back.
+          const dash = beh === "cling";
+          const sp = dash
+            ? THREE.MathUtils.clamp((dist - near) * 3.5, 1.4, 3.4)
+            : THREE.MathUtils.clamp((dist - near) * 1.6, 0.25, 1.8);
+          if (dash && dist > near * 1.5) sw.dart = Math.max(sw.dart, 0.25);
           desired.copy(to).divideScalar(dist).multiplyScalar(sp); // head toward it
         } else {
           faceTarget = this._v2.set(hoverX, hoverY, hoverZ); // look at the decor
