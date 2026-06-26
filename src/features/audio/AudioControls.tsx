@@ -3,6 +3,7 @@ import { audio } from "../../lib/audio";
 import { useAudioSettings } from "./useAudio";
 import { fileToDataUrl } from "../aquarium-3d/modelStore";
 import { initBgm, bgmName, subscribeBgm, setBgm, clearBgm } from "../../lib/bgmStore";
+import { uploadBgm, deleteBgmFromCloud } from "../../lib/sync";
 import { toast } from "../../ui/toast";
 
 function Toggle({ on, onChange }: { on: boolean; onChange: (v: boolean) => void }) {
@@ -76,6 +77,7 @@ export function AudioControls() {
             try {
               const url = await fileToDataUrl(f);
               await setBgm(url, f.name);
+              uploadBgm(url, f.name); // syncs to cloud if signed in
               audio.setMusic(url);
               audio.ensure();
               audio.setSettings({ musicOn: true });
@@ -89,7 +91,7 @@ export function AudioControls() {
         <button className="file-btn" onClick={() => fileRef.current?.click()}>上传音频</button>
         <span className="model-status">{name || "未设置"}</span>
         {name && (
-          <button className="clear" onClick={() => { clearBgm(); audio.setMusic(null); toast("已移除 BGM"); }}>清除</button>
+          <button className="clear" onClick={() => { clearBgm(); deleteBgmFromCloud(); audio.setMusic(null); toast("已移除 BGM"); }}>清除</button>
         )}
       </div>
 

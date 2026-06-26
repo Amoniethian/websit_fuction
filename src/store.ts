@@ -496,6 +496,7 @@ export const useStore = create<Store>()(
           vocab: s.vocab, inv: s.inv, today: s.today,
           rewardBuckets: s.rewardBuckets, timeBuckets: s.timeBuckets,
           cosmetics: s.cosmetics, tankDecor: s.tankDecor,
+          learnSession: s.learnSession,
           _syncedAt: s._syncedAt, _device: s._device
         };
       },
@@ -509,6 +510,7 @@ export const useStore = create<Store>()(
           timeBuckets: d.timeBuckets ?? get().timeBuckets,
           cosmetics: d.cosmetics ?? get().cosmetics,
           tankDecor: reconcileDecor(d.tankDecor ?? get().tankDecor, d.inv ?? get().inv),
+          learnSession: d.learnSession ?? get().learnSession,
           _syncedAt: d._syncedAt,
           _device: d._device
         }),

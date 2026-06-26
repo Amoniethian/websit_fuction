@@ -122,6 +122,7 @@ export type SyncData = {
   timeBuckets: TimeBuckets;
   cosmetics: Cosmetics;
   tankDecor: DecorItem[];
+  learnSession: LearnSession;
   _syncedAt?: string;
   _device?: string;
 };

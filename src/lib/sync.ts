@@ -3,6 +3,7 @@ import { loadSupabaseConfig } from "./supabaseConfig";
 import { useStore } from "../store";
 import { toast } from "../ui/toast";
 import { setModel as setLocalModel, getModel as getLocalModel, localModelSlots, type ModelSlot } from "../features/aquarium-3d/modelStore";
+import { getBgm, setBgm as setLocalBgm, bgmName } from "./bgmStore";
 
 const BUCKET = "cihai-models";
 
@@ -197,6 +198,9 @@ async function afterLogin() {
   const pushed = await backfillModels();
   if (pushed > 0) toast(`已补传 ${pushed} 个模型到云端`);
   await pullModels();
+  // Same for the uploaded BGM track.
+  await backfillBgm();
+  await pullBgm();
 }
 
 /* ---------- model files (Supabase Storage) ---------- */
@@ -268,6 +272,53 @@ async function pullModels() {
     const { data: blob } = await c.storage.from(BUCKET).download(`${u.id}/${f.name}`);
     if (blob) await setLocalModel(slot, await blobToDataUrl(blob));
   }
+}
+
+/* ---------- BGM track (Supabase Storage) ---------- */
+const bgmKey = (uid: string) => `${uid}/bgm.dat`;
+const bgmNameKey = (uid: string) => `${uid}/bgm.name`;
+
+/** Upload the current BGM track (call after the user picks a new one). */
+export async function uploadBgm(dataUrl: string, name: string) {
+  const c = await ensureClient();
+  const u = await getUser();
+  if (!c || !u) return;
+  const blob = await (await fetch(dataUrl)).blob();
+  await c.storage.from(BUCKET).upload(bgmKey(u.id), blob, { upsert: true });
+  await c.storage.from(BUCKET).upload(bgmNameKey(u.id), new Blob([name], { type: "text/plain" }), { upsert: true });
+}
+
+export async function deleteBgmFromCloud() {
+  const c = await ensureClient();
+  const u = await getUser();
+  if (!c || !u) return;
+  await c.storage.from(BUCKET).remove([bgmKey(u.id), bgmNameKey(u.id)]);
+}
+
+/** Push a local-only BGM to the cloud if there isn't one there yet. */
+async function backfillBgm() {
+  const c = await ensureClient();
+  const u = await getUser();
+  if (!c || !u) return;
+  const dataUrl = await getBgm();
+  if (!dataUrl) return; // nothing local
+  const { data: files } = await c.storage.from(BUCKET).list(u.id);
+  if ((files || []).some((f) => f.name === "bgm.dat")) return; // already in cloud
+  await uploadBgm(dataUrl, bgmName() || "BGM");
+}
+
+/** Download the cloud BGM if this device has none (avoids re-fetching MBs). */
+async function pullBgm() {
+  const c = await ensureClient();
+  const u = await getUser();
+  if (!c || !u) return;
+  if (await getBgm()) return; // keep the local track
+  const { data: blob } = await c.storage.from(BUCKET).download(bgmKey(u.id));
+  if (!blob) return;
+  let name = "云端 BGM";
+  const nameRes = await c.storage.from(BUCKET).download(bgmNameKey(u.id));
+  if (nameRes.data) name = (await nameRes.data.text()) || name;
+  await setLocalBgm(await blobToDataUrl(blob), name);
 }
 
 /* ---------- auto-push on change ---------- */
