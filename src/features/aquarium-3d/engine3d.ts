@@ -81,6 +81,8 @@ export class Aquarium3D {
   private downX = 0;
   private downY = 0;
   private bubbleFish: THREE.Object3D | null = null;
+  private bubbleBox = new THREE.Box3();
+  private bubbleAnchor = new THREE.Vector3();
   private sentenceProvider: (() => Spoken | null) | null = null;
   private onBubble: ((s: Spoken | null) => void) | null = null;
 
@@ -659,7 +661,15 @@ export class Aquarium3D {
       }
       return null;
     }
-    const v = this.bubbleFish.position.clone().project(this.camera);
+    // Anchor a point ABOVE the fish's bounding box (in world space) so the
+    // bubble clears the fish at any zoom level, regardless of how small it is.
+    this.bubbleBox.setFromObject(this.bubbleFish);
+    const top = this.bubbleAnchor.set(
+      this.bubbleFish.position.x,
+      this.bubbleBox.max.y + 0.3,
+      this.bubbleFish.position.z
+    );
+    const v = top.project(this.camera);
     if (v.z > 1) return null;
     const r = this.cv.getBoundingClientRect();
     return { x: (v.x * 0.5 + 0.5) * r.width, y: (-v.y * 0.5 + 0.5) * r.height };

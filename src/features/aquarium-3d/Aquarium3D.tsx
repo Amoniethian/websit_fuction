@@ -59,7 +59,7 @@ export function Aquarium3D({
   useEffect(() => {
     if (!bubble) return;
     let raf = 0;
-    const follow = () => {
+    const place = () => {
       const p = engineRef.current?.projectBubble();
       const el = bubbleRef.current;
       if (p && el) {
@@ -69,6 +69,10 @@ export function Aquarium3D({
       } else if (el) {
         el.style.opacity = "0";
       }
+    };
+    place(); // position synchronously on first paint, before the first frame
+    const follow = () => {
+      place();
       raf = requestAnimationFrame(follow);
     };
     raf = requestAnimationFrame(follow);
