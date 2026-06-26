@@ -30,11 +30,12 @@ export type Vocab = {
 export type Medal = { type: CreatureType; label: string; n: number };
 
 export type CreatureType =
-  | "smallFish" | "moonFish" | "clownfish" | "bigFish" | "turtle"
+  | "smallFish" | "moonFish" | "clownfish" | "bigFish" | "turtle" | "emberFish"
   | "seaweed" | "anemone" | "coral";
 
 export type Inventory = {
   smallFish: number; moonFish: number; clownfish: number; bigFish: number; turtle: number;
+  emberFish: number; // gold-red translucent "super small fish" — earned by taking breaks
   seaweed: number; anemone: number; coral: number;
   medals: Medal[];
 };
@@ -151,7 +152,7 @@ export function todayKey(): string {
 
 export function emptyInventory(): Inventory {
   return {
-    smallFish: 0, moonFish: 0, clownfish: 0, bigFish: 0, turtle: 0,
+    smallFish: 0, moonFish: 0, clownfish: 0, bigFish: 0, turtle: 0, emberFish: 0,
     seaweed: 0, anemone: 0, coral: 0, medals: []
   };
 }
@@ -177,7 +178,7 @@ export function emptyCosmetics(): Cosmetics {
   return {
     background: null,
     creatures: {
-      smallFish: null, moonFish: null, clownfish: null, bigFish: null, turtle: null,
+      smallFish: null, moonFish: null, clownfish: null, bigFish: null, turtle: null, emberFish: null,
       seaweed: null, anemone: null, coral: null
     },
     palette: { water: 0xb8dcd8, sand: 0xc8a874 }

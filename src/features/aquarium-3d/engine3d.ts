@@ -26,7 +26,7 @@ const SAND_TOP_Y = TANK_BOTTOM + SAND_THICK; // -1.5
 const SAND_CENTER_Y = TANK_BOTTOM + SAND_THICK / 2;
 const WATER_Y = AQ_Y + BOX_H / 2 - 0.1;      // 2.9
 
-const FISH_TYPES = ["smallFish", "moonFish", "clownfish", "bigFish", "turtle"] as const;
+const FISH_TYPES = ["smallFish", "moonFish", "clownfish", "bigFish", "turtle", "emberFish"] as const;
 type FishType = (typeof FISH_TYPES)[number];
 
 const DECOR_X = (BOX_W / 2) - 1.0;  // placement clamp
@@ -40,11 +40,12 @@ const FISH_FIT_DEFAULT = 0.6;
 const FISH_FIT: Partial<Record<FishType, number>> = { moonFish: 1.08 };
 
 // Creatures that school together (counted jointly toward the 3+ threshold).
-const SCHOOL_TYPES: ReadonlySet<string> = new Set(["smallFish", "moonFish"]);
+const SCHOOL_TYPES: ReadonlySet<string> = new Set(["smallFish", "moonFish", "emberFish"]);
 
 // Tail-beat per type: smaller fish swish with bigger amplitude and faster beat.
 const FISH_BEAT: Record<string, { amp: number; freq: number }> = {
   smallFish: { amp: 1.8, freq: 2.2 },
+  emberFish: { amp: 1.9, freq: 2.4 },
   moonFish: { amp: 1.1, freq: 1.2 },
   clownfish: { amp: 1.35, freq: 1.6 },
   bigFish: { amp: 0.8, freq: 0.8 }
@@ -244,7 +245,8 @@ export class Aquarium3D {
 
   /** Load all uploaded models present in storage, then rebuild affected objects. */
   async loadAllModels() {
-    const slots: ModelSlot[] = [...FISH_TYPES, "rock", "coral", "anemone", "seaweed", "tank"];
+    // emberFish has no uploadable model, so it's not a ModelSlot.
+    const slots: ModelSlot[] = ["smallFish", "moonFish", "clownfish", "bigFish", "turtle", "rock", "coral", "anemone", "seaweed", "tank"];
     await Promise.all(slots.filter((s) => hasModel(s)).map((s) => this.refreshModel(s, false)));
     this.rebuildAllFish();
     this.rebuildAllDecor();
@@ -475,11 +477,18 @@ export class Aquarium3D {
    * segments. The swim loop ripples the segments as a head→tail travelling wave
    * (growing toward the tail) and bends the whole strip into turns.
    */
-  private makeFishGeneric(o: { color: number; tail: number; size: number; stripe?: boolean }): THREE.Group {
+  private makeFishGeneric(o: { color: number; tail: number; size: number; stripe?: boolean; translucent?: boolean }): THREE.Group {
     const s = o.size;
     const g = new THREE.Group();
-    const bodyMat = lowPolyMat(o.color);
-    const finMat = lowPolyMat(o.tail);
+    const mat = (c: number) =>
+      o.translucent
+        ? new THREE.MeshStandardMaterial({
+            color: c, roughness: 0.3, metalness: 0, flatShading: true,
+            transparent: true, opacity: 0.6, emissive: c, emissiveIntensity: 0.4
+          })
+        : lowPolyMat(c);
+    const bodyMat = mat(o.color);
+    const finMat = mat(o.tail);
 
     // Head — on the root, so it barely moves while the body waves.
     const head = new THREE.Mesh(new THREE.BoxGeometry(s * 0.72, s * 0.95, s * 0.5), bodyMat);
@@ -641,8 +650,11 @@ export class Aquarium3D {
   }
 
   private makeFish(type: FishType): THREE.Group {
-    if (this.models[type]) return this.instantiateModel(this.models[type]!);
+    // emberFish is procedural-only (never an uploaded slot), hence the cast.
+    const model = this.models[type as ModelSlot];
+    if (model) return this.instantiateModel(model);
     if (type === "smallFish") return this.makeFishGeneric({ color: 0xe9b955, tail: 0xa17a37, size: 0.05 });
+    if (type === "emberFish") return this.makeFishGeneric({ color: 0xff5a26, tail: 0xc4341a, size: 0.05, translucent: true });
     if (type === "moonFish") return this.makeFishGeneric({ color: 0xe7d9b0, tail: 0xa99b76, size: 0.32 });
     if (type === "clownfish") return this.makeFishGeneric({ color: 0xe07a3c, tail: 0x8e3f17, size: 0.22, stripe: true });
     if (type === "bigFish") return this.makeFishGeneric({ color: 0xbb6abf, tail: 0x7e468a, size: 0.42 });
@@ -1022,9 +1034,9 @@ export class Aquarium3D {
         } else {
           f.lookAt(this._v1.set(f.position.x + sw.vel.x, f.position.y, f.position.z + sw.vel.z));
         }
-        f.rotateY(Math.PI / 2 + getHeading(type));
+        f.rotateY(Math.PI / 2 + getHeading(type as ModelSlot));
         // Upright correction (rolls a model that was authored lying on its side).
-        const pitch = getPitch(type);
+        const pitch = getPitch(type as ModelSlot);
         if (pitch) f.rotateX(pitch);
 
         // How sharply the fish is turning (smoothed) → bank the body + curve the tail.

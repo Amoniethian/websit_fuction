@@ -7,7 +7,7 @@ import { ModelThumb } from "../aquarium-3d/ModelThumb";
 
 const ITEMS: [CreatureType, string][] = [
   ["smallFish", "小鱼"], ["moonFish", "月亮鱼"], ["clownfish", "小丑鱼"], ["bigFish", "海马"],
-  ["turtle", "水母"], ["seaweed", "海草"], ["anemone", "海葵"], ["coral", "珊瑚"]
+  ["turtle", "水母"], ["emberFish", "超级小鱼"], ["seaweed", "海草"], ["anemone", "海葵"], ["coral", "珊瑚"]
 ];
 
 export function Species() {

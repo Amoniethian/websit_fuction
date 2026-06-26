@@ -6,6 +6,7 @@ import { AmbientToggle } from "../audio/AudioControls";
 import { Aquarium3D as Engine, type Spoken } from "./engine3d";
 import { initModels, subscribeModels } from "./modelStore";
 import { pomodoro } from "../pomodoro/timer";
+import { breakTimer } from "../pomodoro/breakTimer";
 import { DECOR_SIZES, DECOR_ROTS, type DecorType } from "../../types";
 
 const DECOR_LABEL: Record<DecorType, string> = {
@@ -47,10 +48,16 @@ export function Aquarium3D({
   const [arrange, setArrange] = useState(false);
   const [bubble, setBubble] = useState<Spoken | null>(null);
   const [selectedId, setSelectedId] = useState<string | null>(null);
-  // Focus-clock overlay: show the countdown over the tank while it's running.
+  // Focus / break clock overlay: show whichever countdown is running over the tank.
   const pomo = useSyncExternalStore(pomodoro.subscribe, pomodoro.getState);
-  const pomoMM = String(Math.floor(pomo.remain / 60)).padStart(2, "0");
-  const pomoSS = String(pomo.remain % 60).padStart(2, "0");
+  const brk = useSyncExternalStore(breakTimer.subscribe, breakTimer.getState);
+  const clock = brk.running
+    ? { icon: "☕", remain: brk.remain }
+    : pomo.running
+      ? { icon: "🍅", remain: pomo.remain }
+      : null;
+  const clockMM = clock ? String(Math.floor(clock.remain / 60)).padStart(2, "0") : "";
+  const clockSS = clock ? String(clock.remain % 60).padStart(2, "0") : "";
 
   const selected = arrange ? tankDecor.find((d) => d.id === selectedId) ?? null : null;
 
@@ -142,8 +149,8 @@ export function Aquarium3D({
       </div>
       <div className="canvas-frame canvas-3d">
         <canvas ref={canvasRef} />
-        {pomo.running && (
-          <div className="aq-timer" title="专注进行中">🍅 {pomoMM}:{pomoSS}</div>
+        {clock && (
+          <div className="aq-timer" title={brk.running ? "休息中" : "专注进行中"}>{clock.icon} {clockMM}:{clockSS}</div>
         )}
         {bubble && (
           <div ref={bubbleRef} className="fish-bubble" onClick={() => setBubble(null)}>

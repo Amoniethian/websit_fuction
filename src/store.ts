@@ -54,7 +54,7 @@ function payoutWordRewards(b: RewardBuckets, inv: Inventory, announce: boolean) 
 }
 const ICON_LABEL: Record<CreatureType, string> = {
   smallFish: "小鱼", moonFish: "月亮鱼", clownfish: "小丑鱼", bigFish: "海马",
-  turtle: "水母", seaweed: "海草", anemone: "海葵", coral: "珊瑚"
+  turtle: "水母", emberFish: "超级小鱼", seaweed: "海草", anemone: "海葵", coral: "珊瑚"
 };
 
 function normalizeVocab(raw: any, id: number): Vocab {
@@ -79,6 +79,7 @@ type Actions = {
   // rewards
   grantWord: () => void;
   grantReview: () => void;
+  grantBreak: () => void;
   grantMinute: (m: number) => void;
   convertIfNeeded: () => void;
   // learning flow
@@ -206,6 +207,13 @@ export const useStore = create<Store>()(
         payoutWordRewards(b, inv, true);
         set({ rewardBuckets: b, inv });
         get().convertIfNeeded();
+      },
+
+      // Finishing a rest break grows one gold-red translucent "super small fish".
+      grantBreak: () => {
+        set({ inv: { ...get().inv, emberFish: get().inv.emberFish + 1 } });
+        toast("休息好啦 · + 一条超级小鱼");
+        audio.birth("smallFish");
       },
 
       grantMinute: (m) => {
@@ -504,7 +512,9 @@ export const useStore = create<Store>()(
       importState: (d) =>
         set({
           vocab: d.vocab ?? get().vocab,
-          inv: d.inv ?? get().inv,
+          // Spread over full defaults so cloud data saved before new creatures
+          // (e.g. emberFish) still has every field.
+          inv: d.inv ? { ...emptyInventory(), ...d.inv } : get().inv,
           today: d.today ?? get().today,
           rewardBuckets: d.rewardBuckets ?? get().rewardBuckets,
           timeBuckets: d.timeBuckets ?? get().timeBuckets,
@@ -532,6 +542,11 @@ export const useStore = create<Store>()(
       })),
       onRehydrateStorage: () => (state) => {
         if (!state) return;
+        // Migrate saves that predate the emberFish (break-reward) creature.
+        if (state.inv && state.inv.emberFish == null) state.inv.emberFish = 0;
+        if (state.cosmetics?.creatures && (state.cosmetics.creatures as Record<string, unknown>).emberFish === undefined) {
+          (state.cosmetics.creatures as Record<string, string | null>).emberFish = null;
+        }
         // Reset the day on rehydrate.
         if (state.today.date !== todayKey()) state.today = emptyTodayStats();
         // Recover entries stuck mid-enrichment from a previous session.
