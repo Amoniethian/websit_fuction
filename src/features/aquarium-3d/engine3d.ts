@@ -685,7 +685,7 @@ export class Aquarium3D {
     if (type === "smallFish") return this.makeFishGeneric({ color: 0xe9b955, tail: 0xa17a37, size: 0.05 });
     if (type === "emberFish") return this.makeEmberFish();
     if (type === "moonFish") return this.makeFishGeneric({ color: 0xe7d9b0, tail: 0xa99b76, size: 0.32 });
-    if (type === "clownfish") return this.makeFishGeneric({ color: 0xe07a3c, tail: 0x8e3f17, size: 0.176, stripe: true });
+    if (type === "clownfish") return this.makeFishGeneric({ color: 0xe07a3c, tail: 0x8e3f17, size: 0.155, stripe: true });
     if (type === "bigFish") return this.makeFishGeneric({ color: 0xbb6abf, tail: 0x7e468a, size: 0.42 });
     return this.makeJellyfish();
   }
@@ -745,6 +745,7 @@ export class Aquarium3D {
     const sw = f.userData.swim;
     const type = f.userData.type as FishType;
     sw.targetMesh = null;
+    sw.hovering = false; // re-approach freshly-assigned decor before settling
     if (type === "bigFish" || type === "turtle") {
       sw.behavior = "cruise";
       sw.bTimer = 999;
@@ -983,7 +984,12 @@ export class Aquarium3D {
       const beh: string = sw.behavior;
 
       // --- desired heading: smooth wander (gentle yaw drift + a little pitch) ---
-      const yaw = (Math.random() - 0.5) * 1.7 * dt;
+      // Smoothly-drifting wander: low-pass the random yaw into a slowly-varying
+      // turn RATE, so the heading curves gently instead of jittering every frame.
+      // (That per-frame jitter was feeding the body-curve below and reading as a
+      // twitch/seizure — "卡膜抽搐".)
+      sw.wRate = THREE.MathUtils.clamp((sw.wRate ?? 0) * 0.92 + (Math.random() - 0.5) * 0.45, -0.9, 0.9);
+      const yaw = sw.wRate * dt;
       const cy = Math.cos(yaw), sy = Math.sin(yaw);
       const nx = sw.wDir.x * cy - sw.wDir.z * sy;
       const nz = sw.wDir.x * sy + sw.wDir.z * cy;
@@ -1022,8 +1028,16 @@ export class Aquarium3D {
         to.sub(f.position);
         const dist = to.length();
         const near = beh === "cling" ? 0.4 : 0.95; // cling nestles in tighter
-        if (dist > near) {
-          desired.copy(to).divideScalar(dist).multiplyScalar(1.8); // head toward it
+        // Hysteresis: once settled in to hover it STAYS hovering until it drifts
+        // well past `near` again. Without this the fish flickered between "dash
+        // toward" and "hover" every frame at the boundary — the visible twitch.
+        if (sw.hovering) { if (dist > near * 1.9) sw.hovering = false; }
+        else if (dist <= near) sw.hovering = true;
+        if (!sw.hovering) {
+          // Ease the approach speed down as it closes in, so it glides to a stop
+          // instead of lurching past the target and snapping back.
+          const sp = THREE.MathUtils.clamp((dist - near) * 1.6, 0.25, 1.8);
+          desired.copy(to).divideScalar(dist).multiplyScalar(sp); // head toward it
         } else {
           faceTarget = this._v2.set(hoverX, hoverY, hoverZ); // look at the decor
           const nudge = Math.sin(sw.spdPhase * 3) * 0.5;      // gentle in/out bump
