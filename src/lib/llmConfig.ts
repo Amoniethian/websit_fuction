@@ -19,6 +19,7 @@ export type Provider = { id: string; label: string; endpoint: string; model: str
 export const PROVIDERS: Provider[] = [
   { id: "openai", label: "OpenAI", endpoint: "https://api.openai.com/v1/chat/completions", model: "gpt-4o-mini" },
   { id: "openrouter", label: "OpenRouter", endpoint: "https://openrouter.ai/api/v1/chat/completions", model: "openai/gpt-4o-mini", note: "浏览器跨域最稳，可中转多家模型" },
+  { id: "openrouter-free", label: "OpenRouter · 免费模型", endpoint: "https://openrouter.ai/api/v1/chat/completions", model: "deepseek/deepseek-chat-v3-0324:free", note: "免费！去 openrouter.ai 注册拿 sk-or- 开头的 key 填到下面。模型已选 DeepSeek 免费版，每天有免费额度，背单词够用（想换别的去 openrouter.ai/models 选带 :free 的）。若提示 data policy 报错，到 OpenRouter 设置 → Privacy 打开免费模型即可。" },
   { id: "deepseek", label: "DeepSeek", endpoint: "https://api.deepseek.com/chat/completions", model: "deepseek-chat" },
   { id: "moonshot", label: "Moonshot / Kimi", endpoint: "https://api.moonshot.cn/v1/chat/completions", model: "moonshot-v1-8k" },
   { id: "custom", label: "自定义", endpoint: "", model: "" }

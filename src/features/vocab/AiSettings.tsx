@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { PROVIDERS, loadLlmConfig, saveLlmConfig } from "../../lib/llmConfig";
 import { enrichWord } from "../../lib/llm-enrich";
 import { toast } from "../../ui/toast";
@@ -8,7 +8,7 @@ export function AiSettings() {
   const existing = loadLlmConfig();
   const [providerId, setProviderId] = useState(() => {
     const m = PROVIDERS.find((p) => p.endpoint === existing?.endpoint);
-    return m ? m.id : existing ? "custom" : "openrouter";
+    return m ? m.id : existing ? "custom" : "openrouter-free";
   });
   const preset = PROVIDERS.find((p) => p.id === providerId)!;
   const [endpoint, setEndpoint] = useState(existing?.endpoint || preset.endpoint);
@@ -17,13 +17,16 @@ export function AiSettings() {
   const [connected, setConnected] = useState(!!existing);
   const [testing, setTesting] = useState(false);
 
-  // When switching to a known provider, fill its endpoint + default model.
-  useEffect(() => {
-    if (providerId !== "custom") {
-      setEndpoint(preset.endpoint);
-      setModel(preset.model);
+  // Switching to a known provider fills its endpoint + default model. (Done on
+  // change, not in an effect, so opening settings never clobbers saved values.)
+  function pickProvider(id: string) {
+    setProviderId(id);
+    const p = PROVIDERS.find((x) => x.id === id)!;
+    if (id !== "custom") {
+      setEndpoint(p.endpoint);
+      setModel(p.model);
     }
-  }, [providerId]);
+  }
 
   function save() {
     if (!endpoint || !apiKey) {
@@ -64,7 +67,7 @@ export function AiSettings() {
       </div>
       <div className="ai-row">
         <label>服务商</label>
-        <select value={providerId} onChange={(e) => setProviderId(e.target.value)}>
+        <select value={providerId} onChange={(e) => pickProvider(e.target.value)}>
           {PROVIDERS.map((p) => (
             <option key={p.id} value={p.id}>{p.label}</option>
           ))}
