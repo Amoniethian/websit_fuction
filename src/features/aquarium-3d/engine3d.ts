@@ -89,6 +89,7 @@ export class Aquarium3D {
   private _v2 = new THREE.Vector3();
   // a shared heading the shoal travels along (so it cruises, not orbits its centre)
   private schoolHeading = new THREE.Vector3(1, 0, 0.25).normalize();
+  private paperTex: THREE.Texture | null = null; // emberFish illustration texture
 
   private waterColor = 0xb8dcd8;
   private sandColor = 0xc8a874;
@@ -547,32 +548,25 @@ export class Aquarium3D {
     return g;
   }
 
-  /** A glowing flat "fire-sprite" fish — translucent red, head at +X. Darts & pauses. */
+  /**
+   * The break-reward "super small fish": the user's orange illustration mapped
+   * onto a flat plane (a paper fish). The plane has segments along its length so
+   * the swim loop ripples it (vertex wave). The image faces right, so head = +X.
+   */
   private makeEmberFish(): THREE.Group {
     const g = new THREE.Group();
-    const s = 0.09;
-    const glow = (color: number, opacity: number) =>
-      new THREE.MeshBasicMaterial({
-        color, transparent: true, opacity, side: THREE.DoubleSide,
-        blending: THREE.AdditiveBlending, depthWrite: false
-      });
-    // Flat diamond body (head at +X), flattened in Z so it's a paper-thin sprite.
-    const body = new THREE.Mesh(new THREE.ConeGeometry(s * 0.55, s * 1.7, 4), glow(0xff5526, 0.55));
-    body.rotation.z = -Math.PI / 2;
-    body.scale.z = 0.22;
-    g.add(body);
-    // Bright molten core.
-    const core = new THREE.Mesh(new THREE.SphereGeometry(s * 0.32, 7, 5), glow(0xffd28a, 0.85));
-    core.position.x = s * 0.12;
-    core.scale.set(1.4, 1, 0.5);
-    g.add(core);
-    // Flat flicking tail.
-    const tail = new THREE.Mesh(new THREE.ConeGeometry(s * 0.6, s * 0.85, 3), glow(0xff7a3a, 0.5));
-    tail.position.x = -s * 0.95;
-    tail.rotation.z = Math.PI / 2;
-    tail.scale.z = 0.18;
-    g.userData.tailFin = tail;
-    g.add(tail);
+    if (!this.paperTex) {
+      this.paperTex = new THREE.TextureLoader().load(import.meta.env.BASE_URL + "paperfish.png");
+      this.paperTex.colorSpace = THREE.SRGBColorSpace;
+    }
+    const w = 0.34, h = (w * 960) / 1440; // image aspect
+    const geo = new THREE.PlaneGeometry(w, h, 8, 1);
+    const mat = new THREE.MeshBasicMaterial({
+      map: this.paperTex, transparent: true, alphaTest: 0.4, side: THREE.DoubleSide
+    });
+    g.add(new THREE.Mesh(geo, mat));
+    g.userData.waveGeo = geo;
+    g.userData.waveW = w;
     return g;
   }
 
@@ -1123,9 +1117,19 @@ export class Aquarium3D {
             segs[i].rotation.y = Math.sin(sw.phase - i * 0.9) * (0.08 + 0.38 * t) * beat.amp + curve * (0.25 + 0.75 * t);
           }
         }
-        // Ember sprite: flick the flat tail (fast while darting, idle while resting).
-        const tf = f.userData.tailFin as THREE.Object3D | undefined;
-        if (tf) tf.rotation.x = Math.sin(sw.phase) * (beh === "dart" ? 0.7 : 0.2);
+        // Paper fish (textured emberFish): ripple the flat plane as a travelling
+        // wave — head steady, growing toward the tail.
+        const waveGeo = f.userData.waveGeo as THREE.PlaneGeometry | undefined;
+        if (waveGeo) {
+          const ww = f.userData.waveW as number;
+          const pos = waveGeo.attributes.position;
+          for (let i = 0; i < pos.count; i++) {
+            const x = pos.getX(i);
+            const ampF = (ww / 2 - x) / ww; // 0 at head(+X) → 1 at tail(-X)
+            pos.setZ(i, Math.sin(x * (7.5 / ww) - sw.phase) * 0.045 * ampF);
+          }
+          pos.needsUpdate = true;
+        }
       }
     }
     // Animated decor (e.g. a swaying GLB anemone).
