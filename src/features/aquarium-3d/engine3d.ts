@@ -87,8 +87,9 @@ export class Aquarium3D {
   // reusable temps for the swim loop (avoid per-frame allocation / GC jank)
   private _v1 = new THREE.Vector3();
   private _v2 = new THREE.Vector3();
-  // a shared heading the shoal travels along (so it cruises, not orbits its centre)
+  // shared travel headings — the main shoal and the (separate) ember shoal
   private schoolHeading = new THREE.Vector3(1, 0, 0.25).normalize();
+  private emberHeading = new THREE.Vector3(-1, 0, 0.4).normalize();
   private paperTex: THREE.Texture | null = null; // emberFish illustration texture
 
   private waterColor = 0xb8dcd8;
@@ -561,6 +562,11 @@ export class Aquarium3D {
     }
     const w = 0.34, h = (w * 960) / 1440; // image aspect
     const geo = new THREE.PlaneGeometry(w, h, 8, 1);
+    // Mirror the texture horizontally so the painted head lines up with +X (the
+    // travel direction) instead of the tail — the fish was facing backwards.
+    const uv = geo.attributes.uv;
+    for (let i = 0; i < uv.count; i++) uv.setX(i, 1 - uv.getX(i));
+    uv.needsUpdate = true;
     const mat = new THREE.MeshBasicMaterial({
       map: this.paperTex, transparent: true, alphaTest: 0.4, side: THREE.DoubleSide
     });
@@ -695,7 +701,7 @@ export class Aquarium3D {
     const speed =
       type === "bigFish" || type === "turtle" ? 0.3 :
       type === "moonFish" ? 0.5 :
-      type === "emberFish" ? 1.6 : 0.8;
+      type === "emberFish" ? 1.0 : 0.8;
     const dir = new THREE.Vector3((Math.random() - 0.5) * 2, 0, (Math.random() - 0.5) * 2).normalize();
     mesh.userData.swim = {
       speed,
@@ -738,22 +744,6 @@ export class Aquarium3D {
     const sw = f.userData.swim;
     const type = f.userData.type as FishType;
     sw.targetMesh = null;
-    if (type === "emberFish") {
-      // Fire sprite: quick dart to a spot, then a short pause, repeat.
-      if (sw.behavior === "dart") {
-        sw.behavior = "rest";
-        sw.bTimer = 0.5 + Math.random() * 1.3;
-      } else {
-        sw.behavior = "dart";
-        sw.bTimer = 0.4 + Math.random() * 0.6;
-        sw.dartTarget.set(
-          (Math.random() - 0.5) * (BOX_W - 2.5),
-          AQ_Y + (Math.random() - 0.5) * (BOX_H - 2),
-          (Math.random() - 0.5) * (BOX_D - 2.5)
-        );
-      }
-      return;
-    }
     if (type === "bigFish" || type === "turtle") {
       sw.behavior = "cruise";
       sw.bTimer = 999;
@@ -937,6 +927,18 @@ export class Aquarium3D {
     return { x: (v.x * 0.5 + 0.5) * r.width, y: (-v.y * 0.5 + 0.5) * r.height };
   }
 
+  /** Wander a shoal's shared travel heading, turning it back near the walls. */
+  private wanderHeading(sh: THREE.Vector3, center: THREE.Vector3, rate: number, halfX: number, halfZ: number, dt: number) {
+    const a = (Math.random() - 0.5) * rate * dt;
+    const ca = Math.cos(a), sa = Math.sin(a);
+    sh.set(sh.x * ca - sh.z * sa, 0, sh.x * sa + sh.z * ca);
+    if (center.x > halfX - 1.6) sh.x -= 1.2 * dt;
+    if (center.x < -halfX + 1.6) sh.x += 1.2 * dt;
+    if (center.z > halfZ - 1.2) sh.z -= 1.2 * dt;
+    if (center.z < -halfZ + 1.2) sh.z += 1.2 * dt;
+    sh.normalize();
+  }
+
   /* ---------- loop ---------- */
   private frame(now: number) {
     const dt = Math.min(0.05, (now - this.last) / 1000);
@@ -944,28 +946,26 @@ export class Aquarium3D {
     const halfX = BOX_W / 2 - 0.7, halfZ = BOX_D / 2 - 0.7;
     const yTop = AQ_Y + BOX_H / 2 - 0.7, yBot = TANK_BOTTOM + 0.7;
 
-    // Small fish + moon fish school together once there are 3+ between them:
-    // gather the shared centre and average heading for cohesion/alignment/separation.
-    const school = this.fish.filter((f) => f.userData.swim && SCHOOL_TYPES.has(f.userData.type));
-    const schooling = school.length >= 3;
-    let schoolCenter: THREE.Vector3 | null = null;
-    if (schooling) {
-      schoolCenter = new THREE.Vector3();
-      for (const f of school) schoolCenter.add(f.position);
-      schoolCenter.multiplyScalar(1 / school.length);
-
-      // The shoal travels along a shared heading that wanders slowly and turns
-      // back when it nears a wall — so it cruises the length of the tank (长行)
-      // instead of orbiting its own centre.
-      const sh = this.schoolHeading;
-      const a = (Math.random() - 0.5) * 0.5 * dt;
-      const ca = Math.cos(a), sa = Math.sin(a);
-      sh.set(sh.x * ca - sh.z * sa, 0, sh.x * sa + sh.z * ca);
-      if (schoolCenter.x > halfX - 1.6) sh.x -= 1.2 * dt;
-      if (schoolCenter.x < -halfX + 1.6) sh.x += 1.2 * dt;
-      if (schoolCenter.z > halfZ - 1.2) sh.z -= 1.2 * dt;
-      if (schoolCenter.z < -halfZ + 1.2) sh.z += 1.2 * dt;
-      sh.normalize();
+    // Two separate shoals: small+moon fish, and the ember "super small fish"
+    // (its own group, its own livelier rhythm). Each gathers a centre and wanders
+    // its own shared travel heading.
+    const mainSchool = this.fish.filter((f) => f.userData.swim && SCHOOL_TYPES.has(f.userData.type));
+    const emberSchool = this.fish.filter((f) => f.userData.swim && f.userData.type === "emberFish");
+    const mainSchooling = mainSchool.length >= 3;
+    const emberSchooling = emberSchool.length >= 2;
+    let mainCenter: THREE.Vector3 | null = null;
+    let emberCenter: THREE.Vector3 | null = null;
+    if (mainSchooling) {
+      mainCenter = new THREE.Vector3();
+      for (const f of mainSchool) mainCenter.add(f.position);
+      mainCenter.multiplyScalar(1 / mainSchool.length);
+      this.wanderHeading(this.schoolHeading, mainCenter, 0.5, halfX, halfZ, dt);
+    }
+    if (emberSchooling) {
+      emberCenter = new THREE.Vector3();
+      for (const f of emberSchool) emberCenter.add(f.position);
+      emberCenter.multiplyScalar(1 / emberSchool.length);
+      this.wanderHeading(this.emberHeading, emberCenter, 1.1, halfX, halfZ, dt); // livelier
     }
 
     const desired = this._v1;
@@ -995,22 +995,20 @@ export class Aquarium3D {
       let speedScale = 1;
       const visiting = beh === "explore" || beh === "cling";
 
-      if (type === "emberFish") {
-        // Fire sprite: dart hard toward the target, or hover still while resting.
-        if (beh === "dart") {
-          desired.set(sw.dartTarget.x - f.position.x, sw.dartTarget.y - f.position.y, sw.dartTarget.z - f.position.z);
-          if (desired.lengthSq() > 1e-6) desired.normalize();
-          desired.multiplyScalar(2);
-        } else {
-          desired.set(0, 0, 0); // rest: drift to a stop
-          speedScale = 0.04;
-        }
-      } else if (beh === "cruise" && schooling && SCHOOL_TYPES.has(type)) {
-        // 长行: travel along the shared shoal heading, staying together + spaced.
-        desired.copy(this.schoolHeading);                                          // collective travel
-        desired.addScaledVector(sw.wDir, 0.2);                                      // a little individuality
-        desired.addScaledVector(this._v2.copy(schoolCenter!).sub(f.position), 0.3); // cohesion
-        for (const o of school) {
+      // Which shoal this fish belongs to (emberFish has its own separate one).
+      const isEmber = type === "emberFish";
+      const isSchooler = isEmber || SCHOOL_TYPES.has(type);
+      const grpSchooling = isEmber ? emberSchooling : mainSchooling;
+      const grpCenter = isEmber ? emberCenter : mainCenter;
+      const grpHeading = isEmber ? this.emberHeading : this.schoolHeading;
+      const grpMembers = isEmber ? emberSchool : mainSchool;
+
+      if (beh === "cruise" && isSchooler && grpSchooling) {
+        // 长行: travel along the shoal's shared heading, staying together + spaced.
+        desired.copy(grpHeading);                                                  // collective travel
+        desired.addScaledVector(sw.wDir, 0.2);                                     // a little individuality
+        desired.addScaledVector(this._v2.copy(grpCenter!).sub(f.position), 0.3);   // cohesion
+        for (const o of grpMembers) {
           if (o === f) continue;
           const d = f.position.distanceTo(o.position);
           if (d > 0 && d < 0.6) desired.addScaledVector(this._v2.copy(f.position).sub(o.position).divideScalar(d), ((0.6 - d) / 0.6) * 1.2);
@@ -1052,15 +1050,12 @@ export class Aquarium3D {
       if (sw.dart > 0) sw.dart -= dt;
       else if (freeRoam && sw.speed >= 0.5 && Math.random() < 0.004) sw.dart = 0.3 + Math.random() * 0.5;
       const ease = 0.65 + 0.25 * Math.sin(sw.spdPhase) + (sw.dart > 0 ? 1.0 : 0);
-      const ember = type === "emberFish";
-      const targetSpeed = ember
-        ? (beh === "dart" ? sw.speed : sw.speed * 0.03) // dart fast, then drift to a stop
-        : sw.speed * Math.max(0.2, ease) * speedScale;
-      sw.dSpeed += (targetSpeed - sw.dSpeed) * Math.min(1, (ember ? 5 : 1.8) * dt);
+      const targetSpeed = sw.speed * Math.max(0.2, ease) * speedScale;
+      sw.dSpeed += (targetSpeed - sw.dSpeed) * Math.min(1, 1.8 * dt);
       desired.multiplyScalar(sw.dSpeed);
 
       // --- steer velocity toward desired (snappy for darts, smooth otherwise) ---
-      const resp = Math.min(1, (sw.dart > 0 || (ember && beh === "dart") ? 6 : 2.4) * dt);
+      const resp = Math.min(1, (sw.dart > 0 ? 4.5 : 2.4) * dt);
       sw.vel.x += (desired.x - sw.vel.x) * resp;
       sw.vel.y += (desired.y - sw.vel.y) * resp;
       sw.vel.z += (desired.z - sw.vel.z) * resp;
