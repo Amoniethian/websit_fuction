@@ -71,8 +71,8 @@ export class Aquarium3D {
 
   // atmosphere
   private bubbles: { mesh: THREE.Mesh; speed: number; phase: number }[] = [];
-  private caustic: THREE.Mesh | null = null;
-  private causticTex: THREE.CanvasTexture | null = null;
+  private causticLayers: { tex: THREE.CanvasTexture; mat: THREE.MeshBasicMaterial; sx: number; sy: number; baseOp: number; rate: number }[] = [];
+  private waterMesh: THREE.Mesh | null = null;
 
   private waterColor = 0xb8dcd8;
   private sandColor = 0xc8a874;
@@ -293,8 +293,10 @@ export class Aquarium3D {
   /* ---------- tank ---------- */
   private buildTank() {
     this.glassMat = new THREE.MeshPhysicalMaterial({
-      color: this.waterColor, transparent: true, opacity: 0.15, roughness: 0.05,
-      metalness: 0, transmission: 0.95, thickness: 0.6, side: THREE.DoubleSide, depthWrite: false
+      color: this.waterColor, transparent: true, opacity: 0.16, roughness: 0.03,
+      metalness: 0, transmission: 0.95, thickness: 1.4, ior: 1.4,
+      clearcoat: 0.35, clearcoatRoughness: 0.08,
+      side: THREE.DoubleSide, depthWrite: false
     });
     const glass = new THREE.Mesh(new THREE.BoxGeometry(BOX_W, BOX_H, BOX_D), this.glassMat);
     glass.position.y = AQ_Y;
@@ -307,11 +309,14 @@ export class Aquarium3D {
     edges.position.y = AQ_Y;
     this.tankGroup.add(edges);
 
-    const surfMat = new THREE.MeshStandardMaterial({ color: 0xeaf5f4, transparent: true, opacity: 0.18, roughness: 0.1 });
+    const surfMat = new THREE.MeshStandardMaterial({
+      color: 0xeaf5f4, transparent: true, opacity: 0.18, roughness: 0.08, metalness: 0.1
+    });
     const water = new THREE.Mesh(new THREE.PlaneGeometry(BOX_W - 0.1, BOX_D - 0.1), surfMat);
     water.rotation.x = -Math.PI / 2;
     water.position.y = WATER_Y;
     water.name = "water";
+    this.waterMesh = water;
     this.tankGroup.add(water);
 
     // Sand floor with a gentle bump.
@@ -365,18 +370,26 @@ export class Aquarium3D {
       this.bubbles.push({ mesh, speed: 0.2 + Math.random() * 0.4, phase: Math.random() * 6 });
     }
 
-    // Caustics: animated bright web on the sand.
-    this.causticTex = this.makeCausticTexture();
-    this.causticTex.wrapS = this.causticTex.wrapT = THREE.RepeatWrapping;
-    this.causticTex.repeat.set(2, 1.5);
-    const cMat = new THREE.MeshBasicMaterial({
-      map: this.causticTex, transparent: true, opacity: 0.22,
-      blending: THREE.AdditiveBlending, depthWrite: false
-    });
-    this.caustic = new THREE.Mesh(new THREE.PlaneGeometry(BOX_W - 0.2, BOX_D - 0.2), cMat);
-    this.caustic.rotation.x = -Math.PI / 2;
-    this.caustic.position.y = SAND_TOP_Y + 0.03;
-    this.scene.add(this.caustic);
+    // Caustics: two overlapping bright webs drifting at different scales/speeds,
+    // so the light on the sand shimmers (波光粼粼) instead of sliding rigidly.
+    const causticSpecs = [
+      { repeat: [2, 1.5], y: 0.03, op: 0.20, sx: 0.012, sy: 0.008, rate: 0.5 },
+      { repeat: [3.2, 2.4], y: 0.05, op: 0.13, sx: -0.018, sy: 0.011, rate: 0.8 }
+    ];
+    for (const spec of causticSpecs) {
+      const tex = this.makeCausticTexture();
+      tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
+      tex.repeat.set(spec.repeat[0], spec.repeat[1]);
+      const mat = new THREE.MeshBasicMaterial({
+        map: tex, transparent: true, opacity: spec.op,
+        blending: THREE.AdditiveBlending, depthWrite: false
+      });
+      const mesh = new THREE.Mesh(new THREE.PlaneGeometry(BOX_W - 0.2, BOX_D - 0.2), mat);
+      mesh.rotation.x = -Math.PI / 2;
+      mesh.position.y = SAND_TOP_Y + spec.y;
+      this.scene.add(mesh);
+      this.causticLayers.push({ tex, mat, sx: spec.sx, sy: spec.sy, baseOp: spec.op, rate: spec.rate });
+    }
   }
 
   private makeCausticTexture(): THREE.CanvasTexture {
@@ -823,11 +836,16 @@ export class Aquarium3D {
         b.mesh.position.z = (Math.random() - 0.5) * (BOX_D - 1.4);
       }
     }
-    // Caustics drift + breathe.
-    if (this.causticTex && this.caustic) {
-      this.causticTex.offset.x = (t * 0.012) % 1;
-      this.causticTex.offset.y = (t * 0.008) % 1;
-      (this.caustic.material as THREE.MeshBasicMaterial).opacity = 0.18 + 0.08 * Math.sin(t * 0.5);
+    // Caustics drift + breathe (each layer at its own pace → live shimmer).
+    for (let i = 0; i < this.causticLayers.length; i++) {
+      const L = this.causticLayers[i];
+      L.tex.offset.x = (t * L.sx) % 1;
+      L.tex.offset.y = (t * L.sy) % 1;
+      L.mat.opacity = L.baseOp * (0.7 + 0.45 * Math.sin(t * L.rate + i * 1.7));
+    }
+    // Gentle sparkle on the water surface.
+    if (this.waterMesh) {
+      (this.waterMesh.material as THREE.MeshStandardMaterial).opacity = 0.16 + 0.06 * Math.sin(t * 0.8);
     }
 
     this.controls.update();
