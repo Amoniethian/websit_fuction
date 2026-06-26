@@ -37,7 +37,10 @@ const DECOR_SCALE: Partial<Record<DecorType, number>> = { coral: 2.5 };
 // Fit target (max bounding-box dimension) for an uploaded fish model. Default
 // 0.6; per-type overrides let some creatures read larger.
 const FISH_FIT_DEFAULT = 0.6;
-const FISH_FIT: Partial<Record<FishType, number>> = { moonFish: 1.2 };
+const FISH_FIT: Partial<Record<FishType, number>> = { moonFish: 1.8 };
+
+// Creatures that school together (counted jointly toward the 3+ threshold).
+const SCHOOL_TYPES: ReadonlySet<string> = new Set(["smallFish", "moonFish"]);
 
 function lowPolyMat(color: number) {
   return new THREE.MeshStandardMaterial({ color, roughness: 0.55, metalness: 0, flatShading: true });
@@ -691,9 +694,9 @@ export class Aquarium3D {
     const halfX = BOX_W / 2 - 0.7, halfZ = BOX_D / 2 - 0.7;
     const yTop = AQ_Y + BOX_H / 2 - 0.7, yBot = TANK_BOTTOM + 0.7;
 
-    // Small fish school once there are 3+ of them: gather the shared centre and
-    // average heading so each one can cohere / align / separate (boids).
-    const school = this.fish.filter((f) => f.userData.type === "smallFish" && f.userData.swim);
+    // Small fish + moon fish school together once there are 3+ between them:
+    // gather the shared centre and average heading for cohesion/alignment/separation.
+    const school = this.fish.filter((f) => f.userData.swim && SCHOOL_TYPES.has(f.userData.type));
     const schooling = school.length >= 3;
     let schoolCenter: THREE.Vector3 | null = null;
     let schoolVel: THREE.Vector3 | null = null;
@@ -711,7 +714,7 @@ export class Aquarium3D {
     for (const f of this.fish) {
       const sw = f.userData.swim;
       if (!sw) continue;
-      if (schooling && f.userData.type === "smallFish") {
+      if (schooling && SCHOOL_TYPES.has(f.userData.type)) {
         // Cohesion toward the shoal centre, alignment to its heading,
         // separation from anyone too close — plus a little jitter.
         sw.vel.add(schoolCenter!.clone().sub(f.position).multiplyScalar(0.9 * dt));
