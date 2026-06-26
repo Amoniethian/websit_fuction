@@ -980,10 +980,25 @@ export class Aquarium3D {
         // Upright correction (rolls a model that was authored lying on its side).
         const pitch = getPitch(type);
         if (pitch) f.rotateX(pitch);
-        // Swim: stronger snaking yaw + soft roll + a tail that really beats.
-        f.rotateY(Math.sin(sw.phase * 0.9) * 0.15);
-        f.rotateZ(Math.sin(sw.phase * 1.1) * 0.06);
-        if (f.userData.tail) f.userData.tail.rotation.x = Math.sin(sw.phase + 0.5) * 0.7;
+
+        // How sharply the fish is turning (smoothed) → bank the body + curve the tail.
+        const yawNow = Math.atan2(sw.vel.x, sw.vel.z);
+        let turn = yawNow - (sw.prevYaw ?? yawNow);
+        turn = Math.atan2(Math.sin(turn), Math.cos(turn));        // shortest angle
+        sw.prevYaw = yawNow;
+        sw.turnSmooth = (sw.turnSmooth ?? 0) * 0.85 + (turn / Math.max(dt, 0.001)) * 0.15;
+        const ts = sw.turnSmooth;
+        const bank = THREE.MathUtils.clamp(ts * 0.22, -0.45, 0.45);
+
+        // Head stays fairly steady (just a hint of yaw); lean into turns; the
+        // real motion lives in the tail — a side sweep that also curves toward
+        // the turn so the whole body bends (the "turn around" S-bend).
+        f.rotateY(Math.sin(sw.phase * 0.9) * 0.04);
+        f.rotateZ(Math.sin(sw.phase * 1.1) * 0.05 + bank);
+        if (f.userData.tail) {
+          const curve = THREE.MathUtils.clamp(ts * 0.5, -0.8, 0.8);
+          f.userData.tail.rotation.x = Math.sin(sw.phase + 0.5) * 0.8 + curve;
+        }
       }
     }
     // Animated decor (e.g. a swaying GLB anemone).
