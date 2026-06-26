@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { loadSupabaseConfig, saveSupabaseConfig } from "../../lib/supabaseConfig";
+import { loadSupabaseConfig, saveSupabaseConfig, buildConfigLink } from "../../lib/supabaseConfig";
 import {
   getSyncStatus, subscribeSync, signIn, signUp, signOut, pushNow, pullNow, reinitSync
 } from "../../lib/sync";
@@ -49,6 +49,18 @@ export function CloudSync() {
 
   const signedIn = status.state === "idle" || status.state === "syncing";
 
+  function copyConfigLink() {
+    const link = buildConfigLink();
+    if (!link) {
+      toast("先填好 Supabase 配置");
+      return;
+    }
+    navigator.clipboard?.writeText(link).then(
+      () => toast("续接链接已复制 · 发到 iPad 打开即可自动配置"),
+      () => window.prompt("复制这条链接，在 iPad 打开：", link)
+    );
+  }
+
   return (
     <div className="cos-section">
       <h3>云同步 · Supabase {signedIn ? `· ${status.email || "已登录"}` : configured ? "· 未登录" : "· 未配置"}</h3>
@@ -97,7 +109,13 @@ export function CloudSync() {
 
       <div className="vocab-row" style={{ marginTop: 8 }}>
         <button onClick={() => setShowSql((v) => !v)}>{showSql ? "隐藏 SQL" : "建表 + 建桶 SQL"}</button>
+        {configured && <button onClick={copyConfigLink}>复制 iPad 续接链接</button>}
       </div>
+      {configured && (
+        <div className="ai-note">
+          「续接链接」把本机的 Supabase 配置打包进网址，发到 iPad 打开就自动填好配置，只需再登录一次。
+        </div>
+      )}
       {showSql && <pre className="sql-box">{SQL}</pre>}
     </div>
   );

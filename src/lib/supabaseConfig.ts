@@ -40,3 +40,37 @@ export function subscribeSupabaseConfig(l: Listener): () => void {
     listeners.delete(l);
   };
 }
+
+/**
+ * Build a "续接链接" carrying this device's Supabase config in the URL fragment,
+ * so a new device (e.g. an iPad) is configured in one tap instead of retyping
+ * the long anon key. The anon key is a public client key and the fragment never
+ * leaves the browser, so this is safe.
+ */
+export function buildConfigLink(): string | null {
+  const cfg = loadSupabaseConfig();
+  if (!cfg) return null;
+  const payload = encodeURIComponent(btoa(JSON.stringify({ url: cfg.url, anonKey: cfg.anonKey })));
+  return location.origin + location.pathname + "#cfg=" + payload;
+}
+
+/**
+ * If the page was opened with a #cfg=… share link, import the Supabase config
+ * from it and strip it from the URL. Returns true when a config was applied.
+ * Call once at startup, before sync initialises.
+ */
+export function applyConfigFromUrl(): boolean {
+  try {
+    const m = location.hash.match(/[#&]cfg=([^&]+)/);
+    if (!m) return false;
+    const cfg = JSON.parse(atob(decodeURIComponent(m[1])));
+    if (cfg && cfg.url && cfg.anonKey) {
+      saveSupabaseConfig({ url: String(cfg.url), anonKey: String(cfg.anonKey) });
+      history.replaceState(null, "", location.pathname + location.search);
+      return true;
+    }
+  } catch {
+    /* ignore a malformed link */
+  }
+  return false;
+}
