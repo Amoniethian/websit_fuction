@@ -40,7 +40,7 @@ const FISH_FIT_DEFAULT = 0.6;
 const FISH_FIT: Partial<Record<FishType, number>> = { moonFish: 1.08 };
 
 // Creatures that school together (counted jointly toward the 3+ threshold).
-const SCHOOL_TYPES: ReadonlySet<string> = new Set(["smallFish", "moonFish", "emberFish"]);
+const SCHOOL_TYPES: ReadonlySet<string> = new Set(["smallFish", "moonFish"]);
 
 // Tail-beat per type: smaller fish swish with bigger amplitude and faster beat.
 const FISH_BEAT: Record<string, { amp: number; freq: number }> = {
@@ -547,6 +547,35 @@ export class Aquarium3D {
     return g;
   }
 
+  /** A glowing flat "fire-sprite" fish — translucent red, head at +X. Darts & pauses. */
+  private makeEmberFish(): THREE.Group {
+    const g = new THREE.Group();
+    const s = 0.09;
+    const glow = (color: number, opacity: number) =>
+      new THREE.MeshBasicMaterial({
+        color, transparent: true, opacity, side: THREE.DoubleSide,
+        blending: THREE.AdditiveBlending, depthWrite: false
+      });
+    // Flat diamond body (head at +X), flattened in Z so it's a paper-thin sprite.
+    const body = new THREE.Mesh(new THREE.ConeGeometry(s * 0.55, s * 1.7, 4), glow(0xff5526, 0.55));
+    body.rotation.z = -Math.PI / 2;
+    body.scale.z = 0.22;
+    g.add(body);
+    // Bright molten core.
+    const core = new THREE.Mesh(new THREE.SphereGeometry(s * 0.32, 7, 5), glow(0xffd28a, 0.85));
+    core.position.x = s * 0.12;
+    core.scale.set(1.4, 1, 0.5);
+    g.add(core);
+    // Flat flicking tail.
+    const tail = new THREE.Mesh(new THREE.ConeGeometry(s * 0.6, s * 0.85, 3), glow(0xff7a3a, 0.5));
+    tail.position.x = -s * 0.95;
+    tail.rotation.z = Math.PI / 2;
+    tail.scale.z = 0.18;
+    g.userData.tailFin = tail;
+    g.add(tail);
+    return g;
+  }
+
   // The "turtle" reward slot is rendered as a jellyfish: translucent bell + tentacles.
   private makeJellyfish(): THREE.Group {
     const g = new THREE.Group();
@@ -654,7 +683,7 @@ export class Aquarium3D {
     const model = this.models[type as ModelSlot];
     if (model) return this.instantiateModel(model);
     if (type === "smallFish") return this.makeFishGeneric({ color: 0xe9b955, tail: 0xa17a37, size: 0.05 });
-    if (type === "emberFish") return this.makeFishGeneric({ color: 0xff5a26, tail: 0xc4341a, size: 0.05, translucent: true });
+    if (type === "emberFish") return this.makeEmberFish();
     if (type === "moonFish") return this.makeFishGeneric({ color: 0xe7d9b0, tail: 0xa99b76, size: 0.32 });
     if (type === "clownfish") return this.makeFishGeneric({ color: 0xe07a3c, tail: 0x8e3f17, size: 0.22, stripe: true });
     if (type === "bigFish") return this.makeFishGeneric({ color: 0xbb6abf, tail: 0x7e468a, size: 0.42 });
@@ -669,7 +698,10 @@ export class Aquarium3D {
     const y = AQ_Y + (Math.random() - 0.5) * 1.6;
     const z = (Math.random() - 0.5) * (BOX_D - 1.6);
     mesh.position.set(x, y, z);
-    const speed = type === "bigFish" || type === "turtle" ? 0.3 : type === "moonFish" ? 0.5 : 0.8;
+    const speed =
+      type === "bigFish" || type === "turtle" ? 0.3 :
+      type === "moonFish" ? 0.5 :
+      type === "emberFish" ? 1.6 : 0.8;
     const dir = new THREE.Vector3((Math.random() - 0.5) * 2, 0, (Math.random() - 0.5) * 2).normalize();
     mesh.userData.swim = {
       speed,
@@ -679,9 +711,10 @@ export class Aquarium3D {
       dSpeed: speed * 0.5,        // current (eased) speed
       spdPhase: Math.random() * 6,
       dart: 0,                    // dart-burst countdown (seconds)
-      behavior: "cruise",         // cruise(长行) / play(短行) / explore(探索) / cling(依附)
+      behavior: "cruise",         // cruise(长行) / play(短行) / explore(探索) / cling(依附) / dart-rest (emberFish)
       bTimer: 1 + Math.random() * 6,
-      targetMesh: null            // decor being explored / clung to
+      targetMesh: null,           // decor being explored / clung to
+      dartTarget: new THREE.Vector3() // fire-sprite dart destination (emberFish)
     };
     this.assignBehavior(mesh);
     this.fish.push(mesh);
@@ -711,6 +744,22 @@ export class Aquarium3D {
     const sw = f.userData.swim;
     const type = f.userData.type as FishType;
     sw.targetMesh = null;
+    if (type === "emberFish") {
+      // Fire sprite: quick dart to a spot, then a short pause, repeat.
+      if (sw.behavior === "dart") {
+        sw.behavior = "rest";
+        sw.bTimer = 0.5 + Math.random() * 1.3;
+      } else {
+        sw.behavior = "dart";
+        sw.bTimer = 0.4 + Math.random() * 0.6;
+        sw.dartTarget.set(
+          (Math.random() - 0.5) * (BOX_W - 2.5),
+          AQ_Y + (Math.random() - 0.5) * (BOX_H - 2),
+          (Math.random() - 0.5) * (BOX_D - 2.5)
+        );
+      }
+      return;
+    }
     if (type === "bigFish" || type === "turtle") {
       sw.behavior = "cruise";
       sw.bTimer = 999;
@@ -952,7 +1001,17 @@ export class Aquarium3D {
       let speedScale = 1;
       const visiting = beh === "explore" || beh === "cling";
 
-      if (beh === "cruise" && schooling && SCHOOL_TYPES.has(type)) {
+      if (type === "emberFish") {
+        // Fire sprite: dart hard toward the target, or hover still while resting.
+        if (beh === "dart") {
+          desired.set(sw.dartTarget.x - f.position.x, sw.dartTarget.y - f.position.y, sw.dartTarget.z - f.position.z);
+          if (desired.lengthSq() > 1e-6) desired.normalize();
+          desired.multiplyScalar(2);
+        } else {
+          desired.set(0, 0, 0); // rest: drift to a stop
+          speedScale = 0.04;
+        }
+      } else if (beh === "cruise" && schooling && SCHOOL_TYPES.has(type)) {
         // 长行: travel along the shared shoal heading, staying together + spaced.
         desired.copy(this.schoolHeading);                                          // collective travel
         desired.addScaledVector(sw.wDir, 0.2);                                      // a little individuality
@@ -999,12 +1058,15 @@ export class Aquarium3D {
       if (sw.dart > 0) sw.dart -= dt;
       else if (freeRoam && sw.speed >= 0.5 && Math.random() < 0.004) sw.dart = 0.3 + Math.random() * 0.5;
       const ease = 0.65 + 0.25 * Math.sin(sw.spdPhase) + (sw.dart > 0 ? 1.0 : 0);
-      const targetSpeed = sw.speed * Math.max(0.2, ease) * speedScale;
-      sw.dSpeed += (targetSpeed - sw.dSpeed) * Math.min(1, 1.8 * dt);
+      const ember = type === "emberFish";
+      const targetSpeed = ember
+        ? (beh === "dart" ? sw.speed : sw.speed * 0.03) // dart fast, then drift to a stop
+        : sw.speed * Math.max(0.2, ease) * speedScale;
+      sw.dSpeed += (targetSpeed - sw.dSpeed) * Math.min(1, (ember ? 5 : 1.8) * dt);
       desired.multiplyScalar(sw.dSpeed);
 
-      // --- steer velocity toward desired (momentum → smooth banking turns) ---
-      const resp = Math.min(1, (sw.dart > 0 ? 4.5 : 2.4) * dt);
+      // --- steer velocity toward desired (snappy for darts, smooth otherwise) ---
+      const resp = Math.min(1, (sw.dart > 0 || (ember && beh === "dart") ? 6 : 2.4) * dt);
       sw.vel.x += (desired.x - sw.vel.x) * resp;
       sw.vel.y += (desired.y - sw.vel.y) * resp;
       sw.vel.z += (desired.z - sw.vel.z) * resp;
@@ -1061,6 +1123,9 @@ export class Aquarium3D {
             segs[i].rotation.y = Math.sin(sw.phase - i * 0.9) * (0.08 + 0.38 * t) * beat.amp + curve * (0.25 + 0.75 * t);
           }
         }
+        // Ember sprite: flick the flat tail (fast while darting, idle while resting).
+        const tf = f.userData.tailFin as THREE.Object3D | undefined;
+        if (tf) tf.rotation.x = Math.sin(sw.phase) * (beh === "dart" ? 0.7 : 0.2);
       }
     }
     // Animated decor (e.g. a swaying GLB anemone).
