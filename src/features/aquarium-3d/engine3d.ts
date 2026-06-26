@@ -462,34 +462,71 @@ export class Aquarium3D {
   }
 
   /* ---------- factories ---------- */
+  /**
+   * A fish built as a flexible flat strip: a steady head plus a chain of body
+   * segments. The swim loop ripples the segments as a head→tail travelling wave
+   * (growing toward the tail) and bends the whole strip into turns.
+   */
   private makeFishGeneric(o: { color: number; tail: number; size: number; stripe?: boolean }): THREE.Group {
+    const s = o.size;
     const g = new THREE.Group();
-    const body = new THREE.Mesh(new THREE.SphereGeometry(o.size, 7, 5), lowPolyMat(o.color));
-    body.scale.set(1.6, 0.9, 0.7);
-    body.castShadow = true;
-    g.add(body);
-    const tail = new THREE.Mesh(new THREE.ConeGeometry(o.size * 0.6, o.size * 0.8, 4), lowPolyMat(o.tail));
-    tail.position.set(-o.size * 1.6, 0, 0);
-    tail.rotation.z = -Math.PI / 2;
-    g.add(tail);
-    g.userData.tail = tail;
-    const fin = new THREE.Mesh(new THREE.ConeGeometry(o.size * 0.35, o.size * 0.5, 3), lowPolyMat(o.tail));
-    fin.position.set(-o.size * 0.1, o.size * 0.6, 0);
-    fin.rotation.x = Math.PI / 8;
-    g.add(fin);
+    const bodyMat = lowPolyMat(o.color);
+    const finMat = lowPolyMat(o.tail);
+
+    // Head — on the root, so it barely moves while the body waves.
+    const head = new THREE.Mesh(new THREE.BoxGeometry(s * 0.72, s * 0.95, s * 0.5), bodyMat);
+    head.position.x = s * 0.34;
+    head.castShadow = true;
+    g.add(head);
     for (const dz of [-1, 1]) {
-      const eye = new THREE.Mesh(new THREE.SphereGeometry(o.size * 0.1, 6, 4), new THREE.MeshBasicMaterial({ color: 0x1a1410 }));
-      eye.position.set(o.size * 0.9, o.size * 0.15, dz * o.size * 0.45);
+      const eye = new THREE.Mesh(new THREE.SphereGeometry(s * 0.1, 6, 4), new THREE.MeshBasicMaterial({ color: 0x1a1410 }));
+      eye.position.set(s * 0.6, s * 0.12, dz * s * 0.24);
       g.add(eye);
     }
-    if (o.stripe) {
-      for (const x of [-o.size * 0.4, o.size * 0.2]) {
-        const s = new THREE.Mesh(new THREE.RingGeometry(o.size * 0.6, o.size * 0.7, 16, 1), new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.DoubleSide }));
-        s.rotation.y = Math.PI / 2;
-        s.position.set(x, 0, 0);
-        g.add(s);
-      }
+
+    // Body segments — a chain, each bends a little relative to the one ahead.
+    const segLen = s * 0.55;
+    const hs = [1.0, 0.85, 0.62, 0.4]; // height (Y) head→tail
+    const ts = [0.48, 0.4, 0.3, 0.18]; // thickness (Z, flat) head→tail
+    const segs: THREE.Object3D[] = [];
+    let parent: THREE.Object3D = g;
+    for (let i = 0; i < hs.length; i++) {
+      const seg = new THREE.Group();
+      seg.position.x = i === 0 ? 0 : -segLen;
+      const mesh = new THREE.Mesh(new THREE.BoxGeometry(segLen * 1.05, s * hs[i], s * ts[i]), bodyMat);
+      mesh.position.x = -segLen / 2;
+      mesh.castShadow = true;
+      seg.add(mesh);
+      parent.add(seg);
+      segs.push(seg);
+      parent = seg;
     }
+
+    // Tail fin (vertical, flat) at the end of the chain.
+    const tail = new THREE.Mesh(new THREE.ConeGeometry(s * 0.5, s * 0.72, 3), finMat);
+    tail.position.set(-segLen * 0.5, 0, 0);
+    tail.rotation.z = Math.PI / 2;
+    tail.scale.z = 0.3;
+    parent.add(tail);
+
+    // Dorsal fin on the first body segment.
+    const dorsal = new THREE.Mesh(new THREE.ConeGeometry(s * 0.3, s * 0.5, 3), finMat);
+    dorsal.position.set(-segLen * 0.4, s * 0.5, 0);
+    dorsal.scale.z = 0.25;
+    segs[0].add(dorsal);
+
+    // Clownfish bands.
+    if (o.stripe) {
+      const white = new THREE.MeshBasicMaterial({ color: 0xffffff });
+      const b1 = new THREE.Mesh(new THREE.BoxGeometry(s * 0.14, s * 0.97, s * 0.52), white);
+      b1.position.x = s * 0.18;
+      g.add(b1);
+      const b2 = new THREE.Mesh(new THREE.BoxGeometry(s * 0.13, s * 0.86, s * 0.42), white);
+      b2.position.x = -segLen * 0.5;
+      segs[1].add(b2);
+    }
+
+    g.userData.segs = segs;
     return g;
   }
 
@@ -988,16 +1025,21 @@ export class Aquarium3D {
         sw.prevYaw = yawNow;
         sw.turnSmooth = (sw.turnSmooth ?? 0) * 0.85 + (turn / Math.max(dt, 0.001)) * 0.15;
         const ts = sw.turnSmooth;
-        const bank = THREE.MathUtils.clamp(ts * 0.22, -0.45, 0.45);
+        const bank = THREE.MathUtils.clamp(ts * 0.2, -0.4, 0.4);
+        const curve = THREE.MathUtils.clamp(ts * 0.45, -0.7, 0.7);
 
-        // Head stays fairly steady (just a hint of yaw); lean into turns; the
-        // real motion lives in the tail — a side sweep that also curves toward
-        // the turn so the whole body bends (the "turn around" S-bend).
-        f.rotateY(Math.sin(sw.phase * 0.9) * 0.04);
-        f.rotateZ(Math.sin(sw.phase * 1.1) * 0.05 + bank);
-        if (f.userData.tail) {
-          const curve = THREE.MathUtils.clamp(ts * 0.5, -0.8, 0.8);
-          f.userData.tail.rotation.x = Math.sin(sw.phase + 0.5) * 0.8 + curve;
+        // Head barely yaws; the whole strip leans (banks) into turns.
+        f.rotateY(Math.sin(sw.phase * 0.9) * 0.03);
+        f.rotateZ(Math.sin(sw.phase * 1.1) * 0.04 + bank);
+        // Body ripples like a flexible strip: a wave travels head→tail and grows,
+        // and a steady turn-bend curves the whole body into the turn (the S-bend).
+        const segs = f.userData.segs as THREE.Object3D[] | undefined;
+        if (segs) {
+          const n = segs.length;
+          for (let i = 0; i < n; i++) {
+            const t = i / (n - 1);
+            segs[i].rotation.y = Math.sin(sw.phase - i * 0.8) * (0.05 + 0.22 * t) + curve * (0.3 + 0.7 * t);
+          }
         }
       }
     }
