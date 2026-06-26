@@ -107,6 +107,8 @@ type Actions = {
   setPalette: (water: number, sand: number) => void;
   // 3D decor
   moveDecor: (id: string, x: number, z: number) => void;
+  setDecorScale: (id: string, scale: number) => void;
+  setDecorRot: (id: string, rot: number) => void;
   syncDecor: () => void;
   // cloud sync
   exportState: () => SyncData;
@@ -479,6 +481,12 @@ export const useStore = create<Store>()(
 
       moveDecor: (id, x, z) =>
         set({ tankDecor: get().tankDecor.map((d) => (d.id === id ? { ...d, x, z } : d)) }),
+
+      setDecorScale: (id, scale) =>
+        set({ tankDecor: get().tankDecor.map((d) => (d.id === id ? { ...d, scale } : d)) }),
+
+      setDecorRot: (id, rot) =>
+        set({ tankDecor: get().tankDecor.map((d) => (d.id === id ? { ...d, rot } : d)) }),
 
       syncDecor: () => set({ tankDecor: reconcileDecor(get().tankDecor, get().inv) }),
 

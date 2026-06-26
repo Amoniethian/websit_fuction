@@ -78,8 +78,24 @@ export type DecorItem = {
   x: number;   // sand-plane position
   z: number;
   rot: number; // y-rotation (radians)
+  scale?: number; // size multiplier — small 0.7 / medium 1 (default) / large 1.4
   def?: boolean; // part of the default scenery (never auto-removed)
 };
+
+/** The three pickable decor sizes (multipliers on the per-type base scale). */
+export const DECOR_SIZES: { key: string; label: string; scale: number }[] = [
+  { key: "small", label: "小", scale: 0.7 },
+  { key: "medium", label: "中", scale: 1 },
+  { key: "large", label: "大", scale: 1.4 }
+];
+
+/** Four cardinal orientation presets (radians) for arranging decor. */
+export const DECOR_ROTS: { label: string; rot: number }[] = [
+  { label: "北", rot: 0 },
+  { label: "东", rot: Math.PI / 2 },
+  { label: "南", rot: Math.PI },
+  { label: "西", rot: (Math.PI * 3) / 2 }
+];
 
 export type State = {
   vocab: Vocab[];

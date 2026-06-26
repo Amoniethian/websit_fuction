@@ -75,6 +75,27 @@ export function cycleHeading(slot: ModelSlot) {
   }
 }
 
+/* ---------- per-slot pitch (roll a "lying flat" model upright) ---------- */
+const PITCH_KEY = "cihai-model-pitch";
+let pitches: Record<string, number> = (() => {
+  try {
+    return JSON.parse(localStorage.getItem(PITCH_KEY) || "{}");
+  } catch {
+    return {};
+  }
+})();
+export function getPitch(slot: ModelSlot): number {
+  return pitches[slot] || 0;
+}
+export function cyclePitch(slot: ModelSlot) {
+  pitches = { ...pitches, [slot]: (((pitches[slot] || 0) + Math.PI / 2) % (Math.PI * 2)) };
+  try {
+    localStorage.setItem(PITCH_KEY, JSON.stringify(pitches));
+  } catch {
+    /* ignore */
+  }
+}
+
 /** Read a File as a base64 data URL (for persisting GLB bytes). */
 export function fileToDataUrl(f: File): Promise<string> {
   return new Promise((resolve, reject) => {

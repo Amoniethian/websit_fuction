@@ -3,7 +3,7 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { clone as skeletonClone } from "three/examples/jsm/utils/SkeletonUtils.js";
 import type { Inventory, DecorItem, DecorType } from "../../types";
-import { getModel, getHeading, hasModel, type ModelSlot } from "./modelStore";
+import { getModel, getHeading, getPitch, hasModel, type ModelSlot } from "./modelStore";
 
 type ModelTemplate = { object: THREE.Object3D; animations: THREE.AnimationClip[] };
 export type Spoken = { en: string; zh: string; word?: string };
@@ -80,6 +80,9 @@ export class Aquarium3D {
   // arrange-mode drag
   private arrange = false;
   private onMove: ((id: string, x: number, z: number) => void) | null = null;
+  private onSelect: ((id: string | null) => void) | null = null;
+  private selectedId: string | null = null;
+  private outline: THREE.BoxHelper | null = null;
   private raycaster = new THREE.Raycaster();
   private pointer = new THREE.Vector2();
   private dragPlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), -SAND_TOP_Y);
@@ -162,6 +165,7 @@ export class Aquarium3D {
     this.cv.removeEventListener("pointerdown", this.onPointerDown);
     window.removeEventListener("pointermove", this.onPointerMove);
     window.removeEventListener("pointerup", this.onPointerUp);
+    if (this.outline) this.outline.geometry.dispose();
     this.renderer.dispose();
   }
 
@@ -176,10 +180,39 @@ export class Aquarium3D {
     this.controls.autoRotate = on;
   }
 
-  setArrange(on: boolean, onMove: (id: string, x: number, z: number) => void) {
+  setArrange(
+    on: boolean,
+    onMove: (id: string, x: number, z: number) => void,
+    onSelect?: (id: string | null) => void
+  ) {
     this.arrange = on;
     this.onMove = onMove;
+    this.onSelect = onSelect ?? null;
     this.cv.style.cursor = on ? "grab" : "";
+    if (!on) this.select(null); // leaving arrange clears the highlight
+  }
+
+  /** Select a decor item (or null) and draw a highlight outline around it. */
+  private select(id: string | null) {
+    this.selectedId = id;
+    this.refreshOutline();
+    this.onSelect?.(id);
+  }
+
+  /** (Re)build the selection outline to match the selected mesh. */
+  private refreshOutline() {
+    if (this.outline) {
+      this.scene.remove(this.outline);
+      this.outline.geometry.dispose();
+      this.outline = null;
+    }
+    if (!this.selectedId) return;
+    const mesh = this.decorMeshes.get(this.selectedId);
+    if (!mesh) return;
+    this.outline = new THREE.BoxHelper(mesh, 0xffcf6b);
+    (this.outline.material as THREE.LineBasicMaterial).transparent = true;
+    (this.outline.material as THREE.LineBasicMaterial).opacity = 0.9;
+    this.scene.add(this.outline);
   }
 
   /** Load all uploaded models present in storage, then rebuild affected objects. */
@@ -251,8 +284,10 @@ export class Aquarium3D {
       }
       mesh.position.set(item.x, SAND_TOP_Y, item.z);
       mesh.rotation.y = item.rot;
-      mesh.scale.setScalar(DECOR_SCALE[item.type] ?? 1);
+      mesh.scale.setScalar((DECOR_SCALE[item.type] ?? 1) * (item.scale ?? 1));
     }
+    // Keep the selection outline matched to the (possibly resized) item.
+    if (this.selectedId) this.refreshOutline();
   }
 
   /* ---------- tank ---------- */
@@ -604,7 +639,10 @@ export class Aquarium3D {
         this.dragging.userData.id = top[0];
         this.controls.enabled = false;
         this.cv.style.cursor = "grabbing";
+        this.select(top[0]); // selecting highlights it; dragging still moves it
       }
+    } else {
+      this.select(null); // tap empty water → deselect
     }
   };
   private isAncestor(anc: THREE.Object3D, node: THREE.Object3D): boolean {
@@ -625,6 +663,7 @@ export class Aquarium3D {
       const z = THREE.MathUtils.clamp(hit.z, -DECOR_Z, DECOR_Z);
       this.dragging.position.x = x;
       this.dragging.position.z = z;
+      this.outline?.update();
     }
   };
   private onPointerUp = (e: PointerEvent) => {
@@ -759,6 +798,9 @@ export class Aquarium3D {
         const tgt = f.position.clone().add(new THREE.Vector3(sw.vel.x, 0, sw.vel.z));
         f.lookAt(tgt);
         f.rotateY(Math.PI / 2 + getHeading(f.userData.type));
+        // Upright correction (rolls a model that was authored lying on its side).
+        const pitch = getPitch(f.userData.type);
+        if (pitch) f.rotateX(pitch);
         // Refined swim: gentle snaking yaw + soft roll + a tail that leads.
         f.rotateY(Math.sin(sw.phase * 0.9) * 0.07);
         f.rotateZ(Math.sin(sw.phase * 1.1) * 0.04);

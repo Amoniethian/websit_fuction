@@ -10,6 +10,7 @@ import {
   clearModel,
   fileToDataUrl,
   cycleHeading,
+  cyclePitch,
   type ModelSlot
 } from "../aquarium-3d/modelStore";
 import { uploadModelFile, deleteModelFromCloud } from "../../lib/sync";
@@ -141,7 +142,10 @@ function ModelRow({ slot, label, replaced }: { slot: ModelSlot; label: string; r
       <button className="file-btn" onClick={() => input.current?.click()}>选择 .glb</button>
       <span className="model-status">{replaced ? "✓ 已替换" : "占位"}</span>
       {replaced && FISH_SLOTS.has(slot) && (
-        <button className="file-btn" title="转 90° 调整朝向" onClick={() => { cycleHeading(slot); toast(label + " 转了 90°"); }}>↻</button>
+        <>
+          <button className="file-btn" title="转 90° 调整左右朝向" onClick={() => { cycleHeading(slot); toast(label + " 转了 90°"); }}>↻ 转向</button>
+          <button className="file-btn" title="翻正：把躺平的模型立起来（绕另一个轴转 90°）" onClick={() => { cyclePitch(slot); toast(label + " 翻正 90°"); }}>⤧ 翻正</button>
+        </>
       )}
       {replaced && (
         <button
