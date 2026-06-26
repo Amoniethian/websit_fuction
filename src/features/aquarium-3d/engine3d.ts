@@ -5,7 +5,13 @@ import { clone as skeletonClone } from "three/examples/jsm/utils/SkeletonUtils.j
 import type { Inventory, DecorItem, DecorType } from "../../types";
 import { getModel, getHeading, hasModel, type ModelSlot } from "./modelStore";
 
-type ModelTemplate = { object: THREE.Object3D; animations: THREE.AnimationClip[] };
+type ModelTemplate = {
+  object: THREE.Object3D;          // kept at native scale; normalized at instantiation
+  animations: THREE.AnimationClip[];
+  scale: number;                   // uniform scale that fits the model to its target size
+  center: THREE.Vector3;           // native-space bounding-box centre
+  size: THREE.Vector3;             // native-space bounding-box size
+};
 export type Spoken = { en: string; zh: string; word?: string };
 
 /**
@@ -191,14 +197,14 @@ export class Aquarium3D {
       try {
         const { scene, animations } = await this.loadGLB(url);
         const targetMax = slot === "tank" ? BOX_W : (FISH_TYPES as readonly string[]).includes(slot) ? 0.6 : 1.2;
-        this.fit(scene, targetMax);
+        const fit = this.measure(scene, targetMax);
         scene.traverse((m) => {
           if ((m as THREE.Mesh).isMesh) {
             m.castShadow = true;
             m.receiveShadow = true;
           }
         });
-        this.models[slot] = { object: scene, animations };
+        this.models[slot] = { object: scene, animations, ...fit };
       } catch {
         delete this.models[slot];
       }
@@ -291,9 +297,14 @@ export class Aquarium3D {
     }
     const m = this.models.tank;
     if (m) {
-      this.customTank = m.object.clone(true);
-      this.customTank.position.y = AQ_Y;
-      this.scene.add(this.customTank);
+      const obj = m.object.clone(true);
+      obj.position.copy(m.center.clone().multiplyScalar(-1));
+      const wrap = new THREE.Group();
+      wrap.add(obj);
+      wrap.scale.setScalar(m.scale);
+      wrap.position.y = AQ_Y;
+      this.customTank = wrap;
+      this.scene.add(wrap);
       this.tankGroup.visible = false; // hide procedural glass + water
     } else {
       this.tankGroup.visible = true;
@@ -477,21 +488,34 @@ export class Aquarium3D {
     return g;
   }
 
-  /** Clone a GLB template into a group, wiring up its animation mixer if it has clips. */
-  private instantiateModel(tpl: ModelTemplate): THREE.Group {
+  /**
+   * Clone a GLB template into a group. The fit scale lives on the outer group
+   * (never animated), and the model is centred inside it; for decor we instead
+   * rest its base at the group origin. When the clip has animation we remember
+   * the model's base transform so the swim loop can cancel root motion and keep
+   * control of the path while the body/tail animation still plays.
+   */
+  private instantiateModel(tpl: ModelTemplate, opts?: { groundBase?: boolean }): THREE.Group {
     const m = skeletonClone(tpl.object);
     const g = new THREE.Group();
+    const offset = tpl.center.clone().multiplyScalar(-1);
+    if (opts?.groundBase) offset.y += tpl.size.y / 2;
+    m.position.copy(offset);
     g.add(m);
+    g.scale.setScalar(tpl.scale);
     if (tpl.animations.length) {
       const mixer = new THREE.AnimationMixer(m);
       for (const clip of tpl.animations) mixer.clipAction(clip).play();
       g.userData.mixer = mixer;
+      g.userData.animRoot = m;
+      g.userData.animBasePos = m.position.clone();
+      g.userData.animBaseQuat = m.quaternion.clone();
     }
     return g;
   }
 
   private makeDecor(type: DecorType): THREE.Group {
-    if (this.models[type]) return this.instantiateModel(this.models[type]!);
+    if (this.models[type]) return this.instantiateModel(this.models[type]!, { groundBase: true });
     if (type === "rock") return this.makeRock();
     if (type === "coral") return this.makeCoral();
     if (type === "anemone") return this.makeAnemone();
@@ -560,16 +584,17 @@ export class Aquarium3D {
       this.loader.parse(buf, "", (g) => resolve({ scene: g.scene, animations: g.animations || [] }), reject);
     });
   }
-  private fit(obj: THREE.Object3D, targetMax: number) {
+  /** Measure a model's native bounds and the uniform scale that fits it to
+   * targetMax. We do NOT scale the object itself — the scale is applied to an
+   * outer wrapper at instantiation, so a playing animation that writes the
+   * model root's transform can't override our sizing or fling it off-course. */
+  private measure(obj: THREE.Object3D, targetMax: number): { scale: number; center: THREE.Vector3; size: THREE.Vector3 } {
+    obj.updateWorldMatrix(true, true);
     const box = new THREE.Box3().setFromObject(obj);
     const size = box.getSize(new THREE.Vector3());
+    const center = box.getCenter(new THREE.Vector3());
     const maxDim = Math.max(size.x, size.y, size.z) || 1;
-    const scale = targetMax / maxDim;
-    obj.scale.setScalar(scale);
-    const center = box.getCenter(new THREE.Vector3()).multiplyScalar(scale);
-    obj.position.sub(center);
-    // sit base near origin so decor rests on the sand
-    obj.position.y += (size.y * scale) / 2;
+    return { scale: targetMax / maxDim, center, size };
   }
 
   /* ---------- arrange drag ---------- */
@@ -731,7 +756,15 @@ export class Aquarium3D {
       if (f.position.z > halfZ) sw.vel.z = -Math.abs(sw.vel.z);
       if (f.position.z < -halfZ) sw.vel.z = Math.abs(sw.vel.z);
       f.position.addScaledVector(sw.vel, dt);
-      if (f.userData.mixer) f.userData.mixer.update(dt);
+      if (f.userData.mixer) {
+        f.userData.mixer.update(dt);
+        // Cancel the clip's root motion so OUR swim logic owns the path; the
+        // body/tail bone animation still plays.
+        if (f.userData.animRoot) {
+          f.userData.animRoot.position.copy(f.userData.animBasePos);
+          f.userData.animRoot.quaternion.copy(f.userData.animBaseQuat);
+        }
+      }
       sw.phase += dt * 3;
       if (f.userData.type === "turtle") {
         // Jellyfish: stay upright, drift, and pulse the bell (squash-stretch).
