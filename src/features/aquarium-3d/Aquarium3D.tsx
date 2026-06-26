@@ -72,7 +72,12 @@ export function Aquarium3D({
       raf = requestAnimationFrame(follow);
     };
     raf = requestAnimationFrame(follow);
-    return () => cancelAnimationFrame(raf);
+    // Auto-dismiss after ~12s (tapping another fish resets this).
+    const dismiss = window.setTimeout(() => setBubble(null), 12000);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.clearTimeout(dismiss);
+    };
   }, [bubble]);
 
   useEffect(() => { engineRef.current?.setFish(inv); }, [inv]);
