@@ -13,6 +13,7 @@ import {
   type ModelSlot
 } from "../aquarium-3d/modelStore";
 import { uploadModelFile, deleteModelFromCloud } from "../../lib/sync";
+import { THEMES, getTheme, setTheme, subscribeTheme } from "../../lib/theme";
 
 const FISH_SLOTS = new Set<ModelSlot>(["smallFish", "moonFish", "clownfish", "bigFish", "turtle"]);
 
@@ -42,8 +43,29 @@ export function Cosmetics() {
     return subscribeModels(() => bump((v) => v + 1));
   }, []);
 
+  const [theme, setThemeState] = useState(getTheme());
+  useEffect(() => subscribeTheme(() => setThemeState(getTheme())), []);
+
   return (
     <div className="pane">
+      <div className="cos-section">
+        <h3>界面主题</h3>
+        <div className="theme-row">
+          {THEMES.map((t) => (
+            <button
+              key={t.id}
+              className={"theme-chip" + (theme === t.id ? " on" : "")}
+              style={{ background: t.paper }}
+              onClick={() => setTheme(t.id)}
+              title={t.label}
+            >
+              <span className="theme-dot" style={{ background: t.accent }} />
+              {t.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
       <AudioControls />
 
       <div className="cos-section">

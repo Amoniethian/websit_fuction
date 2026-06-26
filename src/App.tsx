@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useStore } from "./store";
 import { audio } from "./lib/audio";
 import { initSync } from "./lib/sync";
+import { initBgm, getBgm } from "./lib/bgmStore";
 import { LearnRoute } from "./features/learn/LearnRoute";
 import { ReviewRoute } from "./features/review/ReviewRoute";
 import { Pomodoro } from "./features/pomodoro/Pomodoro";
@@ -34,6 +35,14 @@ export function App() {
   // Restore cloud session + wire auto-sync (no-op until Supabase is configured).
   useEffect(() => {
     initSync();
+  }, []);
+
+  // Load a previously uploaded BGM track so it's ready to play on first gesture.
+  useEffect(() => {
+    initBgm().then(async () => {
+      const url = await getBgm();
+      if (url) audio.setMusic(url);
+    });
   }, []);
 
   return (

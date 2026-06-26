@@ -18,10 +18,14 @@ export type AudioSettings = {
   ambientVol: number; // 0..1
   fxOn: boolean;
   fxVol: number; // 0..1
+  musicOn: boolean;  // user-uploaded BGM
+  musicVol: number;  // 0..1
 };
 
 const STORAGE_KEY = "cihai-audio";
-const DEFAULTS: AudioSettings = { ambientOn: true, ambientVol: 0.3, fxOn: true, fxVol: 0.6 };
+const DEFAULTS: AudioSettings = {
+  ambientOn: true, ambientVol: 0.3, fxOn: true, fxVol: 0.6, musicOn: true, musicVol: 0.5
+};
 
 function loadSettings(): AudioSettings {
   try {
@@ -45,6 +49,7 @@ class AudioEngine {
   private flowTimer = 0;
   private settings: AudioSettings = loadSettings();
   private listeners = new Set<Listener>();
+  private musicEl: HTMLAudioElement | null = null;
 
   getSettings() {
     return this.settings;
@@ -72,7 +77,31 @@ class AudioEngine {
     }
     if (this.settings.ambientOn) this.startAmbient();
     else this.stopAmbient();
+    // Uploaded music (HTMLAudioElement, independent of the Web Audio graph).
+    if (this.musicEl) {
+      this.musicEl.volume = this.settings.musicVol;
+      if (this.settings.musicOn) this.musicEl.play().catch(() => {});
+      else this.musicEl.pause();
+    }
     this.emit();
+  }
+
+  /** Load (or replace) the uploaded BGM track from a data URL. */
+  setMusic(dataUrl: string | null) {
+    if (this.musicEl) {
+      this.musicEl.pause();
+      this.musicEl = null;
+    }
+    if (dataUrl) {
+      const el = new Audio(dataUrl);
+      el.loop = true;
+      el.volume = this.settings.musicVol;
+      this.musicEl = el;
+      if (this.settings.musicOn && this.ctx) el.play().catch(() => {});
+    }
+  }
+  hasMusic() {
+    return !!this.musicEl;
   }
 
   /** Call from a user gesture: creates/resumes the context and starts ambient if enabled. */
@@ -91,6 +120,7 @@ class AudioEngine {
     }
     if (this.ctx.state === "suspended") this.ctx.resume();
     if (this.settings.ambientOn) this.startAmbient();
+    if (this.musicEl && this.settings.musicOn) this.musicEl.play().catch(() => {});
   }
 
   private makeNoiseBuffer(): AudioBuffer {
