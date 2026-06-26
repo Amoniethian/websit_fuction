@@ -497,12 +497,17 @@ export class Aquarium3D {
    */
   private instantiateModel(tpl: ModelTemplate, opts?: { groundBase?: boolean }): THREE.Group {
     const m = skeletonClone(tpl.object);
-    const g = new THREE.Group();
+    // Inner group carries the fit scale + centering; the outer group's scale is
+    // left free for callers (setDecor applies DECOR_SCALE, fish leave it at 1),
+    // so external placement never wipes the normalization.
+    const inner = new THREE.Group();
     const offset = tpl.center.clone().multiplyScalar(-1);
     if (opts?.groundBase) offset.y += tpl.size.y / 2;
     m.position.copy(offset);
-    g.add(m);
-    g.scale.setScalar(tpl.scale);
+    inner.add(m);
+    inner.scale.setScalar(tpl.scale);
+    const g = new THREE.Group();
+    g.add(inner);
     if (tpl.animations.length) {
       const mixer = new THREE.AnimationMixer(m);
       for (const clip of tpl.animations) mixer.clipAction(clip).play();
@@ -590,7 +595,10 @@ export class Aquarium3D {
    * model root's transform can't override our sizing or fling it off-course. */
   private measure(obj: THREE.Object3D, targetMax: number): { scale: number; center: THREE.Vector3; size: THREE.Vector3 } {
     obj.updateWorldMatrix(true, true);
-    const box = new THREE.Box3().setFromObject(obj);
+    // precise=true walks actual vertices and applies skinning, so rigged/animated
+    // models (e.g. a seahorse / fish with a skeleton) measure their true size
+    // instead of a tiny bind-pose box that would scale them up enormously.
+    const box = new THREE.Box3().setFromObject(obj, true);
     const size = box.getSize(new THREE.Vector3());
     const center = box.getCenter(new THREE.Vector3());
     const maxDim = Math.max(size.x, size.y, size.z) || 1;
