@@ -498,7 +498,7 @@ export class Aquarium3D {
 
   private makeFish(type: FishType): THREE.Group {
     if (this.models[type]) return this.instantiateModel(this.models[type]!);
-    if (type === "smallFish") return this.makeFishGeneric({ color: 0xe9b955, tail: 0xa17a37, size: 0.1 });
+    if (type === "smallFish") return this.makeFishGeneric({ color: 0xe9b955, tail: 0xa17a37, size: 0.05 });
     if (type === "moonFish") return this.makeFishGeneric({ color: 0xe7d9b0, tail: 0xa99b76, size: 0.32 });
     if (type === "clownfish") return this.makeFishGeneric({ color: 0xe07a3c, tail: 0x8e3f17, size: 0.22, stripe: true });
     if (type === "bigFish") return this.makeFishGeneric({ color: 0xbb6abf, tail: 0x7e468a, size: 0.42 });
