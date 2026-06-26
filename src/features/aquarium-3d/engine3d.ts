@@ -37,7 +37,7 @@ const DECOR_SCALE: Partial<Record<DecorType, number>> = { coral: 2.5 };
 // Fit target (max bounding-box dimension) for an uploaded fish model. Default
 // 0.6; per-type overrides let some creatures read larger.
 const FISH_FIT_DEFAULT = 0.6;
-const FISH_FIT: Partial<Record<FishType, number>> = { moonFish: 1.8 };
+const FISH_FIT: Partial<Record<FishType, number>> = { moonFish: 1.08 };
 
 // Creatures that school together (counted jointly toward the 3+ threshold).
 const SCHOOL_TYPES: ReadonlySet<string> = new Set(["smallFish", "moonFish"]);
