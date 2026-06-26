@@ -685,7 +685,7 @@ export class Aquarium3D {
     if (type === "smallFish") return this.makeFishGeneric({ color: 0xe9b955, tail: 0xa17a37, size: 0.05 });
     if (type === "emberFish") return this.makeEmberFish();
     if (type === "moonFish") return this.makeFishGeneric({ color: 0xe7d9b0, tail: 0xa99b76, size: 0.32 });
-    if (type === "clownfish") return this.makeFishGeneric({ color: 0xe07a3c, tail: 0x8e3f17, size: 0.22, stripe: true });
+    if (type === "clownfish") return this.makeFishGeneric({ color: 0xe07a3c, tail: 0x8e3f17, size: 0.176, stripe: true });
     if (type === "bigFish") return this.makeFishGeneric({ color: 0xbb6abf, tail: 0x7e468a, size: 0.42 });
     return this.makeJellyfish();
   }
@@ -721,12 +721,13 @@ export class Aquarium3D {
     this.scene.add(mesh);
   }
 
-  /** Pick a decor mesh to visit (optionally preferring a type, e.g. anemone). */
-  private pickDecor(prefer?: DecorType): THREE.Object3D | null {
+  /** Pick a decor mesh to visit (optionally preferring one or more types). */
+  private pickDecor(prefer?: DecorType | DecorType[]): THREE.Object3D | null {
     const arr = [...this.decorMeshes.values()];
     if (!arr.length) return null;
     if (prefer) {
-      const p = arr.filter((m) => m.userData.decorType === prefer);
+      const set = new Set(Array.isArray(prefer) ? prefer : [prefer]);
+      const p = arr.filter((m) => set.has(m.userData.decorType));
       if (p.length) return p[(Math.random() * p.length) | 0];
     }
     return arr[(Math.random() * arr.length) | 0];
@@ -750,10 +751,10 @@ export class Aquarium3D {
       return;
     }
     if (type === "clownfish") {
+      // Clownfish almost never leave the coral/anemone — they nestle in it.
       const r = Math.random();
-      if (r < 0.45) { sw.behavior = "cling"; sw.bTimer = 7 + Math.random() * 6; sw.targetMesh = this.pickDecor("anemone") || this.pickDecor(); }
-      else if (r < 0.75) { sw.behavior = "explore"; sw.bTimer = 4 + Math.random() * 4; sw.targetMesh = this.pickDecor(); }
-      else { sw.behavior = "play"; sw.bTimer = 3 + Math.random() * 3; }
+      if (r < 0.9) { sw.behavior = "cling"; sw.bTimer = 9 + Math.random() * 8; sw.targetMesh = this.pickDecor(["coral", "anemone"]) || this.pickDecor(); }
+      else { sw.behavior = "explore"; sw.bTimer = 3 + Math.random() * 3; sw.targetMesh = this.pickDecor(["coral", "anemone"]); }
       return;
     }
     // Schooling fish: after a side-quest always return to cruise; from cruise,
@@ -1020,7 +1021,7 @@ export class Aquarium3D {
         const hoverX = to.x, hoverY = to.y, hoverZ = to.z;
         to.sub(f.position);
         const dist = to.length();
-        const near = beh === "cling" ? 0.55 : 0.95;
+        const near = beh === "cling" ? 0.4 : 0.95; // cling nestles in tighter
         if (dist > near) {
           desired.copy(to).divideScalar(dist).multiplyScalar(1.8); // head toward it
         } else {
@@ -1048,7 +1049,9 @@ export class Aquarium3D {
       sw.spdPhase += dt * 0.5;
       const freeRoam = beh === "cruise" || beh === "play";
       if (sw.dart > 0) sw.dart -= dt;
-      else if (freeRoam && sw.speed >= 0.5 && Math.random() < 0.004) sw.dart = 0.3 + Math.random() * 0.5;
+      // Ember "fire sprites" dart often (keeps their agile zip while schooling).
+      else if (freeRoam && sw.speed >= 0.5 && Math.random() < (type === "emberFish" ? 0.03 : 0.004))
+        sw.dart = (type === "emberFish" ? 0.18 : 0.3) + Math.random() * (type === "emberFish" ? 0.3 : 0.5);
       const ease = 0.65 + 0.25 * Math.sin(sw.spdPhase) + (sw.dart > 0 ? 1.0 : 0);
       const targetSpeed = sw.speed * Math.max(0.2, ease) * speedScale;
       sw.dSpeed += (targetSpeed - sw.dSpeed) * Math.min(1, 1.8 * dt);
