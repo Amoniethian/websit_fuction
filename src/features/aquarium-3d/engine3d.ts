@@ -597,7 +597,15 @@ export class Aquarium3D {
     mesh.position.set(x, y, z);
     const speed = type === "bigFish" || type === "turtle" ? 0.3 : type === "moonFish" ? 0.5 : 0.8;
     const dir = new THREE.Vector3((Math.random() - 0.5) * 2, 0, (Math.random() - 0.5) * 2).normalize();
-    mesh.userData.swim = { speed, vel: dir.multiplyScalar(speed * 0.6), phase: Math.random() * 6 };
+    mesh.userData.swim = {
+      speed,
+      vel: dir.clone().multiplyScalar(speed * 0.5),
+      phase: Math.random() * 6,
+      wDir: dir.clone(),          // smoothly-wandering desired heading
+      dSpeed: speed * 0.5,        // current (eased) speed
+      spdPhase: Math.random() * 6,
+      dart: 0                     // dart-burst countdown (seconds)
+    };
     this.fish.push(mesh);
     this.scene.add(mesh);
   }
@@ -783,40 +791,66 @@ export class Aquarium3D {
       schoolVel.multiplyScalar(1 / school.length);
     }
 
+    const desired = new THREE.Vector3();
     for (const f of this.fish) {
       const sw = f.userData.swim;
       if (!sw) continue;
+
+      // --- desired heading: smooth wander (gentle yaw drift + a little pitch) ---
+      const yaw = (Math.random() - 0.5) * 1.7 * dt;
+      const cy = Math.cos(yaw), sy = Math.sin(yaw);
+      const nx = sw.wDir.x * cy - sw.wDir.z * sy;
+      const nz = sw.wDir.x * sy + sw.wDir.z * cy;
+      sw.wDir.set(nx, sw.wDir.y + (Math.random() - 0.5) * 0.5 * dt, nz);
+      sw.wDir.y *= 0.96; // bias toward horizontal
+      sw.wDir.normalize();
+      desired.copy(sw.wDir);
+
+      // --- shoaling steers the heading (no velocity jerks) ---
       if (schooling && SCHOOL_TYPES.has(f.userData.type)) {
-        // Cohesion toward the shoal centre, alignment to its heading,
-        // separation from anyone too close — plus a little jitter.
-        sw.vel.add(schoolCenter!.clone().sub(f.position).multiplyScalar(0.9 * dt));
-        sw.vel.add(schoolVel!.clone().sub(sw.vel).multiplyScalar(1.4 * dt));
-        const sep = new THREE.Vector3();
+        desired.addScaledVector(schoolCenter!.clone().sub(f.position), 0.45);
+        desired.addScaledVector(schoolVel!.clone().normalize(), 0.7);
         for (const o of school) {
           if (o === f) continue;
           const d = f.position.distanceTo(o.position);
-          if (d > 0 && d < 0.55) sep.add(f.position.clone().sub(o.position).multiplyScalar((0.55 - d) / 0.55));
+          if (d > 0 && d < 0.6) desired.addScaledVector(f.position.clone().sub(o.position).divideScalar(d), ((0.6 - d) / 0.6) * 1.4);
         }
-        sw.vel.add(sep.multiplyScalar(2.2 * dt));
-        sw.vel.x += (Math.random() - 0.5) * 0.15 * dt;
-        sw.vel.y += (Math.random() - 0.5) * 0.1 * dt;
-        sw.vel.z += (Math.random() - 0.5) * 0.15 * dt;
-      } else {
-        sw.vel.x += (Math.random() - 0.5) * 0.5 * dt;
-        sw.vel.y += (Math.random() - 0.5) * 0.3 * dt;
-        sw.vel.z += (Math.random() - 0.5) * 0.5 * dt;
       }
-      const targ = sw.speed * 0.6;
-      sw.vel.multiplyScalar(targ / Math.max(0.001, sw.vel.length()));
-      if (f.position.x > halfX) sw.vel.x = -Math.abs(sw.vel.x);
-      if (f.position.x < -halfX) sw.vel.x = Math.abs(sw.vel.x);
-      if (f.position.y > yTop) sw.vel.y = -Math.abs(sw.vel.y);
-      if (f.position.y < yBot) sw.vel.y = Math.abs(sw.vel.y);
-      if (f.position.z > halfZ) sw.vel.z = -Math.abs(sw.vel.z);
-      if (f.position.z < -halfZ) sw.vel.z = Math.abs(sw.vel.z);
+
+      // --- soft wall avoidance: curve inward as a wall nears (no hard bounce) ---
+      const m = 1.3, my = 0.7;
+      if (f.position.x > halfX - m) desired.x -= ((f.position.x - (halfX - m)) / m) * 1.6;
+      if (f.position.x < -halfX + m) desired.x += ((-f.position.x - (halfX - m)) / m) * 1.6;
+      if (f.position.z > halfZ - m) desired.z -= ((f.position.z - (halfZ - m)) / m) * 1.6;
+      if (f.position.z < -halfZ + m) desired.z += ((-f.position.z - (halfZ - m)) / m) * 1.6;
+      if (f.position.y > yTop - my) desired.y -= ((f.position.y - (yTop - my)) / my) * 1.4;
+      if (f.position.y < yBot + my) desired.y += (((yBot + my) - f.position.y) / my) * 1.4;
+      if (desired.lengthSq() > 1e-4) desired.normalize();
+
+      // --- speed eases up/down; fast fish occasionally dart then glide ---
+      sw.spdPhase += dt * 0.5;
+      if (sw.dart > 0) sw.dart -= dt;
+      else if (sw.speed >= 0.5 && Math.random() < 0.004) sw.dart = 0.3 + Math.random() * 0.5;
+      const ease = 0.5 + 0.32 * Math.sin(sw.spdPhase) + (sw.dart > 0 ? 1.0 : 0);
+      const targetSpeed = sw.speed * Math.max(0.18, ease);
+      sw.dSpeed += (targetSpeed - sw.dSpeed) * Math.min(1, 1.8 * dt);
+      desired.multiplyScalar(sw.dSpeed);
+
+      // --- steer velocity toward desired (momentum → smooth banking turns) ---
+      const resp = Math.min(1, (sw.dart > 0 ? 4.5 : 2.4) * dt);
+      sw.vel.x += (desired.x - sw.vel.x) * resp;
+      sw.vel.y += (desired.y - sw.vel.y) * resp;
+      sw.vel.z += (desired.z - sw.vel.z) * resp;
+
       f.position.addScaledVector(sw.vel, dt);
+      // Safety backstop so nobody ever slips through the glass.
+      f.position.x = THREE.MathUtils.clamp(f.position.x, -halfX, halfX);
+      f.position.y = THREE.MathUtils.clamp(f.position.y, yBot, yTop);
+      f.position.z = THREE.MathUtils.clamp(f.position.z, -halfZ, halfZ);
+
       if (f.userData.mixer) f.userData.mixer.update(dt);
-      sw.phase += dt * 3;
+      // Tail/undulation keeps pace with how fast the fish is actually swimming.
+      sw.phase += dt * (2 + 4 * (sw.dSpeed / Math.max(0.01, sw.speed)));
       if (f.userData.type === "turtle") {
         // Jellyfish: stay upright, drift, and pulse the bell (squash-stretch).
         f.rotation.set(0, getHeading("turtle"), 0);
