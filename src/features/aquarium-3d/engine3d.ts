@@ -73,6 +73,8 @@ export class Aquarium3D {
   private bubbles: { mesh: THREE.Mesh; speed: number; phase: number }[] = [];
   private causticLayers: { tex: THREE.CanvasTexture; mat: THREE.MeshBasicMaterial; sx: number; sy: number; baseOp: number; rate: number }[] = [];
   private waterMesh: THREE.Mesh | null = null;
+  private causticLight: THREE.SpotLight | null = null;
+  private causticLightTex: THREE.CanvasTexture | null = null;
 
   private waterColor = 0xb8dcd8;
   private sandColor = 0xc8a874;
@@ -293,9 +295,9 @@ export class Aquarium3D {
   /* ---------- tank ---------- */
   private buildTank() {
     this.glassMat = new THREE.MeshPhysicalMaterial({
-      color: this.waterColor, transparent: true, opacity: 0.16, roughness: 0.03,
-      metalness: 0, transmission: 0.95, thickness: 1.4, ior: 1.4,
-      clearcoat: 0.35, clearcoatRoughness: 0.08,
+      color: this.waterColor, transparent: true, opacity: 0.15, roughness: 0.05,
+      metalness: 0, transmission: 0.95, thickness: 0.5, ior: 1.3,
+      clearcoat: 0.2, clearcoatRoughness: 0.1,
       side: THREE.DoubleSide, depthWrite: false
     });
     const glass = new THREE.Mesh(new THREE.BoxGeometry(BOX_W, BOX_H, BOX_D), this.glassMat);
@@ -373,8 +375,8 @@ export class Aquarium3D {
     // Caustics: two overlapping bright webs drifting at different scales/speeds,
     // so the light on the sand shimmers (波光粼粼) instead of sliding rigidly.
     const causticSpecs = [
-      { repeat: [2, 1.5], y: 0.03, op: 0.20, sx: 0.012, sy: 0.008, rate: 0.5 },
-      { repeat: [3.2, 2.4], y: 0.05, op: 0.13, sx: -0.018, sy: 0.011, rate: 0.8 }
+      { repeat: [2, 1.5], y: 0.03, op: 0.38, sx: 0.012, sy: 0.008, rate: 0.5 },
+      { repeat: [3.2, 2.4], y: 0.05, op: 0.26, sx: -0.018, sy: 0.011, rate: 0.8 }
     ];
     for (const spec of causticSpecs) {
       const tex = this.makeCausticTexture();
@@ -390,6 +392,24 @@ export class Aquarium3D {
       this.scene.add(mesh);
       this.causticLayers.push({ tex, mat, sx: spec.sx, sy: spec.sy, baseOp: spec.op, rate: spec.rate });
     }
+
+    // A downward caustic projector (light cookie) so the shimmer dapples
+    // EVERYTHING — rocks, coral, plants, fish — not just the flat sand.
+    const projTex = this.makeCausticTexture();
+    projTex.wrapS = projTex.wrapT = THREE.RepeatWrapping;
+    projTex.repeat.set(2.4, 2.4);
+    const sl = new THREE.SpotLight(0xeafcff, 4, 0, Math.PI / 4, 0.7, 0);
+    sl.position.set(0.4, AQ_Y + BOX_H + 1.5, 0.4);
+    sl.target.position.set(0, SAND_TOP_Y, 0);
+    sl.castShadow = true;
+    sl.shadow.mapSize.set(1024, 1024);
+    sl.shadow.camera.near = 1;
+    sl.shadow.camera.far = 20;
+    sl.map = projTex;
+    this.scene.add(sl);
+    this.scene.add(sl.target);
+    this.causticLight = sl;
+    this.causticLightTex = projTex;
   }
 
   private makeCausticTexture(): THREE.CanvasTexture {
@@ -412,7 +432,7 @@ export class Aquarium3D {
           v += Math.sin((w.nx * x / size + w.ny * y / size) * Math.PI * 2 + w.ph);
         }
         const n = Math.max(0, v / waves.length * 0.5 + 0.5);
-        const b = Math.pow(n, 4) * 255;
+        const b = Math.pow(n, 3) * 255;
         const i = (y * size + x) * 4;
         img.data[i] = img.data[i + 1] = img.data[i + 2] = 255;
         img.data[i + 3] = b;
@@ -846,6 +866,12 @@ export class Aquarium3D {
     // Gentle sparkle on the water surface.
     if (this.waterMesh) {
       (this.waterMesh.material as THREE.MeshStandardMaterial).opacity = 0.16 + 0.06 * Math.sin(t * 0.8);
+    }
+    // Projector caustics drift + breathe (dapples every object below).
+    if (this.causticLight && this.causticLightTex) {
+      this.causticLightTex.offset.x = (t * 0.015) % 1;
+      this.causticLightTex.offset.y = (t * 0.01) % 1;
+      this.causticLight.intensity = 2.4 + 1.0 * Math.sin(t * 0.6);
     }
 
     this.controls.update();
