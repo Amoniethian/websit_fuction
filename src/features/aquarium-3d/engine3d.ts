@@ -922,8 +922,8 @@ export class Aquarium3D {
       const cy = Math.cos(yaw), sy = Math.sin(yaw);
       const nx = sw.wDir.x * cy - sw.wDir.z * sy;
       const nz = sw.wDir.x * sy + sw.wDir.z * cy;
-      sw.wDir.set(nx, sw.wDir.y + (Math.random() - 0.5) * 0.5 * dt, nz);
-      sw.wDir.y *= 0.96; // bias toward horizontal
+      sw.wDir.set(nx, sw.wDir.y + (Math.random() - 0.5) * 0.3 * dt, nz);
+      sw.wDir.y *= 0.9; // strong bias toward horizontal (level swimming)
       sw.wDir.normalize();
       desired.copy(sw.wDir);
 
@@ -1025,20 +1025,19 @@ export class Aquarium3D {
         sw.prevYaw = yawNow;
         sw.turnSmooth = (sw.turnSmooth ?? 0) * 0.85 + (turn / Math.max(dt, 0.001)) * 0.15;
         const ts = sw.turnSmooth;
-        const bank = THREE.MathUtils.clamp(ts * 0.2, -0.4, 0.4);
-        const curve = THREE.MathUtils.clamp(ts * 0.45, -0.7, 0.7);
+        const curve = THREE.MathUtils.clamp(ts * 0.5, -0.8, 0.8);
 
-        // Head barely yaws; the whole strip leans (banks) into turns.
-        f.rotateY(Math.sin(sw.phase * 0.9) * 0.03);
-        f.rotateZ(Math.sin(sw.phase * 1.1) * 0.04 + bank);
-        // Body ripples like a flexible strip: a wave travels head→tail and grows,
-        // and a steady turn-bend curves the whole body into the turn (the S-bend).
+        // The spine stays HORIZONTAL and level (the head-direction is the spine
+        // axis — lookAt above keeps it level). The body sways ONLY left↔right
+        // (yaw): a wave travels head→tail and grows toward the tail, so the tail
+        // really swishes; turning bends the whole strip sideways. No roll/pitch,
+        // so nothing wobbles.
         const segs = f.userData.segs as THREE.Object3D[] | undefined;
         if (segs) {
           const n = segs.length;
           for (let i = 0; i < n; i++) {
             const t = i / (n - 1);
-            segs[i].rotation.y = Math.sin(sw.phase - i * 0.8) * (0.05 + 0.22 * t) + curve * (0.3 + 0.7 * t);
+            segs[i].rotation.y = Math.sin(sw.phase - i * 0.9) * (0.08 + 0.38 * t) + curve * (0.25 + 0.75 * t);
           }
         }
       }
