@@ -35,7 +35,7 @@ const WORD_REWARDS: { bucket: keyof RewardBuckets; n: number; type: CreatureType
   { bucket: "ten",        n: 10, type: "smallFish", msg: "+ 一条小鱼" },
   { bucket: "twentyFive", n: 20, type: "moonFish",  msg: "+ 一条月亮鱼" },
   { bucket: "fifty",      n: 30, type: "clownfish", msg: "+ 一条小丑鱼" },
-  { bucket: "hundred",    n: 40, type: "bigFish",   msg: "+ 一条大鱼" },
+  { bucket: "hundred",    n: 40, type: "bigFish",   msg: "+ 一只海马" },
   { bucket: "twoHundred", n: 60, type: "turtle",    msg: "+ 一只水母" }
 ];
 
@@ -53,7 +53,7 @@ function payoutWordRewards(b: RewardBuckets, inv: Inventory, announce: boolean) 
   }
 }
 const ICON_LABEL: Record<CreatureType, string> = {
-  smallFish: "小鱼", moonFish: "月亮鱼", clownfish: "小丑鱼", bigFish: "大鱼",
+  smallFish: "小鱼", moonFish: "月亮鱼", clownfish: "小丑鱼", bigFish: "海马",
   turtle: "水母", seaweed: "海草", anemone: "海葵", coral: "珊瑚"
 };
 

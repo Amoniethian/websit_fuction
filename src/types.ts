@@ -115,7 +115,7 @@ export const CONV: { type: CreatureType; threshold: number; keep: number; label:
   { type: "smallFish", threshold: 50, keep: 25, label: "小鱼" },
   { type: "moonFish",  threshold: 15, keep: 5,  label: "月亮鱼" },
   { type: "clownfish", threshold: 10, keep: 5,  label: "小丑鱼" },
-  { type: "bigFish",   threshold: 4,  keep: 1,  label: "大鱼" },
+  { type: "bigFish",   threshold: 4,  keep: 1,  label: "海马" },
   { type: "seaweed",   threshold: 20, keep: 5,  label: "海草" },
   { type: "anemone",   threshold: 10, keep: 5,  label: "海葵" },
   { type: "coral",     threshold: 8,  keep: 2,  label: "珊瑚" }
