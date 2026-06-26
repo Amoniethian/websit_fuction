@@ -1,10 +1,11 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { useStore } from "../../store";
 import { ICONS } from "../../lib/icons";
 import { HighlightedEN } from "../../lib/sentence";
 import { AmbientToggle } from "../audio/AudioControls";
 import { Aquarium3D as Engine, type Spoken } from "./engine3d";
 import { initModels, subscribeModels } from "./modelStore";
+import { pomodoro } from "../pomodoro/timer";
 import { DECOR_SIZES, DECOR_ROTS, type DecorType } from "../../types";
 
 const DECOR_LABEL: Record<DecorType, string> = {
@@ -46,6 +47,10 @@ export function Aquarium3D({
   const [arrange, setArrange] = useState(false);
   const [bubble, setBubble] = useState<Spoken | null>(null);
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  // Focus-clock overlay: show the countdown over the tank while it's running.
+  const pomo = useSyncExternalStore(pomodoro.subscribe, pomodoro.getState);
+  const pomoMM = String(Math.floor(pomo.remain / 60)).padStart(2, "0");
+  const pomoSS = String(pomo.remain % 60).padStart(2, "0");
 
   const selected = arrange ? tankDecor.find((d) => d.id === selectedId) ?? null : null;
 
@@ -137,6 +142,9 @@ export function Aquarium3D({
       </div>
       <div className="canvas-frame canvas-3d">
         <canvas ref={canvasRef} />
+        {pomo.running && (
+          <div className="aq-timer" title="专注进行中">🍅 {pomoMM}:{pomoSS}</div>
+        )}
         {bubble && (
           <div ref={bubbleRef} className="fish-bubble" onClick={() => setBubble(null)}>
             <div className="fb-en"><HighlightedEN en={bubble.en} word={bubble.word || ""} /></div>
