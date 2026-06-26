@@ -117,6 +117,17 @@ export async function signOut() {
   toast("已退出登录");
 }
 
+/** Turn raw Postgres/PostgREST errors into a one-line actionable hint. */
+function friendlyError(msg: string): string {
+  if (/find the table|schema cache|does not exist|relation .* does not exist|PGRST205/i.test(msg)) {
+    return "云端还没建表。请在 Supabase → SQL Editor 跑一遍「建表 + 建桶 SQL」（词库 → 云同步里有按钮）";
+  }
+  if (/bucket|storage/i.test(msg)) {
+    return "云端缺少模型文件桶。请重跑一遍「建表 + 建桶 SQL」";
+  }
+  return msg;
+}
+
 /* ---------- pull / push ---------- */
 async function pull(): Promise<{ data: any; updated_at: string } | null> {
   const c = await ensureClient();
@@ -130,10 +141,10 @@ async function pull(): Promise<{ data: any; updated_at: string } | null> {
   return data as any;
 }
 
-export async function pushNow(): Promise<void> {
+export async function pushNow(silent = false): Promise<boolean> {
   const c = await ensureClient();
   const u = await getUser();
-  if (!c || !u) return;
+  if (!c || !u) return false;
   setStatus({ state: "syncing", email: u.email, message: "上传中…" });
   const snap = useStore.getState().exportState();
   const now = new Date().toISOString();
@@ -141,13 +152,15 @@ export async function pushNow(): Promise<void> {
   snap._device = navigator.userAgent.slice(0, 48);
   const { error } = await c.from(TABLE).upsert({ user_id: u.id, data: snap, updated_at: now });
   if (error) {
-    setStatus({ state: "error", email: u.email, message: error.message });
-    toast("同步失败：" + error.message);
-    return;
+    setStatus({ state: "error", email: u.email, message: friendlyError(error.message) });
+    // Auto-push failures only update the status pill; manual actions toast once.
+    if (!silent) toast("同步失败：" + friendlyError(error.message));
+    return false;
   }
   useStore.getState().markSynced(now);
   lastContent = contentKey();
   setStatus({ state: "idle", email: u.email, message: "已同步" });
+  return true;
 }
 
 export async function pullNow(): Promise<void> {
@@ -175,12 +188,10 @@ async function afterLogin() {
       toast("已从云端载入进度");
       setStatus({ state: "idle", email: u?.email, message: "已载入云端" });
     } else {
-      await pushNow();
-      toast("已把本地进度推送到云端");
+      if (await pushNow()) toast("已把本地进度推送到云端");
     }
   } else {
-    await pushNow();
-    toast("已创建云端存档");
+    if (await pushNow()) toast("已创建云端存档");
   }
   await pullModels();
 }
@@ -204,7 +215,7 @@ export async function uploadModelFile(slot: ModelSlot, file: File) {
     upsert: true,
     contentType: "model/gltf-binary"
   });
-  if (error) toast("模型上传云端失败：" + error.message);
+  if (error) toast("模型上传云端失败：" + friendlyError(error.message));
 }
 
 export async function deleteModelFromCloud(slot: ModelSlot) {
@@ -239,7 +250,7 @@ function scheduleAutoPush() {
     const u = await getUser();
     if (!u) return;
     if (contentKey() === lastContent) return;
-    await pushNow();
+    await pushNow(true); // silent: no toast spam on repeated failures
   }, 8000);
 }
 
