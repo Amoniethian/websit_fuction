@@ -8,6 +8,7 @@ import { loadLlmConfig, subscribeLlm } from "../../lib/llmConfig";
 export function QuickAdd() {
   const [val, setVal] = useState("");
   const [cfgVer, setCfgVer] = useState(0);
+  const [errors, setErrors] = useState<Record<number, string>>({});
   useEffect(() => subscribeLlm(() => setCfgVer((v) => v + 1)), []);
   const vocab = useStore((s) => s.vocab);
   const addQuickWord = useStore((s) => s.addQuickWord);
@@ -15,6 +16,26 @@ export function QuickAdd() {
   const setEnrichmentStatus = useStore((s) => s.setEnrichmentStatus);
   const cfg = loadLlmConfig();
   void cfgVer;
+
+  async function runEnrich(id: number, word: string) {
+    if (!cfg) return;
+    setErrors((e) => {
+      const n = { ...e };
+      delete n[id];
+      return n;
+    });
+    setEnrichmentStatus(id, "loading");
+    try {
+      const e = await enrichWord(word, cfg);
+      applyEnrichment(id, e);
+      toast(word + " 已就绪");
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "富化失败";
+      setEnrichmentStatus(id, "failed");
+      setErrors((e) => ({ ...e, [id]: msg }));
+      toast(word + "：" + msg);
+    }
+  }
 
   async function doAdd() {
     const v = val.trim();
@@ -29,14 +50,7 @@ export function QuickAdd() {
       toast("已加入（AI 未连接，可手动补释义）");
       return;
     }
-    try {
-      const e = await enrichWord(v, cfg);
-      applyEnrichment(id, e);
-      toast(v + " 已就绪");
-    } catch {
-      setEnrichmentStatus(id, "failed");
-      toast(v + " 富化失败，可手动补充");
-    }
+    runEnrich(id, v);
   }
 
   const pending = vocab
@@ -69,7 +83,13 @@ export function QuickAdd() {
           <span
             key={w.id}
             className={"qa-chip " + (w.enrichmentStatus === "loading" ? "loading" : "failed")}
-            title={w.enrichmentStatus === "loading" ? "AI 富化中…" : "富化失败，可手动补充释义"}
+            title={
+              w.enrichmentStatus === "loading"
+                ? "AI 富化中…"
+                : (errors[w.id] || "富化失败") + "（点一下重试）"
+            }
+            onClick={() => w.enrichmentStatus === "failed" && runEnrich(w.id, w.word)}
+            style={w.enrichmentStatus === "failed" ? { cursor: "pointer" } : undefined}
           >
             {w.enrichmentStatus === "loading" ? (
               <>
@@ -77,7 +97,7 @@ export function QuickAdd() {
                 {w.word}
               </>
             ) : (
-              <>⚠ {w.word}</>
+              <>⚠ {w.word} ↻</>
             )}
           </span>
         ))}

@@ -84,18 +84,49 @@ export async function enrichWord(word: string, config: EnrichConfig): Promise<En
       { role: "user", content: buildUserPrompt(word, config.domainHint) }
     ]
   };
-  const r = await fetch(config.endpoint, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${config.apiKey}`
-    },
-    body: JSON.stringify(body)
-  });
-  if (!r.ok) throw new Error(`LLM HTTP ${r.status}`);
+  let r: Response;
+  try {
+    r = await fetch(config.endpoint, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${config.apiKey}`
+      },
+      body: JSON.stringify(body)
+    });
+  } catch {
+    // fetch only rejects on network-level failures — almost always a CORS
+    // block (the provider won't allow a direct call from the browser) or no
+    // connectivity. Neither is fixable from the page itself.
+    throw new Error("连不上接口：多半是浏览器跨域(CORS)被该服务商拦了。建议在「AI 设置」里换成 OpenRouter，或用一个代理转发。");
+  }
+  if (!r.ok) {
+    const detail = await r.text().catch(() => "");
+    throw new Error(httpErrorMessage(r.status, detail));
+  }
   const j = await r.json();
   const text: string = j.choices?.[0]?.message?.content ?? "";
+  if (!text) throw new Error("接口没有返回内容（可能模型名不对或额度不足）。");
   return parseEnriched(text);
+}
+
+/** Map an HTTP error + provider body into an actionable Chinese message. */
+function httpErrorMessage(status: number, body: string): string {
+  // Providers usually return { error: { message } } — surface it.
+  let providerMsg = "";
+  try {
+    const o = JSON.parse(body);
+    providerMsg = o?.error?.message || o?.message || "";
+  } catch {
+    providerMsg = body.slice(0, 160);
+  }
+  const tail = providerMsg ? `（${providerMsg}）` : "";
+  if (status === 401 || status === 403) return `API key 无效或没有权限 (HTTP ${status})${tail}`;
+  if (status === 404) return `接口地址或模型名不对 (HTTP 404)${tail}`;
+  if (status === 422 || status === 400) return `请求被拒绝，多半是模型名或参数不对 (HTTP ${status})${tail}`;
+  if (status === 429) return `太频繁或额度/余额不足 (HTTP 429)${tail}`;
+  if (status >= 500) return `服务商暂时出错，稍后再试 (HTTP ${status})${tail}`;
+  return `富化失败 (HTTP ${status})${tail}`;
 }
 
 function parseEnriched(text: string): EnrichedWord {
