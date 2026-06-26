@@ -34,6 +34,11 @@ const DECOR_Z = (BOX_D / 2) - 0.9;
 
 const DECOR_SCALE: Partial<Record<DecorType, number>> = { coral: 2.5 };
 
+// Fit target (max bounding-box dimension) for an uploaded fish model. Default
+// 0.6; per-type overrides let some creatures read larger.
+const FISH_FIT_DEFAULT = 0.6;
+const FISH_FIT: Partial<Record<FishType, number>> = { moonFish: 1.2 };
+
 function lowPolyMat(color: number) {
   return new THREE.MeshStandardMaterial({ color, roughness: 0.55, metalness: 0, flatShading: true });
 }
@@ -190,7 +195,11 @@ export class Aquarium3D {
     } else {
       try {
         const { scene, animations } = await this.loadGLB(url);
-        const targetMax = slot === "tank" ? BOX_W : (FISH_TYPES as readonly string[]).includes(slot) ? 0.6 : 1.2;
+        const targetMax = slot === "tank"
+          ? BOX_W
+          : (FISH_TYPES as readonly string[]).includes(slot)
+            ? (FISH_FIT[slot as FishType] ?? FISH_FIT_DEFAULT)
+            : 1.2;
         this.fit(scene, targetMax);
         scene.traverse((m) => {
           if ((m as THREE.Mesh).isMesh) {
