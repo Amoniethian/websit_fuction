@@ -42,6 +42,14 @@ const FISH_FIT: Partial<Record<FishType, number>> = { moonFish: 1.08 };
 // Creatures that school together (counted jointly toward the 3+ threshold).
 const SCHOOL_TYPES: ReadonlySet<string> = new Set(["smallFish", "moonFish"]);
 
+// Tail-beat per type: smaller fish swish with bigger amplitude and faster beat.
+const FISH_BEAT: Record<string, { amp: number; freq: number }> = {
+  smallFish: { amp: 1.8, freq: 2.2 },
+  moonFish: { amp: 1.1, freq: 1.2 },
+  clownfish: { amp: 1.35, freq: 1.6 },
+  bigFish: { amp: 0.8, freq: 0.8 }
+};
+
 function lowPolyMat(color: number) {
   return new THREE.MeshStandardMaterial({ color, roughness: 0.55, metalness: 0, flatShading: true });
 }
@@ -910,6 +918,7 @@ export class Aquarium3D {
       const sw = f.userData.swim;
       if (!sw) continue;
       const type = f.userData.type as FishType;
+      const beat = FISH_BEAT[type] || { amp: 1, freq: 1 };
 
       // --- behaviour state machine: 长行 / 短行 / 探索 / 依附 ---
       sw.bTimer -= dt;
@@ -995,8 +1004,8 @@ export class Aquarium3D {
       f.position.z = THREE.MathUtils.clamp(f.position.z, -halfZ, halfZ);
 
       if (f.userData.mixer) f.userData.mixer.update(dt);
-      // Tail/undulation keeps pace with how fast the fish is actually swimming.
-      sw.phase += dt * (3.5 + 6 * (sw.dSpeed / Math.max(0.01, sw.speed)));
+      // Tail beat keeps pace with speed; smaller fish beat faster (beat.freq).
+      sw.phase += dt * (3.5 + 6 * (sw.dSpeed / Math.max(0.01, sw.speed))) * beat.freq;
       if (f.userData.type === "turtle") {
         // Jellyfish: stay upright, drift, and pulse the bell (squash-stretch).
         f.rotation.set(0, getHeading("turtle"), 0);
@@ -1037,7 +1046,7 @@ export class Aquarium3D {
           const n = segs.length;
           for (let i = 0; i < n; i++) {
             const t = i / (n - 1);
-            segs[i].rotation.y = Math.sin(sw.phase - i * 0.9) * (0.08 + 0.38 * t) + curve * (0.25 + 0.75 * t);
+            segs[i].rotation.y = Math.sin(sw.phase - i * 0.9) * (0.08 + 0.38 * t) * beat.amp + curve * (0.25 + 0.75 * t);
           }
         }
       }
