@@ -18,7 +18,7 @@ export type Spoken = { en: string; zh: string; word?: string };
  * floor and decor rests on the sand.
  */
 
-const BOX_W = 8, BOX_H = 5, BOX_D = 5;
+const BOX_W = 12, BOX_H = 5, BOX_D = 5;
 const AQ_Y = BOX_H / 2 - 2;                 // tank centre: 0.5
 const TANK_BOTTOM = AQ_Y - BOX_H / 2;       // -2
 const SAND_THICK = 0.5;
@@ -75,6 +75,9 @@ export class Aquarium3D {
   private waterMesh: THREE.Mesh | null = null;
   private causticLight: THREE.SpotLight | null = null;
   private causticLightTex: THREE.CanvasTexture | null = null;
+  // reusable temps for the swim loop (avoid per-frame allocation / GC jank)
+  private _v1 = new THREE.Vector3();
+  private _v2 = new THREE.Vector3();
 
   private waterColor = 0xb8dcd8;
   private sandColor = 0xc8a874;
@@ -109,11 +112,13 @@ export class Aquarium3D {
     this.scene.background = new THREE.Color(0x000000);
 
     this.camera = new THREE.PerspectiveCamera(40, w / h, 0.1, 100);
-    this.camera.position.set(8, 5, 11);
+    this.camera.position.set(9, 6, 18);
 
     this.renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
     this.renderer.setSize(w, h, false);
-    this.renderer.setPixelRatio(Math.min(2, window.devicePixelRatio || 1));
+    // Cap at 1.5 — on high-DPI phones/tablets this roughly halves the pixels
+    // versus 2× and keeps the calm aquarium smooth.
+    this.renderer.setPixelRatio(Math.min(1.5, window.devicePixelRatio || 1));
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;
     this.renderer.shadowMap.enabled = true;
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
@@ -122,7 +127,7 @@ export class Aquarium3D {
     this.controls.enableDamping = true;
     this.controls.dampingFactor = 0.08;
     this.controls.minDistance = 6;
-    this.controls.maxDistance = 20;
+    this.controls.maxDistance = 32;
     this.controls.minPolarAngle = Math.PI / 7;
     this.controls.maxPolarAngle = Math.PI / 2.1;
     this.controls.target.set(0, 0.4, 0);
@@ -153,16 +158,26 @@ export class Aquarium3D {
   }
 
   /* ---------- public API ---------- */
+  private loop = (now: number) => {
+    this.frame(now);
+    this.raf = requestAnimationFrame(this.loop);
+  };
+  // Pause the render loop while the tab/page is hidden (saves CPU + battery).
+  private onVisibility = () => {
+    if (document.hidden) {
+      if (this.raf) { cancelAnimationFrame(this.raf); this.raf = 0; }
+    } else if (!this.raf) {
+      this.raf = requestAnimationFrame(this.loop);
+    }
+  };
   start() {
-    const loop = (now: number) => {
-      this.frame(now);
-      this.raf = requestAnimationFrame(loop);
-    };
-    this.raf = requestAnimationFrame(loop);
+    document.addEventListener("visibilitychange", this.onVisibility);
+    this.raf = requestAnimationFrame(this.loop);
   }
 
   dispose() {
     cancelAnimationFrame(this.raf);
+    document.removeEventListener("visibilitychange", this.onVisibility);
     this.ro.disconnect();
     this.cv.removeEventListener("pointerdown", this.onPointerDown);
     window.removeEventListener("pointermove", this.onPointerMove);
@@ -398,11 +413,11 @@ export class Aquarium3D {
     const projTex = this.makeCausticTexture();
     projTex.wrapS = projTex.wrapT = THREE.RepeatWrapping;
     projTex.repeat.set(2.4, 2.4);
-    const sl = new THREE.SpotLight(0xeafcff, 4, 0, Math.PI / 4, 0.7, 0);
+    const sl = new THREE.SpotLight(0xeafcff, 4, 0, Math.PI / 3.4, 0.7, 0);
     sl.position.set(0.4, AQ_Y + BOX_H + 1.5, 0.4);
     sl.target.position.set(0, SAND_TOP_Y, 0);
     sl.castShadow = true;
-    sl.shadow.mapSize.set(1024, 1024);
+    sl.shadow.mapSize.set(512, 512); // smaller shadow → much cheaper; cookie still reads fine
     sl.shadow.camera.near = 1;
     sl.shadow.camera.far = 20;
     sl.map = projTex;
@@ -604,11 +619,64 @@ export class Aquarium3D {
       wDir: dir.clone(),          // smoothly-wandering desired heading
       dSpeed: speed * 0.5,        // current (eased) speed
       spdPhase: Math.random() * 6,
-      dart: 0                     // dart-burst countdown (seconds)
+      dart: 0,                    // dart-burst countdown (seconds)
+      behavior: "cruise",         // cruise(长行) / play(短行) / explore(探索) / cling(依附)
+      bTimer: 1 + Math.random() * 6,
+      targetMesh: null            // decor being explored / clung to
     };
+    this.assignBehavior(mesh);
     this.fish.push(mesh);
     this.scene.add(mesh);
   }
+
+  /** Pick a decor mesh to visit (optionally preferring a type, e.g. anemone). */
+  private pickDecor(prefer?: DecorType): THREE.Object3D | null {
+    const arr = [...this.decorMeshes.values()];
+    if (!arr.length) return null;
+    if (prefer) {
+      const p = arr.filter((m) => m.userData.decorType === prefer);
+      if (p.length) return p[(Math.random() * p.length) | 0];
+    }
+    return arr[(Math.random() * arr.length) | 0];
+  }
+
+  /**
+   * Roll the next behaviour for a fish:
+   *  - seahorse (bigFish) / jellyfish (turtle): always cruise (长行).
+   *  - clownfish: only short trips (短行), exploring (探索) and clinging (依附)
+   *    to decor — preferring anemones.
+   *  - schooling fish: mostly cruise with the shoal; occasionally a solo short
+   *    trip or a decor exploration, then back to cruise.
+   */
+  private assignBehavior(f: THREE.Object3D) {
+    const sw = f.userData.swim;
+    const type = f.userData.type as FishType;
+    sw.targetMesh = null;
+    if (type === "bigFish" || type === "turtle") {
+      sw.behavior = "cruise";
+      sw.bTimer = 999;
+      return;
+    }
+    if (type === "clownfish") {
+      const r = Math.random();
+      if (r < 0.45) { sw.behavior = "cling"; sw.bTimer = 7 + Math.random() * 6; sw.targetMesh = this.pickDecor("anemone") || this.pickDecor(); }
+      else if (r < 0.75) { sw.behavior = "explore"; sw.bTimer = 4 + Math.random() * 4; sw.targetMesh = this.pickDecor(); }
+      else { sw.behavior = "play"; sw.bTimer = 3 + Math.random() * 3; }
+      return;
+    }
+    // Schooling fish: after a side-quest always return to cruise; from cruise,
+    // venture out only occasionally.
+    if (sw.behavior && sw.behavior !== "cruise") {
+      sw.behavior = "cruise";
+      sw.bTimer = 10 + Math.random() * 10;
+      return;
+    }
+    const r = Math.random();
+    if (r < 0.74) { sw.behavior = "cruise"; sw.bTimer = 10 + Math.random() * 10; }
+    else if (r < 0.88) { sw.behavior = "play"; sw.bTimer = 3 + Math.random() * 4; }
+    else { sw.behavior = "explore"; sw.bTimer = 5 + Math.random() * 5; sw.targetMesh = this.pickDecor(); }
+  }
+
   private removeOneFish(type: FishType) {
     const idx = this.fish.findIndex((f) => f.userData.type === type);
     if (idx >= 0) {
@@ -791,10 +859,17 @@ export class Aquarium3D {
       schoolVel.multiplyScalar(1 / school.length);
     }
 
-    const desired = new THREE.Vector3();
+    const desired = this._v1;
     for (const f of this.fish) {
       const sw = f.userData.swim;
       if (!sw) continue;
+      const type = f.userData.type as FishType;
+
+      // --- behaviour state machine: 长行 / 短行 / 探索 / 依附 ---
+      sw.bTimer -= dt;
+      if (sw.targetMesh && !sw.targetMesh.parent) sw.targetMesh = null; // decor removed
+      if (sw.bTimer <= 0) this.assignBehavior(f);
+      const beh: string = sw.behavior;
 
       // --- desired heading: smooth wander (gentle yaw drift + a little pitch) ---
       const yaw = (Math.random() - 0.5) * 1.7 * dt;
@@ -806,16 +881,38 @@ export class Aquarium3D {
       sw.wDir.normalize();
       desired.copy(sw.wDir);
 
-      // --- shoaling steers the heading (no velocity jerks) ---
-      if (schooling && SCHOOL_TYPES.has(f.userData.type)) {
-        desired.addScaledVector(schoolCenter!.clone().sub(f.position), 0.45);
-        desired.addScaledVector(schoolVel!.clone().normalize(), 0.7);
+      let faceTarget: THREE.Vector3 | null = null;
+      let speedScale = 1;
+      const visiting = beh === "explore" || beh === "cling";
+
+      if (beh === "cruise" && schooling && SCHOOL_TYPES.has(type)) {
+        // 长行: travel with the shoal — cohesion + alignment + separation.
+        desired.addScaledVector(this._v2.copy(schoolCenter!).sub(f.position), 0.45);
+        desired.addScaledVector(this._v2.copy(schoolVel!).normalize(), 0.7);
         for (const o of school) {
           if (o === f) continue;
           const d = f.position.distanceTo(o.position);
-          if (d > 0 && d < 0.6) desired.addScaledVector(f.position.clone().sub(o.position).divideScalar(d), ((0.6 - d) / 0.6) * 1.4);
+          if (d > 0 && d < 0.6) desired.addScaledVector(this._v2.copy(f.position).sub(o.position).divideScalar(d), ((0.6 - d) / 0.6) * 1.4);
+        }
+      } else if (visiting && sw.targetMesh) {
+        // 探索 / 依附: swim to a piece of decor, then hover, face it and nuzzle.
+        const to = this._v2.copy(sw.targetMesh.position);
+        to.y += 0.5; // aim a touch above the base
+        const hoverX = to.x, hoverY = to.y, hoverZ = to.z;
+        to.sub(f.position);
+        const dist = to.length();
+        const near = beh === "cling" ? 0.55 : 0.95;
+        if (dist > near) {
+          desired.copy(to).divideScalar(dist).multiplyScalar(1.8); // head toward it
+        } else {
+          faceTarget = this._v2.set(hoverX, hoverY, hoverZ); // look at the decor
+          const nudge = Math.sin(sw.spdPhase * 3) * 0.5;      // gentle in/out bump
+          desired.set(hoverX - f.position.x, hoverY - f.position.y, hoverZ - f.position.z);
+          if (desired.lengthSq() > 1e-6) desired.normalize().multiplyScalar(nudge);
+          speedScale = 0.16; // basically hover
         }
       }
+      // play (短行) and cruise for seahorse/jellyfish just wander.
 
       // --- soft wall avoidance: curve inward as a wall nears (no hard bounce) ---
       const m = 1.3, my = 0.7;
@@ -824,15 +921,17 @@ export class Aquarium3D {
       if (f.position.z > halfZ - m) desired.z -= ((f.position.z - (halfZ - m)) / m) * 1.6;
       if (f.position.z < -halfZ + m) desired.z += ((-f.position.z - (halfZ - m)) / m) * 1.6;
       if (f.position.y > yTop - my) desired.y -= ((f.position.y - (yTop - my)) / my) * 1.4;
-      if (f.position.y < yBot + my) desired.y += (((yBot + my) - f.position.y) / my) * 1.4;
+      // Floor avoidance — skipped while visiting decor so they can dip to the sand.
+      if (!visiting && f.position.y < yBot + my) desired.y += (((yBot + my) - f.position.y) / my) * 1.4;
       if (desired.lengthSq() > 1e-4) desired.normalize();
 
-      // --- speed eases up/down; fast fish occasionally dart then glide ---
+      // --- speed eases up/down; free-roaming fast fish occasionally dart ---
       sw.spdPhase += dt * 0.5;
+      const freeRoam = beh === "cruise" || beh === "play";
       if (sw.dart > 0) sw.dart -= dt;
-      else if (sw.speed >= 0.5 && Math.random() < 0.004) sw.dart = 0.3 + Math.random() * 0.5;
+      else if (freeRoam && sw.speed >= 0.5 && Math.random() < 0.004) sw.dart = 0.3 + Math.random() * 0.5;
       const ease = 0.5 + 0.32 * Math.sin(sw.spdPhase) + (sw.dart > 0 ? 1.0 : 0);
-      const targetSpeed = sw.speed * Math.max(0.18, ease);
+      const targetSpeed = sw.speed * Math.max(0.18, ease) * speedScale;
       sw.dSpeed += (targetSpeed - sw.dSpeed) * Math.min(1, 1.8 * dt);
       desired.multiplyScalar(sw.dSpeed);
 
@@ -859,14 +958,17 @@ export class Aquarium3D {
           f.userData.bell.scale.set(1 - s * 0.08, 1 + s * 0.15, 1 - s * 0.08);
         }
       } else {
-        // Yaw-only turning: face the horizontal swim direction, stay upright
-        // (so vertical models like a seahorse don't tip over). The +90° aligns
-        // the model's +X (head) with the swim direction.
-        const tgt = f.position.clone().add(new THREE.Vector3(sw.vel.x, 0, sw.vel.z));
-        f.lookAt(tgt);
-        f.rotateY(Math.PI / 2 + getHeading(f.userData.type));
+        // Yaw-only turning, staying upright (so a vertical model like a seahorse
+        // doesn't tip over). Face the decor when hovering at it, else the swim
+        // direction. The +90° aligns the model's +X (head) with that direction.
+        if (faceTarget) {
+          f.lookAt(faceTarget.x, f.position.y, faceTarget.z);
+        } else {
+          f.lookAt(this._v1.set(f.position.x + sw.vel.x, f.position.y, f.position.z + sw.vel.z));
+        }
+        f.rotateY(Math.PI / 2 + getHeading(type));
         // Upright correction (rolls a model that was authored lying on its side).
-        const pitch = getPitch(f.userData.type);
+        const pitch = getPitch(type);
         if (pitch) f.rotateX(pitch);
         // Refined swim: gentle snaking yaw + soft roll + a tail that leads.
         f.rotateY(Math.sin(sw.phase * 0.9) * 0.07);
