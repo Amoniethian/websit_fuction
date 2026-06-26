@@ -2,7 +2,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import { loadSupabaseConfig } from "./supabaseConfig";
 import { useStore } from "../store";
 import { toast } from "../ui/toast";
-import { setModel as setLocalModel, type ModelSlot } from "../features/aquarium-3d/modelStore";
+import { setModel as setLocalModel, getModel as getLocalModel, localModelSlots, type ModelSlot } from "../features/aquarium-3d/modelStore";
 
 const BUCKET = "cihai-models";
 
@@ -193,6 +193,9 @@ async function afterLogin() {
   } else {
     if (await pushNow()) toast("已创建云端存档");
   }
+  // Backfill any local-only models to the cloud, then pull the full set down.
+  const pushed = await backfillModels();
+  if (pushed > 0) toast(`已补传 ${pushed} 个模型到云端`);
   await pullModels();
 }
 
@@ -223,6 +226,33 @@ export async function deleteModelFromCloud(slot: ModelSlot) {
   const u = await getUser();
   if (!c || !u) return;
   await c.storage.from(BUCKET).remove([`${u.id}/${slot}.glb`]);
+}
+
+/**
+ * Backfill: upload any locally-stored models that aren't in the cloud yet
+ * (e.g. uploaded before sync was set up). Additive only — never overwrites a
+ * model already in the cloud, so it can't clobber a newer one from another
+ * device. Returns the number of models pushed.
+ */
+async function backfillModels(): Promise<number> {
+  const c = await ensureClient();
+  const u = await getUser();
+  if (!c || !u) return 0;
+  const { data: files, error } = await c.storage.from(BUCKET).list(u.id);
+  if (error) return 0;
+  const cloud = new Set((files || []).filter((f) => f.name.endsWith(".glb")).map((f) => f.name.replace(/\.glb$/, "")));
+  let pushed = 0;
+  for (const slot of await localModelSlots()) {
+    if (cloud.has(slot)) continue; // already in cloud — leave it
+    const dataUrl = await getLocalModel(slot);
+    if (!dataUrl) continue;
+    const blob = await (await fetch(dataUrl)).blob();
+    const { error: upErr } = await c.storage
+      .from(BUCKET)
+      .upload(`${u.id}/${slot}.glb`, blob, { upsert: true, contentType: "model/gltf-binary" });
+    if (!upErr) pushed++;
+  }
+  return pushed;
 }
 
 /** Download all of the user's model files into the local model store. */

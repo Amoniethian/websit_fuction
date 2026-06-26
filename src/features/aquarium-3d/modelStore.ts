@@ -35,6 +35,10 @@ export function hasModel(slot: ModelSlot): boolean {
 export function getModel(slot: ModelSlot): Promise<string | null> {
   return store.getItem<string>(slot);
 }
+/** All slots that currently have a locally-stored model. */
+export async function localModelSlots(): Promise<ModelSlot[]> {
+  return (await store.keys()) as ModelSlot[];
+}
 export async function setModel(slot: ModelSlot, dataUrl: string): Promise<void> {
   await store.setItem(slot, dataUrl);
   present.add(slot);
