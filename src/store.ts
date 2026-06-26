@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import localforage from "localforage";
-import type { State, Vocab, CreatureType, Sentence, DecorType, DecorItem, SyncData } from "./types";
+import type { State, Vocab, CreatureType, Sentence, DecorType, DecorItem, SyncData, RewardBuckets, Inventory } from "./types";
 import {
   CONV,
   PENALTY,
@@ -26,6 +26,32 @@ import starterVocab from "./data/vocab-scholar-set1.json";
  */
 
 const SET_SIZE = 50;
+
+/**
+ * Word-count reward cadence: every N learned/reviewed words yields a creature.
+ * (The bucket field names are historical — the threshold is `n`.)
+ */
+const WORD_REWARDS: { bucket: keyof RewardBuckets; n: number; type: CreatureType; msg: string }[] = [
+  { bucket: "ten",        n: 10, type: "smallFish", msg: "+ 一条小鱼" },
+  { bucket: "twentyFive", n: 20, type: "moonFish",  msg: "+ 一条月亮鱼" },
+  { bucket: "fifty",      n: 30, type: "clownfish", msg: "+ 一条小丑鱼" },
+  { bucket: "hundred",    n: 40, type: "bigFish",   msg: "+ 一条大鱼" },
+  { bucket: "twoHundred", n: 60, type: "turtle",    msg: "+ 一只水母" }
+];
+
+/** Pay out every creature currently due from the reward buckets. */
+function payoutWordRewards(b: RewardBuckets, inv: Inventory, announce: boolean) {
+  for (const r of WORD_REWARDS) {
+    while (b[r.bucket] >= r.n) {
+      b[r.bucket] -= r.n;
+      (inv as any)[r.type]++;
+      if (announce) {
+        toast(r.msg);
+        audio.birth(r.type);
+      }
+    }
+  }
+}
 const ICON_LABEL: Record<CreatureType, string> = {
   smallFish: "小鱼", moonFish: "月亮鱼", clownfish: "小丑鱼", bigFish: "大鱼",
   turtle: "水母", seaweed: "海草", anemone: "海葵", coral: "珊瑚"
@@ -162,12 +188,8 @@ export const useStore = create<Store>()(
         const today = { ...s.today, learnedToday: s.today.learnedToday + 1 };
         const b = { ...s.rewardBuckets };
         const inv = { ...s.inv };
-        b.ten++; b.twentyFive++; b.fifty++; b.hundred++; b.twoHundred++;
-        if (b.ten >= 10)         { b.ten -= 10;         inv.smallFish++; toast("+ 一条小鱼"); audio.birth("smallFish"); }
-        if (b.twentyFive >= 25)  { b.twentyFive -= 25;  inv.moonFish++;  toast("+ 一条月亮鱼"); audio.birth("moonFish"); }
-        if (b.fifty >= 50)       { b.fifty -= 50;       inv.clownfish++; toast("+ 一条小丑鱼"); audio.birth("clownfish"); }
-        if (b.hundred >= 100)    { b.hundred -= 100;    inv.bigFish++;   toast("+ 一条大鱼"); audio.birth("bigFish"); }
-        if (b.twoHundred >= 200) { b.twoHundred -= 200; inv.turtle++;    toast("+ 一只水母"); audio.birth("turtle"); }
+        for (const r of WORD_REWARDS) b[r.bucket]++;
+        payoutWordRewards(b, inv, true);
         set({ today, rewardBuckets: b, inv });
         get().convertIfNeeded();
       },
@@ -178,12 +200,8 @@ export const useStore = create<Store>()(
         const s = get();
         const b = { ...s.rewardBuckets };
         const inv = { ...s.inv };
-        b.ten++; b.twentyFive++; b.fifty++; b.hundred++; b.twoHundred++;
-        if (b.ten >= 10)         { b.ten -= 10;         inv.smallFish++; toast("+ 一条小鱼"); audio.birth("smallFish"); }
-        if (b.twentyFive >= 25)  { b.twentyFive -= 25;  inv.moonFish++;  toast("+ 一条月亮鱼"); audio.birth("moonFish"); }
-        if (b.fifty >= 50)       { b.fifty -= 50;       inv.clownfish++; toast("+ 一条小丑鱼"); audio.birth("clownfish"); }
-        if (b.hundred >= 100)    { b.hundred -= 100;    inv.bigFish++;   toast("+ 一条大鱼"); audio.birth("bigFish"); }
-        if (b.twoHundred >= 200) { b.twoHundred -= 200; inv.turtle++;    toast("+ 一只水母"); audio.birth("turtle"); }
+        for (const r of WORD_REWARDS) b[r.bucket]++;
+        payoutWordRewards(b, inv, true);
         set({ rewardBuckets: b, inv });
         get().convertIfNeeded();
       },
@@ -510,6 +528,9 @@ export const useStore = create<Store>()(
         for (const w of state.vocab) {
           if (w.enrichmentStatus === "loading") w.enrichmentStatus = "failed";
         }
+        // Re-pay reward buckets against the current thresholds, so creatures
+        // already earned under an updated cadence are granted (silently) on load.
+        if (state.rewardBuckets && state.inv) payoutWordRewards(state.rewardBuckets, state.inv, false);
         // Migrate older saves that predate the 3D tank.
         if (!state.tankDecor || state.tankDecor.length === 0) state.tankDecor = defaultDecor();
         state.tankDecor = reconcileDecor(state.tankDecor, state.inv);
