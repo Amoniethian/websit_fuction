@@ -1051,11 +1051,22 @@ export class Aquarium3D {
           if (dash && dist > near * 1.5) sw.dart = Math.max(sw.dart, 0.25);
           desired.copy(to).divideScalar(dist).multiplyScalar(sp); // head toward it
         } else {
-          faceTarget = this._v2.set(hoverX, hoverY, hoverZ); // look at the decor
-          const nudge = Math.sin(sw.spdPhase * 3) * 0.5;      // gentle in/out bump
-          desired.set(hoverX - f.position.x, hoverY - f.position.y, hoverZ - f.position.z);
-          if (desired.lengthSq() > 1e-6) desired.normalize().multiplyScalar(nudge);
-          speedScale = 0.16; // basically hover
+          // Nestle — DON'T ram the decor. Gently potter around it on a small
+          // orbit whose radius breathes in and out: tuck in to hide, drift out
+          // to peek. Look the way it's drifting (探头探脑), or back at its home
+          // when it has settled still.
+          if (sw.orbitDir === undefined) { sw.orbit = Math.random() * 6.283; sw.orbitDir = Math.random() < 0.5 ? -0.5 : 0.5; }
+          sw.orbit += dt * sw.orbitDir;
+          const peek = 0.30 + 0.20 * Math.sin(sw.spdPhase * 0.8); // 0.10 hide … 0.50 peek
+          const tx = hoverX + Math.cos(sw.orbit) * peek;
+          const tz = hoverZ + Math.sin(sw.orbit) * peek;
+          const ty = hoverY + 0.12 * Math.sin(sw.spdPhase * 1.3); // gentle bob
+          desired.set(tx - f.position.x, ty - f.position.y, tz - f.position.z);
+          const dl = desired.length();
+          faceTarget = dl < 0.06
+            ? this._v2.set(hoverX, hoverY, hoverZ)                          // settled: look home
+            : this._v2.set(f.position.x + desired.x, f.position.y, f.position.z + desired.z); // peeking around
+          speedScale = 0.42; // slow potter around the nest
         }
       }
       // play (短行) and cruise for seahorse/jellyfish just wander.
