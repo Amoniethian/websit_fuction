@@ -1,4 +1,4 @@
-# 词海 · Cihai
+# 字游 · Ziyou
 
 A vocabulary study app structured as a slow-living virtual aquarium.
 每一个被牢记的词，都会变成鱼缸里一只缓慢游动的生物。

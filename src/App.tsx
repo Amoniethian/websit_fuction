@@ -50,7 +50,7 @@ export function App() {
       <div className={"app" + (viewMode ? " view-mode" : "")}>
         <aside className="panel">
           <div className="brand">
-            <h1>词海</h1>
+            <h1>字游</h1>
             <div className="sync-pill" title="本地保存（IndexedDB）">
               <span className="dot" />
               <span>本地</span>
