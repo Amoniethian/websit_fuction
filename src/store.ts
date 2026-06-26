@@ -57,6 +57,8 @@ type Actions = {
   // learning flow
   startLearnSession: () => void;
   learnAdvance: () => void;
+  learnReview: () => void;
+  learnSkipWord: () => void;
   learnExit: () => void;
   finishGroupTest: (right: number, total: number, checkPool: { wordId: number; sentence: Sentence }[]) => void;
   finishGroupCheckItem: (correct: boolean) => void;
@@ -235,6 +237,23 @@ export const useStore = create<Store>()(
         } else {
           set({ learnSession: { ...s, step } });
         }
+      },
+
+      // Go back to the word's familiarize card (re-read), keeping the queue.
+      learnReview: () => {
+        const s = get().learnSession;
+        if (!s) return;
+        set({ learnSession: { ...s, step: 0 } });
+      },
+
+      // "Can't recall": skip to the next word WITHOUT marking this one learned,
+      // so it stays in the unlearned pool and comes back in a later group.
+      learnSkipWord: () => {
+        const s = get().learnSession;
+        if (!s) return;
+        const idx = s.idx + 1;
+        if (idx >= s.queue.length) set({ learnSession: { ...s, idx, step: 0, mode: "group" } });
+        else set({ learnSession: { ...s, idx, step: 0 } });
       },
 
       learnExit: () => set({ learnSession: null }),

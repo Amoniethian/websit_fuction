@@ -194,6 +194,20 @@ button { font: inherit; }
 }
 .timer-actions .primary { background: var(--accent-warm); color: white; border-color: var(--accent-warm); }
 .pom-stat { margin-top: 12px; font-size: 12px; color: var(--ink-soft); text-align: center; }
+.pomo-presets { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; margin-top: 6px; }
+.pomo-preset {
+  padding: 5px 11px; border-radius: 14px; border: 1px solid var(--line);
+  background: var(--paper); color: var(--ink-soft); cursor: pointer; font-size: 12px;
+  transition: border-color .2s ease, color .2s ease, background .2s ease;
+}
+.pomo-preset:hover:not(:disabled) { border-color: var(--accent-warm); color: var(--ink); }
+.pomo-preset.on { background: var(--accent-warm); color: #fff; border-color: var(--accent-warm); }
+.pomo-preset:disabled { opacity: 0.5; cursor: default; }
+.pomo-input {
+  width: 56px; padding: 5px 8px; border: 1px solid var(--line); border-radius: 8px;
+  background: var(--paper); font: inherit; font-size: 12px; color: var(--ink); text-align: center;
+}
+.pomo-input:disabled { opacity: 0.5; }
 
 /* species */
 .inv-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }

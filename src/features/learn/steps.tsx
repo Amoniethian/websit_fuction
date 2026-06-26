@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import type { Vocab } from "../../types";
 import { useStore } from "../../store";
 import { speak } from "../../lib/speech";
@@ -9,6 +9,23 @@ import { audio } from "../../lib/audio";
 
 export function confirmExit(exit: () => void) {
   if (window.confirm("退出本组学习？已完成的词会保留为已学。")) exit();
+}
+
+/** Shared footer for quiz steps: re-read the word, set it aside, or quit the group. */
+function StuckBar({ children }: { children: ReactNode }) {
+  const review = useStore((s) => s.learnReview);
+  const skip = useStore((s) => s.learnSkipWord);
+  const exit = useStore((s) => s.learnExit);
+  return (
+    <>
+      <div className="step-actions">
+        <button onClick={review} title="回去重看这个词的释义和例句">回看</button>
+        <button onClick={skip} title="记不住，先跳过；这个词不算学会，留到下次再学">记不住</button>
+        {children}
+      </div>
+      <button className="end-session" onClick={() => confirmExit(exit)}>退出本组</button>
+    </>
+  );
 }
 
 /* ---------- Step 0: Familiarize ---------- */
@@ -122,10 +139,9 @@ export function MatchStep({ w }: { w: Vocab }) {
           </div>
         </div>
       </div>
-      <div className="step-actions">
-        <button onClick={() => confirmExit(exit)}>退出</button>
-        <button onClick={advance}>跳过</button>
-      </div>
+      <StuckBar>
+        <button onClick={advance}>跳过本练习</button>
+      </StuckBar>
     </>
   );
 }
@@ -234,10 +250,9 @@ export function ReconstructStep({ w }: { w: Vocab }) {
           ))}
         </div>
       </div>
-      <div className="step-actions">
-        <button onClick={() => confirmExit(exit)}>退出</button>
+      <StuckBar>
         <button className="primary" onClick={check}>检查</button>
-      </div>
+      </StuckBar>
     </>
   );
 }
@@ -294,10 +309,9 @@ export function DictateStep({ w }: { w: Vocab }) {
         />
         <div className="dictate-feedback">{fb}</div>
       </div>
-      <div className="step-actions">
-        <button onClick={() => confirmExit(exit)}>退出</button>
+      <StuckBar>
         <button className="primary" onClick={submit}>提交</button>
-      </div>
+      </StuckBar>
     </>
   );
 }
