@@ -1063,14 +1063,15 @@ export class Aquarium3D {
           if (dash && dist > near * 1.5) sw.dart = Math.max(sw.dart, 0.25);
           desired.copy(to).divideScalar(dist).multiplyScalar(sp); // head toward it
         } else if (type === "bigFish") {
-          // Seahorse perch: hang right beside the frond, tail tucked in, and
-          // just drift + sway gently in place (飘飘摇摇) — barely travels.
-          const sx = hoverX + Math.sin(sw.spdPhase * 0.7) * 0.07;
-          const sz = hoverZ + Math.cos(sw.spdPhase * 0.5) * 0.07;
-          const sy = hoverY + 0.10 * Math.sin(sw.spdPhase * 0.9);
+          // Seahorse perch: hang LOW against the frond, tail tucked down into it
+          // (sit near the seaweed base, not floating above it), just drifting +
+          // swaying gently in place (飘飘摇摇) — barely travels.
+          const sx = hoverX + Math.sin(sw.spdPhase * 0.7) * 0.06;
+          const sz = hoverZ + Math.cos(sw.spdPhase * 0.5) * 0.06;
+          const sy = (hoverY - 0.6) + 0.08 * Math.sin(sw.spdPhase * 0.9); // drop into the frond
           desired.set(sx - f.position.x, sy - f.position.y, sz - f.position.z);
           // Rock the facing slowly side to side, like it's swaying in a current.
-          const swayA = Math.sin(sw.spdPhase * 0.6) * 0.5;
+          const swayA = Math.sin(sw.spdPhase * 0.6) * 0.25;
           faceTarget = this._v2.set(f.position.x + Math.cos(swayA), f.position.y, f.position.z + Math.sin(swayA));
           speedScale = 0.12; // essentially anchored to the seaweed
         } else {
@@ -1152,6 +1153,14 @@ export class Aquarium3D {
         // Upright correction (rolls a model that was authored lying on its side).
         const pitch = getPitch(type as ModelSlot);
         if (pitch) f.rotateX(pitch);
+
+        // Soft idle sway for a perched seahorse — gently rock the whole body so
+        // even a rigid (un-rigged) model reads as a soft, drifting seahorse.
+        // (A built-in segmented seahorse ALSO undulates via `segs` below.)
+        if (type === "bigFish" && sw.hovering) {
+          f.rotateZ(Math.sin(sw.phase * 0.8) * 0.17);
+          f.rotateX(Math.sin(sw.phase * 0.55 + 1.0) * 0.09);
+        }
 
         // How sharply the fish is turning (smoothed) → bank the body + curve the tail.
         const yawNow = Math.atan2(sw.vel.x, sw.vel.z);
