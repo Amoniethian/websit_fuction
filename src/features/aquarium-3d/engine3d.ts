@@ -757,9 +757,21 @@ export class Aquarium3D {
       }
       return;
     }
+    if (type === "bigFish") {
+      // Seahorse: tail tucked into the seaweed, drifting and swaying in place.
+      // About once a minute it randomly decides whether to drift over to a
+      // different frond (else it stays put on the same one).
+      sw.behavior = "cling";
+      sw.bTimer = 55 + Math.random() * 12; // ~1 min between "switch frond?" checks
+      if (!sw.targetMesh || !sw.targetMesh.parent || Math.random() < 0.35) {
+        sw.targetMesh = this.pickDecor("seaweed") || this.pickDecor();
+        sw.hovering = false; // drift over to the new frond
+      }
+      return;
+    }
     sw.targetMesh = null;
     sw.hovering = false; // re-approach freshly-assigned decor before settling
-    if (type === "bigFish" || type === "turtle") {
+    if (type === "turtle") {
       sw.behavior = "cruise";
       sw.bTimer = 999;
       return;
@@ -1033,7 +1045,7 @@ export class Aquarium3D {
         const hoverX = to.x, hoverY = to.y, hoverZ = to.z;
         to.sub(f.position);
         const dist = to.length();
-        const near = beh === "cling" ? 0.4 : 0.95; // cling nestles in tighter
+        const near = beh === "cling" ? (type === "bigFish" ? 0.28 : 0.4) : 0.95; // seahorse tucks in tightest
         // Hysteresis: once settled in to hover it STAYS hovering until it drifts
         // well past `near` again. Without this the fish flickered between "dash
         // toward" and "hover" every frame at the boundary — the visible twitch.
@@ -1050,6 +1062,17 @@ export class Aquarium3D {
             : THREE.MathUtils.clamp((dist - near) * 1.6, 0.25, 1.8);
           if (dash && dist > near * 1.5) sw.dart = Math.max(sw.dart, 0.25);
           desired.copy(to).divideScalar(dist).multiplyScalar(sp); // head toward it
+        } else if (type === "bigFish") {
+          // Seahorse perch: hang right beside the frond, tail tucked in, and
+          // just drift + sway gently in place (飘飘摇摇) — barely travels.
+          const sx = hoverX + Math.sin(sw.spdPhase * 0.7) * 0.07;
+          const sz = hoverZ + Math.cos(sw.spdPhase * 0.5) * 0.07;
+          const sy = hoverY + 0.10 * Math.sin(sw.spdPhase * 0.9);
+          desired.set(sx - f.position.x, sy - f.position.y, sz - f.position.z);
+          // Rock the facing slowly side to side, like it's swaying in a current.
+          const swayA = Math.sin(sw.spdPhase * 0.6) * 0.5;
+          faceTarget = this._v2.set(f.position.x + Math.cos(swayA), f.position.y, f.position.z + Math.sin(swayA));
+          speedScale = 0.12; // essentially anchored to the seaweed
         } else {
           // Nestle — DON'T ram the decor. Gently potter around it on a small
           // orbit whose radius breathes in and out: tuck in to hide, drift out
