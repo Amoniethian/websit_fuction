@@ -2,12 +2,25 @@ import { useSyncExternalStore } from "react";
 import { useStore } from "../../store";
 import { pomodoro } from "./timer";
 import { breakTimer } from "./breakTimer";
+import { FocusIcon, BreakIcon } from "../../ui/TimerIcons";
 
 const PRESETS = [15, 25, 45, 60];
 const BREAK_PRESETS = [3, 5, 10];
 
+/** Minutes → "X 小时 Y 分钟" (drops empty parts), or "0 分钟". */
+function fmtDuration(min: number): string {
+  const m = Math.max(0, Math.round(min));
+  const h = Math.floor(m / 60);
+  const r = m % 60;
+  if (h && r) return `${h} 小时 ${r} 分钟`;
+  if (h) return `${h} 小时`;
+  return `${r} 分钟`;
+}
+
 export function Pomodoro() {
   const minutes = useStore((s) => s.today.minutes);
+  const totalFocusMin = useStore((s) => s.totalFocusMin);
+  const totalBreakMin = useStore((s) => s.totalBreakMin);
   const st = useSyncExternalStore(pomodoro.subscribe, pomodoro.getState);
   const bk = useSyncExternalStore(breakTimer.subscribe, breakTimer.getState);
 
@@ -21,7 +34,7 @@ export function Pomodoro() {
   return (
     <div className="pane">
       <div className="timer-display">{mm}:{ss}</div>
-      <div className="timer-sub">专注种下海草</div>
+      <div className="timer-sub"><FocusIcon size={14} /> 专注种下海草</div>
 
       <div className="pomo-presets">
         {PRESETS.map((m) => (
@@ -56,9 +69,14 @@ export function Pomodoro() {
       <div className="pom-stat">今日累计 {Math.round(minutes)} 分钟 · 切页面 / 刷新都不打断计时</div>
       <div className="pom-stat">20 分 → 海草 · 40 分 → 海葵 · 60 分 → 珊瑚</div>
 
+      <div className="companion-line">
+        在字游的陪伴下，<br />
+        学习了 <strong>{fmtDuration(totalFocusMin)}</strong>，休息了 <strong>{fmtDuration(totalBreakMin)}</strong>。
+      </div>
+
       <div className="break-box">
         <div className="break-head">
-          <span>☕ 休息一下</span>
+          <span className="break-title"><BreakIcon size={15} /> 休息一下</span>
           {bk.running && <span className="break-clock">{bMM}:{bSS}</span>}
         </div>
         {!bk.running ? (

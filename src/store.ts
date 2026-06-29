@@ -79,7 +79,7 @@ type Actions = {
   // rewards
   grantWord: () => void;
   grantReview: () => void;
-  grantBreak: () => void;
+  grantBreak: (mins?: number) => void;
   grantMinute: (m: number) => void;
   convertIfNeeded: () => void;
   // learning flow
@@ -125,6 +125,8 @@ function freshState(): State {
     vocab: (starterVocab as any[]).map((raw, i) => normalizeVocab(raw, i)),
     inv: emptyInventory(),
     today: emptyTodayStats(),
+    totalFocusMin: 0,
+    totalBreakMin: 0,
     rewardBuckets: { ten: 0, twentyFive: 0, fifty: 0, hundred: 0, twoHundred: 0 },
     timeBuckets: { twenty: 0, forty: 0, sixty: 0 },
     learnSession: null,
@@ -210,8 +212,11 @@ export const useStore = create<Store>()(
       },
 
       // Finishing a rest break grows one gold-red translucent "super small fish".
-      grantBreak: () => {
-        set({ inv: { ...get().inv, emberFish: get().inv.emberFish + 1 } });
+      grantBreak: (mins = 0) => {
+        set({
+          inv: { ...get().inv, emberFish: get().inv.emberFish + 1 },
+          totalBreakMin: get().totalBreakMin + Math.max(0, mins)
+        });
         toast("休息好啦 · + 一条超级小鱼");
         audio.birth("smallFish");
       },
@@ -225,7 +230,7 @@ export const useStore = create<Store>()(
         while (tb.twenty >= 20) { tb.twenty -= 20; inv.seaweed++; toast("+ 海草"); audio.birth("seaweed"); }
         while (tb.forty  >= 40) { tb.forty  -= 40; inv.anemone++; toast("+ 海葵"); audio.birth("anemone"); }
         while (tb.sixty  >= 60) { tb.sixty  -= 60; inv.coral++;   toast("+ 珊瑚"); audio.birth("coral"); }
-        set({ today, timeBuckets: tb, inv });
+        set({ today, timeBuckets: tb, inv, totalFocusMin: s.totalFocusMin + m });
         get().convertIfNeeded();
         set({ tankDecor: reconcileDecor(get().tankDecor, get().inv) });
       },
@@ -502,6 +507,7 @@ export const useStore = create<Store>()(
         const s = get();
         return {
           vocab: s.vocab, inv: s.inv, today: s.today,
+          totalFocusMin: s.totalFocusMin, totalBreakMin: s.totalBreakMin,
           rewardBuckets: s.rewardBuckets, timeBuckets: s.timeBuckets,
           cosmetics: s.cosmetics, tankDecor: s.tankDecor,
           learnSession: s.learnSession,
@@ -516,6 +522,9 @@ export const useStore = create<Store>()(
           // (e.g. emberFish) still has every field.
           inv: d.inv ? { ...emptyInventory(), ...d.inv } : get().inv,
           today: d.today ?? get().today,
+          // Keep the larger lifetime totals so a stale device can't shrink them.
+          totalFocusMin: Math.max(d.totalFocusMin ?? 0, get().totalFocusMin),
+          totalBreakMin: Math.max(d.totalBreakMin ?? 0, get().totalBreakMin),
           rewardBuckets: d.rewardBuckets ?? get().rewardBuckets,
           timeBuckets: d.timeBuckets ?? get().timeBuckets,
           cosmetics: d.cosmetics ?? get().cosmetics,
@@ -542,6 +551,9 @@ export const useStore = create<Store>()(
       })),
       onRehydrateStorage: () => (state) => {
         if (!state) return;
+        // Migrate saves that predate the lifetime focus/rest counters.
+        if (state.totalFocusMin == null) state.totalFocusMin = 0;
+        if (state.totalBreakMin == null) state.totalBreakMin = 0;
         // Migrate saves that predate the emberFish (break-reward) creature.
         if (state.inv && state.inv.emberFish == null) state.inv.emberFish = 0;
         if (state.cosmetics?.creatures && (state.cosmetics.creatures as Record<string, unknown>).emberFish === undefined) {

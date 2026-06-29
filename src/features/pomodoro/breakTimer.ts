@@ -40,9 +40,9 @@ function saveSession(s: Session | null) {
   }
 }
 
-function grantBreak() {
+function grantBreak(mins: number) {
   const p = (useStore as unknown as { persist?: { hasHydrated?: () => boolean; onFinishHydration?: (cb: () => void) => () => void } }).persist;
-  const run = () => useStore.getState().grantBreak();
+  const run = () => useStore.getState().grantBreak(mins);
   if (p?.hasHydrated && !p.hasHydrated() && p.onFinishHydration) {
     const unsub = p.onFinishHydration(() => { unsub?.(); run(); });
   } else {
@@ -55,7 +55,7 @@ function complete() {
   interval = undefined;
   endsAt = null;
   saveSession(null);
-  grantBreak();
+  grantBreak(Math.round(duration / 60));
   set({ running: false, remain: duration });
 }
 

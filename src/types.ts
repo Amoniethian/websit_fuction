@@ -102,6 +102,8 @@ export type State = {
   vocab: Vocab[];
   inv: Inventory;
   today: TodayStats;
+  totalFocusMin: number;   // lifetime focus minutes ("陪伴下学习了…")
+  totalBreakMin: number;   // lifetime rest minutes ("…休息了…")
   rewardBuckets: RewardBuckets;
   timeBuckets: TimeBuckets;
   learnSession: LearnSession;
@@ -119,6 +121,8 @@ export type SyncData = {
   vocab: Vocab[];
   inv: Inventory;
   today: TodayStats;
+  totalFocusMin?: number;
+  totalBreakMin?: number;
   rewardBuckets: RewardBuckets;
   timeBuckets: TimeBuckets;
   cosmetics: Cosmetics;

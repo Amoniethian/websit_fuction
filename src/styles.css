@@ -226,7 +226,12 @@ button { font: inherit; }
 
 /* pomodoro */
 .timer-display { text-align: center; font-size: 56px; letter-spacing: 6px; margin: 20px 0 10px; }
-.timer-sub { text-align: center; color: var(--ink-soft); font-size: 12px; letter-spacing: 3px; }
+.timer-sub { display: flex; justify-content: center; align-items: center; gap: 6px; color: var(--ink-soft); font-size: 12px; letter-spacing: 3px; }
+.companion-line {
+  margin-top: 16px; text-align: center; line-height: 1.9;
+  font-size: 13px; color: var(--ink-soft); letter-spacing: 1px;
+}
+.companion-line strong { color: var(--accent); font-weight: 600; }
 .timer-actions { display: flex; gap: 8px; margin-top: 18px; }
 .timer-actions button {
   flex: 1; padding: 10px; border-radius: 10px; border: 1px solid var(--line);
@@ -443,8 +448,10 @@ canvas { display: block; width: 100%; height: 100%; }
   font-size: 13px; color: var(--ink); margin-bottom: 8px;
 }
 .break-head .break-clock { font-variant-numeric: tabular-nums; font-size: 16px; }
+.break-title { display: inline-flex; align-items: center; gap: 6px; }
 .aq-timer {
   position: absolute; top: 12px; left: 50%; transform: translateX(-50%); z-index: 6;
+  display: flex; align-items: center; gap: 6px;
   background: rgba(20,20,20,0.5); color: #f5f0e2;
   padding: 5px 14px; border-radius: 16px; font-size: 15px;
   letter-spacing: 2px; font-variant-numeric: tabular-nums; pointer-events: none;

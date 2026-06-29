@@ -7,6 +7,7 @@ import { Aquarium3D as Engine, type Spoken } from "./engine3d";
 import { initModels, subscribeModels } from "./modelStore";
 import { pomodoro } from "../pomodoro/timer";
 import { breakTimer } from "../pomodoro/breakTimer";
+import { FocusIcon, BreakIcon } from "../../ui/TimerIcons";
 import { DECOR_SIZES, DECOR_ROTS, type DecorType } from "../../types";
 
 const DECOR_LABEL: Record<DecorType, string> = {
@@ -52,9 +53,9 @@ export function Aquarium3D({
   const pomo = useSyncExternalStore(pomodoro.subscribe, pomodoro.getState);
   const brk = useSyncExternalStore(breakTimer.subscribe, breakTimer.getState);
   const clock = brk.running
-    ? { icon: "☕", remain: brk.remain }
+    ? { kind: "break" as const, remain: brk.remain }
     : pomo.running
-      ? { icon: "🍅", remain: pomo.remain }
+      ? { kind: "focus" as const, remain: pomo.remain }
       : null;
   const clockMM = clock ? String(Math.floor(clock.remain / 60)).padStart(2, "0") : "";
   const clockSS = clock ? String(clock.remain % 60).padStart(2, "0") : "";
@@ -150,7 +151,10 @@ export function Aquarium3D({
       <div className="canvas-frame canvas-3d">
         <canvas ref={canvasRef} />
         {clock && (
-          <div className="aq-timer" title={brk.running ? "休息中" : "专注进行中"}>{clock.icon} {clockMM}:{clockSS}</div>
+          <div className="aq-timer" title={brk.running ? "休息中" : "专注进行中"}>
+            {clock.kind === "break" ? <BreakIcon size={14} /> : <FocusIcon size={14} />}
+            <span>{clockMM}:{clockSS}</span>
+          </div>
         )}
         {bubble && (
           <div ref={bubbleRef} className="fish-bubble" onClick={() => setBubble(null)}>
