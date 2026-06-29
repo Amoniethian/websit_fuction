@@ -1175,10 +1175,10 @@ export class Aquarium3D {
         const pitch = getPitch(type as ModelSlot);
         if (pitch) f.rotateX(pitch);
 
-        // Soft idle sway for a perched seahorse — gently rock the whole body so
-        // even a rigid (un-rigged) model reads as a soft, drifting seahorse.
-        // (A built-in segmented seahorse ALSO undulates via `segs` below.)
-        if (type === "bigFish" && sw.hovering) {
+        // Soft idle sway for a perched guppy — only for models WITHOUT their own
+        // animation. If the model ships built-in clips (mixer), let those play
+        // alone instead of double-animating it.
+        if (type === "bigFish" && sw.hovering && !f.userData.mixer) {
           f.rotateZ(Math.sin(sw.phase * 0.8) * 0.17);
           f.rotateX(Math.sin(sw.phase * 0.55 + 1.0) * 0.09);
         }

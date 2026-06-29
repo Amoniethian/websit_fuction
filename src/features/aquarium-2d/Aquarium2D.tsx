@@ -36,7 +36,7 @@ export function Aquarium2D() {
       <div className="aq-head">
         <h2>海 缸</h2>
         <div className="aq-head-right">
-          <div className="legend">小鱼 · 月亮鱼 · 小丑鱼 · 海马 · 水母 · 海葵 · 珊瑚 · 海草</div>
+          <div className="legend">小鱼 · 月亮鱼 · 小丑鱼 · guppy · 水母 · 海葵 · 珊瑚 · 海草</div>
           <AmbientToggle />
         </div>
       </div>

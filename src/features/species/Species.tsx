@@ -6,7 +6,7 @@ import { hasModel, initModels, subscribeModels, type ModelSlot } from "../aquari
 import { ModelThumb } from "../aquarium-3d/ModelThumb";
 
 const ITEMS: [CreatureType, string][] = [
-  ["smallFish", "小鱼"], ["moonFish", "月亮鱼"], ["clownfish", "小丑鱼"], ["bigFish", "海马"],
+  ["smallFish", "小鱼"], ["moonFish", "月亮鱼"], ["clownfish", "小丑鱼"], ["bigFish", "guppy"],
   ["turtle", "水母"], ["emberFish", "超级小鱼"], ["seaweed", "海草"], ["anemone", "海葵"], ["coral", "珊瑚"]
 ];
 
@@ -35,7 +35,7 @@ export function Species() {
         ))}
       </div>
       <div className="inv-note">
-        转化规则：50 小鱼 → 留 25 + 奖牌；15 月亮鱼 → 留 5 + 奖牌；10 小丑鱼 → 留 5 + 奖牌；4 海马 → 留 1 + 奖牌。
+        转化规则：50 小鱼 → 留 25 + 奖牌；15 月亮鱼 → 留 5 + 奖牌；10 小丑鱼 → 留 5 + 奖牌；4 guppy → 留 1 + 奖牌。
         20 海草 → 留 5 + 奖牌；10 海葵 → 留 5 + 奖牌；8 珊瑚 → 留 2 + 奖牌。水母只累计、不转化。
         有上传模型的会显示小预览。
       </div>
