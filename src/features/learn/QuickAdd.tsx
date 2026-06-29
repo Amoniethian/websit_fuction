@@ -3,6 +3,7 @@ import { useStore } from "../../store";
 import { toast } from "../../ui/toast";
 import { enrichWord } from "../../lib/llm-enrich";
 import { loadLlmConfig, subscribeLlm } from "../../lib/llmConfig";
+import { useLang } from "../../lib/lang";
 
 /** Quick-capture input: type a word, hit enter, optionally enrich via LLM. */
 export function QuickAdd() {
@@ -14,7 +15,9 @@ export function QuickAdd() {
   const addQuickWord = useStore((s) => s.addQuickWord);
   const applyEnrichment = useStore((s) => s.applyEnrichment);
   const setEnrichmentStatus = useStore((s) => s.setEnrichmentStatus);
-  const cfg = loadLlmConfig();
+  const { target, native } = useLang();
+  const base = loadLlmConfig();
+  const cfg = base ? { ...base, targetLang: target, nativeLang: native } : null;
   void cfgVer;
 
   async function runEnrich(id: number, word: string) {
@@ -66,7 +69,7 @@ export function QuickAdd() {
           onKeyDown={(e) => {
             if (e.key === "Enter") doAdd();
           }}
-          placeholder="速记新词，回车加入"
+          placeholder={`速记${target}新词，回车加入`}
           autoComplete="off"
           autoCapitalize="none"
           autoCorrect="off"
@@ -75,7 +78,7 @@ export function QuickAdd() {
       </div>
       <div className="qa-status">
         {cfg
-          ? "已连接 AI 富化：输入英文词，自动补音标、释义、例句"
+          ? `已连接 AI 富化：输入${target}词，自动补音标、释义（${native}）、例句`
           : "AI 富化未连接：保存为简单词条（去「词库」页填入 API key 后启用）"}
       </div>
       <div className="qa-pending">

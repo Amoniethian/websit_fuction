@@ -5,6 +5,7 @@ import { shuffle, normToken, matchSurface } from "../../lib/text";
 import { BlankedEN } from "../../lib/sentence";
 import { toast } from "../../ui/toast";
 import { audio } from "../../lib/audio";
+import { useLang } from "../../lib/lang";
 
 /* ---------- Per-10 group matching quiz ---------- */
 export function GroupTest() {
@@ -12,6 +13,7 @@ export function GroupTest() {
   const vocab = useStore((s) => s.vocab);
   const exit = useStore((s) => s.learnExit);
   const finishGroupTest = useStore((s) => s.finishGroupTest);
+  const { target, native } = useLang();
 
   const words = useMemo(
     () => session.queue.map((id) => vocab.find((v) => v.id === id)!).filter(Boolean) as Vocab[],
@@ -61,7 +63,7 @@ export function GroupTest() {
 
   return (
     <div className="learn-card">
-      <div className="field-label">本组拼配测验：把左侧英文放到右侧对应中文</div>
+      <div className="field-label">本组拼配测验：把左侧{target}放到右侧对应{native}</div>
       <div className="group-test-grid">
         <div className="gt-bag">
           {bag.map((word, i) => (
@@ -109,6 +111,7 @@ export function GroupCheck() {
   const vocab = useStore((s) => s.vocab);
   const finishItem = useStore((s) => s.finishGroupCheckItem);
 
+  const { target } = useLang();
   const idx = session.checkIdx ?? 0;
   const item = session.checkPool![idx];
   const w = vocab.find((v) => v.id === item.wordId)!;
@@ -162,7 +165,7 @@ export function GroupCheck() {
           onKeyDown={(e) => {
             if (e.key === "Enter") submit();
           }}
-          placeholder="填入对应的英文单词"
+          placeholder={`填入对应的${target}单词`}
           autoComplete="off"
           autoCapitalize="none"
           autoCorrect="off"

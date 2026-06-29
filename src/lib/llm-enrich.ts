@@ -1,9 +1,10 @@
 /**
  * Quick-capture word enrichment via LLM.
  *
- * Given a bare English word/phrase, returns phonetic, Chinese meaning,
- * tense/derivation variants, register tag, and two example sentences
- * with Chinese translations.
+ * Given a bare word/phrase in the target language, returns phonetic, a
+ * meaning in the learner's native language, inflection variants, a register
+ * tag, and two example sentences with native-language translations. The
+ * language pair is configurable (defaults to 英语 → 中文).
  *
  * Works with any OpenAI-compatible chat completion endpoint
  * (OpenAI, Anthropic via proxy, Deepseek, Moonshot, OpenRouter…).
@@ -34,30 +35,36 @@ export type EnrichConfig = {
    * Steers the LLM toward usage examples in that domain.
    */
   domainHint?: string;
+  /** Language being learned (default English) and the language to explain in (default Chinese). */
+  targetLang?: string;
+  nativeLang?: string;
 };
 
-const SYSTEM = `You are a vocabulary explainer for a Chinese-speaking learner.
+function buildSystem(native: string, target: string): string {
+  return `You are a vocabulary explainer for a ${native}-speaking learner studying ${target}.
 You return ONLY a valid JSON object — no prose, no markdown fences.`;
+}
 
-function buildUserPrompt(word: string, domainHint?: string): string {
+function buildUserPrompt(word: string, target: string, native: string, domainHint?: string): string {
   const hint = domainHint ? `\n\nUsage context: ${domainHint}` : "";
-  return `Given the English word or phrase: "${word}"${hint}
+  return `Given the ${target} word or phrase: "${word}"${hint}
 
 Return ONLY a valid JSON object with this exact schema:
 {
-  "phonetic": "IPA in slashes, e.g. /ɪˈfemərəl/",
-  "meaning": "Chinese meaning with part of speech, e.g. adj. 短暂的",
-  "forms": "common variations (tense, comparative, derivatives) separated by '; ' — or '—' if none",
+  "phonetic": "pronunciation guide appropriate to ${target} (IPA for English, pinyin for Chinese, romaji for Japanese, etc.) — empty string if not applicable",
+  "meaning": "the meaning written in ${native}, including part of speech",
+  "forms": "common variations (inflections, conjugations, derivatives) separated by '; ' — or '—' if none",
   "context": "short usage register tag in English (e.g. literary / academic / casual)",
   "sentences": [
-    { "en": "A natural English sentence using the word.", "zh": "对应的自然中文翻译。" },
-    { "en": "Another contextually different sentence.", "zh": "另一句自然中文翻译。" }
+    { "en": "A natural ${target} sentence using the word.", "zh": "its natural ${native} translation" },
+    { "en": "Another contextually different ${target} sentence.", "zh": "another ${native} translation" }
   ]
 }
 
 Rules:
+- The JSON keys "en"/"zh" are FIXED for compatibility: "en" always holds the ${target} sentence, "zh" always holds the ${native} translation (even when neither is actually English/Chinese).
 - Sentences must be authentic and varied (not template-like).
-- Chinese translations should be natural, not literal word-for-word.
+- ${native} translations should be natural, not literal word-for-word.
 - "forms" should be empty string or "—" if the word has no useful inflections.`;
 }
 
@@ -75,13 +82,15 @@ export function enrichConfigFromEnv(): EnrichConfig | null {
 }
 
 export async function enrichWord(word: string, config: EnrichConfig): Promise<EnrichedWord> {
+  const target = config.targetLang || "英语";
+  const native = config.nativeLang || "中文";
   const body = {
     model: config.model,
     temperature: 0.4,
     response_format: { type: "json_object" as const },
     messages: [
-      { role: "system", content: SYSTEM },
-      { role: "user", content: buildUserPrompt(word, config.domainHint) }
+      { role: "system", content: buildSystem(native, target) },
+      { role: "user", content: buildUserPrompt(word, target, native, config.domainHint) }
     ]
   };
   let r: Response;

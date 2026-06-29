@@ -4,6 +4,7 @@ import { normToken } from "../../lib/text";
 import { BlankedEN } from "../../lib/sentence";
 import { audio } from "../../lib/audio";
 import { pickReviewItem, type ReviewItem } from "./pickItem";
+import { useLang } from "../../lib/lang";
 
 export function ReviewRoute() {
   const vocab = useStore((s) => s.vocab);
@@ -59,6 +60,7 @@ export function ReviewRoute() {
 
 /* ---------- Fill-in (learned, not mastered) ---------- */
 function FillinReview({ item, onFinish }: { item: ReviewItem; onFinish: (c: boolean) => void }) {
+  const { target, native } = useLang();
   const [val, setVal] = useState("");
   const [used, setUsed] = useState(0);
   const [fb, setFb] = useState<{ text: string; cls: string }>({ text: "回车提交 · 每题 3 次机会", cls: "" });
@@ -93,7 +95,7 @@ function FillinReview({ item, onFinish }: { item: ReviewItem; onFinish: (c: bool
   return (
     <>
       <div className="step-head">
-        <span>看中文 · 填关键英文词</span>
+        <span>看{native} · 填关键{target}词</span>
         <span className="mode-tag">填空</span>
       </div>
       <div className="fill-card">
@@ -109,7 +111,7 @@ function FillinReview({ item, onFinish }: { item: ReviewItem; onFinish: (c: bool
           onKeyDown={(e) => {
             if (e.key === "Enter") submit();
           }}
-          placeholder="填入英文"
+          placeholder={`填入${target}`}
           autoComplete="off"
           autoCapitalize="none"
           autoCorrect="off"
@@ -132,6 +134,7 @@ function FillinReview({ item, onFinish }: { item: ReviewItem; onFinish: (c: bool
 
 /* ---------- Whole-sentence dictation (mastered) ---------- */
 function DictationReview({ item, onFinish }: { item: ReviewItem; onFinish: (c: boolean) => void }) {
+  const { target, native } = useLang();
   const [val, setVal] = useState("");
   const [used, setUsed] = useState(0);
   const [fb, setFb] = useState<{ text: string; cls: string }>({ text: "回车提交", cls: "" });
@@ -185,7 +188,7 @@ function DictationReview({ item, onFinish }: { item: ReviewItem; onFinish: (c: b
   return (
     <>
       <div className="step-head">
-        <span>看中文 · 默写整句 <span className="mastery-badge">已掌握</span></span>
+        <span>看{native} · 默写整句 <span className="mastery-badge">已掌握</span></span>
         <span className="mode-tag">默写</span>
       </div>
       <div className="fill-card dictation-area">
@@ -197,7 +200,7 @@ function DictationReview({ item, onFinish }: { item: ReviewItem; onFinish: (c: b
           onKeyDown={(e) => {
             if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) submit();
           }}
-          placeholder="写出对应的英文整句（Ctrl/⌘ + 回车提交）"
+          placeholder={`写出对应的${target}整句（Ctrl/⌘ + 回车提交）`}
         />
         <div className={"fill-feedback " + fb.cls}>{fb.text}</div>
         <div className="dict-diff">

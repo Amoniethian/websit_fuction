@@ -6,6 +6,7 @@ import { shuffle, tokenize, normToken } from "../../lib/text";
 import { HighlightedEN } from "../../lib/sentence";
 import { toast } from "../../ui/toast";
 import { audio } from "../../lib/audio";
+import { useLang } from "../../lib/lang";
 
 export function confirmExit(exit: () => void) {
   if (window.confirm("退出本组学习？已完成的词会保留为已学。")) exit();
@@ -32,6 +33,7 @@ function StuckBar({ children }: { children: ReactNode }) {
 export function FamiliarizeStep({ w }: { w: Vocab }) {
   const advance = useStore((s) => s.learnAdvance);
   const exit = useStore((s) => s.learnExit);
+  const { native } = useLang();
   return (
     <>
       <div className="learn-card">
@@ -47,7 +49,7 @@ export function FamiliarizeStep({ w }: { w: Vocab }) {
             <div className="forms">{w.forms}</div>
           </>
         )}
-        <div className="field-label">中文</div>
+        <div className="field-label">{native}</div>
         <div className="meaning-zh">{w.meaning}</div>
         {w.note && (
           <>
@@ -150,6 +152,7 @@ export function MatchStep({ w }: { w: Vocab }) {
 export function ReconstructStep({ w }: { w: Vocab }) {
   const advance = useStore((s) => s.learnAdvance);
   const exit = useStore((s) => s.learnExit);
+  const { target, native } = useLang();
   const { allTokens, lines, bagOrder } = useMemo(() => {
     const allTokens: string[] = [];
     const lines = w.sentences.map((s) => {
@@ -211,7 +214,7 @@ export function ReconstructStep({ w }: { w: Vocab }) {
           <button className="speak-btn" onClick={() => speak(w.word)}>🔊</button>
           <span className="word">{w.word}</span>
         </div>
-        <div className="field-label">用上面的词，按中文意思拼出英文</div>
+        <div className="field-label">用上面的词，按{native}意思拼出{target}</div>
         <div className="word-bag">
           {bagOrder.map((b, bi) => (
             <span
