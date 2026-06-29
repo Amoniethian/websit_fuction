@@ -19,6 +19,27 @@ const listeners = new Set<Listener>();
 const present = new Set<ModelSlot>();
 let ready = false;
 
+/**
+ * Slots that ship with a bundled default model at public/models/<slot>.glb.
+ * Add a slot here once its .glb is placed in public/models (release build).
+ * Empty = every slot uses the built-in procedural fish until a player uploads.
+ */
+export const BUNDLED_MODELS = new Set<ModelSlot>([]);
+
+/** URL of the bundled default .glb for a slot, or null if none is shipped. */
+export function bundledModelUrl(slot: ModelSlot): string | null {
+  return BUNDLED_MODELS.has(slot) ? import.meta.env.BASE_URL + "models/" + slot + ".glb" : null;
+}
+
+/**
+ * Pinned orientation (radians) for the BUNDLED default models — applied only
+ * when the player hasn't uploaded their own model for that slot, so the shipped
+ * fish face the right way out of the box without the player touching anything.
+ * (A player who uploads their own model gets the live 转向/翻正 controls instead.)
+ */
+const DEFAULT_HEADING: Partial<Record<ModelSlot, number>> = {};
+const DEFAULT_PITCH: Partial<Record<ModelSlot, number>> = {};
+
 export async function initModels(): Promise<void> {
   const keys = await store.keys();
   for (const k of keys) present.add(k as ModelSlot);
@@ -67,7 +88,10 @@ let headings: Record<string, number> = (() => {
 })();
 
 export function getHeading(slot: ModelSlot): number {
-  return headings[slot] || 0;
+  // Player's own adjustment wins; otherwise a bundled default's pinned value
+  // (only when they haven't uploaded their own model for this slot).
+  if (slot in headings) return headings[slot];
+  return hasModel(slot) ? 0 : (DEFAULT_HEADING[slot] ?? 0);
 }
 export function cycleHeading(slot: ModelSlot) {
   // The engine reads heading live each frame, so no model reload is needed.
@@ -89,7 +113,8 @@ let pitches: Record<string, number> = (() => {
   }
 })();
 export function getPitch(slot: ModelSlot): number {
-  return pitches[slot] || 0;
+  if (slot in pitches) return pitches[slot];
+  return hasModel(slot) ? 0 : (DEFAULT_PITCH[slot] ?? 0);
 }
 export function cyclePitch(slot: ModelSlot) {
   pitches = { ...pitches, [slot]: (((pitches[slot] || 0) + Math.PI / 2) % (Math.PI * 2)) };

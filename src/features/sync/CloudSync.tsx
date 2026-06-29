@@ -4,6 +4,7 @@ import {
   getSyncStatus, subscribeSync, signIn, signUp, signOut, pushNow, pullNow, reinitSync
 } from "../../lib/sync";
 import { toast } from "../../ui/toast";
+import { IS_RELEASE } from "../../lib/release";
 
 const SQL = `-- 进度表
 create table if not exists cihai_state (
@@ -107,14 +108,19 @@ export function CloudSync() {
         </>
       )}
 
-      <div className="vocab-row" style={{ marginTop: 8 }}>
-        <button onClick={() => setShowSql((v) => !v)}>{showSql ? "隐藏 SQL" : "建表 + 建桶 SQL"}</button>
-        {configured && <button onClick={copyConfigLink}>复制 iPad 续接链接</button>}
-      </div>
-      {configured && (
-        <div className="ai-note">
-          「续接链接」把本机的 Supabase 配置打包进网址，发到 iPad 打开就自动填好配置，只需再登录一次。
-        </div>
+      {/* Dev/maintenance plumbing — hidden in the public release build. */}
+      {!IS_RELEASE && (
+        <>
+          <div className="vocab-row" style={{ marginTop: 8 }}>
+            <button onClick={() => setShowSql((v) => !v)}>{showSql ? "隐藏 SQL" : "建表 + 建桶 SQL"}</button>
+            {configured && <button onClick={copyConfigLink}>复制 iPad 续接链接</button>}
+          </div>
+          {configured && (
+            <div className="ai-note">
+              「续接链接」把本机的 Supabase 配置打包进网址，发到 iPad 打开就自动填好配置，只需再登录一次。
+            </div>
+          )}
+        </>
       )}
       {showSql && <pre className="sql-box">{SQL}</pre>}
     </div>

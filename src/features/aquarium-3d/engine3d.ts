@@ -3,7 +3,7 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { clone as skeletonClone } from "three/examples/jsm/utils/SkeletonUtils.js";
 import type { Inventory, DecorItem, DecorType } from "../../types";
-import { getModel, getHeading, getPitch, hasModel, type ModelSlot } from "./modelStore";
+import { getModel, getHeading, getPitch, hasModel, BUNDLED_MODELS, bundledModelUrl, type ModelSlot } from "./modelStore";
 
 type ModelTemplate = { object: THREE.Object3D; animations: THREE.AnimationClip[] };
 export type Spoken = { en: string; zh: string; word?: string };
@@ -249,14 +249,15 @@ export class Aquarium3D {
   async loadAllModels() {
     // emberFish has no uploadable model, so it's not a ModelSlot.
     const slots: ModelSlot[] = ["smallFish", "moonFish", "clownfish", "bigFish", "turtle", "rock", "coral", "anemone", "seaweed", "tank"];
-    await Promise.all(slots.filter((s) => hasModel(s)).map((s) => this.refreshModel(s, false)));
+    await Promise.all(slots.filter((s) => hasModel(s) || BUNDLED_MODELS.has(s)).map((s) => this.refreshModel(s, false)));
     this.rebuildAllFish();
     this.rebuildAllDecor();
     this.applyTankModel();
   }
 
   async refreshModel(slot: ModelSlot, rebuild = true) {
-    const url = await getModel(slot);
+    // Player upload wins; otherwise fall back to a bundled default if one ships.
+    const url = (await getModel(slot)) || bundledModelUrl(slot);
     if (!url) {
       delete this.models[slot];
     } else {
