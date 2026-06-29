@@ -699,9 +699,22 @@ export class Aquarium3D {
   }
 
   /* ---------- spawn / rebuild ---------- */
+  /** Deterministic 大/小 size pick for the index-th fish of a type — stable
+   * across rebuilds, so a fish keeps the size it was "born" with. */
+  private fishIsBig(type: FishType, index: number): boolean {
+    const h = ((index + 1) * 374761393 + type.length * 668265263) >>> 0;
+    return ((h ^ (h >>> 15)) & 1) === 0;
+  }
+
   private spawnFish(type: FishType) {
+    const index = this.fish.filter((f) => f.userData.type === type).length;
     const mesh = this.makeFish(type);
     mesh.userData.type = type;
+    // Two discrete size variants (大/小), randomly assigned at birth and fixed —
+    // bounded so neither a giant nor an invisible fish ever appears.
+    const big = this.fishIsBig(type, index);
+    mesh.userData.big = big;
+    mesh.scale.multiplyScalar(big ? 1.2 : 0.8);
     const x = (Math.random() - 0.5) * (BOX_W - 1.6);
     const y = AQ_Y + (Math.random() - 0.5) * 1.6;
     const z = (Math.random() - 0.5) * (BOX_D - 1.6);
