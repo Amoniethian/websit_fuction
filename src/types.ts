@@ -114,6 +114,8 @@ export type State = {
   // Sync metadata (set on each successful cloud push)
   _syncedAt?: string;
   _device?: string;
+  // One-time flag: the lifetime counters were back-filled from inventory.
+  _timeBackfilled?: boolean;
 };
 
 /** The subset of state that syncs to the cloud (excludes transient sessions + local-only blobs). */

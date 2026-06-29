@@ -551,9 +551,22 @@ export const useStore = create<Store>()(
       })),
       onRehydrateStorage: () => (state) => {
         if (!state) return;
-        // Migrate saves that predate the lifetime focus/rest counters.
+        // Lifetime focus/rest counters. For saves that predate them (or that an
+        // earlier build already reset to 0), estimate the history ONCE from the
+        // inventory the user earned: every 海草 = 20 focus min (counting the ones
+        // already converted into medals too — 15 seaweed per medal), and every
+        // 火精灵 (emberFish) = one completed break (~5 min each).
         if (state.totalFocusMin == null) state.totalFocusMin = 0;
         if (state.totalBreakMin == null) state.totalBreakMin = 0;
+        if (!state._timeBackfilled) {
+          state._timeBackfilled = true;
+          if (state.totalFocusMin === 0 && state.totalBreakMin === 0 && state.inv) {
+            const seaweedMedal = state.inv.medals?.find((m) => m.type === "seaweed")?.n ?? 0;
+            const seaweedEarned = (state.inv.seaweed ?? 0) + 15 * seaweedMedal;
+            state.totalFocusMin = seaweedEarned * 20;
+            state.totalBreakMin = (state.inv.emberFish ?? 0) * 5;
+          }
+        }
         // Migrate saves that predate the emberFish (break-reward) creature.
         if (state.inv && state.inv.emberFish == null) state.inv.emberFish = 0;
         if (state.cosmetics?.creatures && (state.cosmetics.creatures as Record<string, unknown>).emberFish === undefined) {
