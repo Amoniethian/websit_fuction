@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { useStore } from "../../store";
+import { toast } from "../../ui/toast";
 import { ICONS } from "../../lib/icons";
 import { HighlightedEN } from "../../lib/sentence";
 import { AmbientToggle } from "../audio/AudioControls";
@@ -156,6 +157,25 @@ export function Aquarium3D({
               onClick={() => setSelectedId(addDecor("rock"))}
             >
               ＋石头
+            </button>
+          )}
+          {arrange && (
+            <button
+              className="aq-btn"
+              title="把当前缸里的造景布局导出成预设（可作为发布版的初始造景）"
+              onClick={() => {
+                const decor = useStore.getState().tankDecor;
+                const blob = new Blob([JSON.stringify(decor, null, 2)], { type: "application/json" });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = "造景预设.json";
+                a.click();
+                URL.revokeObjectURL(url);
+                toast("造景预设已导出");
+              }}
+            >
+              导出造景
             </button>
           )}
           <button className="aq-btn" title={viewMode ? "退出观赏" : "观赏模式：隐藏面板、专心看缸"} onClick={onToggleView}>
