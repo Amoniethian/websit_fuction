@@ -81,8 +81,19 @@ export type DecorItem = {
   rot: number; // y-rotation (radians)
   y?: number;  // vertical offset above the sand (default 0) — lets rocks float up/down
   scale?: number; // size multiplier — small 0.7 / medium 1 (default) / large 1.4
+  variant?: number; // which bundled style (1..N) — randomly assigned, fixed
   def?: boolean; // part of the default scenery (never auto-removed)
 };
+
+/** How many bundled style variants exist per decor type (public/models/<type><n>.glb). */
+export const DECOR_VARIANT_COUNTS: Record<DecorType, number> = {
+  rock: 3, coral: 1, anemone: 1, seaweed: 1
+};
+
+/** A random style variant (1..N) for a decor type. */
+export function randomDecorVariant(type: DecorType): number {
+  return 1 + Math.floor(Math.random() * DECOR_VARIANT_COUNTS[type]);
+}
 
 /** The three pickable decor sizes (multipliers on the per-type base scale). */
 export const DECOR_SIZES: { key: string; label: string; scale: number }[] = [
@@ -171,9 +182,9 @@ export function emptyTodayStats(): TodayStats {
 /** A small built-in scene so a fresh tank already looks alive (matches the sketch). */
 export function defaultDecor(): DecorItem[] {
   return [
-    { id: "d-rock-1", type: "rock", x: -0.4, z: 0.1, rot: 0.6, def: true },
-    { id: "d-rock-2", type: "rock", x: 0.5, z: -0.5, rot: 2.1, def: true },
-    { id: "d-rock-3", type: "rock", x: -1.7, z: 0.7, rot: 1.2, def: true },
+    { id: "d-rock-1", type: "rock", x: -0.4, z: 0.1, rot: 0.6, variant: 1, def: true },
+    { id: "d-rock-2", type: "rock", x: 0.5, z: -0.5, rot: 2.1, variant: 2, def: true },
+    { id: "d-rock-3", type: "rock", x: -1.7, z: 0.7, rot: 1.2, variant: 3, def: true },
     { id: "d-anem-1", type: "anemone", x: 0.0, z: 0.5, rot: 0, def: true },
     { id: "d-weed-1", type: "seaweed", x: -1.9, z: -0.7, rot: 0, def: true },
     { id: "d-weed-2", type: "seaweed", x: 1.7, z: 0.6, rot: 0, def: true },

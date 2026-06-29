@@ -3,7 +3,8 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { clone as skeletonClone } from "three/examples/jsm/utils/SkeletonUtils.js";
 import type { Inventory, DecorItem, DecorType } from "../../types";
-import { getModel, getHeading, getPitch, hasModel, BUNDLED_MODELS, bundledModelUrl, type ModelSlot } from "./modelStore";
+import { DECOR_VARIANT_COUNTS } from "../../types";
+import { getModel, getHeading, getPitch, hasModel, BUNDLED_MODELS, bundledModelUrl, decorVariantUrl, type ModelSlot } from "./modelStore";
 
 type ModelTemplate = { object: THREE.Object3D; animations: THREE.AnimationClip[] };
 export type Spoken = { en: string; zh: string; word?: string };
@@ -76,6 +77,7 @@ export class Aquarium3D {
   private fish: THREE.Object3D[] = [];
   private decorMeshes = new Map<string, THREE.Object3D>();
   private decorItems: DecorItem[] = [];
+  private decorVariants = new Map<string, ModelTemplate>(); // "rock1" -> bundled model
   private models: Partial<Record<ModelSlot, ModelTemplate>> = {};
 
   // atmosphere
@@ -257,9 +259,35 @@ export class Aquarium3D {
     // emberFish has no uploadable model, so it's not a ModelSlot.
     const slots: ModelSlot[] = ["smallFish", "moonFish", "clownfish", "bigFish", "turtle", "rock", "coral", "anemone", "seaweed", "tank"];
     await Promise.all(slots.filter((s) => hasModel(s) || BUNDLED_MODELS.has(s)).map((s) => this.refreshModel(s, false)));
+    await this.loadDecorVariants();
     this.rebuildAllFish();
     this.rebuildAllDecor();
     this.applyTankModel();
+  }
+
+  /** Load the bundled decor style variants (public/models/<type><n>.glb). */
+  private async loadDecorVariants() {
+    this.decorVariants.clear();
+    const jobs: Promise<void>[] = [];
+    for (const [type, count] of Object.entries(DECOR_VARIANT_COUNTS)) {
+      for (let v = 1; v <= count; v++) {
+        // variant 1 of a type with no real bundled file is just procedural — skip
+        // the fetch for single-variant types so we don't 404 on every load.
+        if (count <= 1) continue;
+        jobs.push(
+          this.loadGLB(decorVariantUrl(type, v))
+            .then(({ scene, animations }) => {
+              this.fit(scene, 1.2);
+              scene.traverse((m) => {
+                if ((m as THREE.Mesh).isMesh) { m.castShadow = true; m.receiveShadow = true; }
+              });
+              this.decorVariants.set(type + v, { object: scene, animations });
+            })
+            .catch(() => { /* missing variant file → procedural fallback */ })
+        );
+      }
+    }
+    await Promise.all(jobs);
   }
 
   async refreshModel(slot: ModelSlot, rebuild = true) {
@@ -316,7 +344,7 @@ export class Aquarium3D {
     for (const item of items) {
       let mesh = this.decorMeshes.get(item.id);
       if (!mesh) {
-        mesh = this.makeDecor(item.type);
+        mesh = this.makeDecor(item);
         mesh.userData.decorType = item.type;
         this.decorMeshes.set(item.id, mesh);
         this.scene.add(mesh);
@@ -678,8 +706,13 @@ export class Aquarium3D {
     return g;
   }
 
-  private makeDecor(type: DecorType): THREE.Group {
+  private makeDecor(item: DecorItem): THREE.Group {
+    const type = item.type;
+    // Priority: a player's uploaded model overrides everything; else the bundled
+    // style variant for this item; else the procedural shape.
     if (this.models[type]) return this.instantiateModel(this.models[type]!);
+    const variant = this.decorVariants.get(type + (item.variant ?? 1));
+    if (variant) return this.instantiateModel(variant);
     if (type === "rock") return this.makeRock();
     if (type === "coral") return this.makeCoral();
     if (type === "anemone") return this.makeAnemone();

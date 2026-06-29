@@ -24,11 +24,16 @@ let ready = false;
  * Add a slot here once its .glb is placed in public/models (release build).
  * Empty = every slot uses the built-in procedural fish until a player uploads.
  */
-export const BUNDLED_MODELS = new Set<ModelSlot>([]);
+export const BUNDLED_MODELS = new Set<ModelSlot>(["bigFish", "clownfish"]);
 
 /** URL of the bundled default .glb for a slot, or null if none is shipped. */
 export function bundledModelUrl(slot: ModelSlot): string | null {
   return BUNDLED_MODELS.has(slot) ? import.meta.env.BASE_URL + "models/" + slot + ".glb" : null;
+}
+
+/** URL of a bundled decor style variant: public/models/<type><n>.glb */
+export function decorVariantUrl(type: string, variant: number): string {
+  return import.meta.env.BASE_URL + "models/" + type + variant + ".glb";
 }
 
 /**

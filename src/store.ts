@@ -9,6 +9,7 @@ import {
   emptyTodayStats,
   emptyCosmetics,
   defaultDecor,
+  randomDecorVariant,
   todayKey
 } from "./types";
 import { loadLlmConfig } from "./lib/llmConfig";
@@ -169,7 +170,7 @@ function reconcileDecor(decor: DecorItem[], inv: State["inv"]): DecorItem[] {
     if (owned.length < desired) {
       for (let i = owned.length; i < desired; i++) {
         const p = randomDecorPos();
-        next.push({ id: newDecorId(type), type, x: p.x, z: p.z, rot: p.rot });
+        next.push({ id: newDecorId(type), type, x: p.x, z: p.z, rot: p.rot, variant: randomDecorVariant(type) });
       }
     } else if (owned.length > desired) {
       let toRemove = owned.length - desired;
@@ -518,7 +519,7 @@ export const useStore = create<Store>()(
       // stick around until explicitly removed.
       addDecor: (type) => {
         const id = newDecorId(type);
-        set({ tankDecor: [...get().tankDecor, { id, type, x: 0, z: 0, rot: 0 }] });
+        set({ tankDecor: [...get().tankDecor, { id, type, x: 0, z: 0, rot: 0, variant: randomDecorVariant(type) }] });
         return id;
       },
 
@@ -609,6 +610,8 @@ export const useStore = create<Store>()(
         if (state.rewardBuckets && state.inv) payoutWordRewards(state.rewardBuckets, state.inv, false);
         // Migrate older saves that predate the 3D tank.
         if (!state.tankDecor || state.tankDecor.length === 0) state.tankDecor = defaultDecor();
+        // Give pre-variant decor a random style so bundled variants show up.
+        for (const d of state.tankDecor) if (d.variant == null) d.variant = randomDecorVariant(d.type);
         state.tankDecor = reconcileDecor(state.tankDecor, state.inv);
       },
       // Persist learnSession (resume mid-group); never persist the live review tally.
