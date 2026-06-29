@@ -6,11 +6,14 @@ import {
   initModels,
   subscribeModels,
   hasModel,
+  getModel,
   setModel,
   clearModel,
   fileToDataUrl,
   cycleHeading,
   cyclePitch,
+  getHeading,
+  getPitch,
   type ModelSlot
 } from "../aquarium-3d/modelStore";
 import { OrientPreview } from "../aquarium-3d/OrientPreview";
@@ -18,6 +21,31 @@ import { uploadModelFile, deleteModelFromCloud } from "../../lib/sync";
 import { THEMES, getTheme, setTheme, subscribeTheme } from "../../lib/theme";
 
 const FISH_SLOTS = new Set<ModelSlot>(["smallFish", "moonFish", "clownfish", "bigFish", "turtle"]);
+
+/**
+ * Download the model stored for a slot as a .glb, named by slot. If the model's
+ * orientation was adjusted, the 转向/翻正 steps are encoded in the filename
+ * (e.g. `小鱼_smallFish_h2p1.glb`) so the correct facing can be pinned when the
+ * file is bundled into the release.
+ */
+async function exportModel(slot: ModelSlot, label: string) {
+  const url = await getModel(slot);
+  if (!url) {
+    toast("这个槽位没有可导出的模型");
+    return;
+  }
+  const blob = await (await fetch(url)).blob();
+  const hSteps = Math.round(getHeading(slot) / (Math.PI / 2)) % 4;
+  const pSteps = Math.round(getPitch(slot) / (Math.PI / 2)) % 4;
+  const orient = hSteps || pSteps ? `_h${hSteps}p${pSteps}` : "";
+  const dl = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = dl;
+  a.download = `${label}_${slot}${orient}.glb`;
+  a.click();
+  URL.revokeObjectURL(dl);
+  toast(label + " 模型已导出");
+}
 
 const WATER_PRESETS: [number, string][] = [
   [0xb8dcd8, "浅青"], [0x6ba6a3, "深青"], [0xa5cce0, "浅蓝"], [0x3a78a5, "深蓝"], [0x4a5d8a, "暮色"]
@@ -143,6 +171,9 @@ function ModelRow({ slot, label, replaced }: { slot: ModelSlot; label: string; r
       />
       <button className="file-btn" onClick={() => input.current?.click()}>选择 .glb</button>
       <span className="model-status">{replaced ? "✓ 已替换" : "占位"}</span>
+      {replaced && (
+        <button className="file-btn" onClick={() => exportModel(slot, label)} title="把这个模型下载成 .glb（文件名含槽位与朝向）">导出</button>
+      )}
       {replaced && (
         <button
           className="clear"
