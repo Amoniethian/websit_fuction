@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useStore } from "../../store";
 import { toast } from "../../ui/toast";
 import { AiSettings } from "./AiSettings";
-import { LangSettings } from "./LangSettings";
 import { CloudSync } from "../sync/CloudSync";
 
 const JSON_EXAMPLE = JSON.stringify(
@@ -127,7 +126,6 @@ export function VocabTab() {
         ))}
         {vocab.length > 200 && <div>…还有 {vocab.length - 200} 个未列出</div>}
       </div>
-      <LangSettings />
       <AiSettings />
       <CloudSync />
     </div>

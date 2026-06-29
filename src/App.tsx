@@ -11,6 +11,7 @@ import { VocabTab } from "./features/vocab/VocabTab";
 import { Cosmetics } from "./features/cosmetics/Cosmetics";
 import { Aquarium3D } from "./features/aquarium-3d/Aquarium3D";
 import { Toaster } from "./ui/Toaster";
+import { LangPicker } from "./ui/LangPicker";
 
 type Tab = "learn" | "review" | "pomodoro" | "species" | "vocab" | "look";
 const TABS: [Tab, string][] = [
@@ -51,9 +52,12 @@ export function App() {
         <aside className="panel">
           <div className="brand">
             <h1>字游</h1>
-            <div className="sync-pill" title="本地保存（IndexedDB）">
-              <span className="dot" />
-              <span>本地</span>
+            <div className="brand-right">
+              <LangPicker />
+              <div className="sync-pill" title="本地保存（IndexedDB）">
+                <span className="dot" />
+                <span>本地</span>
+              </div>
             </div>
           </div>
 

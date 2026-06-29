@@ -70,10 +70,22 @@ button { font: inherit; }
 }
 .brand {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
   border-bottom: 1px solid var(--line);
   padding-bottom: 10px;
+}
+.brand-right { display: flex; align-items: center; gap: 10px; }
+.lang-picker { display: flex; align-items: center; gap: 8px; }
+.lang-picker label {
+  display: flex; align-items: center; gap: 3px;
+  font-size: 10px; color: var(--ink-soft); letter-spacing: 1px;
+}
+.lang-picker select {
+  font-size: 11px; color: var(--ink); background: var(--paper);
+  border: 1px solid var(--line); border-radius: 6px; padding: 2px 5px; cursor: pointer;
 }
 .brand h1 { margin: 0; font-size: 22px; letter-spacing: 4px; font-weight: 500; }
 .brand .sub { font-size: 11px; color: var(--ink-soft); letter-spacing: 2px; }
