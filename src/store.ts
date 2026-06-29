@@ -37,7 +37,7 @@ const WORD_REWARDS: { bucket: keyof RewardBuckets; n: number; type: CreatureType
   { bucket: "twentyFive", n: 20, type: "moonFish",  msg: "+ 一条月亮鱼" },
   { bucket: "fifty",      n: 30, type: "clownfish", msg: "+ 一条小丑鱼" },
   { bucket: "hundred",    n: 40, type: "bigFish",   msg: "+ 一只 guppy" },
-  { bucket: "twoHundred", n: 60, type: "turtle",    msg: "+ 一只水母" }
+  { bucket: "twoHundred", n: 60, type: "turtle",    msg: "+ 一只七彩麒麟" }
 ];
 
 /** Pay out every creature currently due from the reward buckets. */
@@ -55,7 +55,7 @@ function payoutWordRewards(b: RewardBuckets, inv: Inventory, announce: boolean) 
 }
 const ICON_LABEL: Record<CreatureType, string> = {
   smallFish: "小鱼", moonFish: "月亮鱼", clownfish: "小丑鱼", bigFish: "guppy",
-  turtle: "水母", emberFish: "超级小鱼", seaweed: "海草", anemone: "海葵", coral: "珊瑚"
+  turtle: "七彩麒麟", emberFish: "超级小鱼", seaweed: "海草", anemone: "海葵", coral: "珊瑚"
 };
 
 function normalizeVocab(raw: any, id: number): Vocab {

@@ -56,7 +56,7 @@ const SAND_PRESETS: [number, string][] = [
 
 const MODEL_ROWS: [ModelSlot, string][] = [
   ["tank", "缸子"],
-  ["smallFish", "小鱼"], ["moonFish", "月亮鱼"], ["clownfish", "小丑鱼"], ["bigFish", "guppy"], ["turtle", "水母"],
+  ["smallFish", "小鱼"], ["moonFish", "月亮鱼"], ["clownfish", "小丑鱼"], ["bigFish", "guppy"], ["turtle", "七彩麒麟"],
   ["rock", "岩石"], ["coral", "珊瑚"], ["anemone", "海葵"], ["seaweed", "海草"]
 ];
 

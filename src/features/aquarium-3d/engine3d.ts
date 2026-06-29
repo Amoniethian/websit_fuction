@@ -728,7 +728,8 @@ export class Aquarium3D {
     if (type === "moonFish") return this.makeFishGeneric({ color: 0xe7d9b0, tail: 0xa99b76, size: 0.32 });
     if (type === "clownfish") return this.makeFishGeneric({ color: 0xe07a3c, tail: 0x8e3f17, size: 0.093, stripe: true });
     if (type === "bigFish") return this.makeFishGeneric({ color: 0xbb6abf, tail: 0x7e468a, size: 0.42 });
-    return this.makeJellyfish();
+    // turtle slot = 七彩麒麟 (mandarin fish): teal body, orange fins.
+    return this.makeFishGeneric({ color: 0x2aa9b5, tail: 0xe98a3c, size: 0.18, stripe: true });
   }
 
   /* ---------- spawn / rebuild ---------- */
@@ -789,7 +790,8 @@ export class Aquarium3D {
 
   /**
    * Roll the next behaviour for a fish:
-   *  - seahorse (bigFish) / jellyfish (turtle): always cruise (长行).
+   *  - seahorse (bigFish): perch in the seaweed; mandarin fish (turtle):
+   *    potter along the reef bottom near coral/rock.
    *  - clownfish: only short trips (短行), exploring (探索) and clinging (依附)
    *    to decor — preferring anemones.
    *  - schooling fish: mostly cruise with the shoal; occasionally a solo short
@@ -826,8 +828,12 @@ export class Aquarium3D {
     sw.targetMesh = null;
     sw.hovering = false; // re-approach freshly-assigned decor before settling
     if (type === "turtle") {
-      sw.behavior = "cruise";
-      sw.bTimer = 999;
+      // 七彩麒麟 (mandarin fish): a slow reef bottom-dweller — mostly nosing
+      // around the coral / rock, with the occasional short gentle drift. Rarely
+      // ventures into open water.
+      const r = Math.random();
+      if (r < 0.78) { sw.behavior = "explore"; sw.bTimer = 5 + Math.random() * 6; sw.targetMesh = this.pickDecor(["coral", "rock", "anemone"]); }
+      else { sw.behavior = "play"; sw.bTimer = 3 + Math.random() * 4; }
       return;
     }
     // Schooling fish: after a side-quest always return to cruise; from cruise,
@@ -1187,13 +1193,11 @@ export class Aquarium3D {
       if (f.userData.mixer) f.userData.mixer.update(dt);
       // Tail beat keeps pace with speed; smaller fish beat faster (beat.freq).
       sw.phase += dt * (3.5 + 6 * (sw.dSpeed / Math.max(0.01, sw.speed))) * beat.freq;
-      if (f.userData.type === "turtle") {
-        // Jellyfish: stay upright, drift, and pulse the bell (squash-stretch).
+      if (f.userData.bell) {
+        // Legacy procedural jellyfish (only if no model): stay upright + pulse.
         f.rotation.set(0, getHeading("turtle"), 0);
-        if (f.userData.bell) {
-          const s = Math.sin(sw.phase * 0.7);
-          f.userData.bell.scale.set(1 - s * 0.08, 1 + s * 0.15, 1 - s * 0.08);
-        }
+        const s = Math.sin(sw.phase * 0.7);
+        f.userData.bell.scale.set(1 - s * 0.08, 1 + s * 0.15, 1 - s * 0.08);
       } else {
         // Yaw-only turning, staying upright (so a vertical model like a seahorse
         // doesn't tip over). Face the decor when hovering at it, else the swim
