@@ -79,6 +79,7 @@ export type DecorItem = {
   x: number;   // sand-plane position
   z: number;
   rot: number; // y-rotation (radians)
+  y?: number;  // vertical offset above the sand (default 0) — lets rocks float up/down
   scale?: number; // size multiplier — small 0.7 / medium 1 (default) / large 1.4
   def?: boolean; // part of the default scenery (never auto-removed)
 };

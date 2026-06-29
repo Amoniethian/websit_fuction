@@ -110,6 +110,9 @@ type Actions = {
   moveDecor: (id: string, x: number, z: number) => void;
   setDecorScale: (id: string, scale: number) => void;
   setDecorRot: (id: string, rot: number) => void;
+  setDecorY: (id: string, y: number) => void;
+  addDecor: (type: DecorType) => string;
+  removeDecor: (id: string) => void;
   syncDecor: () => void;
   // cloud sync
   exportState: () => SyncData;
@@ -500,6 +503,29 @@ export const useStore = create<Store>()(
 
       setDecorRot: (id, rot) =>
         set({ tankDecor: get().tankDecor.map((d) => (d.id === id ? { ...d, rot } : d)) }),
+
+      // Raise/lower a piece of decor above the sand (clamped to the tank).
+      // Near the ground it SNAPS flush to the sand so it never hovers with an
+      // ugly little gap.
+      setDecorY: (id, y) => {
+        let ny = Math.max(-0.3, Math.min(3.5, y));
+        if (Math.abs(ny) < 0.18) ny = 0; // snap to the floor
+        set({ tankDecor: get().tankDecor.map((d) => (d.id === id ? { ...d, y: ny } : d)) });
+      },
+
+      // Add a fresh decor piece (e.g. a 造景石头) at the centre; returns its id
+      // so the caller can select it. Rocks aren't inventory-driven, so they
+      // stick around until explicitly removed.
+      addDecor: (type) => {
+        const id = newDecorId(type);
+        set({ tankDecor: [...get().tankDecor, { id, type, x: 0, z: 0, rot: 0 }] });
+        return id;
+      },
+
+      // Remove a decor piece. Rocks (not inventory-driven) stay gone; earned
+      // structures would be re-added by reconcile on the next grant.
+      removeDecor: (id) =>
+        set({ tankDecor: get().tankDecor.filter((d) => d.id !== id) }),
 
       syncDecor: () => set({ tankDecor: reconcileDecor(get().tankDecor, get().inv) }),
 

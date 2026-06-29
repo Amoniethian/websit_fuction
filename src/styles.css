@@ -472,6 +472,7 @@ canvas { display: block; width: 100%; height: 100%; }
   border-radius: 8px; padding: 3px 10px; font-size: 12px; cursor: pointer; line-height: 1.4;
 }
 .arrange-panel .ap-btn.on { background: var(--hl); border-color: var(--accent); }
+.arrange-panel .ap-btn.ap-del { color: #c0584a; border-color: #c0584a55; }
 
 .orient-row {
   display: flex; gap: 12px; align-items: center;

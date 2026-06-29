@@ -229,6 +229,13 @@ export class Aquarium3D {
     this.onSelect?.(id);
   }
 
+  /** Public: sync the selection from the UI (e.g. after adding a rock).
+   * Does NOT fire onSelect, so it won't loop back into React. */
+  selectDecor(id: string | null) {
+    this.selectedId = id;
+    this.refreshOutline();
+  }
+
   /** (Re)build the selection outline to match the selected mesh. */
   private refreshOutline() {
     if (this.outline) {
@@ -314,7 +321,7 @@ export class Aquarium3D {
         this.decorMeshes.set(item.id, mesh);
         this.scene.add(mesh);
       }
-      mesh.position.set(item.x, SAND_TOP_Y, item.z);
+      mesh.position.set(item.x, SAND_TOP_Y + (item.y ?? 0), item.z);
       mesh.rotation.y = item.rot;
       mesh.scale.setScalar((DECOR_SCALE[item.type] ?? 1) * (item.scale ?? 1));
     }

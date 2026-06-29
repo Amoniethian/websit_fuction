@@ -41,6 +41,9 @@ export function Aquarium3D({
   const moveDecor = useStore((s) => s.moveDecor);
   const setDecorScale = useStore((s) => s.setDecorScale);
   const setDecorRot = useStore((s) => s.setDecorRot);
+  const setDecorY = useStore((s) => s.setDecorY);
+  const addDecor = useStore((s) => s.addDecor);
+  const removeDecor = useStore((s) => s.removeDecor);
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const engineRef = useRef<Engine | null>(null);
@@ -113,6 +116,10 @@ export function Aquarium3D({
 
   useEffect(() => { engineRef.current?.setFish(inv); }, [inv]);
   useEffect(() => { engineRef.current?.setDecor(tankDecor); }, [tankDecor]);
+  // Keep the engine's highlight in sync with the UI selection (e.g. after
+  // adding a rock via the button, or removing one). Runs after setDecor so the
+  // freshly-built mesh exists to outline.
+  useEffect(() => { engineRef.current?.selectDecor(arrange ? selectedId : null); }, [selectedId, arrange, tankDecor]);
   useEffect(() => { engineRef.current?.setPalette(palette.water, palette.sand); }, [palette.water, palette.sand]);
   useEffect(() => { engineRef.current?.setAutoRotate(autoRotate && !arrange); }, [autoRotate, arrange]);
   useEffect(() => {
@@ -142,6 +149,15 @@ export function Aquarium3D({
           >
             ✥ 布置
           </button>
+          {arrange && (
+            <button
+              className="aq-btn"
+              title="添加一块造景石头（可调大小 / 朝向 / 上下）"
+              onClick={() => setSelectedId(addDecor("rock"))}
+            >
+              ＋石头
+            </button>
+          )}
           <button className="aq-btn" title={viewMode ? "退出观赏" : "观赏模式：隐藏面板、专心看缸"} onClick={onToggleView}>
             {viewMode ? "✕ 退出" : "◉ 观赏"}
           </button>
@@ -195,6 +211,21 @@ export function Aquarium3D({
                   {r.label}
                 </button>
               ))}
+            </div>
+            <div className="ap-group">
+              <span className="ap-label">高低</span>
+              <button className="ap-btn" title="升高" onClick={() => setDecorY(selected.id, (selected.y ?? 0) + 0.25)}>↑ 升</button>
+              <button className="ap-btn" title="降低（贴近地面会自动吸附）" onClick={() => setDecorY(selected.id, (selected.y ?? 0) - 0.25)}>↓ 降</button>
+              <button className="ap-btn" title="回到地面" onClick={() => setDecorY(selected.id, 0)}>贴地</button>
+            </div>
+            <div className="ap-group">
+              <button
+                className="ap-btn ap-del"
+                title="移除这块造景"
+                onClick={() => { removeDecor(selected.id); setSelectedId(null); }}
+              >
+                移除
+              </button>
             </div>
           </div>
         )}
