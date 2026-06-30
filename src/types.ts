@@ -87,7 +87,7 @@ export type DecorItem = {
 
 /** How many bundled style variants exist per decor type (public/models/<type><n>.glb). */
 export const DECOR_VARIANT_COUNTS: Record<DecorType, number> = {
-  rock: 3, coral: 1, anemone: 1, seaweed: 1
+  rock: 3, anemone: 1, coral: 0, seaweed: 0  // count = bundled variant files present; 0 = procedural
 };
 
 /** A random style variant (1..N) for a decor type. */

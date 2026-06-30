@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 import { clone as skeletonClone } from "three/examples/jsm/utils/SkeletonUtils.js";
 import type { Inventory, DecorItem, DecorType } from "../../types";
 import { DECOR_VARIANT_COUNTS } from "../../types";
@@ -62,7 +63,15 @@ export class Aquarium3D {
   private camera: THREE.PerspectiveCamera;
   private renderer: THREE.WebGLRenderer;
   private controls: OrbitControls;
-  private loader = new GLTFLoader();
+  private loader = (() => {
+    // Draco-compressed models (organic decor) need a decoder; it's bundled in
+    // public/draco/ and loaded once, then geometry stays tiny.
+    const l = new GLTFLoader();
+    const draco = new DRACOLoader();
+    draco.setDecoderPath(import.meta.env.BASE_URL + "draco/");
+    l.setDRACOLoader(draco);
+    return l;
+  })();
   private raf = 0;
   private ro: ResizeObserver;
   private last = performance.now();
@@ -271,9 +280,6 @@ export class Aquarium3D {
     const jobs: Promise<void>[] = [];
     for (const [type, count] of Object.entries(DECOR_VARIANT_COUNTS)) {
       for (let v = 1; v <= count; v++) {
-        // variant 1 of a type with no real bundled file is just procedural — skip
-        // the fetch for single-variant types so we don't 404 on every load.
-        if (count <= 1) continue;
         jobs.push(
           this.loadGLB(decorVariantUrl(type, v))
             .then(({ scene, animations }) => {
