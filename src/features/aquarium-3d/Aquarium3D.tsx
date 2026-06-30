@@ -9,7 +9,26 @@ import { initModels, subscribeModels } from "./modelStore";
 import { pomodoro } from "../pomodoro/timer";
 import { breakTimer } from "../pomodoro/breakTimer";
 import { FocusIcon, BreakIcon } from "../../ui/TimerIcons";
-import { DECOR_SIZES, DECOR_ROTS, type DecorType } from "../../types";
+import { DECOR_SIZES, DECOR_ROTS, emptyInventory, type DecorType, type DecorItem, type Inventory } from "../../types";
+
+/** Demo mode (?demo in the URL): show 2 of every creature + a sampler of decor
+ * variants, purely for viewing. Never persisted, never touches the real save. */
+const IS_DEMO = typeof location !== "undefined" && new URLSearchParams(location.search).has("demo");
+const DEMO_INV: Inventory = {
+  ...emptyInventory(),
+  smallFish: 4, moonFish: 2, clownfish: 2, bigFish: 2, turtle: 2, emberFish: 2
+};
+const DEMO_DECOR: DecorItem[] = [
+  { id: "demo-rock-1", type: "rock", x: -4.2, z: 0.4, rot: 0.6, variant: 1 },
+  { id: "demo-rock-2", type: "rock", x: -3.0, z: -0.6, rot: 2.1, variant: 2 },
+  { id: "demo-rock-3", type: "rock", x: 4.3, z: 0.5, rot: 1.2, variant: 3 },
+  { id: "demo-anem-1", type: "anemone", x: -1.6, z: 0.3, rot: 0, variant: 1 },
+  { id: "demo-anem-2", type: "anemone", x: 0.2, z: -0.7, rot: 1.5, variant: 1 },
+  { id: "demo-coral-1", type: "coral", x: 1.8, z: 0.4, rot: 0.4, variant: 1 },
+  { id: "demo-coral-2", type: "coral", x: 2.9, z: -0.5, rot: 2.0, variant: 2 },
+  { id: "demo-weed-1", type: "seaweed", x: -2.3, z: 0.8, rot: 0, variant: 1 },
+  { id: "demo-weed-2", type: "seaweed", x: 3.6, z: 0.7, rot: 0, variant: 2 }
+];
 
 const DECOR_LABEL: Record<DecorType, string> = {
   rock: "岩石",
@@ -36,8 +55,10 @@ export function Aquarium3D({
   viewMode: boolean;
   onToggleView: () => void;
 }) {
-  const inv = useStore((s) => s.inv);
-  const tankDecor = useStore((s) => s.tankDecor);
+  const storeInv = useStore((s) => s.inv);
+  const storeTankDecor = useStore((s) => s.tankDecor);
+  const inv = IS_DEMO ? DEMO_INV : storeInv;
+  const tankDecor = IS_DEMO ? DEMO_DECOR : storeTankDecor;
   const palette = useStore((s) => s.cosmetics.palette);
   const moveDecor = useStore((s) => s.moveDecor);
   const setDecorScale = useStore((s) => s.setDecorScale);
